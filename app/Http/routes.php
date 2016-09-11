@@ -16,3 +16,5 @@ Route::get('/', function () {
     //return view('login');
     //return view('registro');
 });
+
+Route::resource('/sala','salaController');

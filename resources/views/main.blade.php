@@ -234,14 +234,12 @@
             </li>
             <li class="treeview">
               <a href="#">
-                <i class="fa fa-desktop"></i> <span>Laboratorios</span>
+                <i class="fa fa-desktop"></i> <span>Salas</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
                 <li><a href="pages/labs/admin.html"><i class="fa fa-eye"></i> Ver horarios y disponibilidad</a></li>
-                <li><a href="pages/labs/admin.html"><i class="fa fa-plus-square"></i> Agregar</a></li>
-                <li><a href="pages/labs/docente.html"><i class="fa fa-edit"></i> Modificar</a></li>
-                <li><a href="pages/labs/ayudante.html"><i class="fa fa-times-circle"></i> Quitar</a></li>
+                <li><a href="{{ route('sala.index')}}"><i class="fa fa-plus-square"></i>Lista de Salas</a></li>
                 <li><a href="pages/labs/alumno.html"><i class="fa fa-check-square"></i> Asignar</a></li>
               </ul>
             </li>
