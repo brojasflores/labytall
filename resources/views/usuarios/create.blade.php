@@ -20,6 +20,18 @@
 	      <label for="exampleInputPassword1">Apellidos</label>
 	      <input type="text" class="form-control" name="apellidosUsuario" id="apellidosUsuario" placeholder="Ingrese Apellidos">
 	    </div>
+	    <div class="form-group">
+	    	<div class="row">
+	    		@foreach($roles as $rol)
+	    		<div class="col-md-2">
+			    	<div class="checkbox">
+				    	<!-- Para imprimir el valor de una variable hay que escribir como está aca-->
+				    	<label><input type="checkbox" value="{!! $rol->id !!}" name="roles[]">{!! $rol->nombre!!}</label>
+			    	</div>
+		    	</div>
+		    	@endforeach
+		    </div>
+	    </div>
 	    <button type="submit" class="btn btn-primary">Agregar</button>
 	  </div><!-- /.box-body -->
 </form>

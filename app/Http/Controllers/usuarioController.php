@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Usuario;
+use App\Rol;
+use App\RolUsuario;
 //Para el hash de la password
 use Illuminate\Support\Facades\Hash;
 
@@ -31,7 +33,8 @@ class usuarioController extends Controller
      */
     public function create()
     {
-        return view('usuarios/create');
+        $roles = Rol::all();
+        return view('usuarios/create',compact('roles'));
     }
 
     /**
@@ -42,10 +45,11 @@ class usuarioController extends Controller
      */
     public function store(Request $request)
     {
+        
         //para encriptar la clave y mandar una por defecto (en este caso el mismo rut)
         $pass = Hash::make($request->get('rut')); //Ocupa un bcrypt
       
-        $usuarios = Usuario::create([
+        Usuario::create([
             'rut' => $request->get('rutUsuario'),
             'email' => $request->get('emailUsuario'),
             'nombres' => $request->get('nombresUsuario'),
@@ -53,8 +57,17 @@ class usuarioController extends Controller
             'pass' => $pass
         ]);
 
+        foreach($request->get('roles') as $rol)
+        {
+            RolUsuario::create([
+                'rut' =>$request->get('rutUsuario'),
+                'rol_id' => $rol
+                ]);
+        }
+
         $usuarios = Usuario::paginate();
 
+        
         return view('usuarios/index',compact('usuarios'));
     }
 
@@ -77,9 +90,11 @@ class usuarioController extends Controller
      */
     public function edit($id)
     {
-        $usuarios = Usuario::findOrFail($id);
+        $usuario = Usuario::findOrFail($id);
+        $roles = RolUsuario::where('rut',$usuario->rut)->get();
+        $rolesTotales = Rol::all();
         //en el compact se pasa la variable como string
-        return view('usuarios/edit', compact('usuarios'));
+        return view('usuarios/edit', compact('usuario','roles','rolesTotales'));
     }
 
     /**
