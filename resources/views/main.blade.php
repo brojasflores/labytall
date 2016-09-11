@@ -216,20 +216,7 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="pages/usuarios/admin.html"><i class="fa fa-barcode"></i> Autenticación</a></li>
-                <li><a href="pages/usuarios/admin.html"><i class="fa fa-cog"></i> Administradores</a></li>
-                <li class="treeview">
-              <a href="#">
-                <i class="fa fa-users"></i> <span>Funcionarios</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="pages/usuarios/admin.html"><i class="fa fa-user"></i> Director Escuela/Depto.</a></li>
-                <li><a href="pages/usuarios/docente.html"><i class="fa fa-pencil-square-o"></i> Secretaria</a></li>
-                <li><a href="pages/usuarios/ayudante.html"><i class="fa  fa-book"></i> Docentes</a></li>
-              </ul>
-                <li><a href="pages/usuarios/alumno.html"><i class="fa fa-pencil-square"></i> Ayudantes</a></li>
-                <li><a href="pages/usuarios/alumno.html"><i class="fa fa-mortar-board"></i> Alumnos</a></li>
-            </li>
+                <li><a href="{{ route('usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -239,6 +226,7 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="pages/labs/admin.html"><i class="fa fa-eye"></i> Ver horarios y disponibilidad</a></li>
+                <!--route ruta del controlador.metodo-->
                 <li><a href="{{ route('sala.index')}}"><i class="fa fa-plus-square"></i>Lista de Salas</a></li>
                 <li><a href="pages/labs/alumno.html"><i class="fa fa-check-square"></i> Asignar</a></li>
               </ul>
