@@ -32,19 +32,20 @@
         <a href="{{ asset('admin-lte/index2.html')}}"><b>Gestión Salas</b></a>
       </div>
 
-      <div class="register-box-body">
+      <div class="main-contact">
         <p class="login-box-msg">Contáctenos</p>
-        <form action="{{ asset('admin-lte/index.html')}}" method="post">
+        {!! Form::model(['route' => ['contacto.store'], 'method' => 'PUT']) !!}
+        <!--form action="{{ route('contacto.store')}}" method="post"-->
           <div class="form-group has-feedback">
-            <input type="text" class="form-control" placeholder="Nombre">
+            <input type="text" class="form-control" name="nombreContacto" placeholder="Nombre">
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <input type="email" class="form-control" placeholder="Email">
+            <input type="email" class="form-control" name="emailContacto" placeholder="Email">
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <textarea type="text" class="form-control" placeholder="Mensaje"></textarea>
+            <textarea type="text" class="form-control" name="mensajeContacto" placeholder="Mensaje"></textarea>
             <span class="glyphicon glyphicon-comment form-control-feedback"></span>
           </div>
           <div class="row">
@@ -52,9 +53,11 @@
               <button type="submit" class="btn btn-primary btn-block btn-flat">Enviar</button>
             </div><!-- /.col -->
           </div>
-        </form>
+        <!--/form-->
 
+        {!! Form::close() !!}
       </div><!-- /.form-box -->
+
     </div><!-- /.register-box -->
 
     <!-- jQuery 2.1.4 -->
