@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Gestión Laboratorios | Ingresar</title>
+    <title>Gestión Salas | Ingresar</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -27,7 +27,9 @@
   <body class="hold-transition login-page">
     <div class="login-box">
       <div class="login-logo">
-        <a href="{{ asset('admin-lte/index2.html')}}"><b>Gestión Laboratorios</b></a>
+        <span class="logo-mini"><img src="{{ asset('admin-lte/dist/img/utem.png') }}" class="user-image" alt="User Image" border="0" width="80" height="80"></span>
+        <br>
+        <a href="{{ asset('admin-lte/index2.html')}}"><b>Gestión Salas</b></a>
       </div><!-- /.login-logo -->
       <div class="login-box-body">
         <p class="login-box-msg">Registrate para iniciar sesión</p>

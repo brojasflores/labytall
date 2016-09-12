@@ -31,7 +31,8 @@
                 <td>{{ $usr->nombres}}</td>
                 <td>{{ $usr->apellidos}}</td>
                 <!--Paso ruta y parametro para saber cual modificar-->
-                <td><a href="{{ route('usuario.edit',$usr->id)}}"><i class="fa fa-edit"></i></a></td>
+                <td><a href="{{ route('usuario.edit',$usr->id)}}"><button type="submit" class="btn btn-edit">Editar</button></a></td>
+                <!--<td><a href="{{ route('usuario.edit',$usr->id)}}"><i class="fa fa-edit"></i></a></td>-->
                 <td>
                 {!! Form::open(['route' => ['usuario.destroy', $usr->id], 'method' => 'DELETE', 'id' => 'form-delete'])!!}
                 	<button type="submit" class="btn btn-danger">Eliminar</button>

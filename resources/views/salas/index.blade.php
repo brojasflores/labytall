@@ -27,7 +27,7 @@
                 <td>{{ $sa->nombre }}</td>
                 <td>{{ $sa->capacidad}}</td>
                 <!--Paso ruta y parametro para saber cual modificar-->
-                <td><a href="{{ route('sala.edit',$sa->id)}}"><i class="fa fa-edit"></i></a></td>
+                <td><a href="{{ route('sala.edit',$sa->id)}}"><button type="submit" class="btn btn-edit">Editar</button></a></td>
                 <td>
                 {!! Form::open(['route' => ['sala.destroy', $sa->id], 'method' => 'DELETE', 'id' => 'form-delete'])!!}
                 	<button type="submit" class="btn btn-danger">Eliminar</button>

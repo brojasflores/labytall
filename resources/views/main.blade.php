@@ -44,9 +44,9 @@
         <!-- Logo -->
         <a href="index2.html" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini">UTEM</span>
+          <span class="logo-mini"><img src="{{ asset('admin-lte/dist/img/utem.png') }}" class="user-image" alt="User Image" border="0" width="50" height="50"></span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg">Lab's y Tall's</span>
+          <span class="logo-lg"><img src="{{ asset('admin-lte/dist/img/utem.png') }}" class="user-image" alt="User Image" border="0" width="50" height="50"> <font size="3">Gestión de Salas</font></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
@@ -211,7 +211,7 @@
             <li class="header">Administración</li>
             <li class="treeview">
               <a href="#">
-                <i class="fa fa-users"></i> <span>Usuarios</span>
+                <i class="fa fa-user"></i> <span>Gestión Usuarios</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
@@ -227,8 +227,8 @@
               <ul class="treeview-menu">
                 <li><a href="pages/labs/admin.html"><i class="fa fa-eye"></i> Ver horarios y disponibilidad</a></li>
                 <!--route ruta del controlador.metodo-->
-                <li><a href="{{ route('sala.index')}}"><i class="fa fa-plus-square"></i>Lista de Salas</a></li>
-                <li><a href="pages/labs/alumno.html"><i class="fa fa-check-square"></i> Asignar</a></li>
+                <li><a href="{{ route('sala.index')}}"><i class="fa fa-list-alt"></i>Lista de Salas</a></li>
+                <li><a href="pages/labs/alumno.html"><i class="fa fa-check-square-o"></i> Asignar</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -260,7 +260,7 @@
                 <li><a href="http://bienestarestudiantil.blogutem.cl/" target="_blank"><i class="fa fa-external-link"></i> Bienestar Estudiantil</a></li>
               </ul>
             </li>
-            <li><a href="labs/index.html"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
+            <li><a href="{{ route('contacto.index')}}"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
           </ul>
         </section>
         <!-- /.sidebar -->
