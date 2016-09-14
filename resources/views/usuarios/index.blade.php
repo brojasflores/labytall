@@ -1,6 +1,6 @@
 @extends('main')
 @section('content')
-
+<h1>Usuarios</h1>
 <form role="form" method="get" action="{{ route('usuario.create')}}">
 	<button type="submit" class="btn btn-primary">Agregar</button>
 </form>

@@ -1,6 +1,6 @@
 @extends('main')
 @section('content')
-
+<h1>Salas</h1>
 <form role="form" method="get" action="{{ route('sala.create')}}">
 	<button type="submit" class="btn btn-primary">Agregar</button>
 </form>
@@ -15,6 +15,7 @@
               	<th>#</th>
                 <th>Nombre</th>
                 <th>Capacidad</th>
+                <th>Disponibilidad</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
               </tr>
@@ -26,6 +27,8 @@
               	<td>{{ $sa->id }}</td>
                 <td>{{ $sa->nombre }}</td>
                 <td>{{ $sa->capacidad}}</td>
+                <td>{{ $sa->disponibilidad}}</td>
+
                 <!--Paso ruta y parametro para saber cual modificar-->
                 <td><a href="{{ route('sala.edit',$sa->id)}}"><button type="submit" class="btn btn-edit">Editar</button></a></td>
                 <td>
@@ -41,6 +44,7 @@
                 <th>#</th>
                 <th>Nombre</th>
                 <th>Capacidad</th>
+                <th>Disponibilidad</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
               </tr>

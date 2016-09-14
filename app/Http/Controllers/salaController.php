@@ -44,13 +44,23 @@ class salaController extends Controller
     {
         //variable = nombre del modelo ::(paso metodo)
         //hace insert
-        $sala = Sala::create([
+        if($request->get('disponibilidadSala') == 'disponible'){
+            $sala = Sala::create([
             'nombre' => $request->get('nombreSala'),
-            'capacidad' => $request->get('capacidadSala')
-        ]);
-
-        $salas = Sala::all();
-
+            'capacidad' => $request->get('capacidadSala'),
+            'disponibilidad' => 'disponible'
+            ]);
+            $salas = Sala::all();
+        }
+        else{
+            $sala = Sala::create([
+            'nombre' => $request->get('nombreSala'),
+            'capacidad' => $request->get('capacidadSala'),
+            'disponibilidad' => 'no disponible'
+            ]);
+            $salas = Sala::all();
+            }
+    
         return view('salas/index',compact('salas'));
     }
 
@@ -88,11 +98,12 @@ class salaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $sala = Sala::findOrFail($id);
+        $sala = Sala::findOrFail($id);     
         //fill (rellenar)
         $sala->fill([
             'nombre' => $request->get('nombreSala'),
-            'capacidad' => $request->get('capacidadSala')
+            'capacidad' => $request->get('capacidadSala'),
+            'disponibilidad' => $request->get('disponibilidadSala')
         ]);
         $sala->save();
 

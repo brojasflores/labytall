@@ -46,7 +46,8 @@ class contactoController extends Controller
         });
         //esto no me lo muestra!!
         Session::flash('message','Mensaje enviado correctamente');
-        return Redirect::to('contacto');
+        //no segura!
+        return Redirect::to('/');
     }
 
     /**
