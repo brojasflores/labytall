@@ -20,3 +20,5 @@ Route::get('/', function () {
 Route::resource('/sala','salaController');
 Route::resource('/usuario','usuarioController');
 Route::resource('/contacto','contactoController');
+Route::resource('/rol','rolController');
+
