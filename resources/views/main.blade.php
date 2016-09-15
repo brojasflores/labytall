@@ -156,7 +156,7 @@
               </a>
               <ul class="treeview-menu">
                 <!--Controlador.metodo-->
-                <li><a href="pages/usuarios/admin.html"><i class="fa fa-barcode"></i> Autenticación</a></li>
+                <li><a href="pages/usuarios/admin.html"><i class="glyphicon glyphicon-barcode"></i> Autenticación</a></li>
                 <li><a href="{{ route('usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
                 <li><a href="{{ route('rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
               </ul>
@@ -170,6 +170,9 @@
                 <li><a href="pages/labs/admin.html"><i class="fa fa-eye"></i> Ver horarios y disponibilidad</a></li>
                 <!--route ruta del controlador.metodo-->
                 <li><a href="{{ route('sala.index')}}"><i class="fa fa-list-alt"></i>Lista de Salas</a></li>
+                <li><a href="{{ route('periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
+                <li><a href="{{ route('asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
+                <li><a href="pages/labs/alumno.html"><i class="glyphicon glyphicon-education"></i> Cursos</a></li>
                 <li><a href="pages/labs/alumno.html"><i class="fa fa-check-square-o"></i> Asignar</a></li>
               </ul>
             </li>

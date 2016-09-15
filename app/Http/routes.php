@@ -21,4 +21,6 @@ Route::resource('/sala','salaController');
 Route::resource('/usuario','usuarioController');
 Route::resource('/contacto','contactoController');
 Route::resource('/rol','rolController');
+Route::resource('/periodo','periodoController');
+Route::resource('/asignatura','asignaturaController');
 
