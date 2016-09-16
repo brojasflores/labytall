@@ -2,7 +2,7 @@
 @section('content')
 <h1>Asignaturas</h1>
 <form role="form" method="get" action="{{ route('asignatura.create')}}">
-  <button type="submit" class="btn btn-primary">Agregar</button>
+  <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
 </form>
 <section class="content">
   <div class="row">
@@ -30,10 +30,10 @@
                 <td>{{ $as->descripcion}}</td>
 
                 <!--Paso ruta y parametro para saber cual modificar-->
-                <td><a href="{{ route('asignatura.edit',$as->id)}}"><button type="submit" class="btn btn-edit">Editar</button></a></td>
+                <td><a href="{{ route('asignatura.edit',$as->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
                 <td>
                 {!! Form::open(['route' => ['asignatura.destroy', $as->id], 'method' => 'DELETE', 'id' => 'form-delete'])!!}
-                  <button type="submit" class="btn btn-danger">Eliminar</button>
+                  <button type="submit" class="fa fa-trash btn btn-danger"> Eliminar</button>
                 {!! Form::close() !!}
                 </td>    
               </tr>

@@ -20,7 +20,9 @@ class cursoController extends Controller
     public function index()
     {
         //$cursos = Curso::paginate();
-        $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')->select('curso.*','asignatura.nombre')->get();
+        $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
+                            ->select('curso.*','asignatura.nombre')
+                            ->paginate();
         //se pasa la variable sin el peso con compact
         return view ('cursos/index', compact('cursos'));
     }
@@ -44,17 +46,16 @@ class cursoController extends Controller
      */
     public function store(Request $request)
     {
+
         $cursos = Curso::create([
             'asignatura_id' => $request->get('asigCurso'),
             'semestre' => $request->get('semestreCurso'),
             'anio' => $request->get('anioCurso'),
             'seccion' => $request->get('seccionCurso')
             ]);
-            $cursos = Curso::all();
 
-        $cursos = Curso::paginate();
 
-        return view('cursos/index',compact('cursos'));
+        return redirect()->route('curso.index');
     }
 
     /**
@@ -101,9 +102,7 @@ class cursoController extends Controller
         ]);
         $cursos->save();
 
-        $cursos = Curso::paginate();
-
-        return view('cursos/index',compact('cursos'));
+        return redirect()->route('curso.index');
     
     }
 
@@ -117,7 +116,7 @@ class cursoController extends Controller
     {
         $cursos = Curso::findOrFail($id);
         $cursos->delete();
-        $cursos =Curso::paginate();
-        return view('cursos/index', compact('cursos'));
+
+        return redirect()->route('curso.index');
     }
 }

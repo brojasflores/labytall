@@ -16,7 +16,7 @@
 	      <label for="exampleInputPassword1">Descripción</label>
 	      <input type="text" class="form-control" name="descripcionAsignatura" id="descripcionAsignatura" placeholder="Ingrese descripción de la asignatura">
 	    </div>
-	    <button type="submit" class="btn btn-primary">Agregar</button>
+	    <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
 	  </div><!-- /.box-body -->
 </form>
 @stop

@@ -22,7 +22,7 @@
 	      <!--label><input type="radio" value="{{ $sala->disponibilidad}}" name="disponibilidadSala" id="dispobibilidadSala">Disponible</label-->
 		  <!--input type="radio" value="{{ $sala->disponibilidad}}" name="disponibilidadSala" id="NodisponibilidadSala"> <label for="cbox2">No Disponible</label-->	
 	    </div>
-	    <button type="submit" class="btn btn-primary">Editar</button>
+	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
 	  </div><!-- /.box-body -->
 {!! Form::close() !!}
 @stop

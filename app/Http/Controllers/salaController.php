@@ -50,7 +50,6 @@ class salaController extends Controller
             'capacidad' => $request->get('capacidadSala'),
             'disponibilidad' => 'disponible'
             ]);
-            $salas = Sala::all();
         }
         else{
             $sala = Sala::create([
@@ -58,10 +57,9 @@ class salaController extends Controller
             'capacidad' => $request->get('capacidadSala'),
             'disponibilidad' => 'no disponible'
             ]);
-            $salas = Sala::all();
             }
     
-        return view('salas/index',compact('salas'));
+        return redirect()->route('sala.index');
     }
 
     /**
@@ -109,7 +107,7 @@ class salaController extends Controller
 
         $salas = Sala::all();
 
-        return view('salas/index',compact('salas'));
+        return redirect()->route('sala.index');
     }
     
     /**
@@ -122,7 +120,6 @@ class salaController extends Controller
     {
         $sala = Sala::findOrFail($id);
         $sala->delete();
-        $salas = Sala::all();
-        return view('salas/index', compact('salas'));
+        return redirect()->route('sala.index');
     }
 }

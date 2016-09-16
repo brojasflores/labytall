@@ -45,9 +45,8 @@ class periodoController extends Controller
             'inicio' => $request->get('inicioPeriodo'),
             'fin' => $request->get('finPeriodo')
             ]);
-            $periodos = Periodo::all();
         
-        return view('periodos/index',compact('periodos'));
+        return redirect()->route('periodo.index');
     }
 
     /**
@@ -92,9 +91,7 @@ class periodoController extends Controller
         ]);
         $periodos->save();
 
-        $periodos = Periodo::all();
-
-        return view('periodos/index',compact('periodos'));
+        return redirect()->route('periodo.index');
     }
 
     /**
@@ -107,7 +104,6 @@ class periodoController extends Controller
     {
         $periodos = Periodo::findOrFail($id);
         $periodos->delete();
-        $periodos = Periodo::all();
-        return view('periodos/index', compact('periodos'));
+        return redirect()->route('periodo.index');
     }
 }

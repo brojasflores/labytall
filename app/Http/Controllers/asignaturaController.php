@@ -45,9 +45,8 @@ class asignaturaController extends Controller
             'nombre' => $request->get('nombreAsignatura'),
             'descripcion' => $request->get('descripcionAsignatura')
             ]);
-            $asignaturas = Asignatura::all();
-        
-        return view('asignaturas/index',compact('asignaturas'));
+            //$asignaturas = Asignatura::all();        
+        return redirect()->route('asignatura.index');
     }
 
     /**
@@ -91,10 +90,7 @@ class asignaturaController extends Controller
             'descripcion' => $request->get('descripcionAsignatura')
         ]);
         $asignaturas->save();
-
-        $asignaturas = Asignatura::all();
-
-        return view('asignaturas/index',compact('asignaturas'));
+        return redirect()->route('asignatura.index');
     }
 
     /**
@@ -107,7 +103,6 @@ class asignaturaController extends Controller
     {
         $asignaturas = Asignatura::findOrFail($id);
         $asignaturas->delete();
-        $asignaturas = Asignatura::all();
-        return view('asignaturas/index', compact('asignaturas'));
+        return redirect()->route('asignatura.index');
     }
 }

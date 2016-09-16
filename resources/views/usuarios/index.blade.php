@@ -2,7 +2,7 @@
 @section('content')
 <h1>Usuarios</h1>
 <form role="form" method="get" action="{{ route('usuario.create')}}">
-	<button type="submit" class="btn btn-primary">Agregar</button>
+	<button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
 </form>
 <section class="content">
   <div class="row">
@@ -31,11 +31,11 @@
                 <td>{{ $usr->nombres}}</td>
                 <td>{{ $usr->apellidos}}</td>
                 <!--Paso ruta y parametro para saber cual modificar-->
-                <td><a href="{{ route('usuario.edit',$usr->id)}}"><button type="submit" class="btn btn-edit">Editar</button></a></td>
+                <td><a href="{{ route('usuario.edit',$usr->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
                 <!--<td><a href="{{ route('usuario.edit',$usr->id)}}"><i class="fa fa-edit"></i></a></td>-->
                 <td>
                 {!! Form::open(['route' => ['usuario.destroy', $usr->id], 'method' => 'DELETE', 'id' => 'form-delete'])!!}
-                	<button type="submit" class="btn btn-danger">Eliminar</button>
+                	<button type="submit" class="fa fa-trash btn btn-danger"> Eliminar</button>
                 {!! Form::close() !!}
                 </td>    
               </tr>

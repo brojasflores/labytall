@@ -13,7 +13,7 @@
 	      <label for="exampleInputPassword1">Descripción</label>
 	      <input type="text" class="form-control" value="{{ $roles->descripcion}}" name="descripcionRol" id="descripcionRol" placeholder="Ingrese una descripción">
 	    </div>
-	    <button type="submit" class="btn btn-primary">Editar</button>
+	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
 	  </div><!-- /.box-body -->
 {!! Form::close() !!}
 @stop

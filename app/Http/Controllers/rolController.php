@@ -46,9 +46,7 @@ class rolController extends Controller
             'nombre' => $request->get('nombreRol'),
             'descripcion' => $request->get('descripcionRol'),
             ]);
-            $roles = Rol::all();
-        
-        return view('roles/index',compact('roles'));
+        return redirect()->route('rol.index');
     }
 
     /**
@@ -92,9 +90,7 @@ class rolController extends Controller
         ]);
         $roles->save();
 
-        $roles = Rol::all();
-
-        return view('roles/index',compact('roles'));
+        return redirect()->route('rol.index');
     }
 
     /**
@@ -107,7 +103,6 @@ class rolController extends Controller
     {
         $roles = Rol::findOrFail($id);
         $roles->delete();
-        $roles = Rol::all();
-        return view('roles/index', compact('roles'));
+        return redirect()->route('rol.index');
     }
 }

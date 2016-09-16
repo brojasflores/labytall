@@ -32,7 +32,7 @@
 		    	@endforeach
 		    </div>
 	    </div>
-	    <button type="submit" class="btn btn-primary">Agregar</button>
+	    <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
 	  </div><!-- /.box-body -->
 </form>
 @stop

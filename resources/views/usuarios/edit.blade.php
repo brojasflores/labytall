@@ -33,7 +33,7 @@
 		    	@endforeach
 		    </div>
 	    </div>
-	    <button type="submit" class="btn btn-primary">Editar</button>
+	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
 	  </div><!-- /.box-body -->
 {!! Form::close() !!}
 @stop

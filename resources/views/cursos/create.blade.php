@@ -8,13 +8,18 @@
 
 	    <div class="form-group">
 	    	<div class="row">
-	    		@foreach($asignaturas as $asig)
+	    	
 	    		<div class="col-md-2">
-			    	<div class="checkbox">
-				    	<label><input type="radio" value="{!! $asig->id !!}" name="asigCurso">{!! $asig->nombre!!}</label>
-			    	</div>
+					<div class="form-group">
+					  <label for="sel1">Asignatura: </label>
+					  <select class="form-control" id="asignaturas" name="asigCurso">
+					  	@foreach($asignaturas as $asig)
+					    	<option value="{{ $asig->id }}" name="asigCurso">{{ $asig->nombre }}</option>
+						@endforeach
+					  </select>
+					</div>
 		    	</div>
-		    	@endforeach
+		    	
 		    </div>
 	    </div>
 
@@ -30,7 +35,7 @@
 	      <label for="exampleInputPassword1">Sección</label>
 	      <input type="text" class="form-control" name="seccionCurso" id="seccionCurso" placeholder="Ingrese sección (Ej. 1, 2, 3)">
 	    </div>
-	    <button type="submit" class="btn btn-primary">Agregar</button>
+	    <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
 	  </div><!-- /.box-body -->
 </form>
 @stop

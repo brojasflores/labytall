@@ -17,7 +17,7 @@
 	      <label for="exampleInputPassword1">Fin</label>
 	      <input type="text" class="form-control" value="{{ $periodos->fin}}" name="finPeriodo" id="finPeriodo" placeholder="Ingrese hora fin período (Ej. 21:00)">
 	    </div>
-	    <button type="submit" class="btn btn-primary">Editar</button>
+	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
 	  </div><!-- /.box-body -->
 {!! Form::close() !!}
 @stop

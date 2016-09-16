@@ -18,7 +18,7 @@
 			<label><input type="radio" name="disponibilidadSala" id="dispobibilidadSala" value="disponible">Disponible</label>
 			<input type="radio" name="disponibilidadSala" id="NodisponibilidadSala" value="no_disponible"> <label for="cbox2">No Disponible</label>	
     	</div>
-	    <button type="submit" class="btn btn-primary">Agregar</button>
+	    <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
 	  </div><!-- /.box-body -->
 </form>
 @stop

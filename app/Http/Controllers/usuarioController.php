@@ -64,11 +64,7 @@ class usuarioController extends Controller
                 'rol_id' => $rol
                 ]);
         }
-
-        $usuarios = Usuario::paginate();
-
-        
-        return view('usuarios/index',compact('usuarios'));
+        return redirect()->route('usuario.index');
     }
 
     /**
@@ -116,9 +112,7 @@ class usuarioController extends Controller
         ]);
         $usuarios->save();
 
-        $usuarios = Usuario::paginate();
-
-        return view('usuarios/index',compact('usuarios'));
+        return redirect()->route('usuario.index');
     }
 
     /**
@@ -131,7 +125,6 @@ class usuarioController extends Controller
     {
         $usuarios = Usuario::findOrFail($id);
         $usuarios->delete();
-        $usuarios = Usuario::paginate();
-        return view('usuarios/index', compact('usuarios'));
+        return redirect()->route('usuario.index');
     }
 }

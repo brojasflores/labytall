@@ -2,7 +2,7 @@
 @section('content')
 <h1>Cursos</h1>
 <form role="form" method="get" action="{{ route('curso.create')}}">
-  <button type="submit" class="btn btn-primary">Agregar</button>
+  <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
 </form>
 <section class="content">
   <div class="row">
@@ -26,16 +26,16 @@
               @foreach($cursos as $cur)
               <tr data-id="{{ $cur->id }}">
                 <td>{{ $cur->id }}</td>
-                <td>{{ $cur->asignatura_id }}</td>
+                <td>{{ $cur->nombre }}</td>
                 <td>{{ $cur->semestre}}</td>
                 <td>{{ $cur->anio}}</td>
                 <td>{{ $cur->seccion}}</td>
 
                 <!--Paso ruta y parametro para saber cual modificar-->
-                <td><a href="{{ route('curso.edit',$cur->id)}}"><button type="submit" class="btn btn-edit">Editar</button></a></td>
+                <td><a href="{{ route('curso.edit',$cur->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
                 <td>
                 {!! Form::open(['route' => ['curso.destroy', $cur->id], 'method' => 'DELETE', 'id' => 'form-delete'])!!}
-                  <button type="submit" class="btn btn-danger">Eliminar</button>
+                  <button type="submit" class="fa fa-trash btn btn-danger"> Eliminar</button>
                 {!! Form::close() !!}
                 </td>    
               </tr>

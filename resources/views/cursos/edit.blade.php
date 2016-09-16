@@ -7,13 +7,18 @@
 	  <div class="box-body">
 	    <div class="form-group">
 	    	<div class="row">
-	    		@foreach($asignaturas as $asig)
+	    	
 	    		<div class="col-md-2">
-			    	<div class="checkbox">
-				    	<label><input type="radio" value="{!! $asig->id !!}" name="asigCurso">{!!$asig->nombre!!}</label>
-			    	</div>
+					<div class="form-group">
+					  <label for="sel1">Asignatura: </label>
+					  <select class="form-control" id="asignaturas" name="asigCurso">
+					  	@foreach($asignaturas as $asig)
+					    	<option value="{{ $asig->id }}" name="asigCurso">{{ $asig->nombre }}</option>
+						@endforeach
+					  </select>
+					</div>
 		    	</div>
-		    	@endforeach
+		    	
 		    </div>
 	    </div>
 	    <div class="form-group">
@@ -28,7 +33,7 @@
 	      <label for="exampleInputPassword1">Sección</label>
 	      <input type="text" class="form-control" value="{{ $cursos->seccion}}" name="seccionCurso" id="seccionCurso" placeholder="Ingrese hora fin período (Ej. 21:00)">
 	    </div>
-	    <button type="submit" class="btn btn-primary">Editar</button>
+	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
 	  </div><!-- /.box-body -->
 {!! Form::close() !!}
 @stop
