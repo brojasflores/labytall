@@ -37,3 +37,14 @@
 	  </div><!-- /.box-body -->
 {!! Form::close() !!}
 @stop
+
+@section('scripts')
+<script>
+
+$(document).ready(function(){
+	alert('hola');
+});
+
+</script>
+
+@stop

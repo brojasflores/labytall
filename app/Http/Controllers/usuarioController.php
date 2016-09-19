@@ -102,15 +102,31 @@ class usuarioController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
         $usuarios = Usuario::findOrFail($id);
         //fill (rellenar)
         $usuarios->fill([
             'rut' => $request->get('rutUsuario'),
             'email' => $request->get('emailUsuario'),
             'nombres' => $request->get('nombresUsuario'),
-            'apellidos' => $request->get('apellidosUsuario'),
+            'apellidos' => $request->get('apellidosUsuario')
         ]);
         $usuarios->save();
+
+        //Busca en la tabla rol_usuario el rut que sea igual al rut que viene de la vista(request->get('rutUsuario')) y con el get lo toma
+        $roles_usuario = RolUsuario::where('rut',$request->get('rutUsuario'))->get();
+        foreach($roles_usuario as $ru)
+        {
+            $ru->delete();
+        }
+
+        foreach($request->get('roles') as $rol)
+        {
+            RolUsuario::create([
+                'rut' =>$request->get('rutUsuario'),
+                'rol_id' => $rol
+                ]);
+        }
 
         return redirect()->route('usuario.index');
     }
