@@ -1,4 +1,8 @@
 @extends('main')
+@section('opcion')
+<li><a href="{{ route('asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
+<li class="active">Agregar Asignaturas</li>
+@stop
 @section('content')
 <h1>Agregar Asignatura</h1>
 <form role="form" method="post" action="{{ route('asignatura.store')}}">

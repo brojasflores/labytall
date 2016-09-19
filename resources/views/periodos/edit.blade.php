@@ -1,4 +1,8 @@
 @extends('main')
+@section('opcion')
+<li><a href="{{ route('periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
+<li class="active">Editar Períodos</li>
+@stop
 @section('content')
 <h1>Editar Período</h1>
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->

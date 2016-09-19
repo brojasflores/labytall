@@ -1,4 +1,8 @@
 @extends('main')
+@section('opcion')
+<li><a href="{{ route('rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
+<li class="active">Agregar Roles</li>
+@stop
 @section('content')
 <h1>Agregar Rol</h1>
 <form role="form" method="post" action="{{ route('rol.store')}}">

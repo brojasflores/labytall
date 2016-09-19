@@ -84,13 +84,25 @@ class usuarioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id,Request $request)
     {
-        $usuario = Usuario::findOrFail($id);
-        $roles = RolUsuario::where('rut',$usuario->rut)->get();
-        $rolesTotales = Rol::all();
-        //en el compact se pasa la variable como string
-        return view('usuarios/edit', compact('usuario','roles','rolesTotales'));
+       
+        if($request->ajax()){
+
+            $usuario = Usuario::findOrFail($request->get('id'));
+            $roles = RolUsuario::where('rut',$usuario->rut)->select('rut','rol_id')->get();
+            $rolesTotales = Rol::select('id','nombre')->get();
+
+            $respuesta = ['roles' => $rolesTotales, 'roles_usuario' => $roles];
+         //   $respuesta[1] = $rolesTotales;
+            return response()->json($respuesta);
+        }
+        else{
+
+            $usuario = Usuario::findOrFail($id);
+            //en el compact se pasa la variable como string
+            return view('usuarios/edit', compact('usuario'));
+        }
     }
 
     /**

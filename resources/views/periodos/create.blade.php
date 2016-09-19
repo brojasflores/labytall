@@ -1,4 +1,8 @@
 @extends('main')
+@section('opcion')
+<li><a href="{{ route('periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
+<li class="active">Agregar Períodos</li>
+@stop
 @section('content')
 <h1>Agregar Período</h1>
 <form role="form" method="post" action="{{ route('periodo.store')}}">

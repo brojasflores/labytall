@@ -1,4 +1,8 @@
 @extends('main')
+@section('opcion')
+<li><a href="{{ route('rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
+<li class="active">Editar Roles</li>
+@stop
 @section('content')
 <h1>Editar Rol</h1>
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->

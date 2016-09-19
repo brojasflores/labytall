@@ -1,4 +1,7 @@
 @extends('main')
+@section('opcion')
+<li class="active">Usuarios</li>
+@stop
 @section('content')
 <h1>Usuarios</h1>
 <form role="form" method="get" action="{{ route('usuario.create')}}">

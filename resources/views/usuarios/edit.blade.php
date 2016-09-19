@@ -22,17 +22,11 @@
 	      <input type="text" class="form-control" value="{{ $usuario->apellidos}}" name="apellidosUsuario" id="capacidadSala" placeholder="Ingrese cantidad alumnos">
 	    </div>
 	    <div class="form-group">
-	    	<div class="row">
-	    		@foreach($rolesTotales as $rol)
-	    		<div class="col-md-2">
-			    	<div class="checkbox">
-				    	<!-- Para imprimir el valor de una variable hay que escribir como está aca-->
-				    	<label><input type="checkbox" value="{!! $rol->id !!}" name="roles[]">{!! $rol->nombre !!}</label>
-			    	</div>
-		    	</div>
-		    	@endforeach
+	    	<div class="row" id="roles">
+		   <!-- Aca van los roles que se llenan con jquery-->
 		    </div>
 	    </div>
+	    <input type="hidden" id="usuario_id" value="{{ $usuario->id }}">
 	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
 	  </div><!-- /.box-body -->
 {!! Form::close() !!}
@@ -42,7 +36,26 @@
 <script>
 
 $(document).ready(function(){
-	alert('hola');
+	$.ajax({
+		// con .val saco el valor del value
+        data:  {'id': $("#usuario_id").val()},
+        url:   '/usuario/'+$("#usuario_id")+'/edit',
+        type:  'get',
+        dataType: 'json',
+        success:  function(respuesta) {          
+	       	$.each(respuesta['roles'], function(k,v){
+	       		//el # se refiere a una id
+		       	$("#roles").append("<div class='col-md-2'><div class='checkbox'><label><input id='"+v.id+"' type='checkbox' value='"+v.id+"' name='roles[]'>"+v.nombre+"</label></div></div>");
+
+	       		$.each(respuesta['roles_usuario'], function(key,value){
+	       			if(value.rol_id == v.id)
+		       			$("#"+v.id).prop("checked",true);
+	       		});
+	       	});
+
+        }
+    });
+
 });
 
 </script>

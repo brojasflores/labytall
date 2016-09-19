@@ -1,4 +1,8 @@
 @extends('main')
+@section('opcion')
+<li><a href="{{ route('asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
+<li class="active">Editar Asignaturas</li>
+@stop
 @section('content')
 <h1>Editar Asignatura</h1>
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->

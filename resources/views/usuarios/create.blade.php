@@ -1,4 +1,8 @@
 @extends('main')
+@section('opcion')
+<li><a href="{{ route('usuario.index')}}"><i class="fa fa-user"></i> Usuarios</a></li>
+<li class="active">Agregar Usuarios</li>
+@stop
 @section('content')
 <h1>Agregar Usuario</h1>
 <form role="form" method="post" action="{{ route('usuario.store')}}">

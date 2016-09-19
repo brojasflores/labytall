@@ -1,4 +1,8 @@
 @extends('main')
+@section('opcion')
+<li><a href="{{ route('sala.index')}}"><i class="fa fa-desktop"></i> Salas</a></li>
+<li class="active">Agregar Salas</li>
+@stop
 @section('content')
 <h1>Agregar Sala</h1>
 <form role="form" method="post" action="{{ route('sala.store')}}">

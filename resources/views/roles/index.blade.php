@@ -1,4 +1,7 @@
 @extends('main')
+@section('opcion')
+<li class="active">Roles</li>
+@stop
 @section('content')
 <h1>Roles</h1>
 <form role="form" method="get" action="{{ route('rol.create')}}">

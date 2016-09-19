@@ -205,7 +205,7 @@
                 <li><a href="http://bienestarestudiantil.blogutem.cl/" target="_blank"><i class="fa fa-external-link"></i> Bienestar Estudiantil</a></li>
               </ul>
             </li>
-            <li><a href="{{ route('contacto.index')}}"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
+            <li><a href="{{ route('contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
           </ul>
         </section>
         <!-- /.sidebar -->
@@ -219,9 +219,10 @@
             Opciones
             <small>Panel de Control</small>
           </h1>
-          <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-            <li class="active">Opciones</li>
+          <ol class="breadcrumb">          
+            <li><a href="/"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            @yield('opcion')
+            <!--li class="active">Opciones</li-->
           </ol>
         </section>
 
@@ -404,11 +405,12 @@
            immediately after the control sidebar -->
       <div class="control-sidebar-bg"></div>
     </div><!-- ./wrapper -->
-    @yield('scripts')
+    
     <!-- jQuery 2.1.4 -->
     <script src="{{ asset('admin-lte/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    @yield('scripts')
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
       $.widget.bridge('uibutton', $.ui.button);
