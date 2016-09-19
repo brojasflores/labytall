@@ -400,27 +400,22 @@ INSERT INTO asignatura VALUES (6, 'INF79800', 'TRABAJO DE TITULACIÓN I', 'TI I'
 -- Name: asignatura_id_seq; Type: SEQUENCE SET; Schema: public; Owner: barbarita
 --
 
-SELECT pg_catalog.setval('asignatura_id_seq', 7, true);
+SELECT pg_catalog.setval('asignatura_id_seq', 10, true);
 
 
 --
 -- Data for Name: curso; Type: TABLE DATA; Schema: public; Owner: barbarita
 --
 
-INSERT INTO curso VALUES (5, 5, 2, 2010, 12, '2016-09-15 22:58:43', '2016-09-15 23:11:49');
-INSERT INTO curso VALUES (7, 1, 6, 234, 5, '2016-09-15 23:19:06', '2016-09-15 23:19:06');
-INSERT INTO curso VALUES (6, 4, 1, 2016, 1, '2016-09-15 23:08:01', '2016-09-15 23:29:21');
 INSERT INTO curso VALUES (8, 4, 1, 4567, 4, '2016-09-15 23:51:43', '2016-09-15 23:51:43');
-INSERT INTO curso VALUES (9, 3, 2, 12345, 2, '2016-09-15 23:52:37', '2016-09-15 23:52:37');
-INSERT INTO curso VALUES (10, 6, 2, 1000, 5, '2016-09-16 00:05:32', '2016-09-16 00:05:32');
-INSERT INTO curso VALUES (11, 2, 1, 2010, 89, '2016-09-16 00:09:39', '2016-09-16 00:09:39');
+INSERT INTO curso VALUES (7, 5, 6, 2341, 5, '2016-09-15 23:19:06', '2016-09-16 01:47:10');
 
 
 --
 -- Name: curso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: barbarita
 --
 
-SELECT pg_catalog.setval('curso_id_seq', 12, true);
+SELECT pg_catalog.setval('curso_id_seq', 14, true);
 
 
 --
@@ -455,7 +450,7 @@ INSERT INTO periodo VALUES (9, 'IX', '20:40:00', '22:10:00', '2016-09-11 17:15:0
 -- Name: periodo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: barbarita
 --
 
-SELECT pg_catalog.setval('periodo_id_seq', 11, true);
+SELECT pg_catalog.setval('periodo_id_seq', 12, true);
 
 
 --
@@ -467,48 +462,44 @@ INSERT INTO rol VALUES (3, 'docente', 'reserva un laboratorio completo por máxi
 INSERT INTO rol VALUES (4, 'ayudante', 'reserva un laboratorio completo por máximo un periodo.', '2016-09-11 12:34:46.332285', '2016-09-11 12:34:46.332285');
 INSERT INTO rol VALUES (5, 'alumno', 'puede reservar una estación de trabajo por un periodo.', '2016-09-11 12:35:52.537371', '2016-09-11 12:35:52.537371');
 INSERT INTO rol VALUES (2, 'funcionario', 'asignan laboratorios, no pueden hacer CRUD con usuarios', '2016-09-11 12:25:33.316454', '2016-09-15 16:20:54');
-INSERT INTO rol VALUES (11, 'rol de prueba', 'probando roles', '2016-09-15 16:22:12', '2016-09-15 16:22:12');
 
 
 --
 -- Name: rol_id_seq; Type: SEQUENCE SET; Schema: public; Owner: barbarita
 --
 
-SELECT pg_catalog.setval('rol_id_seq', 11, true);
+SELECT pg_catalog.setval('rol_id_seq', 12, true);
 
 
 --
 -- Data for Name: rol_usuario; Type: TABLE DATA; Schema: public; Owner: barbarita
 --
 
-INSERT INTO rol_usuario VALUES (3, 928389872, 1, '2016-09-11 19:06:58', '2016-09-11 19:06:58');
-INSERT INTO rol_usuario VALUES (4, 928389872, 2, '2016-09-11 19:06:58', '2016-09-11 19:06:58');
-INSERT INTO rol_usuario VALUES (5, 928389872, 4, '2016-09-11 19:06:58', '2016-09-11 19:06:58');
 
 
 --
 -- Name: rol_usuario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: barbarita
 --
 
-SELECT pg_catalog.setval('rol_usuario_id_seq', 5, true);
+SELECT pg_catalog.setval('rol_usuario_id_seq', 10, true);
 
 
 --
 -- Data for Name: sala; Type: TABLE DATA; Schema: public; Owner: barbarita
 --
 
-INSERT INTO sala VALUES (1, 'Laboratorio N°1', 33, '2016-09-10 22:36:54.660874', '2016-09-15 23:40:00', 'disponible');
 INSERT INTO sala VALUES (7, 'Laboratorio N°3', 23, '2016-09-11 20:20:50', '2016-09-15 23:40:04', 'disponible');
 INSERT INTO sala VALUES (4, 'Laboratorio N°4', 32, '2016-09-11 02:36:14', '2016-09-15 23:40:07', 'disponible');
 INSERT INTO sala VALUES (2, 'Laboratorio N°2', 44, '2016-09-10 22:37:08.889494', '2016-09-15 23:40:25', 'no disponible');
-INSERT INTO sala VALUES (16, 'Laboratorio 18', 98, '2016-09-14 20:08:59', '2016-09-15 23:40:30', 'disponible');
+INSERT INTO sala VALUES (1, 'Laboratorio N°1', 33, '2016-09-10 22:36:54.660874', '2016-09-16 15:47:35', 'no disponible');
+INSERT INTO sala VALUES (28, 'Laboratorio N°5', 12, '2016-09-16 15:47:58', '2016-09-16 15:47:58', 'disponible');
 
 
 --
 -- Name: sala_id_seq; Type: SEQUENCE SET; Schema: public; Owner: barbarita
 --
 
-SELECT pg_catalog.setval('sala_id_seq', 27, true);
+SELECT pg_catalog.setval('sala_id_seq', 31, true);
 
 
 --
@@ -620,7 +611,7 @@ INSERT INTO usuario VALUES (104, 928389872, 'jdjfh@jshd.cl', 'sljkdkj', 'skjdlfd
 -- Name: usuario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: barbarita
 --
 
-SELECT pg_catalog.setval('usuario_id_seq', 104, true);
+SELECT pg_catalog.setval('usuario_id_seq', 106, true);
 
 
 --
