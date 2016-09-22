@@ -94,7 +94,7 @@ class usuarioController extends Controller
             $rolesTotales = Rol::select('id','nombre')->get();
 
             $respuesta = ['roles' => $rolesTotales, 'roles_usuario' => $roles];
-         //   $respuesta[1] = $rolesTotales;
+     
             return response()->json($respuesta);
         }
         else{

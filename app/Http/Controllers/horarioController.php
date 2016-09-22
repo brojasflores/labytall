@@ -14,11 +14,7 @@ use App\Asignatura;
 
 class horarioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $horarios = Horario::join('curso','horario.curso_id','=','curso.id')
@@ -32,11 +28,6 @@ class horarioController extends Controller
         return view ('horarios/index', compact('horarios')); 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $salas = Sala::all();
@@ -48,12 +39,6 @@ class horarioController extends Controller
         return view('horarios/create',compact('salas','periodos','cursos'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         
@@ -67,37 +52,20 @@ class horarioController extends Controller
         return redirect()->route('horario.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id,Request $request)
     {
         if($request->ajax()){
 
-            $horarios = Horario::findOrFail($request->get('id'));
-            $salas = Sala::select('nombre')->get();
-            $periodos = Periodo::select('bloque')->get();
-            $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
-                            ->select('curso.id','curso.seccion','asignatura.nombre')
-                            ->get();
+            $horario = Horario::findOrFail($request->get('id'));
 
-            $respuesta = ['salas' => $salas, 'periodos' => $periodos, 'cursos' => $cursos];
-         //   $respuesta[1] = $rolesTotales;
-            return response()->json($respuesta);
+            return response()->json($horario);
         }
         else{
 
@@ -110,23 +78,10 @@ class horarioController extends Controller
             
             return view('horarios/edit',compact('horarios','salas','periodos','cursos'));
         }
-            /*$horarios = Horario::findOrFail($id);
-            $salas = Sala::all();
-            $periodos = Periodo::all();
-            $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
-                            ->select('curso.id','curso.seccion','asignatura.nombre')
-                            ->get();
-            
-            return view('horarios/edit',compact('horarios','salas','periodos','cursos'));*/
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         $horarios = Horario::findOrFail($id);     
@@ -142,12 +97,7 @@ class horarioController extends Controller
         return redirect()->route('horario.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         $horarios = Horario::findOrFail($id);

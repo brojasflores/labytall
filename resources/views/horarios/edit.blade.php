@@ -20,7 +20,7 @@
 					  <label for="sel1">Sala: </label>
 					  <select class="form-control" id="sala_id" name="salaHorario">
 					  	@foreach($salas as $sal)
-					    	<option value="{{ $sal->id }}" name="salaHorario">{{ $sal->nombre }}</option>
+					    	<option id="{{ $sal->id }}" value="{{ $sal->id }}" name="salaHorario">{{ $sal->nombre }}</option>
 						@endforeach
 					  </select>
 					</div>
@@ -35,7 +35,7 @@
 					  <label for="sel1">Bloque: </label>
 					  <select class="form-control" id="periodo_id" name="periodoHorario">
 					  	@foreach($periodos as $per)
-					    	<option value="{{ $per->id }}" name="periodoHorario">{{ $per->bloque }}</option>
+					    	<option id="{{ $per->id }}" value="{{ $per->id }}" name="periodoHorario">{{ $per->bloque }}</option>
 						@endforeach
 					  </select>
 					</div>
@@ -49,7 +49,7 @@
 					  <label for="sel1">Curso - Sección: </label>
 					  <select class="form-control" id="curso_id" name="cursoHorario">
 					  	@foreach($cursos as $curso)
-					    	<option value="{{ $curso->id }}" name="cursoHorario">{{ $curso->nombre }} - {{ $curso->seccion }}</option>
+					    	<option id="{{ $curso->id }}" value="{{ $curso->id }}" name="cursoHorario">{{ $curso->nombre }} - {{ $curso->seccion }}</option>
 						@endforeach
 					  </select>
 					</div>
@@ -62,3 +62,25 @@
 {!! Form::close() !!}
 @stop
 
+@section('scripts')
+<script>
+
+$(document).ready(function(){
+	$.ajax({
+		// con .val saco el valor del value
+        data:  {'id': $("#horario_id").val()},
+        url:   '/horario/'+$("#horario_id")+'/edit',
+        type:  'get',
+        dataType: 'json',
+        success:  function(respuesta) {         
+			$('#sala_id option[id='+respuesta.sala_id+']').attr('selected', 'selected');
+			$('#periodo_id option[id='+respuesta.periodo_id+']').attr('selected', 'selected');
+			$('#curso_id option[id='+respuesta.curso_id+']').attr('selected', 'selected');
+        }
+    });
+
+});
+
+</script>
+
+@stop
