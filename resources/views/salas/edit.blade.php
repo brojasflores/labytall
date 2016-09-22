@@ -22,7 +22,7 @@
 	      <!--input type="text" class="form-control" value="{{ $sala->disponibilidad}}" name="disponibilidadSala" id="disponibilidadSala" placeholder="Ingrese disponibilidad"-->
 	      <label><input type="radio" value="disponible" name="disponibilidadSala" id="disponibilidadSala">Disponible</label>
 	      <label><input type="radio" value="no disponible" name="disponibilidadSala" id="disponibilidadSala">No Disponible</label>
-
+	      <label><input type="radio" value="dañado" name="disponibilidadSala" id="disponibilidadSala">Dañado</label>
 	      <!--label><input type="radio" value="{{ $sala->disponibilidad}}" name="disponibilidadSala" id="dispobibilidadSala">Disponible</label-->
 		  <!--input type="radio" value="{{ $sala->disponibilidad}}" name="disponibilidadSala" id="NodisponibilidadSala"> <label for="cbox2">No Disponible</label-->	
 	    </div>

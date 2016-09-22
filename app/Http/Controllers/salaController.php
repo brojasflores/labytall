@@ -52,11 +52,20 @@ class salaController extends Controller
             ]);
         }
         else{
-            $sala = Sala::create([
-            'nombre' => $request->get('nombreSala'),
-            'capacidad' => $request->get('capacidadSala'),
-            'disponibilidad' => 'no disponible'
-            ]);
+            if($request->get('disponibilidadSala') == 'no_disponible'){
+                $sala = Sala::create([
+                'nombre' => $request->get('nombreSala'),
+                'capacidad' => $request->get('capacidadSala'),
+                'disponibilidad' => 'no disponible'
+                ]);
+              }
+            else{
+                    $sala = Sala::create([
+                    'nombre' => $request->get('nombreSala'),
+                    'capacidad' => $request->get('capacidadSala'),
+                    'disponibilidad' => 'dañado'
+                ]);
+                }
             }
     
         return redirect()->route('sala.index');

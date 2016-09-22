@@ -11,7 +11,6 @@
 	  <div class="box-body">
 	    <div class="form-group">
 	    	<div class="row">
-	    	
 	    		<div class="col-md-2">
 					<div class="form-group">
 					  <label for="sel1">Asignatura: </label>

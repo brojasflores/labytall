@@ -24,4 +24,5 @@ Route::resource('/rol','rolController');
 Route::resource('/periodo','periodoController');
 Route::resource('/asignatura','asignaturaController');
 Route::resource('/curso','cursoController');
+Route::resource('/horario','horarioController');
 

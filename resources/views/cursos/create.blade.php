@@ -8,8 +8,6 @@
 <form role="form" method="post" action="{{ route('curso.store')}}">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
-
-
 	    <div class="form-group">
 	    	<div class="row">
 	    	
@@ -23,7 +21,6 @@
 					  </select>
 					</div>
 		    	</div>
-		    	
 		    </div>
 	    </div>
 
