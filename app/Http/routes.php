@@ -25,4 +25,8 @@ Route::resource('/periodo','periodoController');
 Route::resource('/asignatura','asignaturaController');
 Route::resource('/curso','cursoController');
 Route::resource('/horario','horarioController');
+Route::resource('/asignar','asignarController');
+Route::get('/asignar_docente', ['as' => 'asignar.docente', 'uses' => 'asignarController@docente']);
+Route::get('/asignar_ayudante',['as' => 'asignar.ayudante', 'uses' => 'asignarController@ayudante']);
+Route::get('listado_graficas', 'GraficasController@index');
 

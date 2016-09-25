@@ -173,7 +173,7 @@
                 <li><a href="{{ route('periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
                 <li><a href="{{ route('asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
                 <li><a href="{{ route('curso.index')}}"><i class="glyphicon glyphicon-education"></i> Cursos</a></li>
-                <li><a href="pages/labs/alumno.html"><i class="fa fa-check-square-o"></i> Asignar</a></li>
+                <li><a href="{{ route('asignar.index')}}"><i class="fa fa-check-square-o"></i> Asignar</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -186,7 +186,8 @@
                 <li><a href="pages/labs/admin.html"><i class="fa fa-tv"></i>Salas</a></li>
                 <li><a href="pages/labs/docente.html"><i class="fa fa-hand-pointer-o"></i>Usabilidad</a></li>
                 <li><a href="pages/labs/ayudante.html"><i class="fa  fa-book"></i>Asignaturas</a></li>
-                <li><a href="pages/labs/alumno.html"><i class="fa fa-calendar"></i>Fechas</a></li>
+                <!--li><a href="pages/labs/alumno.html"><i class="fa fa-calendar"></i>Fechas</a></li-->
+                <li class="active"><a href="javascript:void(0);" onclick="cargarlistado(4);" ><i class="fa fa-calendar"></i>Fechas</a></li>
                 <li><a href="pages/labs/alumno.html"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
               </ul>
             </li>
@@ -444,5 +445,13 @@
     <script src="{{ asset('admin-lte/dist/js/pages/dashboard.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('admin-lte/dist/js/demo.js') }}"></script>
+
+    <!-- javascripts para garficas -->
+    <script src="{{ asset('js/sistemalaravel.js') }}"></script>
+    <script src="{{ asset('js/highcharts.js') }}"></script>
+    <script src="{{ asset('js/graficas.js') }}"></script>
+
+    <script>cargarlistado(4);</script>
+
   </body>
 </html>
