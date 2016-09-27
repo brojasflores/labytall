@@ -17,6 +17,30 @@ Route::get('/', function () {
     //return view('registro');
 });
 
+/*Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');*/
+
+/*Route::get('auth/login', [
+	'uses' => 'Auth\AuthController@getLogin',
+	'as' => 'auth.login'
+	]);
+
+Route::post('auth/login', [
+	'uses' => 'Auth\AuthController@postLogin',
+	'as' => 'auth.login'
+	]);
+
+Route::get('auth/logout', [
+	'uses' => 'Auth\AuthController@getLogout',
+	'as' => 'auth.logout'
+	]);*/
+
+Route::get('auth/login', 'AutenticacionController@ShowLoginForm');
+Route::post('auth/login', 'AutenticacionController@login');
+Route::get('auth/area', 'AutenticacionController@secret');
+
+
 Route::resource('/sala','salaController');
 Route::resource('/usuario','usuarioController');
 Route::resource('/contacto','contactoController');
