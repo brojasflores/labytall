@@ -70,7 +70,7 @@ return [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'LabyTall'),
+            'database' => env('DB_DATABASE', 'LabyTall2'),
             'username' => env('DB_USERNAME', 'barbarita'),
             'password' => env('DB_PASSWORD', 'babiibabii'),
             'charset' => 'utf8',

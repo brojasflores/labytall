@@ -17,12 +17,6 @@
     <!-- iCheck -->
     <link rel="stylesheet" href="{{ asset('admin-lte/plugins/iCheck/square/blue.css')}}">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
   </head>
   <body class="hold-transition login-page">
     <div class="login-box">
@@ -33,30 +27,58 @@
       </div><!-- /.login-logo -->
       <div class="login-box-body">
         <p class="login-box-msg">Registrate para iniciar sesión</p>
-        
-        <form role="form" action="{{ url('/auth/login')}}" method="POST">
-     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-          <div class="form-group has-feedback">
-            <input type="email" class="form-control" placeholder="Email" value = "{{ old('email') }}">
-            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-          </div>
-          <div class="form-group has-feedback">
-            <input type="password" class="form-control" placeholder="Contraseña" value = "{{ old('password') }}">
-            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-          </div>
-          <div class="row">
-            <div class="col-xs-8">
-              <div class="checkbox icheck">
-                <label>
-                  <input type="checkbox"> Recordarme
-                </label>
-              </div>
-            </div><!-- /.col -->
-            <div class="col-xs-4">
-              <button type="submit" class="btn btn-primary btn-block btn-flat">Registrarse</button>
-            </div><!-- /.col -->
-          </div>
-        </form>
+        <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
+                        {{ csrf_field() }}
+
+                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                            <label for="email" class="col-md-4 control-label">Email</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}">
+
+                                @if ($errors->has('email'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <label for="password" class="col-md-4 control-label">Contraseña</label>
+
+                            <div class="col-md-6">
+                                <input id="password" type="password" class="form-control" name="password">
+
+                                @if ($errors->has('password'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-4">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="remember"> Recordarme
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-4">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-btn fa-sign-in"></i> Ingresar
+                                </button>
+
+                                <a class="btn btn-link" href="{{ url('/password/reset') }}">¿Olvidé mi contraseña?</a>
+                                <a class="btn btn-link" href="{{ url('/register') }}">Regístrate</a>
+                            </div>
+                        </div>
+                    </form>
       </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->
 
@@ -66,15 +88,5 @@
     <script src="{{ asset('admin-lte/bootstrap/js/bootstrap.min.js')}}"></script>
     <!-- iCheck -->
     <script src="{{ asset('admin-lte/plugins/iCheck/icheck.min.js')}}"></script>
-    <script>
-      $(function () {
-        $('input').iCheck({
-          checkboxClass: 'icheckbox_square-blue',
-          radioClass: 'iradio_square-blue',
-          increaseArea: '20%' // optional
-        });
-      });
-    </script>
   </body>
 </html>
-

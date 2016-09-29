@@ -216,10 +216,10 @@ ALTER SEQUENCE rol_id_seq OWNED BY rol.id;
 
 
 --
--- Name: rol_usuario; Type: TABLE; Schema: public; Owner: barbarita; Tablespace: 
+-- Name: rol_users; Type: TABLE; Schema: public; Owner: barbarita; Tablespace: 
 --
 
-CREATE TABLE rol_usuario (
+CREATE TABLE rol_users (
     id integer NOT NULL,
     rut integer NOT NULL,
     rol_id integer NOT NULL,
@@ -228,13 +228,13 @@ CREATE TABLE rol_usuario (
 );
 
 
-ALTER TABLE public.rol_usuario OWNER TO barbarita;
+ALTER TABLE public.rol_users OWNER TO barbarita;
 
 --
--- Name: rol_usuario_id_seq; Type: SEQUENCE; Schema: public; Owner: barbarita
+-- Name: rol_users_id_seq; Type: SEQUENCE; Schema: public; Owner: barbarita
 --
 
-CREATE SEQUENCE rol_usuario_id_seq
+CREATE SEQUENCE rol_users_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -242,13 +242,13 @@ CREATE SEQUENCE rol_usuario_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.rol_usuario_id_seq OWNER TO barbarita;
+ALTER TABLE public.rol_users_id_seq OWNER TO barbarita;
 
 --
--- Name: rol_usuario_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: barbarita
+-- Name: rol_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: barbarita
 --
 
-ALTER SEQUENCE rol_usuario_id_seq OWNED BY rol_usuario.id;
+ALTER SEQUENCE rol_users_id_seq OWNED BY rol_users.id;
 
 
 --
@@ -289,10 +289,10 @@ ALTER SEQUENCE sala_id_seq OWNED BY sala.id;
 
 
 --
--- Name: usuario; Type: TABLE; Schema: public; Owner: barbarita; Tablespace: 
+-- Name: users; Type: TABLE; Schema: public; Owner: barbarita; Tablespace: 
 --
 
-CREATE TABLE usuario (
+CREATE TABLE users (
     id bigint NOT NULL,
     rut integer NOT NULL,
     email character varying(255),
@@ -305,13 +305,13 @@ CREATE TABLE usuario (
 );
 
 
-ALTER TABLE public.usuario OWNER TO barbarita;
+ALTER TABLE public.users OWNER TO barbarita;
 
 --
--- Name: usuario_id_seq; Type: SEQUENCE; Schema: public; Owner: barbarita
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: barbarita
 --
 
-CREATE SEQUENCE usuario_id_seq
+CREATE SEQUENCE users_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -319,13 +319,13 @@ CREATE SEQUENCE usuario_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.usuario_id_seq OWNER TO barbarita;
+ALTER TABLE public.users_id_seq OWNER TO barbarita;
 
 --
--- Name: usuario_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: barbarita
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: barbarita
 --
 
-ALTER SEQUENCE usuario_id_seq OWNED BY usuario.id;
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
@@ -367,7 +367,7 @@ ALTER TABLE ONLY rol ALTER COLUMN id SET DEFAULT nextval('rol_id_seq'::regclass)
 -- Name: id; Type: DEFAULT; Schema: public; Owner: barbarita
 --
 
-ALTER TABLE ONLY rol_usuario ALTER COLUMN id SET DEFAULT nextval('rol_usuario_id_seq'::regclass);
+ALTER TABLE ONLY rol_users ALTER COLUMN id SET DEFAULT nextval('rol_users_id_seq'::regclass);
 
 
 --
@@ -381,7 +381,7 @@ ALTER TABLE ONLY sala ALTER COLUMN id SET DEFAULT nextval('sala_id_seq'::regclas
 -- Name: id; Type: DEFAULT; Schema: public; Owner: barbarita
 --
 
-ALTER TABLE ONLY usuario ALTER COLUMN id SET DEFAULT nextval('usuario_id_seq'::regclass);
+ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
 --
@@ -472,16 +472,16 @@ SELECT pg_catalog.setval('rol_id_seq', 12, true);
 
 
 --
--- Data for Name: rol_usuario; Type: TABLE DATA; Schema: public; Owner: barbarita
+-- Data for Name: rol_users; Type: TABLE DATA; Schema: public; Owner: barbarita
 --
 
 
 
 --
--- Name: rol_usuario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: barbarita
+-- Name: rol_users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: barbarita
 --
 
-SELECT pg_catalog.setval('rol_usuario_id_seq', 10, true);
+SELECT pg_catalog.setval('rol_users_id_seq', 10, true);
 
 
 --
@@ -503,7 +503,7 @@ SELECT pg_catalog.setval('sala_id_seq', 31, true);
 
 
 --
--- Data for Name: usuario; Type: TABLE DATA; Schema: public; Owner: barbarita
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: barbarita
 --
 
 INSERT INTO usuario VALUES (5, 9746516, 'samara.schneider@langosh.com', 'Stuart', 'Bosco', 'ncX9AF', NULL, '2016-09-11 12:49:47.490215', '2016-09-11 12:49:47.490215');
@@ -608,10 +608,10 @@ INSERT INTO usuario VALUES (104, 928389872, 'jdjfh@jshd.cl', 'sljkdkj', 'skjdlfd
 
 
 --
--- Name: usuario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: barbarita
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: barbarita
 --
 
-SELECT pg_catalog.setval('usuario_id_seq', 106, true);
+SELECT pg_catalog.setval('users_id_seq', 106, true);
 
 
 --
@@ -703,19 +703,19 @@ ALTER TABLE ONLY rol
 
 
 --
--- Name: rol_usuario_pkey; Type: CONSTRAINT; Schema: public; Owner: barbarita; Tablespace: 
+-- Name: rol_users_pkey; Type: CONSTRAINT; Schema: public; Owner: barbarita; Tablespace: 
 --
 
-ALTER TABLE ONLY rol_usuario
-    ADD CONSTRAINT rol_usuario_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY rol_users
+    ADD CONSTRAINT rol_users_pkey PRIMARY KEY (id);
 
 
 --
--- Name: rol_usuario_rut_rol_id_key; Type: CONSTRAINT; Schema: public; Owner: barbarita; Tablespace: 
+-- Name: rol_users_rut_rol_id_key; Type: CONSTRAINT; Schema: public; Owner: barbarita; Tablespace: 
 --
 
-ALTER TABLE ONLY rol_usuario
-    ADD CONSTRAINT rol_usuario_rut_rol_id_key UNIQUE (rut, rol_id);
+ALTER TABLE ONLY rol_users
+    ADD CONSTRAINT rol_users_rut_rol_id_key UNIQUE (rut, rol_id);
 
 
 --
@@ -727,19 +727,19 @@ ALTER TABLE ONLY sala
 
 
 --
--- Name: usuario_pkey; Type: CONSTRAINT; Schema: public; Owner: barbarita; Tablespace: 
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: barbarita; Tablespace: 
 --
 
-ALTER TABLE ONLY usuario
-    ADD CONSTRAINT usuario_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 
 
 --
--- Name: usuario_rut_key; Type: CONSTRAINT; Schema: public; Owner: barbarita; Tablespace: 
+-- Name: users_rut_key; Type: CONSTRAINT; Schema: public; Owner: barbarita; Tablespace: 
 --
 
-ALTER TABLE ONLY usuario
-    ADD CONSTRAINT usuario_rut_key UNIQUE (rut);
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_rut_key UNIQUE (rut);
 
 
 --
@@ -775,19 +775,19 @@ ALTER TABLE ONLY horario
 
 
 --
--- Name: rol_usuario_rol_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: barbarita
+-- Name: rol_users_rol_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: barbarita
 --
 
-ALTER TABLE ONLY rol_usuario
-    ADD CONSTRAINT rol_usuario_rol_id_fkey FOREIGN KEY (rol_id) REFERENCES rol(id) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE ONLY rol_users
+    ADD CONSTRAINT rol_users_rol_id_fkey FOREIGN KEY (rol_id) REFERENCES rol(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- Name: rol_usuario_rut_fkey; Type: FK CONSTRAINT; Schema: public; Owner: barbarita
+-- Name: rol_users_rut_fkey; Type: FK CONSTRAINT; Schema: public; Owner: barbarita
 --
 
-ALTER TABLE ONLY rol_usuario
-    ADD CONSTRAINT rol_usuario_rut_fkey FOREIGN KEY (rut) REFERENCES usuario(rut) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE ONLY rol_users
+    ADD CONSTRAINT rol_users_rut_fkey FOREIGN KEY (rut) REFERENCES users(rut) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --

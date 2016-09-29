@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 
-use App\Usuario;
+use App\User;
 use App\Rol;
 use App\RolUsuario;
 //Para el hash de la password
@@ -22,7 +21,7 @@ class usuarioController extends Controller
     public function index()
     {
         //llamo al modelo de bdd a la tabla usuario en app y luego puedo llamar a la tabla...
-        $usuarios = Usuario::paginate();
+        $usuarios = User::paginate();
         return view('usuarios/index', compact('usuarios')); 
     }
 
@@ -49,12 +48,12 @@ class usuarioController extends Controller
         //para encriptar la clave y mandar una por defecto (en este caso el mismo rut)
         $pass = Hash::make($request->get('rut')); //Ocupa un bcrypt
       
-        Usuario::create([
+        User::create([
             'rut' => $request->get('rutUsuario'),
             'email' => $request->get('emailUsuario'),
             'nombres' => $request->get('nombresUsuario'),
             'apellidos' => $request->get('apellidosUsuario'),
-            'pass' => $pass
+            'password' => $pass
         ]);
 
         foreach($request->get('roles') as $rol)
@@ -89,7 +88,7 @@ class usuarioController extends Controller
        
         if($request->ajax()){
 
-            $usuario = Usuario::findOrFail($request->get('id'));
+            $usuario = User::findOrFail($request->get('id'));
             $roles = RolUsuario::where('rut',$usuario->rut)->select('rut','rol_id')->get();
             $rolesTotales = Rol::select('id','nombre')->get();
 
@@ -99,7 +98,7 @@ class usuarioController extends Controller
         }
         else{
 
-            $usuario = Usuario::findOrFail($id);
+            $usuario = User::findOrFail($id);
             //en el compact se pasa la variable como string
             return view('usuarios/edit', compact('usuario'));
         }
@@ -115,7 +114,7 @@ class usuarioController extends Controller
     public function update(Request $request, $id)
     {
         
-        $usuarios = Usuario::findOrFail($id);
+        $usuarios = User::findOrFail($id);
         //fill (rellenar)
         $usuarios->fill([
             'rut' => $request->get('rutUsuario'),
@@ -151,7 +150,7 @@ class usuarioController extends Controller
      */
     public function destroy($id)
     {
-        $usuarios = Usuario::findOrFail($id);
+        $usuarios = User::findOrFail($id);
         $usuarios->delete();
         return redirect()->route('usuario.index');
     }
