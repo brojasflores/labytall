@@ -1,4 +1,10 @@
 @extends('main')
+@section('options')
+<h1>
+    Panel de Control 
+	<small>Inicio</small>
+</h1>
+@stop
 @section('content')
 <div class="container">
 <h1><img src="{{ asset('admin-lte/dist/img/utem.png') }}" class="user-image" alt="User Image" border="0" width="40" height="40"> Sistema Control y Gestión Salas UTEM </h1>

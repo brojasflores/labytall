@@ -1,4 +1,10 @@
 @extends('main')
+@section('options')
+<h1>
+    Salas 
+  <small>Asignaturas</small>
+</h1>
+@stop
 @section('opcion')
 <li class="active">Asignaturas</li>
 @stop

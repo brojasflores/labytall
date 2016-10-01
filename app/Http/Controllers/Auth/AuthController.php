@@ -30,6 +30,7 @@ class AuthController extends Controller
      */
     protected $redirectTo = '/home';
 
+    
     /**
      * Create a new authentication controller instance.
      *
@@ -74,4 +75,5 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+
 }

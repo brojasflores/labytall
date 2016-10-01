@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => 'gestion.salas.utem@gmail.com', 'name' => 'Gestion Salas'],
+    'from' => ['address' => 'gestion.salas.utem@gmail.com', 'name' => 'Gestión Salas'],
 
     /*
     |--------------------------------------------------------------------------

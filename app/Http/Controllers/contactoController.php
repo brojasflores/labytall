@@ -45,7 +45,7 @@ class contactoController extends Controller
             $msj->to('gestion.salas.utem@gmail.com');
         });
         //esto no me lo muestra!!
-        Session::flash('message','Mensaje enviado correctamente');
+        Session::flash('message','¡Mensaje enviado correctamente!');
         //no segura!
         return Redirect::to('/contacto');
     }

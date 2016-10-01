@@ -30,12 +30,6 @@
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="{{ asset('admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
   </head>
   <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
@@ -56,41 +50,6 @@
           </a>
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-              <!-- Messages: style can be found in dropdown.less-->
-              <li class="dropdown messages-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-envelope-o"></i>
-                  <span class="label label-success">1</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li>
-                    <!-- inner menu: contains the actual data -->
-                    <ul class="menu">
-                      <li><!-- start message -->
-                        <a href="#">
-                          <div class="pull-left">
-                            <img src="{{ asset('admin-lte/dist/img/user2-160x160.png') }}" class="img-circle" alt="User Image">
-                          </div>
-                          <h4>
-                            Support Team
-                            <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                          </h4>
-                          <p>Why not buy a new awesome theme?</p>
-                        </a>
-                      </li><!-- end message -->
-                    </ul>
-                  </li>
-                  <li class="footer"><a href="#">Ver todos los mensajes</a></li>
-                </ul>
-              </li>
-              <!-- Notifications: style can be found in dropdown.less -->
-              
-              <!-- Tasks: style can be found in dropdown.less -->
-              
-              <!-- User Account: style can be found in dropdown.less -->
-             
-
-
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <img src="{{ asset('admin-lte/dist/img/user2-160x160.png') }}" class="user-image" alt="User Image">
@@ -116,10 +75,6 @@
                   </li>
                 </ul>
               </li>
-
-
-
-
               <!-- Control Sidebar Toggle Button -->
               <li>
                 <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
@@ -222,10 +177,7 @@
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-          <h1>
-            Opciones
-            <small>Panel de Control</small>
-          </h1>
+           @yield('options')  
           <ol class="breadcrumb">          
             <li><a href="/"><i class="fa fa-dashboard"></i> Inicio</a></li>
             @yield('opcion')

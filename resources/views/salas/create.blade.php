@@ -17,8 +17,6 @@
 	      <input type="text" class="form-control" name="capacidadSala" id="capacidadSala" placeholder="Ingrese cantidad alumnos">
 	    </div>
 	    <div class="form-group">
-	      <!--label for="exampleInputPassword1">Disponibilidad</label>
-	      <input type="text" class="form-control" name="disponibilidadSala" id="disponibilidadSala" placeholder="Ingrese disponibilidad"-->
 			<label><input type="radio" name="disponibilidadSala" id="dispobibilidadSala" value="disponible">Disponible</label>
 			<input type="radio" name="disponibilidadSala" id="NodisponibilidadSala" value="no_disponible"> <label for="cbox2">No Disponible</label>
 			<input type="radio" name="disponibilidadSala" id="fallaSala" value="fallaSala"> <label for="cbox3">Dañado</label>	
