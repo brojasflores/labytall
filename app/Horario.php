@@ -8,5 +8,5 @@ class Horario extends Model
 {
     protected $table = 'horario';
 
-    protected $fillable = ['fecha','sala_id','periodo_id','curso_id'];
+    protected $fillable = ['fecha','sala_id','periodo_id','curso_id','rut','permanencia'];
 }

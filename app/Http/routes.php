@@ -16,9 +16,6 @@ Route::get('/home', 'HomeController@index');
 
 
 
-Route::get('auth/login', 'AutenticacionController@ShowLoginForm');
-Route::post('auth/login', 'AutenticacionController@login');
-Route::get('auth/area', 'AutenticacionController@secret');
 
 
 

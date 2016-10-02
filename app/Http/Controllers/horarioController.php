@@ -21,7 +21,7 @@ class horarioController extends Controller
                             ->join('asignatura','curso.asignatura_id','=','asignatura.id')
                             ->join('periodo','horario.periodo_id','=','periodo.id')
                             ->join('sala','horario.sala_id','=','sala.id')
-                            ->select('horario.id','horario.fecha','asignatura.nombre as asig_nombre','periodo.bloque','sala.nombre as sala_nombre')
+                            ->select('horario.id','horario.fecha','horario.rut','horario.permanencia','asignatura.nombre as asig_nombre','periodo.bloque','sala.nombre as sala_nombre')
                             ->paginate();
 
        // $horarios = Horario::paginate();
