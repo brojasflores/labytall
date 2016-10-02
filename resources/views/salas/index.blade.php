@@ -24,7 +24,6 @@
               	<th>#</th>
                 <th>Nombre</th>
                 <th>Capacidad</th>
-                <th>Disponibilidad</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
               </tr>
@@ -36,7 +35,6 @@
               	<td>{{ $sa->id }}</td>
                 <td>{{ $sa->nombre }}</td>
                 <td>{{ $sa->capacidad}}</td>
-                <td>{{ $sa->disponibilidad}}</td>
 
                 <!--Paso ruta y parametro para saber cual modificar-->
                 <td><a href="{{ route('sala.edit',$sa->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
@@ -53,7 +51,6 @@
                 <th>#</th>
                 <th>Nombre</th>
                 <th>Capacidad</th>
-                <th>Disponibilidad</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
               </tr>

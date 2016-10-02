@@ -12,6 +12,12 @@
 <div class="jumbotron">
   <h1>¡Bienvenido a la asignación de Salas!</h1>
   </br></br>
+  <center>
+    <form role="form" method="get" action="{{ route('horario.index')}}">
+      <button type="submit" class="fa fa-eye btn btn-primary"> Ver horarios</button>
+    </form>
+  </center>
+  </br></br>
   <p>En este módulo usted podrá asignar salas a Docentes, Ayudantes y Alumnos.</p>
   </br></br>
   <div class="row">

@@ -17,11 +17,6 @@
 	      <label for="exampleInputPassword1">Capacidad</label>
 	      <input type="text" class="form-control" value="{{ $sala->capacidad}}" name="capacidadSala" id="capacidadSala" placeholder="Ingrese cantidad alumnos">
 	    </div>
-	    <div class="form-group">
-	      <label><input type="radio" value="disponible" name="disponibilidadSala" id="disponibilidadSala">Disponible</label>
-	      <label><input type="radio" value="no disponible" name="disponibilidadSala" id="disponibilidadSala">No Disponible</label>
-	      <label><input type="radio" value="dañado" name="disponibilidadSala" id="disponibilidadSala">Dañado</label>
-	    </div>
 	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
 	  </div><!-- /.box-body -->
 {!! Form::close() !!}

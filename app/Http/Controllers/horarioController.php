@@ -21,10 +21,10 @@ class horarioController extends Controller
                             ->join('asignatura','curso.asignatura_id','=','asignatura.id')
                             ->join('periodo','horario.periodo_id','=','periodo.id')
                             ->join('sala','horario.sala_id','=','sala.id')
-                            ->select('horario.id','horario.fecha','horario.rut','horario.permanencia','asignatura.nombre as asig_nombre','periodo.bloque','sala.nombre as sala_nombre')
+                            ->join('users','horario.rut','=','users.rut')
+                            ->select('horario.id','horario.fecha','horario.rut','users.nombres as horario_name','users.apellidos as horario_apell','horario.permanencia','asignatura.nombre as asig_nombre','periodo.bloque','sala.nombre as sala_nombre')
                             ->paginate();
 
-       // $horarios = Horario::paginate();
         return view ('horarios/index', compact('horarios')); 
     }
 

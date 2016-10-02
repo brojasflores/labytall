@@ -12,6 +12,8 @@ use App\Curso;
 use App\Asignatura;
 use App\Horario;
 
+use Carbon\Carbon;
+
 class asignarController extends Controller
 {
     /**
@@ -40,7 +42,14 @@ class asignarController extends Controller
 
     public function ayudante()
     {
-        return view ('asignar/ayudante');
+        $salas = Sala::select('id','nombre')->orderBy('nombre','asc')->get();
+        $periodos = Periodo::select('id','bloque')->orderBy('bloque','asc')->get();
+        $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
+                        ->select('curso.id','curso.seccion','asignatura.nombre')
+                        ->orderBy('asignatura.nombre','asc')
+                        ->get();
+
+        return view ('asignar/ayudante',compact('salas','periodos','cursos'));
     }
     /**
      * Show the form for creating a new resource.
@@ -79,9 +88,120 @@ class asignarController extends Controller
 
             return redirect()->route('horario.index');
         }
-        
+        else
+        {
+            if($request->get('permanencia') === 'semestral')
+            {
 
+                $fecha_separada1 = explode('/',$request->get('fecha_inicio'));
+                $fecha_con_guion1 = [$fecha_separada1[2],$fecha_separada1[0],$fecha_separada1[1]];
+                $fecha_formateada1 = implode('-',$fecha_con_guion1);
 
+                $fecha_separada2 = explode('/',$request->get('fecha_fin'));
+                $fecha_con_guion2 = [$fecha_separada2[2],$fecha_separada2[0],$fecha_separada2[1]];
+                $fecha_formateada2 = implode('-',$fecha_con_guion2);
+
+                $inicio = new Carbon($fecha_formateada1);
+                $termino = new Carbon($fecha_formateada2);
+
+                while($inicio <= $termino)
+                {
+                    Carbon::setTestNow($inicio);
+                    if($request->get('dia') === 'lunes')
+                    {
+                        $lunes = new Carbon('this monday');
+                        if($lunes <= $termino)
+                        {
+                            $lun = Horario::create([
+                                   'fecha' => $lunes,
+                                   'sala_id' => $request->get('sala'),
+                                   'periodo_id' => $request->get('periodo'),
+                                   'curso_id' => $request->get('curso'),
+                                   'rut' => $request->get('usuario'),
+                                   'permanencia' => 'semestral'
+                                   ]);
+                        }
+                    }
+                    if($request->get('dia') === 'martes')
+                    {
+                        $martes = new Carbon('this tuesday');
+                        if($martes <= $termino)
+                        {
+                            $mar = Horario::create([
+                                   'fecha' => $mates,
+                                   'sala_id' => $request->get('sala'),
+                                   'periodo_id' => $request->get('periodo'),
+                                   'curso_id' => $request->get('curso'),
+                                   'rut' => $request->get('usuario'),
+                                   'permanencia' => 'semestral'
+                                   ]);
+                        }
+                    }
+                    if($request->get('dia') === 'miercoles')
+                    {
+                        $miercoles = new Carbon('this wednesday');
+                        if($miercoles <= $termino)
+                        {
+                            $mier = Horario::create([
+                                   'fecha' => $miercoles,
+                                   'sala_id' => $request->get('sala'),
+                                   'periodo_id' => $request->get('periodo'),
+                                   'curso_id' => $request->get('curso'),
+                                   'rut' => $request->get('usuario'),
+                                   'permanencia' => 'semestral'
+                                   ]);
+                        }
+                    }
+                    if($request->get('dia') === 'jueves')
+                    {
+                        $jueves = new Carbon('this thursday');
+                        if($jueves <= $termino)
+                        {
+                            $jue = Horario::create([
+                                   'fecha' => $jueves,
+                                   'sala_id' => $request->get('sala'),
+                                   'periodo_id' => $request->get('periodo'),
+                                   'curso_id' => $request->get('curso'),
+                                   'rut' => $request->get('usuario'),
+                                   'permanencia' => 'semestral'
+                                   ]);
+                        }
+                    }
+                    if($request->get('dia') === 'viernes')
+                    {
+                        $viernes = new Carbon('this friday');
+                        if($viernes <= $termino)
+                        {
+                            $vier = Horario::create([
+                                   'fecha' => $viernes,
+                                   'sala_id' => $request->get('sala'),
+                                   'periodo_id' => $request->get('periodo'),
+                                   'curso_id' => $request->get('curso'),
+                                   'rut' => $request->get('usuario'),
+                                   'permanencia' => 'semestral'
+                                   ]);
+                        }
+                    }
+                    if($request->get('dia') === 'sabado')
+                    {
+                        $sabado = new Carbon('this saturday');
+                        if($sabado <= $termino)
+                        {
+                            $sab = Horario::create([
+                                   'fecha' => $sabado,
+                                   'sala_id' => $request->get('sala'),
+                                   'periodo_id' => $request->get('periodo'),
+                                   'curso_id' => $request->get('curso'),
+                                   'rut' => $request->get('usuario'),
+                                   'permanencia' => 'semestral'
+                                   ]);
+                        }
+                    }
+                    $inicio->addWeek(1);
+                }
+            }
+            return redirect()->route('horario.index');
+        }
     }
 
     /**

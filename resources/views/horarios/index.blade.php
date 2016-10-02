@@ -10,8 +10,8 @@
 @stop
 @section('content')
 <h1>Horarios</h1>
-<form role="form" method="get" action="{{ route('horario.create')}}">
-  <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
+<form role="form" method="get" action="{{ route('asignar.index')}}">
+  <button type="submit" class="fa fa-plus-square btn btn-primary"> Realizar una Asignación</button>
 </form>
 <section class="content">
   <div class="row">
@@ -26,7 +26,8 @@
                 <th>Sala</th>
                 <th>Período</th>
                 <th>Curso</th>
-                <th>Rut</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
                 <th>Permanencia</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
@@ -41,7 +42,8 @@
                 <td>{{ $hr->sala_nombre}}</td>
                 <td>{{ $hr->bloque}}</td>
                 <td>{{ $hr->asig_nombre}}</td>
-                <td>{{ $hr->rut}}</td>
+                <td>{{ $hr->horario_name}}</td>
+                <td>{{ $hr->horario_apell}}</td>  
                 <td>{{ $hr->permanencia}}</td>
                 <!--Paso ruta y parametro para saber cual modificar-->
                 <td><a href="{{ route('horario.edit',$hr->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
@@ -60,13 +62,15 @@
                 <th>Sala</th>
                 <th>Período</th>
                 <th>Curso</th>
-                <th>Rut</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
                 <th>Permanencia</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
               </tr>
             </tfoot>
           </table>
+          {{ $horarios->render()}}
         </div><!-- /.box-body -->
       </div><!-- /.box -->
     </div><!-- /.col -->

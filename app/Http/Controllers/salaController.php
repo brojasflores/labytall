@@ -44,30 +44,10 @@ class salaController extends Controller
     {
         //variable = nombre del modelo ::(paso metodo)
         //hace insert
-        if($request->get('disponibilidadSala') == 'disponible'){
-            $sala = Sala::create([
-            'nombre' => $request->get('nombreSala'),
-            'capacidad' => $request->get('capacidadSala'),
-            'disponibilidad' => 'disponible'
-            ]);
-        }
-        else{
-            if($request->get('disponibilidadSala') == 'no_disponible'){
-                $sala = Sala::create([
+        $sala = Sala::create([
                 'nombre' => $request->get('nombreSala'),
                 'capacidad' => $request->get('capacidadSala'),
-                'disponibilidad' => 'no disponible'
-                ]);
-              }
-            else{
-                    $sala = Sala::create([
-                    'nombre' => $request->get('nombreSala'),
-                    'capacidad' => $request->get('capacidadSala'),
-                    'disponibilidad' => 'dañado'
-                ]);
-                }
-            }
-    
+            ]);    
         return redirect()->route('sala.index');
     }
 

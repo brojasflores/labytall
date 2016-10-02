@@ -6,7 +6,8 @@
 </h1>
 @stop
 @section('opcion')
-<li class="active">Asignación</li>
+<li><a href="{{ route('asignar.index')}}"><i class="fa fa-check-square-o"></i> Asignación</a></li>
+<li class="active">Asignación Docente</li>
 @stop
 @section('content')
 <div class="row" style="margin-left: 0px">
@@ -51,7 +52,7 @@
 		    	</div>
 	    		<div class="col-md-3" id="col-dia" style="display: none";>
 					<div class="form-group">
-					  <label for="sel1">Dia: </label>
+					  <label for="sel1">Día: </label>
 						<select class="form-control" id="dia" name="dia">
 					    	<option value="lunes" name="dia">Lunes</option>
 					    	<option value="martes" name="dia">Martes</option>
@@ -108,8 +109,8 @@
 	    	<div class="row">
 	    		<div class="col-md-3">
 					<div class="form-group">
-					  <label for="sel1">Usuario: </label>
-						  <input type="text" name="usuario" class="form-control" placeholder="Usuario" aria-describedby="basic-addon2">
+					  <label for="sel1">Rut Usuario: </label>
+						  <input type="text" name="usuario" class="form-control" placeholder="12234123" aria-describedby="basic-addon2">
 					</div>
 		    	</div>
 		    </div>
