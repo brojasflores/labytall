@@ -11,6 +11,9 @@ use App\RolUsuario;
 //Para el hash de la password
 use Illuminate\Support\Facades\Hash;
 
+use Validator;
+use Auth;
+
 class usuarioController extends Controller
 {
     /**
@@ -154,4 +157,33 @@ class usuarioController extends Controller
         $usuarios->delete();
         return redirect()->route('usuario.index');
     }
+
+    public function perfil()
+    {
+        return view('usuarios/perfil');
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $rules = ['image' => 'required|image|max:1024*1024*1',];
+        $messages = [
+            'image.required' => 'La imagen es requerida',
+            'image.image' => 'Formato no permitido',
+            'image.max' => 'El máximo permitido es 1 MB',
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
+        
+        if ($validator->fails()){
+            return redirect('usuario_perfil')->withErrors($validator);
+        }
+        else{
+            $name = str_random(30) . '-' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move('perfiles', $name);
+            $user = new User;
+            $user->where('rut', '=', Auth::user()->rut)
+                 ->update(['perfiles' => 'perfiles/'.$name]);
+            return redirect('home')->with('status', 'Su imagen de perfil ha sido cambiada con éxito');
+        }
+    }
+    
 }

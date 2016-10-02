@@ -14,13 +14,12 @@
 Route::resource('/','HomeController@index');
 Route::get('/home', 'HomeController@index');
 
-
-
-
-
-
 Route::resource('/sala','salaController');
+
 Route::resource('/usuario','usuarioController');
+Route::get('/usuario_perfil', ['as' => 'usuario.perfil', 'uses' => 'usuarioController@perfil']);
+Route::post('/usuario_perfilUpdate', ['as' => 'usuario.updateProfile', 'uses' => 'usuarioController@updateProfile']);
+
 Route::resource('/contacto','contactoController');
 Route::resource('/rol','rolController');
 Route::resource('/periodo','periodoController');
