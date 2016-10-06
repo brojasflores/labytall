@@ -74,14 +74,14 @@ class SepaUserProvider implements UserProviderInterface
      */
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
-        $client = new GuzzleHttp\Client(['base_uri' => $this->rest_base_uri, 'auth' => $this->rest_credentials]);
+        $client = new GuzzleHttp\Client(['auth' => $this->rest_credentials]);
 
         // Obtenemos las credenciales del usuario
         $rut = $credentials['rut']; // TODO: Una mejor forma de obtener los identificadores?
         $password = hash('sha256', strtoupper($credentials['password'])); // TODO: Para esto tambien ...
 
         try {
-            $req = $client->get(sprintf('/sepa/autenticar/%s/%s', $rut, $password)); // Hacemos la peticion al WS
+            $req = $client->get(sprintf('%s/sepa/autenticar/%s/%s', $this->rest_base_uri, $rut, $password)); // Hacemos la peticion al WS
         } catch (GuzzleHttp\Exception\ClientException $e) { // Si los errores son del nivel 400, se lanza esta excepcion
             $msg = 'Error al consultar el servicio: %d(%s)';
             \Log::error(sprintf($msg, $e->getResponse()->getStatusCode(), $e->getResponse()->getReasonPhrase()));
