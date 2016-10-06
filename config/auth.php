@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'users',
+        'passwords' => 'sepa',
     ],
 
     /*
@@ -38,7 +38,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'sepa',
         ],
 
         'api' => [
@@ -78,6 +78,11 @@ return [
         'authe' => [
             'driver' => 'eloquent',
             'model' => App\Usuario2::class,
+        ],
+
+        'sepa' => [
+            'driver' => 'sepa',
+            'model' => App\User::class,
         ],
 
         // 'users' => [

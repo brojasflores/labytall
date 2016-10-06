@@ -35,6 +35,7 @@
 					<div class="form-group">
 					  <label for="sel1">Permanencia: </label>
 					  <select class="form-control" id="permanencia" name="permanencia">
+					  		<option value="0">Seleccione</option>
 					    	<option value="semestral" name="semestral">Semestral</option>
 					    	<option value="dia" name="dia">Día</option>
 					  </select>

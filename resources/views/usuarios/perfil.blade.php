@@ -14,12 +14,32 @@
 <h2>Cambiar imagen de perfil</h2>
 <form method='post' action='{{url("usuario_perfilUpdate")}}' enctype='multipart/form-data'>
   {{csrf_field()}}
-  <div class='form-group'>
-    <label for='image'>Imagen: </label>
-    <input type="file" name="image" />
-    <div class='text-danger'>{{$errors->first('image')}}</div>
-  </div>
-  <button type='submit' class='btn btn-primary'>Actualizar imagen de perfil</button>
+    <div class="row">
+	  	<div class="col-md-4">
+		    <div class="form-group">
+			  <label for="exampleInputPassword1">Email</label>
+			  <input type="text" class="form-control" value="{{ Auth::user()->email }}" name="emailUsuario" id="email">
+			</div> 
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<div class="form-group">
+		      <label for="exampleInputPassword1">Contraseña</label>
+		      <input type="password" class="form-control" value="" name="contraseña" id="contraseña" placeholder="Ingrese nueva contraseña">
+		    </div>
+	  	</div>
+	</div>
+	<div class="row">
+	  	<div class="col-md-4">
+		  <div class='form-group'>
+		    <label for='image'>Imagen: </label>
+		    <input type="file" name="image" />
+		    <div class='text-danger'>{{$errors->first('image')}}</div>
+		  </div>
+		</div>
+	</div>
+  <button type='submit' class='btn btn-primary'>Actualizar Datos</button>
 </form>
 
 @stop

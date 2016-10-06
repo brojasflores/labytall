@@ -27,7 +27,7 @@
                 <th>Período</th>
                 <th>Curso</th>
                 <th>Nombre</th>
-                <th>Apellido</th>
+                <th>Rut</th>
                 <th>Permanencia</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
@@ -42,8 +42,8 @@
                 <td>{{ $hr->sala_nombre}}</td>
                 <td>{{ $hr->bloque}}</td>
                 <td>{{ $hr->asig_nombre}}</td>
-                <td>{{ $hr->horario_name}}</td>
-                <td>{{ $hr->horario_apell}}</td>  
+                <td>{{ $hr->horario_name}} {{ $hr->horario_apell}}</td>
+                <td>{{ $hr->rut}}</td>  
                 <td>{{ $hr->permanencia}}</td>
                 <!--Paso ruta y parametro para saber cual modificar-->
                 <td><a href="{{ route('horario.edit',$hr->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
@@ -63,7 +63,7 @@
                 <th>Período</th>
                 <th>Curso</th>
                 <th>Nombre</th>
-                <th>Apellido</th>
+                <th>Rut</th>
                 <th>Permanencia</th>
                 <th>Editar </th>
                 <th>Eliminar</th>

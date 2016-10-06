@@ -9,13 +9,18 @@
 {!! Form::model($horarios,['route' => ['horario.update',$horarios], 'method' => 'PUT']) !!}
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
+	   
 	    <div class="form-group">
-	      <label for="exampleInputEmail1">Fecha</label>
-	      <input type="text" class="form-control" value="{{ $horarios->fecha}}" name="fechaHorario" id="fechaHorario" placeholder="Ingrese Fecha">
+	    	<div class="row">
+		    	<div class="col-md-3">
+		   		  <label for="exampleInputEmail1">Fecha</label>
+		      	  <input type="text" class="form-control" value="{{ $horarios->fecha}}" name="fechaHorario" id="fechaHorario" placeholder="Ingrese Fecha">
+		      	</div>
+	      	</div>
 	    </div>
 	    <div class="form-group">
 	    	<div class="row">
-	    		<div class="col-md-2">
+	    		<div class="col-md-3">
 					<div class="form-group">
 					  <label for="sel1">Sala: </label>
 					  <select class="form-control" id="sala_id" name="salaHorario">
@@ -25,14 +30,26 @@
 					  </select>
 					</div>
 		    	</div>
-		    	
 		    </div>
 	    </div>
 	    <div class="form-group">
 	    	<div class="row">
-	    		<div class="col-md-2">
+	    		<div class="col-md-3">
 					<div class="form-group">
-					  <label for="sel1">Bloque: </label>
+					  <label for="sel1">Permanencia: </label>
+					  <select class="form-control" id="permanencia" name="permanencia">
+					    	<option value="semestral" name="semestral">Semestral</option>
+					    	<option value="dia" name="dia">Día</option>
+					  </select>
+					</div>
+		    	</div>		    	
+		    </div>
+	    </div>	
+	    <div class="form-group">
+	    	<div class="row">
+	    		<div class="col-md-3">
+					<div class="form-group">
+					  <label for="sel1">Período: </label>
 					  <select class="form-control" id="periodo_id" name="periodoHorario">
 					  	@foreach($periodos as $per)
 					    	<option id="{{ $per->id }}" value="{{ $per->id }}" name="periodoHorario">{{ $per->bloque }}</option>
@@ -44,7 +61,7 @@
 	    </div>
 	    <div class="form-group">
 	    	<div class="row">
-	    		<div class="col-md-2">
+	    		<div class="col-md-3">
 					<div class="form-group">
 					  <label for="sel1">Curso - Sección: </label>
 					  <select class="form-control" id="curso_id" name="cursoHorario">

@@ -155,6 +155,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\SepaAuthServiceProvider::class,
 
         Collective\Html\HtmlServiceProvider::class,
 

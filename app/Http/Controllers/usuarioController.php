@@ -10,7 +10,7 @@ use App\Rol;
 use App\RolUsuario;
 //Para el hash de la password
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Input;
 use Validator;
 use Auth;
 
@@ -165,11 +165,19 @@ class usuarioController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $rules = ['image' => 'required|image|max:1024*1024*1',];
+
+
+        $user = new User;
+        $user->where('rut', '=', Auth::user()->rut)
+             ->update(['email' => $request->get('emailUsuario'),
+                       'password' => Hash::make($request->get('contraseña'))]);  
+
+        $file = Input::file('image');
+
+        $rules = ['image' => 'image|max:1024*1024*1'];
         $messages = [
-            'image.required' => 'La imagen es requerida',
             'image.image' => 'Formato no permitido',
-            'image.max' => 'El máximo permitido es 1 MB',
+            'image.max' => 'El máximo permitido es 1 MB'
         ];
         $validator = Validator::make($request->all(), $rules, $messages);
         
@@ -177,13 +185,42 @@ class usuarioController extends Controller
             return redirect('usuario_perfil')->withErrors($validator);
         }
         else{
-            $name = str_random(30) . '-' . $request->file('image')->getClientOriginalName();
-            $request->file('image')->move('perfiles', $name);
-            $user = new User;
-            $user->where('rut', '=', Auth::user()->rut)
-                 ->update(['perfiles' => 'perfiles/'.$name]);
-            return redirect('home')->with('status', 'Su imagen de perfil ha sido cambiada con éxito');
+            if(!$file)
+            {
+                return redirect('home')->with('status', 'Sus datos de perfil han sido actualizados');
+            }
+            else
+            {
+                $name = str_random(30) . '-' . $request->file('image')->getClientOriginalName();
+                $request->file('image')->move('perfiles', $name);
+                $user = new User;
+                $user->where('rut', '=', Auth::user()->rut)
+                     ->update(['perfiles' => 'perfiles/'.$name]);
+                return redirect('home')->with('status', 'Sus datos de perfil han sido actualizados');
+            }
         }
     }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update2(Request $request)
+    {
+        dd($request);
+        $usuarios = User::findOrFail($request->get('id'));
+        //fill (rellenar)
+        $usuarios->fill([
+            'email' => $request->get('emailUsuario'),
+            'pass' => $request->get('pass')
+        ]);
+        $usuarios->save();
+    
+        return view('index');
+    }
+
     
 }
