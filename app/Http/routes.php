@@ -13,6 +13,7 @@
 
 Route::resource('/','HomeController@index');
 Route::get('/home', 'HomeController@index');
+Route::resource('/perfil','HomeController@index');
 
 Route::resource('/sala','salaController');
 

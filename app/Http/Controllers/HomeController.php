@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -23,8 +24,19 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return view('index');
-        //mi index tiene que ser como el home
+    {      
+        //return view('index');
+
+        if(empty(Auth::user()->email))
+        {
+            return view('perfil');
+        }
+        else
+        {
+            return view('index');
+            //mi index tiene que ser como el home
+        }
+
+        
     }
 }

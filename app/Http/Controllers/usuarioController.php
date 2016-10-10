@@ -170,7 +170,9 @@ class usuarioController extends Controller
         $user = new User;
         $user->where('rut', '=', Auth::user()->rut)
              ->update(['email' => $request->get('emailUsuario'),
-                       'password' => Hash::make($request->get('contraseña'))]);  
+                       'nombres' => $request->get('nombres'),
+                       'apellidos' => $request->get('apellidos'),
+                     ]);  
 
         $file = Input::file('image');
 

@@ -23,12 +23,20 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-4">
-			<div class="form-group">
-		      <label for="exampleInputPassword1">Contraseña</label>
-		      <input type="password" class="form-control" value="" name="contraseña" id="contraseña" placeholder="Ingrese nueva contraseña">
-		    </div>
-	  	</div>
+	  	<div class="col-md-4">
+		    <div class="form-group">
+			  <label for="exampleInputPassword1">Nombres</label>
+			  <input type="text" class="form-control" value="{{ Auth::user()->nombres }}" name="nombres" id="nombres">
+			</div> 
+		</div>
+	</div>
+	<div class="row">
+	  	<div class="col-md-4">
+		    <div class="form-group">
+			  <label for="exampleInputPassword1">Apellidos</label>
+			  <input type="text" class="form-control" value="{{ Auth::user()->apellidos }}" name="apellidos" id="apellidos">
+			</div> 
+		</div>
 	</div>
 	<div class="row">
 	  	<div class="col-md-4">

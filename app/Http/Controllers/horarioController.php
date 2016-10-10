@@ -101,7 +101,8 @@ class horarioController extends Controller
     public function destroy($id)
     {
         $horarios = Horario::findOrFail($id);
-        $horarios->delete();
+        $curso = $horarios->curso_id;
+        Horario::where('curso_id',$curso)->delete();
         return redirect()->route('horario.index');
     }
 }
