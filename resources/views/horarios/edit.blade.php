@@ -12,14 +12,6 @@
 	   
 	    <div class="form-group">
 	    	<div class="row">
-		    	<div class="col-md-3">
-		   		  <label for="exampleInputEmail1">Fecha</label>
-		      	  <input type="text" class="form-control" value="{{ $horarios->fecha}}" name="fechaHorario" id="fechaHorario" placeholder="Ingrese Fecha">
-		      	</div>
-	      	</div>
-	    </div>
-	    <div class="form-group">
-	    	<div class="row">
 	    		<div class="col-md-3">
 					<div class="form-group">
 					  <label for="sel1">Sala: </label>
@@ -38,13 +30,48 @@
 					<div class="form-group">
 					  <label for="sel1">Permanencia: </label>
 					  <select class="form-control" id="permanencia" name="permanencia">
-					    	<option value="semestral" name="semestral">Semestral</option>
-					    	<option value="dia" name="dia">Día</option>
+					    	<option id="semestral" value="semestral" name="semestral">Semestral</option>
+					    	<option id="dia" value="dia" name="dia">Día</option>
 					  </select>
 					</div>
 		    	</div>		    	
 		    </div>
 	    </div>	
+	    <div class="form-group">
+	    	<div class="row">
+	    		<div class="col-md-3" id="col-fecha" style="display: none;">
+					<div class="form-group">
+					  <label for="sel1">Fecha: </label>
+						  <input type="text" class="form-control" placeholder="Fecha" name="fecha" id="fecha" aria-describedby="basic-addon2">
+					</div>
+		    	</div>
+	    		<div class="col-md-3" id="col-dia" style="display: none";>
+					<div class="form-group">
+					  <label for="sel1">Día: </label>
+						<select class="form-control" id="dia" name="dia">
+					    	<option id="lunes" value="lunes" name="dia">Lunes</option>
+					    	<option id="martes" value="martes" name="dia">Martes</option>
+					    	<option id="miercoles" value="miercoles" name="dia">Miércoles</option>
+					    	<option id="jueves" value="jueves" name="dia">Jueves</option>
+					    	<option id="viernes" value="viernes" name="dia">Viernes</option>
+					    	<option id="sabado" value="sabado" name="dia">Sábado</option>					    						    	
+					    </select>
+					</div>
+		    	</div>			    	
+	    		<div class="col-md-3" id="col-fecha-ini" style="display: none";>
+					<div class="form-group">
+					  <label for="sel1">Fecha Inicio: </label>
+						  <input type="text" class="form-control" placeholder="Fecha" name="fecha_inicio" id="fecha_inicio" aria-describedby="basic-addon2">
+					</div>
+		    	</div>	
+	    		<div class="col-md-3" id="col-fecha-fin" style="display: none";>
+					<div class="form-group">
+					  <label for="sel1">Fecha Fin: </label>
+						  <input type="text" class="form-control" placeholder="Fecha" name="fecha_fin" id="fecha_fin" aria-describedby="basic-addon2">
+					</div>
+		    	</div>			    			    			    	
+		    </div>
+	    </div> 
 	    <div class="form-group">
 	    	<div class="row">
 	    		<div class="col-md-3">
@@ -81,21 +108,76 @@
 
 @section('scripts')
 <script>
+$( function() {
+$( "#fecha" ).datepicker({
+  showButtonPanel: true
+});
+$( "#fecha_inicio" ).datepicker({
+  showButtonPanel: true
+});
+$( "#fecha_fin" ).datepicker({
+  showButtonPanel: true
+});
+} );
 
 $(document).ready(function(){
 	$.ajax({
 		// con .val saco el valor del value
-        data:  {'id': $("#horario_id").val()},
+        data:  {'id': $("#horario_id").val(),'permanencia': $("#permanencia").val()},
         url:   '/horario/'+$("#horario_id")+'/edit',
         type:  'get',
         dataType: 'json',
-        success:  function(respuesta) {         
-			$('#sala_id option[id='+respuesta.sala_id+']').attr('selected', 'selected');
-			$('#periodo_id option[id='+respuesta.periodo_id+']').attr('selected', 'selected');
-			$('#curso_id option[id='+respuesta.curso_id+']').attr('selected', 'selected');
+        success:  function(respuesta) {   
+        console.log(respuesta);
+
+        $('#sala_id option[id='+respuesta.horario[0].sala_id+']').attr('selected', 'selected');
+		$('#periodo_id option[id='+respuesta.horario[0].periodo_id+']').attr('selected', 'selected');
+		$('#curso_id option[id='+respuesta.horario[0].curso_id+']').attr('selected', 'selected'); 
+		$('#permanencia option[id='+respuesta.horario[0].permanencia+']').attr('selected', 'selected');
+
+        if($("#permanencia").val() == 'semestral')
+		{
+
+			$("#col-fecha").css('display','none');
+			$("#col-dia").css('display','block');
+			$("#col-fecha-ini").css('display','block');
+			$("#col-fecha-fin").css('display','block');
+
+			$("#fecha_inicio").val(respuesta.fecha_inicio);
+			$("#fecha_fin").val(respuesta.fecha_fin);
+
+			$('#dia option[id='+respuesta.dia+']').attr('selected', 'selected');
+		}
+		if($("#permanencia").val() == 'dia')
+		{
+			$("#col-fecha").css('display','block');
+			$("#col-dia").css('display','none');
+			$("#col-fecha-ini").css('display','none');
+			$("#col-fecha-fin").css('display','none');
+
+			$("#fecha").val(respuesta.horario[0].fecha);
+			$('#dia option[id='+respuesta.dia+']').attr('selected', 'selected');
+
+		}
+
         }
     });
-
+	$("#permanencia").change(function(){
+		if($("#permanencia").val() == 'semestral')
+		{
+			$("#col-fecha").css('display','none');
+			$("#col-dia").css('display','block');
+			$("#col-fecha-ini").css('display','block');
+			$("#col-fecha-fin").css('display','block');
+		}
+		if($("#permanencia").val() == 'dia')
+		{
+			$("#col-fecha").css('display','block');
+			$("#col-dia").css('display','none');
+			$("#col-fecha-ini").css('display','none');
+			$("#col-fecha-fin").css('display','none');
+		}
+	});
 });
 
 </script>

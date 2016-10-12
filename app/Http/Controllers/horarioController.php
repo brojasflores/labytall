@@ -30,26 +30,12 @@ class horarioController extends Controller
 
     public function create()
     {
-        $salas = Sala::all();
-        $periodos = Periodo::all();
-        $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
-                        ->select('curso.id','curso.seccion','asignatura.nombre')
-                        ->get();
-        
-        return view('horarios/create',compact('salas','periodos','cursos'));
+
     }
 
     public function store(Request $request)
     {
         
-        $horarios = Horario::create([
-            'fecha' => $request->get('fechaHorario'),
-            'sala_id' => $request->get('salaHorario'),
-            'periodo_id' => $request->get('periodoHorario'),
-            'curso_id' => $request->get('cursoHorario')
-            ]);
-
-        return redirect()->route('horario.index');
     }
 
 
@@ -63,13 +49,36 @@ class horarioController extends Controller
     {
         if($request->ajax()){
 
-            $horario = Horario::findOrFail($request->get('id'));
+          
+            $horario = Horario::where('id',$request->get('id'))->select('curso_id','periodo_id','sala_id','permanencia','fecha')->get();
+        
+            $fecha_inicio = Horario::where('curso_id',$horario[0]->curso_id)->min('fecha');
 
-            return response()->json($horario);
+            $fecha_fin = Horario::where('curso_id',$horario[0]->curso_id)->max('fecha');
+
+            $dia = date('w',strtotime($fecha_inicio));
+
+            if($dia == 1){$dia = 'lunes';}
+            if($dia == 2){$dia = 'martes';}   
+            if($dia == 3){$dia = 'miercoles';}
+            if($dia == 4){$dia = 'jueves';}
+            if($dia == 5){$dia = 'viernes';}  
+            if($dia == 6){$dia = 'sabado';}
+
+            $datos = ['horario' => $horario,'dia' => $dia,'fecha_inicio' => $fecha_inicio, 'fecha_fin' => $fecha_fin];
+
+            if($request->get('permanencia') == 'semestral'){
+                return response()->json($datos);
+            }
+            if($request->get('permanencia') == 'dia'){
+                return response()->json($dia);
+            }
+          
         }
         else{
 
             $horarios = Horario::findOrFail($id);
+
             $salas = Sala::all();
             $periodos = Periodo::all();
             $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
