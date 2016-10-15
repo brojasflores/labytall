@@ -69,6 +69,7 @@ class asignarController extends Controller
      */
     public function store(Request $request)
     {
+    
 
         if($request->get('permanencia') === 'dia')
         {

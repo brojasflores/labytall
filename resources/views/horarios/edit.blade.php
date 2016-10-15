@@ -100,6 +100,16 @@
 		    	</div>
 		    </div>
 	    </div>
+	    <div class="form-group">
+	    	<div class="row">
+	    		<div class="col-md-3">
+					<div class="form-group">
+					  <label for="sel1">Rut: </label>
+						  <input type="text" class="form-control" value="{{ $horarios->rut }}" name="rutHorario" id="rutHorario" aria-describedby="basic-addon2"> 
+					</div>
+		    	</div>
+		    </div>
+	    </div>	    
 	    <input type="hidden" id="horario_id" value="{{ $horarios->id }}">
 	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
 	  </div><!-- /.box-body -->
@@ -143,8 +153,14 @@ $(document).ready(function(){
 			$("#col-fecha-ini").css('display','block');
 			$("#col-fecha-fin").css('display','block');
 
-			$("#fecha_inicio").val(respuesta.fecha_inicio);
-			$("#fecha_fin").val(respuesta.fecha_fin);
+			var date = (respuesta.fecha_inicio).split('-');
+			var fecha_inicio = date[1] + '/' + date[2] + '/' + date[0];
+
+			var date = (respuesta.fecha_fin).split('-');
+			var fecha_fin = date[1] + '/' + date[2] + '/' + date[0];
+
+			$("#fecha_inicio").val(fecha_inicio);
+			$("#fecha_fin").val(fecha_fin);
 
 			$('#dia option[id='+respuesta.dia+']').attr('selected', 'selected');
 		}
@@ -155,7 +171,10 @@ $(document).ready(function(){
 			$("#col-fecha-ini").css('display','none');
 			$("#col-fecha-fin").css('display','none');
 
-			$("#fecha").val(respuesta.horario[0].fecha);
+			var date = (respuesta.horario[0].fecha).split('-');
+			var newDate = date[1] + '/' + date[2] + '/' + date[0];
+
+			$("#fecha").val(newDate);
 			$('#dia option[id='+respuesta.dia+']').attr('selected', 'selected');
 
 		}
