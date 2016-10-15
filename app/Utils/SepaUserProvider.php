@@ -8,6 +8,8 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use GuzzleHttp;
 use Illuminate\Auth\GenericUser;
 use App\Utils\RutUtils;
+use App\User;
+
 
 class SepaUserProvider implements UserProviderInterface
 {
@@ -61,7 +63,7 @@ class SepaUserProvider implements UserProviderInterface
             return null; // Si el rut es invalido nos negamos a autenticar
         }
         $rut = RutUtils::rut($credentials['rut']);
-
+    
         return $this->createModel()->firstOrCreate(['rut' => $rut]);
     }
 
@@ -101,9 +103,21 @@ class SepaUserProvider implements UserProviderInterface
             }
         }
         else {
-            \Log::info(sprintf('Auth: Login fallido (%s)', $rut));
-        }
+            $rut_sdv = substr($credentials['rut'],0,-1);
 
+            $var=User::where('rut','=',$rut_sdv)->get();
+            $var2=User::where('rut','=',$rut_sdv)->select('password')->get();
+            foreach($var as $v){
+                $v2= $v->password;
+                if($v2==null)
+                {
+                    \Log::info(sprintf('Auth: Login fallido (%s)', $rut));
+                }
+                else{
+                    $loginOk = true;
+                }
+            }      
+        }
         return (bool) $loginOk;
     }
 
