@@ -49,7 +49,8 @@ class usuarioController extends Controller
     {
         
         //para encriptar la clave y mandar una por defecto (en este caso el mismo rut)
-        $pass = Hash::make($request->get('rut')); //Ocupa un bcrypt
+       // $pass = Hash::make($request->get('rut'));
+        $pass = Hash::make($request->get('rutUsuario'));
       
         User::create([
             'rut' => $request->get('rutUsuario'),

@@ -154,7 +154,7 @@ class horarioController extends Controller
                         if($martes <= $termino)
                         {
                             $mar = Horario::create([
-                                   'fecha' => $mates,
+                                   'fecha' => $martes,
                                    'sala_id' => $request->get('salaHorario'),
                                    'periodo_id' => $request->get('periodoHorario'),
                                    'curso_id' => $request->get('cursoHorario'),

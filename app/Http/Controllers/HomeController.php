@@ -33,8 +33,15 @@ class HomeController extends Controller
         }
         else
         {
+            /*if((Auth::user->password)!=null)
+            {
+                return view('perfil2');
+            }
+            else
+            {
+                return view('index');
+            }*/
             return view('index');
-            //mi index tiene que ser como el home
         }
 
         

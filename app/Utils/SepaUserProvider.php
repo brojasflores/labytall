@@ -9,6 +9,7 @@ use GuzzleHttp;
 use Illuminate\Auth\GenericUser;
 use App\Utils\RutUtils;
 use App\User;
+use Illuminate\Support\Facades\Hash;
 
 
 class SepaUserProvider implements UserProviderInterface
@@ -76,11 +77,56 @@ class SepaUserProvider implements UserProviderInterface
      */
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
-        $client = new GuzzleHttp\Client(['auth' => $this->rest_credentials]);
+            $loginOk = false;
+            //Creado usr por si se cae el servicio REST, se debe desactivar una vez ejecutado.
+            /*$pass1 = Hash::make('123123');
+      
+            User::create([
+                'rut' => '9156824',
+                'email' => 'email@ha.hs',
+                'nombres' => 'nombresUsuario',
+                'apellidos' => 'apellidosUsuario',
+                'password' => $pass1
+            ]);*/
+            //Funcion para autenticar el usr creado arriba si el servicio rest se cae
+            $rut = $credentials['rut']; // TODO: Una mejor forma de obtener los identificadores?
+            $pass = $credentials['password'];
+            $rut_sdv = substr($credentials['rut'],0,-1);//quita digto verificados
+            $var=User::where('rut','=',$rut_sdv)->get();//trae el usr completo 
+            $var2=User::where('rut','=',$rut_sdv)->select('password')->get();//ve si el urs tiene una contraseña en la db
+    
+            foreach($var as $v)
+            {
+                $v2= $v->password;
+                //si usr no tiene contraseña en la db no loguea
+                if($v2==null)
+                {
+                    \Log::info(sprintf('Auth: Login fallido (%s)', $rut));
+                }
+                //si usr tiene clave en la db la compara con la ingresada por pantalla 
+                else
+                {
+                    $v3= Hash::check($pass, $v2);
+                    //si contraseñas coinciden loguea
+                    if (Hash::check($pass, $v2)) {
+                       $loginOk = true;
+                    }
+                    //si pass no coiniciden vuelve a loguin
+                    else
+                    {
+                        \Log::info(sprintf('Auth: Login fallido (%s)', $rut));
+                    }
+                }
+            }   
+        //**********************************************************************************************
+
+           
+        /*$client = new GuzzleHttp\Client(['auth' => $this->rest_credentials]);
 
         // Obtenemos las credenciales del usuario
         $rut = $credentials['rut']; // TODO: Una mejor forma de obtener los identificadores?
         $password = hash('sha256', strtoupper($credentials['password'])); // TODO: Para esto tambien ...
+        $pass = $credentials['password'];
 
         try {
             $req = $client->get(sprintf('%s/sepa/autenticar/%s/%s', $this->rest_base_uri, $rut, $password)); // Hacemos la peticion al WS
@@ -92,6 +138,7 @@ class SepaUserProvider implements UserProviderInterface
 
         $data = json_decode($req->getBody(), true);
         $loginOk = $data['ok'];
+        //si se autenticó en el servicio rest entra al if y logue
         if ($loginOk) {
             \Log::info(sprintf('Auth: Login exitoso (%s)', $rut));
             if (is_a($user, '\Illuminate\Auth\GenericUser')) {
@@ -102,22 +149,34 @@ class SepaUserProvider implements UserProviderInterface
                 \Log::info(sprintf('Auth: Creada instancia de %s (rut: %s)', $this->model, $user->rut));
             }
         }
+        //verifica con la base de datos del proyecto para funcionarios
         else {
-            $rut_sdv = substr($credentials['rut'],0,-1);
+            $rut_sdv = substr($credentials['rut'],0,-1);//quita digto verificados
+            $var=User::where('rut','=',$rut_sdv)->get();//trae el usr completo 
+            $var2=User::where('rut','=',$rut_sdv)->select('password')->get();//ve si el urs tiene una contraseña en la db
 
-            $var=User::where('rut','=',$rut_sdv)->get();
-            $var2=User::where('rut','=',$rut_sdv)->select('password')->get();
             foreach($var as $v){
                 $v2= $v->password;
+                //si usr no tiene contraseña en la db no loguea
                 if($v2==null)
                 {
                     \Log::info(sprintf('Auth: Login fallido (%s)', $rut));
                 }
-                else{
-                    $loginOk = true;
+                //si usr tiene clave en la db la compara con la ingresada por pantalla 
+                else
+                {
+                    //si contraseñas coinciden loguea
+                    if (Hash::check($pass, $v2)) {
+                       $loginOk = true;
+                    }
+                    //si pass no coiniciden vuelve a loguin
+                    else
+                    {
+                        \Log::info(sprintf('Auth: Login fallido (%s)', $rut));
+                    }
                 }
             }      
-        }
+        }*/
         return (bool) $loginOk;
     }
 
