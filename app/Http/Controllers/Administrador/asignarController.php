@@ -51,6 +51,20 @@ class asignarController extends Controller
 
         return view ('Administrador/asignar/ayudante',compact('salas','periodos','cursos'));
     }
+
+    public function alumno()
+    {
+        $salas = Sala::select('id','nombre')->orderBy('nombre','asc')->get();
+        $periodos = Periodo::select('id','bloque')->orderBy('bloque','asc')->get();
+        $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
+                        ->select('curso.id','curso.seccion','asignatura.nombre')
+                        ->orderBy('asignatura.nombre','asc')
+                        ->get();
+        $capacidad = Sala::select('capacidad')->get();
+
+        return view ('Administrador/asignar/alumno',compact('salas','periodos','cursos','capacidad'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

@@ -135,7 +135,7 @@
                 <li><a href="{{ route('periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
                 <li><a href="{{ route('asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
                 <li><a href="{{ route('curso.index')}}"><i class="glyphicon glyphicon-education"></i> Cursos</a></li>
-                <li><a href="{{ route('asignar.index')}}"><i class="fa fa-check-square-o"></i> Asignar</a></li>
+                <li><a href="{{ route('asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
               </ul>
             </li>
             <li class="treeview">
