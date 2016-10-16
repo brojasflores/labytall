@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Administrador;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-use App\Rol;
+use App\Curso;
 
-class rolController extends Controller
+use App\Asignatura;
+
+class cursoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,10 +19,12 @@ class rolController extends Controller
      */
     public function index()
     {
-
-        $roles = Rol::all();
+        //$cursos = Curso::paginate();
+        $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
+                            ->select('curso.*','asignatura.nombre')
+                            ->paginate();
         //se pasa la variable sin el peso con compact
-        return view ('roles/index', compact('roles'));
+        return view ('Administrador/cursos/index', compact('cursos'));
     }
 
     /**
@@ -30,7 +34,8 @@ class rolController extends Controller
      */
     public function create()
     {
-        return view('roles/create');
+        $asignaturas = Asignatura::all();
+        return view('Administrador/cursos/create',compact('asignaturas'));
     }
 
     /**
@@ -41,12 +46,16 @@ class rolController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $roles = Rol::create([
-            'nombre' => $request->get('nombreRol'),
-            'descripcion' => $request->get('descripcionRol'),
+
+        $cursos = Curso::create([
+            'asignatura_id' => $request->get('asigCurso'),
+            'semestre' => $request->get('semestreCurso'),
+            'anio' => $request->get('anioCurso'),
+            'seccion' => $request->get('seccionCurso')
             ]);
-        return redirect()->route('rol.index');
+
+
+        return redirect()->route('curso.index');
     }
 
     /**
@@ -68,9 +77,10 @@ class rolController extends Controller
      */
     public function edit($id)
     {
-        $roles = Rol::findOrFail($id);
+        $cursos = Curso::findOrFail($id);
         //en el compact se pasa la variable como string
-        return view('roles/edit', compact('roles'));
+        $asignaturas = Asignatura::all();
+        return view('Administrador/cursos/edit', compact('cursos','asignaturas'));
     }
 
     /**
@@ -82,15 +92,18 @@ class rolController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $roles = Rol::findOrFail($id);     
+        $cursos = Curso::findOrFail($id);     
         //fill (rellenar)
-        $roles->fill([
-            'nombre' => $request->get('nombreRol'),
-            'descripcion' => $request->get('descripcionRol'),
+        $cursos->fill([
+            'asignatura_id' => $request->get('asigCurso'),
+            'semestre' => $request->get('semestreCurso'),
+            'anio' => $request->get('anioCurso'),
+            'seccion' => $request->get('seccionCurso')
         ]);
-        $roles->save();
+        $cursos->save();
 
-        return redirect()->route('rol.index');
+        return redirect()->route('curso.index');
+    
     }
 
     /**
@@ -101,8 +114,9 @@ class rolController extends Controller
      */
     public function destroy($id)
     {
-        $roles = Rol::findOrFail($id);
-        $roles->delete();
-        return redirect()->route('rol.index');
+        $cursos = Curso::findOrFail($id);
+        $cursos->delete();
+
+        return redirect()->route('curso.index');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Administrador;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -25,7 +25,7 @@ class usuarioController extends Controller
     {
         //llamo al modelo de bdd a la tabla usuario en app y luego puedo llamar a la tabla...
         $usuarios = User::paginate();
-        return view('usuarios/index', compact('usuarios')); 
+        return view('Administrador/usuarios/index', compact('usuarios')); 
     }
 
     /**
@@ -36,7 +36,7 @@ class usuarioController extends Controller
     public function create()
     {
         $roles = Rol::all();
-        return view('usuarios/create',compact('roles'));
+        return view('Administrador/usuarios/create',compact('roles'));
     }
 
     /**
@@ -104,7 +104,7 @@ class usuarioController extends Controller
 
             $usuario = User::findOrFail($id);
             //en el compact se pasa la variable como string
-            return view('usuarios/edit', compact('usuario'));
+            return view('Administrador/usuarios/edit', compact('usuario'));
         }
     }
 
@@ -161,7 +161,7 @@ class usuarioController extends Controller
 
     public function perfil()
     {
-        return view('usuarios/perfil');
+        return view('Administrador/usuarios/perfil');
     }
 
     public function updateProfile(Request $request)

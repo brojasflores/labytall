@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Administrador;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-use App\Curso;
-
 use App\Asignatura;
 
-class cursoController extends Controller
+class asignaturaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,12 +17,9 @@ class cursoController extends Controller
      */
     public function index()
     {
-        //$cursos = Curso::paginate();
-        $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
-                            ->select('curso.*','asignatura.nombre')
-                            ->paginate();
+        $asignaturas = Asignatura::all();
         //se pasa la variable sin el peso con compact
-        return view ('cursos/index', compact('cursos'));
+        return view ('Administrador/asignaturas/index', compact('asignaturas'));
     }
 
     /**
@@ -34,8 +29,7 @@ class cursoController extends Controller
      */
     public function create()
     {
-        $asignaturas = Asignatura::all();
-        return view('cursos/create',compact('asignaturas'));
+        return view('Administrador/asignaturas/create');
     }
 
     /**
@@ -46,16 +40,13 @@ class cursoController extends Controller
      */
     public function store(Request $request)
     {
-
-        $cursos = Curso::create([
-            'asignatura_id' => $request->get('asigCurso'),
-            'semestre' => $request->get('semestreCurso'),
-            'anio' => $request->get('anioCurso'),
-            'seccion' => $request->get('seccionCurso')
+        $asignaturas = Asignatura::create([
+            'codigo' => $request->get('codigoAsignatura'),
+            'nombre' => $request->get('nombreAsignatura'),
+            'descripcion' => $request->get('descripcionAsignatura')
             ]);
-
-
-        return redirect()->route('curso.index');
+            //$asignaturas = Asignatura::all();        
+        return redirect()->route('asignatura.index');
     }
 
     /**
@@ -77,10 +68,9 @@ class cursoController extends Controller
      */
     public function edit($id)
     {
-        $cursos = Curso::findOrFail($id);
+        $asignaturas = Asignatura::findOrFail($id);
         //en el compact se pasa la variable como string
-        $asignaturas = Asignatura::all();
-        return view('cursos/edit', compact('cursos','asignaturas'));
+        return view('Administrador/asignaturas/edit', compact('asignaturas'));
     }
 
     /**
@@ -92,18 +82,15 @@ class cursoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $cursos = Curso::findOrFail($id);     
+        $asignaturas = Asignatura::findOrFail($id);     
         //fill (rellenar)
-        $cursos->fill([
-            'asignatura_id' => $request->get('asigCurso'),
-            'semestre' => $request->get('semestreCurso'),
-            'anio' => $request->get('anioCurso'),
-            'seccion' => $request->get('seccionCurso')
+        $asignaturas->fill([
+            'codigo' => $request->get('codigoAsignatura'),
+            'nombre' => $request->get('nombreAsignatura'),
+            'descripcion' => $request->get('descripcionAsignatura')
         ]);
-        $cursos->save();
-
-        return redirect()->route('curso.index');
-    
+        $asignaturas->save();
+        return redirect()->route('asignatura.index');
     }
 
     /**
@@ -114,9 +101,8 @@ class cursoController extends Controller
      */
     public function destroy($id)
     {
-        $cursos = Curso::findOrFail($id);
-        $cursos->delete();
-
-        return redirect()->route('curso.index');
+        $asignaturas = Asignatura::findOrFail($id);
+        $asignaturas->delete();
+        return redirect()->route('asignatura.index');
     }
 }

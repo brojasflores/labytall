@@ -11,7 +11,7 @@
 @section('content')
 <h1>Horarios</h1>
 <form role="form" method="get" action="{{ route('asignar.index')}}">
-  <button type="submit" class="fa fa-plus-square btn btn-primary"> Realizar una Asignación</button>
+  <button type="submit" class="fa fa-plus-square btn btn-primary"> Realizar una Reserva</button>
 </form>
 <section class="content">
   <div class="row">

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Administrador;
 
 use Illuminate\Http\Request;
 
@@ -19,7 +19,7 @@ class periodoController extends Controller
     {
         $periodos = Periodo::all();
         //se pasa la variable sin el peso con compact
-        return view ('periodos/index', compact('periodos'));
+        return view ('Administrador/periodos/index', compact('periodos'));
     }
 
     /**
@@ -29,7 +29,7 @@ class periodoController extends Controller
      */
     public function create()
     {
-        return view('periodos/create');
+        return view('Administrador/periodos/create');
     }
 
     /**
@@ -70,7 +70,7 @@ class periodoController extends Controller
     {
         $periodos = Periodo::findOrFail($id);
         //en el compact se pasa la variable como string
-        return view('periodos/edit', compact('periodos'));
+        return view('Administrador/periodos/edit', compact('periodos'));
     }
 
     /**

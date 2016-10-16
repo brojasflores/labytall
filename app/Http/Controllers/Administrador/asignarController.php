@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Administrador;
 
 use Illuminate\Http\Request;
 
@@ -25,7 +25,7 @@ class asignarController extends Controller
     {
         //$asignaturas = Asignatura::all();
         //se pasa la variable sin el peso con compact
-        return view ('asignar/index');
+        return view ('Administrador/asignar/index');
     }
 
     public function docente()
@@ -37,7 +37,7 @@ class asignarController extends Controller
                         ->orderBy('asignatura.nombre','asc')
                         ->get();
 
-        return view ('asignar/docente',compact('salas','periodos','cursos'));
+        return view ('Administrador/asignar/docente',compact('salas','periodos','cursos'));
     }
 
     public function ayudante()
@@ -49,7 +49,7 @@ class asignarController extends Controller
                         ->orderBy('asignatura.nombre','asc')
                         ->get();
 
-        return view ('asignar/ayudante',compact('salas','periodos','cursos'));
+        return view ('Administrador/asignar/ayudante',compact('salas','periodos','cursos'));
     }
     /**
      * Show the form for creating a new resource.

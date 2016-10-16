@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Administrador;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+//referencia al modelo (importarlo)
+use App\Sala;
 
-use App\Asignatura;
-
-class asignaturaController extends Controller
+class salaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +17,11 @@ class asignaturaController extends Controller
      */
     public function index()
     {
-        $asignaturas = Asignatura::all();
+        //tomar todo lo que venga de la tabla lab y mostrar 
+        //all devuelve todo
+        $salas = Sala::all();
         //se pasa la variable sin el peso con compact
-        return view ('asignaturas/index', compact('asignaturas'));
+        return view ('Administrador/salas/index', compact('salas'));
     }
 
     /**
@@ -29,9 +31,9 @@ class asignaturaController extends Controller
      */
     public function create()
     {
-        return view('asignaturas/create');
+        return view('Administrador/salas/create');
     }
-
+    //el create te lleva a la vista y la vista lleva los datos al store y ese a la bdd
     /**
      * Store a newly created resource in storage.
      *
@@ -40,13 +42,13 @@ class asignaturaController extends Controller
      */
     public function store(Request $request)
     {
-        $asignaturas = Asignatura::create([
-            'codigo' => $request->get('codigoAsignatura'),
-            'nombre' => $request->get('nombreAsignatura'),
-            'descripcion' => $request->get('descripcionAsignatura')
-            ]);
-            //$asignaturas = Asignatura::all();        
-        return redirect()->route('asignatura.index');
+        //variable = nombre del modelo ::(paso metodo)
+        //hace insert
+        $sala = Sala::create([
+                'nombre' => $request->get('nombreSala'),
+                'capacidad' => $request->get('capacidadSala'),
+            ]);    
+        return redirect()->route('sala.index');
     }
 
     /**
@@ -68,9 +70,10 @@ class asignaturaController extends Controller
      */
     public function edit($id)
     {
-        $asignaturas = Asignatura::findOrFail($id);
+        //variable = modelo:: metodo encunetra un registro en la bdd segun id!!
+        $sala = Sala::findOrFail($id);
         //en el compact se pasa la variable como string
-        return view('asignaturas/edit', compact('asignaturas'));
+        return view('Administrador/salas/edit', compact('sala'));
     }
 
     /**
@@ -82,17 +85,20 @@ class asignaturaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $asignaturas = Asignatura::findOrFail($id);     
+        $sala = Sala::findOrFail($id);     
         //fill (rellenar)
-        $asignaturas->fill([
-            'codigo' => $request->get('codigoAsignatura'),
-            'nombre' => $request->get('nombreAsignatura'),
-            'descripcion' => $request->get('descripcionAsignatura')
+        $sala->fill([
+            'nombre' => $request->get('nombreSala'),
+            'capacidad' => $request->get('capacidadSala'),
+            'disponibilidad' => $request->get('disponibilidadSala')
         ]);
-        $asignaturas->save();
-        return redirect()->route('asignatura.index');
-    }
+        $sala->save();
 
+        $salas = Sala::all();
+
+        return redirect()->route('sala.index');
+    }
+    
     /**
      * Remove the specified resource from storage.
      *
@@ -101,8 +107,8 @@ class asignaturaController extends Controller
      */
     public function destroy($id)
     {
-        $asignaturas = Asignatura::findOrFail($id);
-        $asignaturas->delete();
-        return redirect()->route('asignatura.index');
+        $sala = Sala::findOrFail($id);
+        $sala->delete();
+        return redirect()->route('sala.index');
     }
 }

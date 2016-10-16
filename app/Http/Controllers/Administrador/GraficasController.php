@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Administrador;
 
 use Illuminate\Http\Request;
 
@@ -79,7 +79,8 @@ class GraficasController extends Controller
     {
         $anio=date("Y");
         $mes=date("m");
-        return view("listados.listado_graficas")
+        //no segura
+        return view("Asignar.listados.listado_graficas")
                ->with("anio",$anio)
                ->with("mes",$mes);
     }

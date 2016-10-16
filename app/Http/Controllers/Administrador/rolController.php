@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Administrador;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-//referencia al modelo (importarlo)
-use App\Sala;
 
-class salaController extends Controller
+use App\Rol;
+
+class rolController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,11 +17,10 @@ class salaController extends Controller
      */
     public function index()
     {
-        //tomar todo lo que venga de la tabla lab y mostrar 
-        //all devuelve todo
-        $salas = Sala::all();
+
+        $roles = Rol::all();
         //se pasa la variable sin el peso con compact
-        return view ('salas/index', compact('salas'));
+        return view ('Administrador/roles/index', compact('roles'));
     }
 
     /**
@@ -31,9 +30,9 @@ class salaController extends Controller
      */
     public function create()
     {
-        return view('salas/create');
+        return view('Administrador/roles/create');
     }
-    //el create te lleva a la vista y la vista lleva los datos al store y ese a la bdd
+
     /**
      * Store a newly created resource in storage.
      *
@@ -42,13 +41,12 @@ class salaController extends Controller
      */
     public function store(Request $request)
     {
-        //variable = nombre del modelo ::(paso metodo)
-        //hace insert
-        $sala = Sala::create([
-                'nombre' => $request->get('nombreSala'),
-                'capacidad' => $request->get('capacidadSala'),
-            ]);    
-        return redirect()->route('sala.index');
+        
+        $roles = Rol::create([
+            'nombre' => $request->get('nombreRol'),
+            'descripcion' => $request->get('descripcionRol'),
+            ]);
+        return redirect()->route('rol.index');
     }
 
     /**
@@ -70,10 +68,9 @@ class salaController extends Controller
      */
     public function edit($id)
     {
-        //variable = modelo:: metodo encunetra un registro en la bdd segun id!!
-        $sala = Sala::findOrFail($id);
+        $roles = Rol::findOrFail($id);
         //en el compact se pasa la variable como string
-        return view('salas/edit', compact('sala'));
+        return view('Administrador/roles/edit', compact('roles'));
     }
 
     /**
@@ -85,20 +82,17 @@ class salaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $sala = Sala::findOrFail($id);     
+        $roles = Rol::findOrFail($id);     
         //fill (rellenar)
-        $sala->fill([
-            'nombre' => $request->get('nombreSala'),
-            'capacidad' => $request->get('capacidadSala'),
-            'disponibilidad' => $request->get('disponibilidadSala')
+        $roles->fill([
+            'nombre' => $request->get('nombreRol'),
+            'descripcion' => $request->get('descripcionRol'),
         ]);
-        $sala->save();
+        $roles->save();
 
-        $salas = Sala::all();
-
-        return redirect()->route('sala.index');
+        return redirect()->route('rol.index');
     }
-    
+
     /**
      * Remove the specified resource from storage.
      *
@@ -107,8 +101,8 @@ class salaController extends Controller
      */
     public function destroy($id)
     {
-        $sala = Sala::findOrFail($id);
-        $sala->delete();
-        return redirect()->route('sala.index');
+        $roles = Rol::findOrFail($id);
+        $roles->delete();
+        return redirect()->route('rol.index');
     }
 }

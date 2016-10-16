@@ -2,12 +2,12 @@
 @section('options')
 <h1>
     Salas 
-  <small>Asignar Ayudante</small>
+  <small>Reserva Ayudante</small>
 </h1>
 @stop
 @section('opcion')
-<li><a href="{{ route('asignar.index')}}"><i class="fa fa-check-square-o"></i> Asignación</a></li>
-<li class="active">Asignación Ayudante</li>
+<li><a href="{{ route('asignar.index')}}"><i class="fa fa-check-square-o"></i> Reserva</a></li>
+<li class="active">Reserva Ayudante</li>
 @stop
 @section('content')
 <div class="row" style="margin-left: 0px">
@@ -116,7 +116,7 @@
 		    	</div>
 		    </div>
 	    </div>	
-		<button type="submit" class="fa fa-edit btn btn-primary">Asignar</button>
+		<button type="submit" class="fa fa-edit btn btn-primary">Reservar</button>
 	</div>
 </div>
 @stop

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Administrador;
 
 use Illuminate\Http\Request;
 
@@ -26,7 +26,7 @@ class horarioController extends Controller
                             ->select('horario.id','horario.fecha','horario.rut','users.nombres as horario_name','users.apellidos as horario_apell','horario.permanencia','asignatura.nombre as asig_nombre','periodo.bloque','sala.nombre as sala_nombre')
                             ->paginate();
 
-        return view ('horarios/index', compact('horarios')); 
+        return view ('Administrador/horarios/index', compact('horarios')); 
     }
 
     public function create()
@@ -85,7 +85,7 @@ class horarioController extends Controller
                             ->select('curso.id','curso.seccion','asignatura.nombre')
                             ->get();
             
-            return view('horarios/edit',compact('horarios','salas','periodos','cursos'));
+            return view('Administrador/horarios/edit',compact('horarios','salas','periodos','cursos'));
         }
 
     }
