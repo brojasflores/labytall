@@ -88,8 +88,9 @@ class SepaUserProvider implements UserProviderInterface
                 'apellidos' => 'apellidosUsuario',
                 'password' => $pass1
             ]);*/
+
             //Funcion para autenticar el usr creado arriba si el servicio rest se cae
-            $rut = $credentials['rut']; // TODO: Una mejor forma de obtener los identificadores?
+            /*$rut = $credentials['rut']; // TODO: Una mejor forma de obtener los identificadores?
             $pass = $credentials['password'];
             $rut_sdv = substr($credentials['rut'],0,-1);//quita digto verificados
             $var=User::where('rut','=',$rut_sdv)->get();//trae el usr completo 
@@ -117,11 +118,11 @@ class SepaUserProvider implements UserProviderInterface
                         \Log::info(sprintf('Auth: Login fallido (%s)', $rut));
                     }
                 }
-            }   
+            }   */
         //**********************************************************************************************
 
            
-        /*$client = new GuzzleHttp\Client(['auth' => $this->rest_credentials]);
+        $client = new GuzzleHttp\Client(['auth' => $this->rest_credentials]);
 
         // Obtenemos las credenciales del usuario
         $rut = $credentials['rut']; // TODO: Una mejor forma de obtener los identificadores?
@@ -176,7 +177,7 @@ class SepaUserProvider implements UserProviderInterface
                     }
                 }
             }      
-        }*/
+        }
         return (bool) $loginOk;
     }
 

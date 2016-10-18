@@ -33,15 +33,7 @@ class HomeController extends Controller
         }
         else
         {
-            /*if((Auth::user->password)!=null)
-            {
-                return view('perfil2');
-            }
-            else
-            {
-                return view('index');
-            }*/
-            return view('index');
+            return view('Administrador/index');
         }
 
         

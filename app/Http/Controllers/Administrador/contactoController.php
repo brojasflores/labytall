@@ -19,7 +19,7 @@ class contactoController extends Controller
      */
     public function index()
     {
-        return view('Administrador/contacto'); 
+        return view('contacto'); 
     }
 
     /**
