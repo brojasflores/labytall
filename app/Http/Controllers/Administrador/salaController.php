@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 //referencia al modelo (importarlo)
 use App\Sala;
+use Auth;
 
 class salaController extends Controller
 {
@@ -15,6 +16,11 @@ class salaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         //tomar todo lo que venga de la tabla lab y mostrar 

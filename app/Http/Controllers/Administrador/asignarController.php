@@ -14,6 +14,7 @@ use App\Horario;
 
 use Carbon\Carbon;
 
+
 class asignarController extends Controller
 {
     /**
@@ -21,6 +22,11 @@ class asignarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         //$asignaturas = Asignatura::all();

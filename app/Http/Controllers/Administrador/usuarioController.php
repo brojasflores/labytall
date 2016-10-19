@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Input;
 use Validator;
 use Auth;
 
+
 class usuarioController extends Controller
 {
     /**
@@ -21,6 +22,11 @@ class usuarioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         //llamo al modelo de bdd a la tabla usuario en app y luego puedo llamar a la tabla...
@@ -161,19 +167,48 @@ class usuarioController extends Controller
 
     public function perfil()
     {
-        return view('Administrador/usuarios/perfil');
+        $var=User::where('rut','=', Auth::user()->rut)->select('password')->get();
+        $var2 = false;
+        foreach($var as $v)
+        {
+            $v2= $v->password;
+            if($v2==null)
+            {
+                return view('Administrador/usuarios/perfil', compact('var2'));
+            }
+            //si usr tiene clave en la db la compara con la ingresada por pantalla 
+            else
+            {
+                $var2 = true;
+            }
+                //si usr no tiene contraseña en la db no loguea
+        }
+        return view('Administrador/usuarios/perfil', compact('var2'));
     }
 
     public function updateProfile(Request $request)
     {
-
-
-        $user = new User;
-        $user->where('rut', '=', Auth::user()->rut)
-             ->update(['email' => $request->get('emailUsuario'),
-                       'nombres' => $request->get('nombres'),
-                       'apellidos' => $request->get('apellidos'),
-                     ]);  
+        $var = $request->get('passwordUsuario');
+        if(empty ($var))
+        {
+            $user = new User;
+            $user->where('rut', '=', Auth::user()->rut)
+                 ->update(['email' => $request->get('emailUsuario'),
+                           'nombres' => $request->get('nombres'),
+                           'apellidos' => $request->get('apellidos'),
+                         ]);  
+        }
+        else
+        {
+            $pass = Hash::make($request->get('passwordUsuario'));
+            $user = new User;
+            $user->where('rut', '=', Auth::user()->rut)
+                 ->update(['email' => $request->get('emailUsuario'),
+                           'nombres' => $request->get('nombres'),
+                           'apellidos' => $request->get('apellidos'),
+                           'password' => $pass,
+                         ]);   
+        }
 
         $file = Input::file('image');
 

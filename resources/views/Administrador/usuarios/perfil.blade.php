@@ -75,7 +75,7 @@
 @section('content')
 <h1>Perfil Usuario</h1>
 <h2>Cambiar imagen de perfil</h2>
-<form method='post' action='{{url("usuario_perfilUpdate")}}' enctype='multipart/form-data'>
+<form  method='post' action='{{url("usuario_perfilUpdate")}}' enctype='multipart/form-data'>
   {{csrf_field()}}
     <div class="row">
 	  	<div class="col-md-4">
@@ -101,6 +101,17 @@
 			</div> 
 		</div>
 	</div>
+
+  @if($var2)
+        <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="exampleInputPassword1">Contraseña</label>
+          <input type="password" class="form-control" name="passwordUsuario" id="passwordUsuario" placeholder="Ingrese contraseña nueva">
+        </div> 
+      </div>
+  </div>
+  @endif
 	<div class="row">
 	  	<div class="col-md-4">
 		  <div class='form-group'>

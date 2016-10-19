@@ -8,6 +8,7 @@ use App\Http\Requests;
 
 use App\Rol;
 
+
 class rolController extends Controller
 {
     /**
@@ -15,6 +16,11 @@ class rolController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
 

@@ -8,6 +8,7 @@ use App\Http\Requests;
 
 use App\Asignatura;
 
+
 class asignaturaController extends Controller
 {
     /**
@@ -15,6 +16,11 @@ class asignaturaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $asignaturas = Asignatura::all();
