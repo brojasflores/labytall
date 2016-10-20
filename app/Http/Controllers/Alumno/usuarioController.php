@@ -20,6 +20,12 @@ class usuarioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('docente');
+    }
+    
     public function index()
     {
         //llamo al modelo de bdd a la tabla usuario en app y luego puedo llamar a la tabla...

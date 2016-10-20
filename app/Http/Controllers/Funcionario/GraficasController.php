@@ -23,7 +23,11 @@ class GraficasController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function getUltimoDiaMes($elAnio,$elMes) {
      return date("d",(mktime(0,0,0,$elMes+1,1,$elAnio)-1));
     }

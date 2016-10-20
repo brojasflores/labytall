@@ -15,6 +15,12 @@ class salaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('docente');
+    }
+    
     public function index()
     {
         //tomar todo lo que venga de la tabla lab y mostrar 

@@ -142,6 +142,7 @@ class SepaUserProvider implements UserProviderInterface
         //si se autenticó en el servicio rest entra al if y logue
         if ($loginOk) {
             \Log::info(sprintf('Auth: Login exitoso (%s)', $rut));
+            
             if (is_a($user, '\Illuminate\Auth\GenericUser')) {
                 // Nos llego un GenericUser, persistamos al usuario en DB
                 $user = $this->createModel(); // Nueva instancia del modelo

@@ -16,6 +16,11 @@ use Carbon\Carbon;
 class horarioController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         $horarios = Horario::join('curso','horario.curso_id','=','curso.id')
