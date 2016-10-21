@@ -33,7 +33,7 @@ class HomeController extends Controller
         }
         else
         {
-            return view('Ayudante/index');
+            return view('Docente/index');
         }
 
         

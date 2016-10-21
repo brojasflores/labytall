@@ -41,8 +41,8 @@ Route::resource('/perfil','HomeController@index');
 	Route::resource('/sala','salaController');
 
 	Route::resource('/usuario','usuarioController'); 
-	Route::get('/usuario_perfil', ['as' => 'usuario.perfil', 'uses' => 'usuarioController@perfil']);
-	Route::post('/usuario_perfilUpdate', ['as' => 'usuario.updateProfile', 'uses' => 'usuarioController@updateProfile']);
+	Route::get('/usuario_perfil', ['as' => 'usuario.perfil', 'uses' => 'perfilController@perfil']);
+	Route::post('/usuario_perfilUpdate', ['as' => 'usuario.updateProfile', 'uses' => 'perfilController@updateProfile']);
 
 
 	Route::resource('/contacto','contactoController');
@@ -64,8 +64,8 @@ Route::resource('/perfil','HomeController@index');
 	Route::resource('/sala','salaController');
 
 	Route::resource('/usuario','usuarioController'); 
-	Route::get('/usuario_perfil', ['as' => 'usuario.perfil', 'uses' => 'usuarioController@perfil']);
-	Route::post('/usuario_perfilUpdate', ['as' => 'usuario.updateProfile', 'uses' => 'usuarioController@updateProfile']);
+	Route::get('/usuario_perfil', ['as' => 'usuario.perfil', 'uses' => 'perfilController@perfil']);
+	Route::post('/usuario_perfilUpdate', ['as' => 'usuario.updateProfile', 'uses' => 'perfilController@updateProfile']);
 
 	Route::resource('/contacto','contactoController');
 	Route::resource('/rol','rolController');
@@ -81,36 +81,14 @@ Route::resource('/perfil','HomeController@index');
 	Route::get('listado_graficas', 'GraficasController@index');
 });*/
 
-/*Route::group(['namespace' => 'Docente'], function()
+Route::group(['namespace' => 'Docente'], function()
 {
 	Route::resource('/sala','salaController');
 
 	Route::resource('/usuario','usuarioController'); 
-	Route::get('/usuario_perfil', ['as' => 'usuario.perfil', 'uses' => 'usuarioController@perfil']);
-	Route::post('/usuario_perfilUpdate', ['as' => 'usuario.updateProfile', 'uses' => 'usuarioController@updateProfile']);
+	Route::get('/usuario_perfil', ['as' => 'usuario.perfil', 'uses' => 'perfilController@perfil']);
+	Route::post('/usuario_perfilUpdate', ['as' => 'usuario.updateProfile', 'uses' => 'perfilController@updateProfile']);
 
-	Route::resource('/contacto','contactoController');
-	Route::resource('/rol','rolController');
-	Route::resource('/periodo','periodoController');
-	Route::resource('/asignatura','asignaturaController');
-	Route::resource('/curso','cursoController');
-	Route::resource('/horario','horarioController');
-	Route::resource('/asignar','asignarController');
-	Route::get('/asignar_docente', ['as' => 'asignar.docente', 'uses' => 'asignarController@docente']);
-	Route::get('/asignar_ayudante',['as' => 'asignar.ayudante', 'uses' => 'asignarController@ayudante']);
-	Route::get('/asignar_alumno',['as' => 'asignar.alumno', 'uses' => 'asignarController@alumno']);
-	
-	Route::get('listado_graficas', 'GraficasController@index');
-});*/
-
-Route::group(['namespace' => 'Ayudante'], function()
-{
-	Route::resource('/sala','salaController');
-
-	Route::resource('/usuario','usuarioController'); 
-	Route::get('/usuario_perfil', ['as' => 'usuario.perfil', 'uses' => 'usuarioController@perfil']);
-	Route::post('/usuario_perfilUpdate', ['as' => 'usuario.updateProfile', 'uses' => 'usuarioController@updateProfile']);
-	
 	Route::resource('/contacto','contactoController');
 	Route::resource('/rol','rolController');
 	Route::resource('/periodo','periodoController');
@@ -125,13 +103,35 @@ Route::group(['namespace' => 'Ayudante'], function()
 	Route::get('listado_graficas', 'GraficasController@index');
 });
 
+/*Route::group(['namespace' => 'Ayudante'], function()
+{
+	Route::resource('/sala','salaController');
+
+	Route::resource('/usuario','usuarioController'); 
+	Route::get('/usuario_perfil', ['as' => 'usuario.perfil', 'uses' => 'perfilController@perfil']);
+	Route::post('/usuario_perfilUpdate', ['as' => 'usuario.updateProfile', 'uses' => 'perfilController@updateProfile']);
+
+	Route::resource('/contacto','contactoController');
+	Route::resource('/rol','rolController');
+	Route::resource('/periodo','periodoController');
+	Route::resource('/asignatura','asignaturaController');
+	Route::resource('/curso','cursoController');
+	Route::resource('/horario','horarioController');
+	Route::resource('/asignar','asignarController');
+	Route::get('/asignar_docente', ['as' => 'asignar.docente', 'uses' => 'asignarController@docente']);
+	Route::get('/asignar_ayudante',['as' => 'asignar.ayudante', 'uses' => 'asignarController@ayudante']);
+	Route::get('/asignar_alumno',['as' => 'asignar.alumno', 'uses' => 'asignarController@alumno']);
+	
+	Route::get('listado_graficas', 'GraficasController@index');
+});/*
+
 /*Route::group(['namespace' => 'Alumno'], function()
 {
 	Route::resource('/sala','salaController');
 
 	Route::resource('/usuario','usuarioController'); 
-	Route::get('/usuario_perfil', ['as' => 'usuario.perfil', 'uses' => 'usuarioController@perfil']);
-	Route::post('/usuario_perfilUpdate', ['as' => 'usuario.updateProfile', 'uses' => 'usuarioController@updateProfile']);
+	Route::get('/usuario_perfil', ['as' => 'usuario.perfil', 'uses' => 'perfilController@perfil']);
+	Route::post('/usuario_perfilUpdate', ['as' => 'usuario.updateProfile', 'uses' => 'perfilController@updateProfile']);
 	
 	Route::resource('/contacto','contactoController');
 	Route::resource('/rol','rolController');
