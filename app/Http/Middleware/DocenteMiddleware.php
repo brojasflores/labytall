@@ -34,7 +34,8 @@ class DocenteMiddleware
             $v1=$v2[$i];
             if($v1=='docente' || $v1=='ayudante'|| $v1=='alumno')
             {
-                return $next($request);
+                return abort(401);
+                //return $next($request);
             }
         }
         return abort(401);

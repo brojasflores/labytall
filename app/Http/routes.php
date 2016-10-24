@@ -13,6 +13,8 @@
 Route::resource('/','HomeController@index');
 Route::get('/home', 'HomeController@index');
 Route::resource('/perfil','HomeController@index');
+
+
 /*Route::group(['prefix' => 'admin','namespace' => 'Administrador', 'middleware'=>['auth','admin']], function()
 {
 	Route::resource('/sala','salaController');
@@ -36,7 +38,7 @@ Route::resource('/perfil','HomeController@index');
 	Route::get('listado_graficas', 'GraficasController@index');
 });*/
 
-/*Route::group(['namespace' => 'Administrador'], function()
+Route::group(['namespace' => 'Administrador'], function()
 {
 	Route::resource('/sala','salaController');
 
@@ -57,7 +59,7 @@ Route::resource('/perfil','HomeController@index');
 	Route::get('/asignar_alumno',['as' => 'asignar.alumno', 'uses' => 'asignarController@alumno']);
 	
 	Route::get('listado_graficas', 'GraficasController@index');
-});*/
+});
 
 /*Route::group(['namespace' => 'Funcionario'], function()
 {
@@ -79,7 +81,7 @@ Route::resource('/perfil','HomeController@index');
 	Route::get('/asignar_alumno',['as' => 'asignar.alumno', 'uses' => 'asignarController@alumno']);
 	
 	Route::get('listado_graficas', 'GraficasController@index');
-});*/
+});
 
 Route::group(['namespace' => 'Docente'], function()
 {
@@ -103,7 +105,7 @@ Route::group(['namespace' => 'Docente'], function()
 	Route::get('listado_graficas', 'GraficasController@index');
 });
 
-/*Route::group(['namespace' => 'Ayudante'], function()
+Route::group(['namespace' => 'Ayudante'], function()
 {
 	Route::resource('/sala','salaController');
 
@@ -123,7 +125,7 @@ Route::group(['namespace' => 'Docente'], function()
 	Route::get('/asignar_alumno',['as' => 'asignar.alumno', 'uses' => 'asignarController@alumno']);
 	
 	Route::get('listado_graficas', 'GraficasController@index');
-});/*
+});
 
 /*Route::group(['namespace' => 'Alumno'], function()
 {
@@ -146,7 +148,6 @@ Route::group(['namespace' => 'Docente'], function()
 	
 	Route::get('listado_graficas', 'GraficasController@index');
 });*/
-
 Route::auth();
 
 

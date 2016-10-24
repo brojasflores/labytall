@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Auth;
+use Session;
 
 class HomeController extends Controller
 {
@@ -33,7 +34,8 @@ class HomeController extends Controller
         }
         else
         {
-            return view('Docente/index');
+            Session::flash('message','¡El inicio de sesión se ha efectuado correctamente!');
+            return view('Administrador/index');
         }
 
         

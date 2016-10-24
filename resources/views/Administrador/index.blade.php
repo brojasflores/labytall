@@ -63,6 +63,11 @@
           </ul>
 @stop
 @section('options')
+@if(Session::has('message'))
+  <div class="alert alert-info" role="alert">
+    <strong class="alert-link">{{ Session::get('message') }}</strong>
+  </div>       
+@endif
 <h1>
     Panel de Control 
 	<small>Inicio</small>

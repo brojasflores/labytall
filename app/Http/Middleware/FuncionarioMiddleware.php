@@ -34,7 +34,8 @@ class FuncionarioMiddleware
             $v1=$v2[$i];
             if($v1=='funcionario')
             {
-                return $next($request);
+                return abort(401); 
+                //return $next($request);
             }
         }
         return abort(401);        
