@@ -25,14 +25,14 @@ class perfilController extends Controller
             $v2= $v->password;
             if($v2==null)
             {
-                return view('Administrador/usuarios/perfil', compact('var2'));
+                return view('Docente/usuarios/perfil', compact('var2'));
             }
             else
             {
                 $var2 = true;
             }
         }
-        return view('Administrador/usuarios/perfil', compact('var2'));
+        return view('Docente/usuarios/perfil', compact('var2'));
     }
 
     public function updateProfile(Request $request)

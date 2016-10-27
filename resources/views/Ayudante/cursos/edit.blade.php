@@ -11,7 +11,7 @@
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Docente</li>
+            <li class="header">Ayudante</li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-desktop"></i> <span>Salas</span>

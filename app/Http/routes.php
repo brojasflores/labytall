@@ -125,6 +125,7 @@ Route::group(['namespace' => 'Alumno'], function()
 	
 	Route::get('listado_graficas', 'GraficasController@index');
 });
+
 Route::auth();
 
 
