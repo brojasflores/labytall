@@ -51,7 +51,7 @@ class asignaturaController extends Controller
             'descripcion' => $request->get('descripcionAsignatura')
             ]);
             //$asignaturas = Asignatura::all();        
-        return redirect()->route('asignatura.index');
+        return redirect()->route('funcionario.asignatura.index');
     }
 
     /**
@@ -95,7 +95,7 @@ class asignaturaController extends Controller
             'descripcion' => $request->get('descripcionAsignatura')
         ]);
         $asignaturas->save();
-        return redirect()->route('asignatura.index');
+        return redirect()->route('funcionario.asignatura.index');
     }
 
     /**
@@ -108,6 +108,6 @@ class asignaturaController extends Controller
     {
         $asignaturas = Asignatura::findOrFail($id);
         $asignaturas->delete();
-        return redirect()->route('asignatura.index');
+        return redirect()->route('funcionario.asignatura.index');
     }
 }

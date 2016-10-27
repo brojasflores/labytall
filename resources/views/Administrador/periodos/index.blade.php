@@ -2,7 +2,7 @@
 @section('perfil')
 <li class="user-footer">
   <div class="pull-left">
-    <a href="{{route('usuario.perfil',['id' => Auth::user()->id])}}" class="btn btn-default btn-flat">Perfil</a>
+    <a href="{{route('administrador.usuario.perfil',['id' => Auth::user()->id])}}" class="btn btn-default btn-flat">Perfil</a>
   </div>
   <div class="pull-right">
     <a href="{{ url('/logout') }}" class="btn btn-default btn-flat">Salir</a>
@@ -20,8 +20,8 @@
               <ul class="treeview-menu">
                 <!--Controlador.metodo-->
                 <li><a href="pages/usuarios/admin.html"><i class="glyphicon glyphicon-barcode"></i> Autenticación</a></li>
-                <li><a href="{{ route('usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
-                <li><a href="{{ route('rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
+                <li><a href="{{ route('administrador.usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
+                <li><a href="{{ route('administrador.rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -30,13 +30,13 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="{{ route('horario.index')}}"><i class="fa fa-eye"></i> Ver horarios</a></li>
+                <li><a href="{{ route('administrador.horario.index')}}"><i class="fa fa-eye"></i> Ver horarios</a></li>
                 <!--route ruta del controlador.metodo-->
-                <li><a href="{{ route('sala.index')}}"><i class="fa fa-list-alt"></i>Lista de Salas</a></li>
-                <li><a href="{{ route('periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
-                <li><a href="{{ route('asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
-                <li><a href="{{ route('curso.index')}}"><i class="glyphicon glyphicon-education"></i> Cursos</a></li>
-                <li><a href="{{ route('asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
+                <li><a href="{{ route('administrador.sala.index')}}"><i class="fa fa-list-alt"></i>Lista de Salas</a></li>
+                <li><a href="{{ route('administrador.periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
+                <li><a href="{{ route('administrador.asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
+                <li><a href="{{ route('administrador.curso.index')}}"><i class="glyphicon glyphicon-education"></i> Cursos</a></li>
+                <li><a href="{{ route('administrador.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -69,7 +69,7 @@
                 <li><a href="http://bienestarestudiantil.blogutem.cl/" target="_blank"><i class="fa fa-external-link"></i> Bienestar Estudiantil</a></li>
               </ul>
             </li>
-            <li><a href="{{ route('contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
+            <li><a href="{{ route('administrador.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
           </ul>
 @stop
 @section('options')
@@ -83,7 +83,7 @@
 @stop
 @section('content')
 <h1>Períodos</h1>
-<form role="form" method="get" action="{{ route('periodo.create')}}">
+<form role="form" method="get" action="{{ route('administrador.periodo.create')}}">
   <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
 </form>
 <section class="content">
@@ -112,9 +112,9 @@
                 <td>{{ $per->fin}}</td>
 
                 <!--Paso ruta y parametro para saber cual modificar-->
-                <td><a href="{{ route('periodo.edit',$per->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
+                <td><a href="{{ route('administrador.periodo.edit',$per->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
                 <td>
-                {!! Form::open(['route' => ['periodo.destroy', $per->id], 'method' => 'DELETE', 'id' => 'form-delete'])!!}
+                {!! Form::open(['route' => ['administrador.periodo.destroy', $per->id], 'method' => 'DELETE', 'id' => 'form-delete'])!!}
                   <button type="submit" class="fa fa-trash btn btn-danger"> Eliminar</button>
                 {!! Form::close() !!}
                 </td>    

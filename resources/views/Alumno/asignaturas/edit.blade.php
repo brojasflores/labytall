@@ -2,7 +2,7 @@
 @section('perfil')
 <li class="user-footer">
   <div class="pull-left">
-    <a href="{{route('usuario.perfil',['id' => Auth::user()->id])}}" class="btn btn-default btn-flat">Perfil</a>
+    <a href="{{route('alumno.usuario.perfil',['id' => Auth::user()->id])}}" class="btn btn-default btn-flat">Perfil</a>
   </div>
   <div class="pull-right">
     <a href="{{ url('/logout') }}" class="btn btn-default btn-flat">Salir</a>
@@ -18,8 +18,8 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="{{ route('horario.index')}}"><i class="fa fa-eye"></i> Ver horarios</a></li>
-                <li><a href="{{ route('asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
+                <li><a href="{{ route('alumno.horario.index')}}"><i class="fa fa-eye"></i> Ver horarios</a></li>
+                <li><a href="{{ route('alumno.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -37,17 +37,17 @@
                 <li><a href="http://bienestarestudiantil.blogutem.cl/" target="_blank"><i class="fa fa-external-link"></i> Bienestar Estudiantil</a></li>
               </ul>
             </li>
-            <li><a href="{{ route('contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
+            <li><a href="{{ route('alumno.alumno.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
           </ul>
 @stop
 @section('opcion')
-<li><a href="{{ route('asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
+<li><a href="{{ route('alumno.asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
 <li class="active">Editar Asignaturas</li>
 @stop
 @section('content')
 <h1>Editar Asignatura</h1>
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
-{!! Form::model($asignaturas,['route' => ['asignatura.update',$asignaturas], 'method' => 'PUT']) !!}
+{!! Form::model($asignaturas,['route' => ['alumno.asignatura.update',$asignaturas], 'method' => 'PUT']) !!}
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
 	    <div class="form-group">

@@ -20,8 +20,8 @@
               <ul class="treeview-menu">
                 <!--Controlador.metodo-->
                 <li><a href="pages/usuarios/admin.html"><i class="glyphicon glyphicon-barcode"></i> Autenticación</a></li>
-                <li><a href="{{ route('usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
-                <li><a href="{{ route('rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
+                <li><a href="{{ route('administrador.usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
+                <li><a href="{{ route('administrador.rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -30,13 +30,13 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="{{ route('horario.index')}}"><i class="fa fa-eye"></i> Ver horarios</a></li>
+                <li><a href="{{ route('administrador.horario.index')}}"><i class="fa fa-eye"></i> Ver horarios</a></li>
                 <!--route ruta del controlador.metodo-->
-                <li><a href="{{ route('sala.index')}}"><i class="fa fa-list-alt"></i>Lista de Salas</a></li>
-                <li><a href="{{ route('periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
-                <li><a href="{{ route('asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
-                <li><a href="{{ route('curso.index')}}"><i class="glyphicon glyphicon-education"></i> Cursos</a></li>
-                <li><a href="{{ route('asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
+                <li><a href="{{ route('administrador.sala.index')}}"><i class="fa fa-list-alt"></i>Lista de Salas</a></li>
+                <li><a href="{{ route('administrador.periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
+                <li><a href="{{ route('administrador.asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
+                <li><a href="{{ route('administrador.curso.index')}}"><i class="glyphicon glyphicon-education"></i> Cursos</a></li>
+                <li><a href="{{ route('administrador.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -69,7 +69,7 @@
                 <li><a href="http://bienestarestudiantil.blogutem.cl/" target="_blank"><i class="fa fa-external-link"></i> Bienestar Estudiantil</a></li>
               </ul>
             </li>
-            <li><a href="{{ route('contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
+            <li><a href="{{ route('administrador.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
           </ul>
 @stop
 @section('options')
@@ -86,7 +86,7 @@
   <h1>¡Bienvenido a la reserva de Salas!</h1>
   </br></br>
   <center>
-    <form role="form" method="get" action="{{ route('horario.index')}}">
+    <form role="form" method="get" action="{{ route('administrador.horario.index')}}">
       <button type="submit" class="fa fa-eye btn btn-primary"> Ver horarios</button>
     </form>
   </center>
@@ -96,9 +96,9 @@
   <div class="row">
     <div class="col-sm-8 col-md-8 col-lg-8 col-md-offset-3">
       <!--div class="form-group"-->
-        <a href="{{URL::to('/asignar_docente')}}" class="btn btn-primary btn-lg" role="button">Reserva Docentes</a>
-        <a href="{{URL::to('/asignar_ayudante') }}" class="btn btn-primary btn-lg" role="button">Reserva Ayudantes</a>
-        <a href="{{URL::to('/asignar_alumno') }}" class="btn btn-primary btn-lg" role="button">Reserva Alumnos</a>
+        <a href="{{URL::to('/administrador/asignar_docente')}}" class="btn btn-primary btn-lg" role="button">Reserva Docentes</a>
+        <a href="{{URL::to('/administrador/asignar_ayudante') }}" class="btn btn-primary btn-lg" role="button">Reserva Ayudantes</a>
+        <a href="{{URL::to('/administrador/asignar_alumno') }}" class="btn btn-primary btn-lg" role="button">Reserva Alumnos</a>
         <!--div class="btn btn-primary btn-lg" href="#" role="button">Reserva Alumnos</div-->
       <!--/div-->
     </div>        

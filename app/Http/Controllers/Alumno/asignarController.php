@@ -106,7 +106,7 @@ class asignarController extends Controller
                 'permanencia' => 'dia'
                 ]);
 
-            return redirect()->route('horario.index');
+            return redirect()->route('alumno.horario.index');
         }
         else
         {
@@ -220,7 +220,7 @@ class asignarController extends Controller
                     $inicio->addWeek(1);
                 }
             }
-            return redirect()->route('horario.index');
+            return redirect()->route('alumno.horario.index');
         }
     }
 

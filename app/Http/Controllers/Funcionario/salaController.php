@@ -53,7 +53,7 @@ class salaController extends Controller
                 'nombre' => $request->get('nombreSala'),
                 'capacidad' => $request->get('capacidadSala'),
             ]);    
-        return redirect()->route('sala.index');
+        return redirect()->route('funcionario.sala.index');
     }
 
     /**
@@ -101,7 +101,7 @@ class salaController extends Controller
 
         $salas = Sala::all();
 
-        return redirect()->route('sala.index');
+        return redirect()->route('funcionario.sala.index');
     }
     
     /**
@@ -114,6 +114,6 @@ class salaController extends Controller
     {
         $sala = Sala::findOrFail($id);
         $sala->delete();
-        return redirect()->route('sala.index');
+        return redirect()->route('funcionario.sala.index');
     }
 }

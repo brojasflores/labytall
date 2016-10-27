@@ -73,7 +73,7 @@ class usuarioController extends Controller
                 'rol_id' => $rol
                 ]);
         }
-        return redirect()->route('usuario.index');
+        return redirect()->route('administrador.usuario.index');
     }
 
     /**
@@ -149,7 +149,7 @@ class usuarioController extends Controller
                 ]);
         }
 
-        return redirect()->route('usuario.index');
+        return redirect()->route('administrador.usuario.index');
     }
 
     /**
@@ -162,7 +162,7 @@ class usuarioController extends Controller
     {
         $usuarios = User::findOrFail($id);
         $usuarios->delete();
-        return redirect()->route('usuario.index');
+        return redirect()->route('administrador.usuario.index');
     }
 
 

@@ -2,7 +2,7 @@
 @section('perfil')
 <li class="user-footer">
   <div class="pull-left">
-    <a href="{{route('usuario.perfil',['id' => Auth::user()->id])}}" class="btn btn-default btn-flat">Perfil</a>
+    <a href="{{route('ayudante.usuario.perfil',['id' => Auth::user()->id])}}" class="btn btn-default btn-flat">Perfil</a>
   </div>
   <div class="pull-right">
     <a href="{{ url('/logout') }}" class="btn btn-default btn-flat">Salir</a>
@@ -18,8 +18,8 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="{{ route('horario.index')}}"><i class="fa fa-eye"></i> Ver horarios</a></li>
-                <li><a href="{{ route('asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
+                <li><a href="{{ route('ayudante.horario.index')}}"><i class="fa fa-eye"></i> Ver horarios</a></li>
+                <li><a href="{{ route('ayudante.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -37,7 +37,7 @@
                 <li><a href="http://bienestarestudiantil.blogutem.cl/" target="_blank"><i class="fa fa-external-link"></i> Bienestar Estudiantil</a></li>
               </ul>
             </li>
-            <li><a href="{{ route('contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
+            <li><a href="{{ route('ayudante.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
           </ul>
 @stop
 @section('options')
@@ -47,13 +47,13 @@
 </h1>
 @stop
 @section('opcion')
-<li><a href="{{ route('asignar.index')}}"><i class="fa fa-check-square-o"></i> Reserva</a></li>
+<li><a href="{{ route('ayudante.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reserva</a></li>
 <li class="active">Reserva Docente</li>
 @stop
 @section('content')
 <div class="row" style="margin-left: 0px">
 
-<form role="form" method="post" action="{{ route('asignar.store') }}">
+<form role="form" method="post" action="{{ route('ayudante.asignar.store') }}">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
 	    <div class="form-group">

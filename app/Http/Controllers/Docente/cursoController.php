@@ -61,7 +61,7 @@ class cursoController extends Controller
             ]);
 
 
-        return redirect()->route('curso.index');
+        return redirect()->route('docente.curso.index');
     }
 
     /**
@@ -108,7 +108,7 @@ class cursoController extends Controller
         ]);
         $cursos->save();
 
-        return redirect()->route('curso.index');
+        return redirect()->route('docente.curso.index');
     
     }
 
@@ -123,6 +123,6 @@ class cursoController extends Controller
         $cursos = Curso::findOrFail($id);
         $cursos->delete();
 
-        return redirect()->route('curso.index');
+        return redirect()->route('docente.curso.index');
     }
 }

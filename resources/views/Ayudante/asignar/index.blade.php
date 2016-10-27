@@ -2,7 +2,7 @@
 @section('perfil')
 <li class="user-footer">
   <div class="pull-left">
-    <a href="{{route('usuario.perfil',['id' => Auth::user()->id])}}" class="btn btn-default btn-flat">Perfil</a>
+    <a href="{{route('ayudante.usuario.perfil',['id' => Auth::user()->id])}}" class="btn btn-default btn-flat">Perfil</a>
   </div>
   <div class="pull-right">
     <a href="{{ url('/logout') }}" class="btn btn-default btn-flat">Salir</a>
@@ -18,8 +18,8 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="{{ route('horario.index')}}"><i class="fa fa-eye"></i> Ver horarios</a></li>
-                <li><a href="{{ route('asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
+                <li><a href="{{ route('ayudante.horario.index')}}"><i class="fa fa-eye"></i> Ver horarios</a></li>
+                <li><a href="{{ route('ayudante.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -37,7 +37,7 @@
                 <li><a href="http://bienestarestudiantil.blogutem.cl/" target="_blank"><i class="fa fa-external-link"></i> Bienestar Estudiantil</a></li>
               </ul>
             </li>
-            <li><a href="{{ route('contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
+            <li><a href="{{ route('ayudante.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
           </ul>
 @stop
 @section('options')
@@ -54,7 +54,7 @@
   <h1>¡Bienvenido a la reserva de Salas!</h1>
   </br></br>
   <center>
-    <form role="form" method="get" action="{{ route('horario.index')}}">
+    <form role="form" method="get" action="{{ route('ayudante.horario.index')}}">
       <button type="submit" class="fa fa-eye btn btn-primary"> Ver horarios</button>
     </form>
   </center>
@@ -64,9 +64,9 @@
   <div class="row">
     <div class="col-sm-8 col-md-8 col-lg-8 col-md-offset-3">
       <!--div class="form-group"-->
-        <a href="{{URL::to('/asignar_docente')}}" class="btn btn-primary btn-lg" role="button">Reserva Docentes</a>
-        <a href="{{URL::to('/asignar_ayudante') }}" class="btn btn-primary btn-lg" role="button">Reserva Ayudantes</a>
-        <a href="{{URL::to('/asignar_alumno') }}" class="btn btn-primary btn-lg" role="button">Reserva Alumnos</a>
+        <a href="{{URL::to('/ayudante/asignar_docente')}}" class="btn btn-primary btn-lg" role="button">Reserva Docentes</a>
+        <a href="{{URL::to('/ayudante/asignar_ayudante') }}" class="btn btn-primary btn-lg" role="button">Reserva Ayudantes</a>
+        <a href="{{URL::to('/ayudante/asignar_alumno') }}" class="btn btn-primary btn-lg" role="button">Reserva Alumnos</a>
         <!--div class="btn btn-primary btn-lg" href="#" role="button">Reserva Alumnos</div-->
       <!--/div-->
     </div>        

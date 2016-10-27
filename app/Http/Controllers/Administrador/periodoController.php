@@ -52,7 +52,7 @@ class periodoController extends Controller
             'fin' => $request->get('finPeriodo')
             ]);
         
-        return redirect()->route('periodo.index');
+        return redirect()->route('administrador.periodo.index');
     }
 
     /**
@@ -97,7 +97,7 @@ class periodoController extends Controller
         ]);
         $periodos->save();
 
-        return redirect()->route('periodo.index');
+        return redirect()->route('administrador.periodo.index');
     }
 
     /**
@@ -110,6 +110,6 @@ class periodoController extends Controller
     {
         $periodos = Periodo::findOrFail($id);
         $periodos->delete();
-        return redirect()->route('periodo.index');
+        return redirect()->route('administrador.periodo.index');
     }
 }

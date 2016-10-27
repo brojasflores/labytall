@@ -2,7 +2,7 @@
 @section('perfil')
 <li class="user-footer">
   <div class="pull-left">
-    <a href="{{route('usuario.perfil',['id' => Auth::user()->id])}}" class="btn btn-default btn-flat">Perfil</a>
+    <a href="{{route('administrador.usuario.perfil',['id' => Auth::user()->id])}}" class="btn btn-default btn-flat">Perfil</a>
   </div>
   <div class="pull-right">
     <a href="{{ url('/logout') }}" class="btn btn-default btn-flat">Salir</a>
@@ -16,13 +16,13 @@
 </h1>
 @stop
 @section('opcion')
-<li><a href="{{ route('asignar.index')}}"><i class="fa fa-check-square-o"></i> Reserva</a></li>
+<li><a href="{{ route('administrador.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reserva</a></li>
 <li class="active">Reserva Ayudante</li>
 @stop
 @section('content')
 <div class="row" style="margin-left: 0px">
 
-<form role="form" method="post" action="{{ route('asignar.store') }}">
+<form role="form" method="post" action="{{ route('administrador.asignar.store') }}">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
 	    <div class="form-group">

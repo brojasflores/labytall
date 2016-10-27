@@ -117,7 +117,7 @@ class horarioController extends Controller
                 'permanencia' => 'dia'
                 ]);
 
-            return redirect()->route('horario.index');
+            return redirect()->route('alumno.horario.index');
         }
         else
         {
@@ -231,7 +231,7 @@ class horarioController extends Controller
                     $inicio->addWeek(1);
                 }
             }
-            return redirect()->route('horario.index');
+            return redirect()->route('alumno.horario.index');
         }
         /*$horarios = Horario::findOrFail($id);     
         //fill (rellenar)
@@ -243,7 +243,7 @@ class horarioController extends Controller
             ]);
         $horarios->save();
 */
-        return redirect()->route('horario.index');
+        return redirect()->route('alumno.horario.index');
     }
 
 
@@ -252,6 +252,6 @@ class horarioController extends Controller
         $horarios = Horario::findOrFail($id);
         $curso = $horarios->curso_id;
         Horario::where('curso_id',$curso)->delete();
-        return redirect()->route('horario.index');
+        return redirect()->route('alumno.horario.index');
     }
 }

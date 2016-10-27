@@ -53,7 +53,7 @@ class rolController extends Controller
             'nombre' => $request->get('nombreRol'),
             'descripcion' => $request->get('descripcionRol'),
             ]);
-        return redirect()->route('rol.index');
+        return redirect()->route('docente.rol.index');
     }
 
     /**
@@ -97,7 +97,7 @@ class rolController extends Controller
         ]);
         $roles->save();
 
-        return redirect()->route('rol.index');
+        return redirect()->route('docente.rol.index');
     }
 
     /**
@@ -110,6 +110,6 @@ class rolController extends Controller
     {
         $roles = Rol::findOrFail($id);
         $roles->delete();
-        return redirect()->route('rol.index');
+        return redirect()->route('docente.rol.index');
     }
 }
