@@ -20,6 +20,7 @@ class salaController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('docente');
+        $this->middleware('doc');
     }
     public function index()
     {

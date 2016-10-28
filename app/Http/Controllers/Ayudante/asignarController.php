@@ -24,6 +24,7 @@ class asignarController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('ayu');
     }
     
     public function index()

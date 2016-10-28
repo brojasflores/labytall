@@ -19,6 +19,7 @@ class rolController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('docente');
+        $this->middleware('alum');
     }
     
     public function index()

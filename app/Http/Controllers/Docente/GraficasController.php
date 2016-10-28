@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Docente;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use App\Asignatura;
 use App\Curso;
 use App\Horario;
@@ -26,6 +25,7 @@ class GraficasController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('docente');
+        $this->middleware('doc');
     }
     
     public function getUltimoDiaMes($elAnio,$elMes) {

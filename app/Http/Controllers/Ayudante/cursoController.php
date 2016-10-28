@@ -21,6 +21,7 @@ class cursoController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('docente');
+        $this->middleware('ayu');
     }
     
     public function index()

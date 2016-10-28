@@ -24,6 +24,7 @@ class usuarioController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('funcionario');
+        $this->middleware('funci');
     }
     
     public function index()

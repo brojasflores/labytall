@@ -42,41 +42,74 @@ class HomeController extends Controller
             }
             //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
             $cont = count($v2); //cuenta la cantidad de elementos del array
+            
             if($cont>1)
             {
+                //return view('Docente/index');
                 //poner el cambio de rol ya que tiene más de uno 
-                return view('Alumno/index');
+                if($v2[0]=='administrador')
+                {
+                    return view('Administrador/index', compact('v2','cont'));
+                }
+                else
+                {
+                    if($v2[0]=='funcionario')
+                    {
+                        return view('Funcionario/index', compact('v2','cont'));
+                    }
+                    else
+                    {
+                        if($v2[0]=='docente')
+                        {
+                            return view('Docente/index', compact('v2','cont'));
+                        }
+                        else
+                        {
+                            if($v2[0]=='ayudante')
+                            {
+                                return view('Ayudante/index', compact('v2','cont'));
+                            }
+                            else
+                            {
+                                if($v2[0]=='alumno')
+                                {
+                                    return view('Alumno/index', compact('v2','cont'));
+                                }
+                            }
+                        }
+                    }
+                }
             }
             else
             {
                 $v1=$v2[0];
                 if($v1=='administrador')
                 {
-                    return view('Administrador/index');
+                    return view('Administrador/index', compact('cont'));
                 }
                 else
                 {
                     if($v1=='funcionario')
                     {
-                        return view('Funcionario/index');
+                        return view('Funcionario/index', compact('cont'));
                     }
                     else
                     {
                         if($v1=='docente')
                         {
-                            return view('Docente/index');
+                            return view('Docente/index', compact('cont'));
                         }
                         else
                         {
                             if($v1=='ayudante')
                             {
-                                return view('Ayudante/index');
+                                return view('Ayudante/index', compact('cont'));
                             }
                             else
                             {
                                 if($v1=='alumno')
                                 {
-                                    return view('Alumno/index');
+                                    return view('Alumno/index', compact('cont'));
                                 }
                                 else
                                 {

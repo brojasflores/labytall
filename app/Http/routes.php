@@ -18,6 +18,8 @@ Route::resource('/perfil','HomeController@index');
 //**********************************RUTAS ADMINISTRADOR*******************************************
 Route::group(['prefix' => 'administrador','namespace' => 'Administrador'], function()
 {
+	Route::resource('/','administradorController@index');
+	
 	Route::resource('/sala','salaController');
 
 	Route::resource('/usuario','usuarioController'); 
@@ -42,6 +44,8 @@ Route::group(['prefix' => 'administrador','namespace' => 'Administrador'], funct
 //**********************************RUTAS FUNCIONARIO*******************************************
 Route::group(['prefix' => 'funcionario', 'namespace' => 'Funcionario'], function()
 {
+ 	Route::resource('/','funcionarioController@index');
+
 	Route::resource('/sala','salaController');
 
 	Route::resource('/usuario','usuarioController'); 
@@ -65,6 +69,8 @@ Route::group(['prefix' => 'funcionario', 'namespace' => 'Funcionario'], function
 //***********************************RUTAS DOCENTE*******************************************
 Route::group(['prefix' => 'docente', 'namespace' => 'Docente'], function()
 {
+	Route::resource('/','docenteController@index');
+
 	Route::resource('/sala','salaController');
 
 	Route::resource('/usuario','usuarioController'); 
@@ -88,6 +94,8 @@ Route::group(['prefix' => 'docente', 'namespace' => 'Docente'], function()
 //***********************************RUTAS AYUDANTE*******************************************
 Route::group(['prefix' => 'ayudante', 'namespace' => 'Ayudante'], function()
 {
+	Route::resource('/','ayudanteController@index');
+
 	Route::resource('/sala','salaController');
 
 	Route::resource('/usuario','usuarioController'); 
@@ -111,6 +119,8 @@ Route::group(['prefix' => 'ayudante', 'namespace' => 'Ayudante'], function()
 //***********************************RUTAS ALUMNO*******************************************
 Route::group(['prefix' => 'alumno', 'namespace' => 'Alumno'], function()
 {
+	Route::resource('/','alumnoController@index');
+
 	Route::resource('/sala','salaController');
 
 	Route::resource('/usuario','usuarioController'); 

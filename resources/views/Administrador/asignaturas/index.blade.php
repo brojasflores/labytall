@@ -1,4 +1,5 @@
 @extends('main')
+@section('cambioRol')
 @section('perfil')
 <li class="user-footer">
   <div class="pull-left">
