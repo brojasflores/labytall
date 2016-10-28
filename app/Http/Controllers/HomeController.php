@@ -21,11 +21,9 @@ class HomeController extends Controller
     }
     public function index()
     {      
-        //return view('index');
-
         if(empty(Auth::user()->email))
         {
-            return view('perfil');
+            return view('Docente/perfil');
         }
         else
         {
@@ -80,10 +78,10 @@ class HomeController extends Controller
                                 {
                                     return view('Alumno/index');
                                 }
-                                //else
-                                //{
-                                    //vista que haga que admin ingrese un rol
-                                //}
+                                else
+                                {
+                                    //return view('sinrol');
+                                }
                             }
                         }
                     }

@@ -35,7 +35,7 @@
         <h3>Perfil Usuario</h3>
 		<h4>Actualiza tus datos</h4>
 
-        <form method='post' action='{{url("usuario_perfilUpdate")}}' enctype='multipart/form-data'>
+        <form method='post' action='{{url("docente/usuario_perfilUpdate")}}' enctype='multipart/form-data'>
         	{{csrf_field()}}
           <div class="form-group has-feedback">
             <input type="text" class="form-control" value="{{ Auth::user()->email }}" name="emailUsuario" id="email" placeholder="Email">

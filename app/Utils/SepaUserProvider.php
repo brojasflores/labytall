@@ -9,6 +9,8 @@ use GuzzleHttp;
 use Illuminate\Auth\GenericUser;
 use App\Utils\RutUtils;
 use App\User;
+use App\Rol;
+use App\RolUsuario;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -51,7 +53,6 @@ class SepaUserProvider implements UserProviderInterface
             env('SEPA_REST_PASSWORD', '1111-1')
         );
     }
-
     /**
      * Trae un usuario por credenciales
      *
@@ -77,7 +78,11 @@ class SepaUserProvider implements UserProviderInterface
      */
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
-            $loginOk = false;
+        $loginOk = false;
+        $si='no';
+        $si2='no';
+        $estudianteOk='no';
+        $docenteOk='no';
             //Creado usr por si se cae el servicio REST, se debe desactivar una vez ejecutado.
             /*$pass1 = Hash::make('123123');
       
@@ -153,7 +158,7 @@ class SepaUserProvider implements UserProviderInterface
         }
         //verifica con la base de datos del proyecto para funcionarios
         else {
-            $rut_sdv = substr($credentials['rut'],0,-1);//quita digto verificados
+            $rut_sdv = substr($credentials['rut'],0,-1);//quita digto verificador
             $var=User::where('rut','=',$rut_sdv)->get();//trae el usr completo 
             $var2=User::where('rut','=',$rut_sdv)->select('password')->get();//ve si el urs tiene una contraseña en la db
 
@@ -178,6 +183,126 @@ class SepaUserProvider implements UserProviderInterface
                     }
                 }
             }      
+        }
+
+        if($loginOk == 'true')
+        {
+            try {
+                $req2 = $client->get(sprintf('%s/utem/estudiante/%s', $this->rest_base_uri, $rut)); // Hacemos la peticion al WS
+            } catch (GuzzleHttp\Exception\ClientException $e2) { // Si los errores son del nivel 400, se lanza esta excepcion
+                $msg2 = 'Error al consultar el servicio: %d(%s)';
+                \Log::error(sprintf($msg2, $e2->getResponse()->getStatusCode(), $e2->getResponse()->getReasonPhrase()));
+                //return false;
+                $si = "si";
+            }
+            
+            if($si == 'no')
+            {
+                $data2 = json_decode($req2->getBody(), true);
+                $estudianteOk = 'ok';
+            }
+            if($estudianteOk == 'ok')
+            {
+                $rut_sdv = substr($credentials['rut'],0,-1);//quita digto verificador
+                //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+                $usr2 = RolUsuario::where('rut','=',$rut_sdv)
+                            ->select('rol_id')
+                            ->paginate();
+                // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario;
+                if(($usr2->first())==null)
+                {
+                    RolUsuario::create([
+                    'rut' => $rut_sdv,
+                    'rol_id' => '5'
+                    ]);
+                }
+
+                //cargamdo datos desde el servico REST
+                $usr = User::where('rut','=',$rut_sdv)
+                            ->select('id','email')
+                            ->paginate();
+                
+                foreach($usr as $v)
+                {
+                    $v2= $v->id;
+                }
+
+                if(($usr["email"])==null)
+                {
+                    $usuarios = User::findOrFail($v2);
+                    //fill (rellenar)
+                    $usuarios->fill([
+                        'email' => $data2["email"],
+                        'nombres' => $data2["nombres"],
+                        'apellidos' => $data2["apellidos"],
+                        'perfiles' => "perfiles/h1m7G86a6OR1tLguLSNjj20czNunkW-XjSiKjE0nySu06OWdp3dutyuujpnJc-user2-160x160.png"
+                    ]);
+                    $usuarios->save();
+                }
+                return (bool) $loginOk;
+            }
+            
+            else
+            {
+                try {
+                        $req3 = $client->get(sprintf('%s/academia/docente/%s', $this->rest_base_uri, $rut)); // Hacemos la peticion al WS
+                    } catch (GuzzleHttp\Exception\ClientException $e3) { // Si los errores son del nivel 400, se lanza esta excepcion
+                        $msg3 = 'Error al consultar el servicio: %d(%s)';
+                        \Log::error(sprintf($msg3, $e3->getResponse()->getStatusCode(), $e3->getResponse()->getReasonPhrase()));
+                        //return false;
+                        $si2 = "si";
+                    }
+                    
+                    if($si2 == 'no')
+                    {
+                        $data3 = json_decode($req3->getBody(), true);
+                        $docenteOk = 'ok';
+                    }
+                    if($docenteOk == 'ok')
+                    {
+                        $rut_sdv = substr($credentials['rut'],0,-1);//quita digto verificador
+                        //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+                        $usr2 = RolUsuario::where('rut','=',$rut_sdv)
+                                    ->select('rol_id')
+                                    ->paginate();
+                        // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+                        if(($usr2->first())==null)
+                        {
+                            RolUsuario::create([
+                            'rut' => $rut_sdv,
+                            'rol_id' => '3'
+                            ]);
+                        }
+                         //cargamdo datos desde el servico REST
+                        $usr = User::where('rut','=',$rut_sdv)
+                                    ->select('id','email')
+                                    ->paginate();
+                        
+
+                        foreach($usr as $v)
+                        {
+                            $v2= $v->id;
+                        }
+                        if(($usr["email"])==null)
+                        {
+                            $usuarios = User::findOrFail($v2);
+                            //fill (rellenar)
+                            $usuarios->fill([
+                                'email' => $data3["email"],
+                                'nombres' => $data3["nombres"],
+                                'apellidos' => $data3["apellidos"],
+                                'perfiles' => "perfiles/h1m7G86a6OR1tLguLSNjj20czNunkW-XjSiKjE0nySu06OWdp3dutyuujpnJc-user2-160x160.png"
+                            ]);
+                            $usuarios->save();
+                        }
+
+                        return (bool) $loginOk;
+                    }
+                    else
+                    {
+                        return (bool) $loginOk;
+                    }
+            }
         }
         return (bool) $loginOk;
     }
