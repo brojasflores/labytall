@@ -234,9 +234,12 @@ class SepaUserProvider implements UserProviderInterface
                     $usuarios->fill([
                         'email' => $data2["email"],
                         'nombres' => $data2["nombres"],
-                        'apellidos' => $data2["apellidos"],
-                        'perfiles' => "perfiles/h1m7G86a6OR1tLguLSNjj20czNunkW-XjSiKjE0nySu06OWdp3dutyuujpnJc-user2-160x160.png"
+                        'apellidos' => $data2["apellidos"]
                     ]);
+                    if(empty($usuarios->perfiles))
+                    {
+                        $usuarios->perfiles = "perfiles/h1m7G86a6OR1tLguLSNjj20czNunkW-XjSiKjE0nySu06OWdp3dutyuujpnJc-user2-160x160.png";
+                    }
                     $usuarios->save();
                 }
                 return (bool) $loginOk;
@@ -290,9 +293,12 @@ class SepaUserProvider implements UserProviderInterface
                             $usuarios->fill([
                                 'email' => $data3["email"],
                                 'nombres' => $data3["nombres"],
-                                'apellidos' => $data3["apellidos"],
-                                'perfiles' => "perfiles/h1m7G86a6OR1tLguLSNjj20czNunkW-XjSiKjE0nySu06OWdp3dutyuujpnJc-user2-160x160.png"
+                                'apellidos' => $data3["apellidos"]
                             ]);
+                            if(empty($usuarios->perfiles))
+                            {
+                                $usuarios->perfiles = "perfiles/h1m7G86a6OR1tLguLSNjj20czNunkW-XjSiKjE0nySu06OWdp3dutyuujpnJc-user2-160x160.png";
+                            }
                             $usuarios->save();
                         }
 

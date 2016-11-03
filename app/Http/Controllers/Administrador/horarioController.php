@@ -11,6 +11,7 @@ use App\Sala;
 use App\Periodo;
 use App\Curso;
 use App\Asignatura;
+use App\Estacion_trabajo;
 use Carbon\Carbon;
 
 
@@ -99,8 +100,40 @@ class horarioController extends Controller
 
 
     public function update(Request $request, $id)
-    {
-       
+    {   
+        $var = Horario::where('id','=',$id)
+               ->select('sala_id')
+               ->paginate();
+
+        foreach($var as $v)
+        {
+            $v2= $v->sala_id;
+        }
+
+        $esT = Estacion_trabajo::where('sala_id','=',$v2)
+               ->select('id')
+               ->paginate();
+
+        foreach($esT as $v)
+        {
+            $v3[]= $v->id;
+        }
+
+        $cont= count($v3); 
+        for($i=0;$i<$cont;$i++)
+        {
+            $est = Estacion_trabajo::findOrFail($v3[$i]);
+            $est->fill([
+            'disponibilidad' => "si",
+            ]); 
+            $est->save();
+        }
+        $est->save();
+
+        /*$horarios = Horario::findOrFail($id);
+        $curso = $horarios->$request->get('cursoHorario');
+        Horario::where('curso_id',$curso)->delete();*/
+        // asi dejó nico
         Horario::where('curso_id',$request->get('cursoHorario'))->delete();
 
         if($request->get('permanencia') === 'dia')
@@ -118,6 +151,25 @@ class horarioController extends Controller
                 'rut' => $request->get('rutHorario'),
                 'permanencia' => 'dia'
                 ]);
+
+            $id2 = $request->get('salaHorario');
+            $est = Estacion_trabajo::where('sala_id','=',$id2)
+               ->select('id')
+               ->paginate();
+            foreach($est as $v)
+            {
+                $v4[]= $v->id;
+            }
+            $cont2= count($v4); 
+            for($j=0;$j<$cont2;$j++)
+            {
+                $est = Estacion_trabajo::findOrFail($v4[$j]);
+                $est->fill([
+                'disponibilidad' => "no",
+                ]); 
+                $est->save();
+            }
+            $est->save();
 
             return redirect()->route('administrador.horario.index');
         }
@@ -153,6 +205,25 @@ class horarioController extends Controller
                                    'rut' => $request->get('rutHorario'),
                                    'permanencia' => 'semestral'
                                    ]);
+
+                            $id2 = $request->get('salaHorario');
+                            $est = Estacion_trabajo::where('sala_id','=',$id2)
+                               ->select('id')
+                               ->paginate();
+                            foreach($est as $v)
+                            {
+                                $v4[]= $v->id;
+                            }
+                            $cont2= count($v4); 
+                            for($j=0;$j<$cont2;$j++)
+                            {
+                                $est = Estacion_trabajo::findOrFail($v4[$j]);
+                                $est->fill([
+                                'disponibilidad' => "no",
+                                ]); 
+                                $est->save();
+                            }
+                            $est->save();
                         }
                     }
                     if($request->get('dia') === 'martes')
@@ -168,6 +239,25 @@ class horarioController extends Controller
                                    'rut' => $request->get('rutHorario'),
                                    'permanencia' => 'semestral'
                                    ]);
+
+                            $id2 = $request->get('salaHorario');
+                            $est = Estacion_trabajo::where('sala_id','=',$id2)
+                               ->select('id')
+                               ->paginate();
+                            foreach($est as $v)
+                            {
+                                $v4[]= $v->id;
+                            }
+                            $cont2= count($v4); 
+                            for($j=0;$j<$cont2;$j++)
+                            {
+                                $est = Estacion_trabajo::findOrFail($v4[$j]);
+                                $est->fill([
+                                'disponibilidad' => "no",
+                                ]); 
+                                $est->save();
+                            }
+                            $est->save();
                         }
                     }
                     if($request->get('dia') === 'miercoles')
@@ -183,6 +273,25 @@ class horarioController extends Controller
                                    'rut' => $request->get('rutHorario'),
                                    'permanencia' => 'semestral'
                                    ]);
+
+                            $id2 = $request->get('salaHorario');
+                            $est = Estacion_trabajo::where('sala_id','=',$id2)
+                               ->select('id')
+                               ->paginate();
+                            foreach($est as $v)
+                            {
+                                $v4[]= $v->id;
+                            }
+                            $cont2= count($v4); 
+                            for($j=0;$j<$cont2;$j++)
+                            {
+                                $est = Estacion_trabajo::findOrFail($v4[$j]);
+                                $est->fill([
+                                'disponibilidad' => "no",
+                                ]); 
+                                $est->save();
+                            }
+                            $est->save();
                         }
                     }
                     if($request->get('dia') === 'jueves')
@@ -198,6 +307,25 @@ class horarioController extends Controller
                                    'rut' => $request->get('rutHorario'),
                                    'permanencia' => 'semestral'
                                    ]);
+
+                            $id2 = $request->get('salaHorario');
+                            $est = Estacion_trabajo::where('sala_id','=',$id2)
+                               ->select('id')
+                               ->paginate();
+                            foreach($est as $v)
+                            {
+                                $v4[]= $v->id;
+                            }
+                            $cont2= count($v4); 
+                            for($j=0;$j<$cont2;$j++)
+                            {
+                                $est = Estacion_trabajo::findOrFail($v4[$j]);
+                                $est->fill([
+                                'disponibilidad' => "no",
+                                ]); 
+                                $est->save();
+                            }
+                            $est->save();
                         }
                     }
                     if($request->get('dia') === 'viernes')
@@ -213,6 +341,25 @@ class horarioController extends Controller
                                    'rut' => $request->get('rutHorario'),
                                    'permanencia' => 'semestral'
                                    ]);
+
+                            $id2 = $request->get('salaHorario');
+                            $est = Estacion_trabajo::where('sala_id','=',$id2)
+                               ->select('id')
+                               ->paginate();
+                            foreach($est as $v)
+                            {
+                                $v4[]= $v->id;
+                            }
+                            $cont2= count($v4); 
+                            for($j=0;$j<$cont2;$j++)
+                            {
+                                $est = Estacion_trabajo::findOrFail($v4[$j]);
+                                $est->fill([
+                                'disponibilidad' => "no",
+                                ]); 
+                                $est->save();
+                            }
+                            $est->save();
                         }
                     }
                     if($request->get('dia') === 'sabado')
@@ -228,6 +375,25 @@ class horarioController extends Controller
                                    'rut' => $request->get('rutHorario'),
                                    'permanencia' => 'semestral'
                                    ]);
+
+                            $id2 = $request->get('salaHorario');
+                            $est = Estacion_trabajo::where('sala_id','=',$id2)
+                               ->select('id')
+                               ->paginate();
+                            foreach($est as $v)
+                            {
+                                $v4[]= $v->id;
+                            }
+                            $cont2= count($v4); 
+                            for($j=0;$j<$cont2;$j++)
+                            {
+                                $est = Estacion_trabajo::findOrFail($v4[$j]);
+                                $est->fill([
+                                'disponibilidad' => "no",
+                                ]); 
+                                $est->save();
+                            }
+                            $est->save();
                         }
                     }
                     $inicio->addWeek(1);
@@ -235,22 +401,42 @@ class horarioController extends Controller
             }
             return redirect()->route('administrador.horario.index');
         }
-        /*$horarios = Horario::findOrFail($id);     
-        //fill (rellenar)
-        $horarios->fill([
-            'fecha' => $request->get('fechaHorario'),
-            'sala_id' => $request->get('salaHorario'),
-            'periodo_id' => $request->get('periodoHorario'),
-            'curso_id' => $request->get('cursoHorario')
-            ]);
-        $horarios->save();
-*/
+
         return redirect()->route('horario.index');
     }
 
 
     public function destroy($id)
     {
+        $var = Horario::where('id','=',$id)
+               ->select('sala_id')
+               ->paginate();
+
+        foreach($var as $v)
+        {
+            $v2= $v->sala_id;
+        }
+
+        $esT = Estacion_trabajo::where('sala_id','=',$v2)
+               ->select('id')
+               ->paginate();
+
+        foreach($esT as $v)
+        {
+            $v3[]= $v->id;
+        }
+
+        $cont= count($v3); 
+        for($i=0;$i<$cont;$i++)
+        {
+            $est = Estacion_trabajo::findOrFail($v3[$i]);
+            $est->fill([
+            'disponibilidad' => "si",
+            ]); 
+            $est->save();
+        }
+        $est->save();
+
         $horarios = Horario::findOrFail($id);
         $curso = $horarios->curso_id;
         Horario::where('curso_id',$curso)->delete();
