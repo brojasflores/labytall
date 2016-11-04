@@ -129,12 +129,18 @@ class horarioController extends Controller
             $est->save();
         }
         $est->save();
-
-        /*$horarios = Horario::findOrFail($id);
-        $curso = $horarios->$request->get('cursoHorario');
-        Horario::where('curso_id',$curso)->delete();*/
+        
         // asi dejó nico
-        Horario::where('curso_id',$request->get('cursoHorario'))->delete();
+        /*Horario::findOrFail($id);
+        Horario::where('curso_id',$request->get('cursoHorario'))->delete();*/
+        
+        //yo
+        $horarios = Horario::findOrFail($id);
+        $curso = $horarios->curso_id;
+        $periodo = $horarios->periodo_id;
+        Horario::where('curso_id',$curso)
+                ->where('periodo_id',$periodo)
+                ->delete();
 
         if($request->get('permanencia') === 'dia')
         {
@@ -439,7 +445,10 @@ class horarioController extends Controller
 
         $horarios = Horario::findOrFail($id);
         $curso = $horarios->curso_id;
-        Horario::where('curso_id',$curso)->delete();
+        $periodo = $horarios->periodo_id;
+        Horario::where('curso_id',$curso)
+                ->where('periodo_id',$periodo)
+                ->delete();
         return redirect()->route('administrador.horario.index');
     }
 }
