@@ -189,6 +189,7 @@
 		    	</div>
 		    </div>
 	    </div>	
+	    <input type="hidden" name="rol" value="docente">
 		<button type="submit" class="fa fa-edit btn btn-primary">Reservar</button>
 	</div>
 </div>
