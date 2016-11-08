@@ -1,0 +1,172 @@
+<?php
+
+namespace App\Http\Controllers\Administrador;
+
+use Illuminate\Http\Request;
+
+use App\Http\Requests;
+
+use App\Sala;
+use App\Periodo;
+use App\Curso;
+use App\Asignatura;
+use App\Horario_Alumno;
+use App\Estacion_trabajo;
+use App\RolUsuario;
+use App\Rol;
+use Carbon\Carbon;
+
+
+class asignarAlumController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('admin');
+    }
+    
+    public function index()
+    {
+        $periodos = Periodo::select('id','bloque')->orderBy('bloque','asc')->get();
+
+        $salas = Sala::join('estacion_trabajo','sala.id','=','estacion_trabajo.sala_id')
+                      ->where('estacion_trabajo.disponibilidad','=','si')
+                      ->select('sala.id','sala.nombre')
+                      ->orderBy('sala.nombre','asc')
+                      ->groupBy('sala.id','sala.nombre')
+                      ->get();
+
+        $est = Sala::join('estacion_trabajo','sala.id','=','estacion_trabajo.sala_id')
+                      ->where('estacion_trabajo.disponibilidad','=','si')
+                      ->select('estacion_trabajo.sala_id as est_salaid','estacion_trabajo.id as est_id','estacion_trabajo.nombre as est_name','sala.nombre')
+                      ->orderBy('sala.nombre','asc')->get();
+
+        return view ('Administrador/asignar/alumno',compact('salas','periodos','est'));
+        //return view ('Administrador/asignar/index');
+    }
+
+
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        if($request->get('permanencia') === 'dia')
+        {
+            $fecha_separada = explode('/',$request->get('fecha'));
+            $fecha_con_guion = [$fecha_separada[2],$fecha_separada[0],$fecha_separada[1]];
+            $fecha_formateada = implode('-',$fecha_con_guion);
+        }
+
+        $idEst= Estacion_trabajo::where('id','=',$request->get('estacion'))->select('sala_id')->get();
+
+        foreach($idEst as $v)
+        {
+            $v1= $v->sala_id;
+        }
+
+        if($request->get('rol') == 'alumno')
+        {
+            $alumno = RolUsuario::join('rol','rol.id','=','rol_users.rol_id')
+                                ->where('rol_users.rut','=',$request->get('usuario'))->select('rol.nombre')->get();
+        }  
+
+        foreach($alumno as $d)
+        {
+            if($d->nombre == 'alumno')
+            {
+                if($v1 == $request->get('sala'))
+                {                
+                    //dd('alumnito');
+                    $fecha_separada = explode('/',$request->get('fecha'));
+                    $fecha_con_guion = [$fecha_separada[2],$fecha_separada[0],$fecha_separada[1]];
+                    $fecha_formateada = implode('-',$fecha_con_guion);
+               
+                    Horario_Alumno::create([
+                        'fecha' => $fecha_formateada,
+                        'rut' => $request->get('usuario'),
+                        'periodo_id' => $request->get('periodo'),
+                        'sala_id' => $request->get('sala'),
+                        'estacion_trabajo_id' => $request->get('estacion')
+                        ]);
+
+                    //pone disponibilidad en no para un lab completo
+                    $id = $request->get('estacion');
+                    $est = Estacion_trabajo::findOrFail($id);
+                    $est->fill([
+                        'disponibilidad' => "no",
+                        ]); 
+                    $est->save();
+                }
+                else
+                {
+                    //no corresponde el lab con la estacion
+                    dd('nop');
+                }
+            }
+        }
+        return redirect()->route('administrador.horarioAlumno.index');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+    }
+}

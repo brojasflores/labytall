@@ -33,11 +33,14 @@ Route::group(['prefix' => 'administrador','namespace' => 'Administrador'], funct
 	Route::resource('/asignatura','asignaturaController');
 	Route::resource('/curso','cursoController');
 	Route::resource('/horario','horarioController');
+
+	Route::resource('/horarioAlumno','horarioAlumnoController');
+
 	Route::resource('/asignar','asignarController');
 	Route::get('/asignar_docente', ['as' => 'administrador.asignar.docente', 'uses' => 'asignarController@docente']);
 	Route::get('/asignar_ayudante',['as' => 'administrador.asignar.ayudante', 'uses' => 'asignarController@ayudante']);
-	Route::get('/asignar_alumno',['as' => 'administrador.asignar.alumno', 'uses' => 'asignarController@alumno']);
-	
+	Route::resource('/asignar_alumno','asignarAlumController');
+
 	Route::get('/listado_graficas', 'GraficasController@index');
 });
 

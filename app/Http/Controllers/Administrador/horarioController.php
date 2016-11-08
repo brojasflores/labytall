@@ -130,11 +130,6 @@ class horarioController extends Controller
         }
         $est->save();
         
-        // asi dejó nico
-        /*Horario::findOrFail($id);
-        Horario::where('curso_id',$request->get('cursoHorario'))->delete();*/
-        
-        //yo
         $horarios = Horario::findOrFail($id);
         $curso = $horarios->curso_id;
         $periodo = $horarios->periodo_id;
@@ -415,12 +410,13 @@ class horarioController extends Controller
     public function destroy($id)
     {
         $var = Horario::where('id','=',$id)
-               ->select('sala_id')
+               ->select('sala_id','permanencia')
                ->paginate();
-
+        
         foreach($var as $v)
         {
             $v2= $v->sala_id;
+            $per=$v->permanencia;
         }
 
         $esT = Estacion_trabajo::where('sala_id','=',$v2)
@@ -448,6 +444,7 @@ class horarioController extends Controller
         $periodo = $horarios->periodo_id;
         Horario::where('curso_id',$curso)
                 ->where('periodo_id',$periodo)
+                ->where('permanencia',$per)
                 ->delete();
         return redirect()->route('administrador.horario.index');
     }
