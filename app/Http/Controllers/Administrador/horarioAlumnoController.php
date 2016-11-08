@@ -12,6 +12,7 @@ use App\Periodo;
 use App\Curso;
 use App\Asignatura;
 use App\Estacion_trabajo;
+use App\RolUsuario;
 use Carbon\Carbon;
 
 
@@ -56,13 +57,11 @@ class horarioAlumnoController extends Controller
 
     public function edit($id,Request $request)
     {
-        /*if($request->ajax()){
+        if($request->ajax()){
          
-            $horario = Horario::where('id',$request->get('id'))->select('curso_id','periodo_id','sala_id','permanencia','fecha')->get();
+            $horario = Horario_Alumno::where('id',$request->get('id'))->select('fecha','rut','periodo_id','sala_id','estacion_trabajo_id')->get();
         
-            $fecha_inicio = Horario::where('curso_id',$horario[0]->curso_id)->min('fecha');
-
-            $fecha_fin = Horario::where('curso_id',$horario[0]->curso_id)->max('fecha');
+            $fecha_inicio = Horario_Alumno::where('curso_id',$horario[0]->curso_id)->min('fecha');
 
             $dia = date('w',strtotime($fecha_inicio));
 
@@ -85,97 +84,99 @@ class horarioAlumnoController extends Controller
         }
         else{
 
-            $horarios = Horario::findOrFail($id);
+            $horarios = Horario_Alumno::findOrFail($id);         
 
-            $salas = Sala::all();
-            $periodos = Periodo::all();
-            $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
-                            ->select('curso.id','curso.seccion','asignatura.nombre')
-                            ->get();
-            
-            return view('Administrador/horarios/edit',compact('horarios','salas','periodos','cursos'));
-        }*/
+            $periodos = Periodo::select('id','bloque')->orderBy('bloque','asc')->get();
+
+            $salas = Sala::join('estacion_trabajo','sala.id','=','estacion_trabajo.sala_id')
+                          ->where('estacion_trabajo.disponibilidad','=','si')
+                          ->select('sala.id','sala.nombre')
+                          ->orderBy('sala.nombre','asc')
+                          ->groupBy('sala.id','sala.nombre')
+                          ->get();
+
+            $est = Sala::join('estacion_trabajo','sala.id','=','estacion_trabajo.sala_id')
+                          ->where('estacion_trabajo.disponibilidad','=','si')
+                          ->select('estacion_trabajo.sala_id as est_salaid','estacion_trabajo.id as est_id','estacion_trabajo.nombre as est_name','sala.nombre')
+                          ->orderBy('sala.nombre','asc')->get();
+
+
+            return view('Administrador/horariosAlum/edit',compact('horarios','salas','periodos','est'));
+        }
     }
 
 
     public function update(Request $request, $id)
     {   
-        /*$var = Horario::where('id','=',$id)
-               ->select('sala_id')
-               ->paginate();
+        $var = Horario_Alumno::where('id','=',$id)
+             ->select('estacion_trabajo_id')
+             ->paginate();
 
         foreach($var as $v)
         {
-            $v2= $v->sala_id;
+            $v2= $v->estacion_trabajo_id;
         }
 
-        $esT = Estacion_trabajo::where('sala_id','=',$v2)
-               ->select('id')
-               ->paginate();
-
-        foreach($esT as $v)
-        {
-            $v3[]= $v->id;
-        }
-
-        $cont= count($v3); 
-        for($i=0;$i<$cont;$i++)
-        {
-            $est = Estacion_trabajo::findOrFail($v3[$i]);
+        $est = Estacion_trabajo::findOrFail($v2);
             $est->fill([
             'disponibilidad' => "si",
             ]); 
             $est->save();
-        }
-        $est->save();
-        
-        //yo
-        $horarios = Horario::findOrFail($id);
-        $curso = $horarios->curso_id;
-        $periodo = $horarios->periodo_id;
-        Horario::where('curso_id',$curso)
-                ->where('periodo_id',$periodo)
-                ->delete();
 
         if($request->get('permanencia') === 'dia')
         {
-            //Formatear la fecha de mm/dd/aaaa => aaaa-mm-dd
             $fecha_separada = explode('/',$request->get('fecha'));
             $fecha_con_guion = [$fecha_separada[2],$fecha_separada[0],$fecha_separada[1]];
             $fecha_formateada = implode('-',$fecha_con_guion);
-       
-            Horario::create([
-                'fecha' => $fecha_formateada,
-                'sala_id' => $request->get('salaHorario'),
-                'periodo_id' => $request->get('periodoHorario'),
-                'curso_id' => $request->get('cursoHorario'),
-                'rut' => $request->get('rutHorario'),
-                'permanencia' => 'dia'
-                ]);
-
-            $id2 = $request->get('salaHorario');
-            $est = Estacion_trabajo::where('sala_id','=',$id2)
-               ->select('id')
-               ->paginate();
-            foreach($est as $v)
-            {
-                $v4[]= $v->id;
-            }
-            $cont2= count($v4); 
-            for($j=0;$j<$cont2;$j++)
-            {
-                $est = Estacion_trabajo::findOrFail($v4[$j]);
-                $est->fill([
-                'disponibilidad' => "no",
-                ]); 
-                $est->save();
-            }
-            $est->save();
-
-            return redirect()->route('administrador.horario.index');
         }
 
-        return redirect()->route('horario.index');*/
+        $idEst= Estacion_trabajo::where('id','=',$request->get('estacion'))->select('sala_id')->get();
+
+        foreach($idEst as $v)
+        {
+            $v1= $v->sala_id;
+        }
+
+        if($request->get('rol') == 'alumno')
+        {
+            $alumno = RolUsuario::join('rol','rol.id','=','rol_users.rol_id')
+                                ->where('rol_users.rut','=',$request->get('rutHorario'))->select('rol.nombre')->get();
+        }  
+        foreach($alumno as $d)
+        {
+            if($d->nombre == 'alumno')
+            {
+                if($v1 == $request->get('salaHorario'))
+                {                
+                    $fecha_separada = explode('/',$request->get('fecha'));
+                    $fecha_con_guion = [$fecha_separada[2],$fecha_separada[0],$fecha_separada[1]];
+                    $fecha_formateada = implode('-',$fecha_con_guion);
+
+                    $h = Horario_Alumno::findOrFail($id);
+                    $h->fill([
+                        'fecha' => $fecha_formateada,
+                        'rut' => $request->get('rutHorario'),
+                        'periodo_id' => $request->get('periodoHorario'),
+                        'sala_id' => $request->get('salaHorario'),
+                        'estacion_trabajo_id' => $request->get('estacion')
+                    ]); 
+                    $h->save();
+
+                    $id2 = $request->get('estacion');
+                    $est2 = Estacion_trabajo::findOrFail($id2);
+                    $est2->fill([
+                        'disponibilidad' => "no",
+                        ]); 
+                    $est2->save();
+                }
+                else
+                {
+                    //no corresponde el lab con la estacion
+                    dd('nop');
+                }
+            }
+            return redirect()->route('administrador.horarioAlumno.index');
+        }
     }
 
 

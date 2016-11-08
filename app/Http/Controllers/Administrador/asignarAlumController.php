@@ -47,7 +47,6 @@ class asignarAlumController extends Controller
                       ->orderBy('sala.nombre','asc')->get();
 
         return view ('Administrador/asignar/alumno',compact('salas','periodos','est'));
-        //return view ('Administrador/asignar/index');
     }
 
 
