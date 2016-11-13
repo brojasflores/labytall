@@ -96,7 +96,7 @@
 <div class="row" style="margin-left: 0px">
 
 <form role="form" method="post" action="{{ route('administrador.asignar_alumno.store') }}">
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+	<input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
 	  <div class="box-body">
 	    <div class="form-group">
 	    	<div class="row">
@@ -104,6 +104,7 @@
 					<div class="form-group">
 					  <label for="sel1">Salas: </label>
 					  <select class="form-control" id="sala" name="sala">
+					  	<option value="0" name="sala">Seleccione</option>
 					  	@foreach($salas as $sala)
 					    	<option value="{{ $sala->id }}" name="sala">{{ $sala->nombre }}</option>
 						@endforeach
@@ -111,23 +112,10 @@
 					</div>
 		    	</div>		    	
 		    </div>
-	    </div>	
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div class="form-group">
-					  <label for="sel1">Permanencia: </label>
-					  <select class="form-control" id="permanencia" name="permanencia">
-					  		<option value="0">Seleccione</option>
-					    	<option value="dia" name="dia">Día</option>
-					  </select>
-					</div>
-		    	</div>		    	
-		    </div>
 	    </div>	   
 	    <div class="form-group">
 	    	<div class="row">
-	    		<div class="col-md-3" id="col-fecha" style="display: none;">
+	    		<div class="col-md-3" id="col-fecha">
 					<div class="form-group">
 					  <label for="sel1">Fecha: </label>
 						  <input type="text" class="form-control" placeholder="Fecha" name="fecha" id="fecha" aria-describedby="basic-addon2">
@@ -165,14 +153,9 @@
 	    <div class="form-group">
 	    	<div class="row">
 	    		<div class="col-md-3">
-					<div class="form-group">
+					<div class="form-group" id="estaciones" style="display: none;">
 					  <label for="sel1">Estaciones de Trabajo: </label>
-					  	<select class="form-control" id="estacion" name="estacion">
-					  	@foreach($est as $e)
-					  	@if($e->est_salaid)
-					    	<option value="{{ $e->est_id }}" name="sala">{{ $e->nombre }} - Estación N° {{$e->est_name}}</option>
-						@endif
-						@endforeach
+					  	<select class="form-control" id="estacion" name="estacion">	
 					  </select>
 					</div>
 		    	</div>
@@ -197,27 +180,39 @@
 @section('scripts')
   <script>
 
-  $( function() {
+  $( function(){
     $( "#fecha" ).datepicker({
       showButtonPanel: true
     });
-    $( "#fecha_inicio" ).datepicker({
-      showButtonPanel: true
-    });
-    $( "#fecha_fin" ).datepicker({
-      showButtonPanel: true
-    });
-  } );
+
+  });
+
   $(document).ready(function(){
-	  $("#permanencia").change(function(){
-	  	if($("#permanencia").val() == 'dia')
-	  	{
-	  		$("#col-fecha").css('display','block');
-	  		$("#col-dia").css('display','none');
-	  		$("#col-fecha-ini").css('display','none');
-	  		$("#col-fecha-fin").css('display','none');
-	  	}
-	  });
-	});
+  	//# es para llamar una id
+  	$("#sala").change(function(){
+  		var id = $("#sala").val();
+  		var token = $("#token").val();
+  		$.ajax({
+  			url: '/administrador/asignar_alumno',
+  			headers:{'X-CSRF-TOKEN': token},
+  			type: 'POST',
+  			dataType: 'json',
+  			data:{id : id},
+  			//response es la respuesta que trae desde el controlador
+  			success: function(response){	
+  				$("#estacion").empty();
+  				$("#estaciones").css('display','block');
+  				//el k es un índice (posición) y v (valor ocmo tal del elemento)
+  				$.each(response,function(k,v){
+					$("#estacion").append("<option value='"+v.id+"' name='sala'>"+v.sala+" - Estación N°"+v.nombre+"</option>");
+  				});
+  				
+  			}
+  		});
+
+  	});
+
+  });
+
   </script>
 @stop

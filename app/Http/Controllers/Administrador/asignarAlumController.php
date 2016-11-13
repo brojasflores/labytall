@@ -69,6 +69,17 @@ class asignarAlumController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->ajax()){
+            $estacion = Estacion_trabajo::join('sala','estacion_trabajo.sala_id','=','sala.id')
+                                        ->where('estacion_trabajo.sala_id',$request->get('id'))
+                                        ->where('estacion_trabajo.disponibilidad','si')
+                                        ->select('estacion_trabajo.*','sala.nombre as sala')
+                                        ->orderBy('estacion_trabajo.id','asc')
+                                        ->get();
+
+            return response()->json($estacion);
+        }
+
         if($request->get('permanencia') === 'dia')
         {
             $fecha_separada = explode('/',$request->get('fecha'));

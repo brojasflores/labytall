@@ -58,29 +58,25 @@ class horarioAlumnoController extends Controller
     public function edit($id,Request $request)
     {
         if($request->ajax()){
-         
-            $horario = Horario_Alumno::where('id',$request->get('id'))->select('fecha','rut','periodo_id','sala_id','estacion_trabajo_id')->get();
-        
-            $fecha_inicio = Horario_Alumno::where('curso_id',$horario[0]->curso_id)->min('fecha');
+         //dd($request);
+            if($request->get('action') == 'edit')
+            {
 
-            $dia = date('w',strtotime($fecha_inicio));
+                $estacion = Estacion_trabajo::join('sala','estacion_trabajo.sala_id','=','sala.id')
+                                            ->where('estacion_trabajo.sala_id',$request->get('id'))
+                                            ->where('estacion_trabajo.disponibilidad','si')
+                                            ->select('estacion_trabajo.*','sala.nombre as sala')
+                                            ->orderBy('estacion_trabajo.id','asc')
+                                            ->get();
 
-            if($dia == 1){$dia = 'lunes';}
-            if($dia == 2){$dia = 'martes';}   
-            if($dia == 3){$dia = 'miercoles';}
-            if($dia == 4){$dia = 'jueves';}
-            if($dia == 5){$dia = 'viernes';}  
-            if($dia == 6){$dia = 'sabado';}
-
-            $datos = ['horario' => $horario,'dia' => $dia,'fecha_inicio' => $fecha_inicio, 'fecha_fin' => $fecha_fin];
-
-            if($request->get('permanencia') == 'semestral'){
-                return response()->json($datos);
+                return response()->json($estacion);                
             }
-            if($request->get('permanencia') == 'dia'){
-                return response()->json($dia);
-            }
-          
+
+
+            $horario = Horario_Alumno::find($request->get('id'));
+
+            return response()->json($horario);   
+
         }
         else{
 
@@ -96,7 +92,8 @@ class horarioAlumnoController extends Controller
                           ->get();
 
             $est = Sala::join('estacion_trabajo','sala.id','=','estacion_trabajo.sala_id')
-                          ->where('estacion_trabajo.disponibilidad','=','si')
+                          ->join('horario_alum','horario_alum.sala_id','=','sala.id')
+                          ->where('horario_alum.id',$id)
                           ->select('estacion_trabajo.sala_id as est_salaid','estacion_trabajo.id as est_id','estacion_trabajo.nombre as est_name','sala.nombre')
                           ->orderBy('sala.nombre','asc')->get();
 

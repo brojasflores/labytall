@@ -88,103 +88,78 @@
 <h1>Editar Horario Alumnos</h1>
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
 {!! Form::model($horarios,['route' => ['administrador.horarioAlumno.update',$horarios], 'method' => 'PUT']) !!}
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-	  <div class="box-body">
-	   
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div class="form-group">
-					  <label for="sel1">Salas: </label>
-					  <select class="form-control" id="sala_id" name="salaHorario">
-					  	@foreach($salas as $sal)
-					    	<option id="{{ $sal->id }}" value="{{ $sal->id }}" name="salaHorario">{{ $sal->nombre }}</option>
-						@endforeach
-					  </select>
-					</div>
-		    	</div>
-		    </div>
-	    </div>
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div class="form-group">
-					  <label for="sel1">Permanencia: </label>
-					  <select class="form-control" id="permanencia" name="permanencia">
-					    	<option id="semestral" value="semestral" name="semestral">Selecione</option>
-					    	<option id="dia" value="dia" name="dia">Día</option>
-					  </select>
-					</div>
-		    	</div>		    	
-		    </div>
-	    </div>	
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3" id="col-fecha" style="display: none;">
-					<div class="form-group">
-					  <label for="sel1">Fecha: </label>
-						  <input type="text" class="form-control" placeholder="Fecha" name="fecha" id="fecha" aria-describedby="basic-addon2">
-					</div>
-		    	</div>
-	    		<div class="col-md-3" id="col-dia" style="display: none";>
-					<div class="form-group">
-					  <label for="sel1">Día: </label>
-						<select class="form-control" id="dia" name="dia">
-					    	<option id="lunes" value="lunes" name="dia">Lunes</option>
-					    	<option id="martes" value="martes" name="dia">Martes</option>
-					    	<option id="miercoles" value="miercoles" name="dia">Miércoles</option>
-					    	<option id="jueves" value="jueves" name="dia">Jueves</option>
-					    	<option id="viernes" value="viernes" name="dia">Viernes</option>
-					    	<option id="sabado" value="sabado" name="dia">Sábado</option>					    						    	
-					    </select>
-					</div>
-		    	</div>			    			    			    			    	
-		    </div>
-	    </div> 
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div class="form-group">
-					  <label for="sel1">Período: </label>
-					  <select class="form-control" id="periodo_id" name="periodoHorario">
-					  	@foreach($periodos as $per)
-					    	<option id="{{ $per->id }}" value="{{ $per->id }}" name="periodoHorario">{{ $per->bloque }}</option>
-						@endforeach
-					  </select>
-					</div>
-		    	</div>
-		    </div>
-	    </div>
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div class="form-group">
-					  <label for="sel1">Estaciones de Trabajo: </label>
-					  <select class="form-control" id="estacion" name="estacion">
-					  	@foreach($est as $e)
-					  	@if($e->est_salaid)
-					    	<option value="{{ $e->est_id }}" name="sala">{{ $e->nombre }} - Estación N° {{$e->est_name}}</option>
-						@endif
-						@endforeach
-					  </select>
-					</div>
-		    	</div>
-		    </div>
-	    </div>
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div class="form-group">
-					  <label for="sel1">Rut: </label>
-						  <input type="text" class="form-control" value="{{ $horarios->rut }}" name="rutHorario" id="rutHorario" aria-describedby="basic-addon2"> 
-					</div>
-		    	</div>
-		    </div>
-	    </div>	    
-	    <input type="hidden" id="horario_id" value="{{ $horarios->id }}">
-	    <input type="hidden" name="rol" value="alumno">
-	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
-	  </div><!-- /.box-body -->
+  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <div class="box-body">
+     
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-3">
+          <div class="form-group">
+            <label for="sel1">Salas: </label>
+            <select class="form-control" id="sala_id" name="salaHorario">
+              
+              @foreach($salas as $sal)
+                <option id="{{ $sal->id }}" value="{{ $sal->id }}" name="salaHorario">{{ $sal->nombre }}</option>
+            @endforeach
+            </select>
+          </div>
+          </div>
+        </div>
+      </div>  
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-3" id="col-fecha">
+          <div class="form-group">
+            <label for="sel1">Fecha: </label>
+              <input type="text" class="form-control" placeholder="Fecha" name="fecha" id="fecha" aria-describedby="basic-addon2">
+          </div>
+          </div>                                          
+        </div>
+      </div> 
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-3">
+          <div class="form-group">
+            <label for="sel1">Período: </label>
+            <select class="form-control" id="periodo_id" name="periodoHorario">
+              @foreach($periodos as $per)
+                <option id="{{ $per->id }}" value="{{ $per->id }}" name="periodoHorario">{{ $per->bloque }}</option>
+            @endforeach
+            </select>
+          </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-3">
+          <div class="form-group">
+            <label for="sel1">Estaciones de Trabajo: </label>
+            <select class="form-control" id="estacion" name="estacion">
+              @foreach($est as $e)
+            
+                <option value="{{ $e->est_id }}" id="{{ $e->est_id }}" name="estacion">{{ $e->nombre }} - Estación N° {{$e->est_name}}</option>
+            
+            @endforeach
+            </select>
+          </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-3">
+          <div class="form-group">
+            <label for="sel1">Rut: </label>
+              <input type="text" class="form-control" value="{{ $horarios->rut }}" name="rutHorario" id="rutHorario" aria-describedby="basic-addon2"> 
+          </div>
+          </div>
+        </div>
+      </div>      
+      <input type="hidden" id="horario_id" value="{{ $horarios->id }}">
+      <input type="hidden" name="rol" value="alumno">
+      <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
+    </div><!-- /.box-body -->
 {!! Form::close() !!}
 @stop
 
@@ -194,81 +169,53 @@ $( function() {
 $( "#fecha" ).datepicker({
   showButtonPanel: true
 });
-$( "#fecha_inicio" ).datepicker({
-  showButtonPanel: true
-});
-$( "#fecha_fin" ).datepicker({
-  showButtonPanel: true
-});
+
 } );
 
 $(document).ready(function(){
-	$.ajax({
-		// con .val saco el valor del value
-        data:  {'id': $("#horario_id").val(),'permanencia': $("#permanencia").val()},
+    //# es para llamar una id
+    $("#sala_id").change(function(){
+      var id = $("#sala_id").val();
+      var token = $("#token").val();
+      $.ajax({
+        url: '/administrador/horarioAlumno/'+id+'/edit',
+        headers:{'X-CSRF-TOKEN': token},
+        type: 'GET',
+        dataType: 'json',
+        data:{id : id,action: 'edit'},
+        //response es la respuesta que trae desde el controlador
+        success: function(response){  
+          $("#estacion").empty();
+         console.log(response);
+          //el k es un índice (posición) y v (valor ocmo tal del elemento)
+          $.each(response,function(k,v){
+          $("#estacion").append("<option value='"+v.id+"' name='sala'>"+v.sala+" - Estación N°"+v.nombre+"</option>");
+          });
+          
+        }
+      });
+
+    });
+
+  $.ajax({
+    // con .val saco el valor del value
+        data:  {'id': $("#horario_id").val()},
         url:   '/administrador/horarioAlumno/'+$("#horario_id")+'/edit',
         type:  'get',
         dataType: 'json',
         success:  function(respuesta) {   
-        console.log(respuesta);
+        console.log(respuesta.estacion_trabajo_id);
 
-        $('#sala_id option[id='+respuesta.horario[0].sala_id+']').attr('selected', 'selected');
-		$('#periodo_id option[id='+respuesta.horario[0].periodo_id+']').attr('selected', 'selected');
-		$('#curso_id option[id='+respuesta.horario[0].curso_id+']').attr('selected', 'selected'); 
-		$('#permanencia option[id='+respuesta.horario[0].permanencia+']').attr('selected', 'selected');
-
-        if($("#permanencia").val() == 'semestral')
-		{
-
-			$("#col-fecha").css('display','none');
-			$("#col-dia").css('display','block');
-			$("#col-fecha-ini").css('display','block');
-			$("#col-fecha-fin").css('display','block');
-
-			var date = (respuesta.fecha_inicio).split('-');
-			var fecha_inicio = date[1] + '/' + date[2] + '/' + date[0];
-
-			var date = (respuesta.fecha_fin).split('-');
-			var fecha_fin = date[1] + '/' + date[2] + '/' + date[0];
-
-			$("#fecha_inicio").val(fecha_inicio);
-			$("#fecha_fin").val(fecha_fin);
-
-			$('#dia option[id='+respuesta.dia+']').attr('selected', 'selected');
-		}
-		if($("#permanencia").val() == 'dia')
-		{
-			$("#col-fecha").css('display','block');
-			$("#col-dia").css('display','none');
-			$("#col-fecha-ini").css('display','none');
-			$("#col-fecha-fin").css('display','none');
-
-			var date = (respuesta.horario[0].fecha).split('-');
-			var newDate = date[1] + '/' + date[2] + '/' + date[0];
-
-			$("#fecha").val(newDate);
-			$('#dia option[id='+respuesta.dia+']').attr('selected', 'selected');
-
-		}
+        $('#sala_id option[id='+respuesta.sala_id+']').attr('selected', 'selected');
+    $('#periodo_id option[id='+respuesta.periodo_id+']').attr('selected', 'selected');
+    $('#estacion option[id='+respuesta.estacion_trabajo_id+']').attr('selected', 'selected'); 
+    var fecha_split = (respuesta.fecha).split('-');
+    console.log(fecha_split);
+    $('#fecha').val(fecha_split[1]+'/'+fecha_split[2]+'/'+fecha_split[0]);
 
         }
     });
-	$("#permanencia").change(function(){
-		if($("#permanencia").val() == 'semestral')
-		{
-			$("#col-fecha").css('display','none');
-			$("#col-dia").css('display','block');
-			$("#col-fecha-ini").css('display','block');
-			$("#col-fecha-fin").css('display','block');
-		}
-		if($("#permanencia").val() == 'dia')
-		{
-			$("#col-fecha").css('display','block');
-			$("#col-dia").css('display','none');
-			$("#col-fecha-ini").css('display','none');
-			$("#col-fecha-fin").css('display','none');
-		}
-	});
+
 });
 
 </script>
