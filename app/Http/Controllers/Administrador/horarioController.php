@@ -32,6 +32,7 @@ class horarioController extends Controller
                             ->join('sala','horario.sala_id','=','sala.id')
                             ->join('users','horario.rut','=','users.rut')
                             ->select('horario.id','horario.fecha','horario.rut','users.nombres as horario_name','users.apellidos as horario_apell','horario.permanencia','asignatura.nombre as asig_nombre','periodo.bloque','sala.nombre as sala_nombre')
+                            ->orderBy('periodo.bloque','asc')
                             ->paginate();
 
         return view ('Administrador/horarios/index', compact('horarios')); 
@@ -58,7 +59,10 @@ class horarioController extends Controller
     {
         if($request->ajax()){
          
-            $horario = Horario::where('id',$request->get('id'))->select('curso_id','periodo_id','sala_id','permanencia','fecha')->get();
+            $horario = Horario::where('id',$request->get('id'))
+                               ->select('curso_id','periodo_id','sala_id','permanencia','fecha')
+                               ->orderBy('periodo_id','asc')
+                               ->get();
         
             $fecha_inicio = Horario::where('curso_id',$horario[0]->curso_id)->min('fecha');
 
@@ -89,6 +93,9 @@ class horarioController extends Controller
 
             $salas = Sala::all();
             $periodos = Periodo::all();
+
+            Periodo::orderBy('id','asc')->get();
+
             $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
                             ->select('curso.id','curso.seccion','asignatura.nombre')
                             ->get();

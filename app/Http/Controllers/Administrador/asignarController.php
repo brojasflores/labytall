@@ -32,15 +32,15 @@ class asignarController extends Controller
     
     public function index()
     {
-        //$asignaturas = Asignatura::all();
-        //se pasa la variable sin el peso con compact
         return view ('Administrador/asignar/index');
     }
 
     public function docente()
     {
         $salas = Sala::select('id','nombre')->orderBy('nombre','asc')->get();
-        $periodos = Periodo::select('id','bloque')->orderBy('bloque','asc')->get();
+        $periodos = Periodo::select('id','bloque')
+                            ->orderBy('id','asc')->get();
+
         $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
                         ->select('curso.id','curso.seccion','asignatura.nombre')
                         ->orderBy('asignatura.nombre','asc')
@@ -52,7 +52,9 @@ class asignarController extends Controller
     public function ayudante()
     {
         $salas = Sala::select('id','nombre')->orderBy('nombre','asc')->get();
-        $periodos = Periodo::select('id','bloque')->orderBy('bloque','asc')->get();
+        $periodos = Periodo::select('id','bloque')
+                            ->orderBy('id','asc')->get();
+
         $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
                         ->select('curso.id','curso.seccion','asignatura.nombre')
                         ->orderBy('asignatura.nombre','asc')
@@ -162,7 +164,8 @@ class asignarController extends Controller
                                 $fecha_formateada2 = implode('-',$fecha_con_guion2);
 
                                 $inicio = new Carbon($fecha_formateada1);
-                                $termino = new Carbon($fecha_formateada2);
+                                $termino = new Carbon($fecha_formateada2); 
+
 
                                 while($inicio <= $termino)
                                 {

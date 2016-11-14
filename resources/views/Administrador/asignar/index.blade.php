@@ -99,7 +99,11 @@
   </br></br>
   <center>
     <form role="form" method="get" action="{{ route('administrador.horario.index')}}">
-      <button type="submit" class="fa fa-eye btn btn-primary"> Ver horarios</button>
+      <button type="submit" class="fa fa-eye btn btn-primary"> Ver horarios Docentes-Ayudantes</button>
+    </form>
+    </br>
+    <form role="form" method="get" action="{{ route('administrador.horarioAlumno.index')}}">
+      <button type="submit" class="fa fa-eye btn btn-primary"> Ver horarios Alumnos</button>
     </form>
   </center>
   </br></br>
