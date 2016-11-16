@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Sala;
 use App\Estacion_trabajo;
 use Auth;
+use App\User;
 
 class salaController extends Controller
 {
@@ -28,8 +29,31 @@ class salaController extends Controller
         //tomar todo lo que venga de la tabla lab y mostrar 
         //all devuelve todo
         $salas = Sala::all();
-        //se pasa la variable sin el peso con compact
-        return view ('Administrador/salas/index', compact('salas'));
+        //Cambio de rol
+        $usr=Auth::User()->rut;
+        //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+        $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
+                    ->where('users.rut','=',$usr)
+                    ->join('rol','rol_users.rol_id','=','rol.id')
+                    ->select('nombre')
+                    ->paginate();
+        // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+        foreach($usr2 as $v)
+        {
+            $v2[]= $v->nombre;
+        }
+        //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
+        $cont = count($v2); //cuenta la cantidad de elementos del array
+        
+        if($cont>1)
+        {
+            return view ('Administrador/salas/index', compact('salas','v2','cont'));
+        }
+        else
+        {
+            return view ('Administrador/salas/index', compact('salas','cont'));
+        }
+        //return view ('Administrador/salas/index', compact('salas'));
     }
 
     /**
@@ -39,7 +63,31 @@ class salaController extends Controller
      */
     public function create()
     {
-        return view('Administrador/salas/create');
+        //Cambio de rol
+        $usr=Auth::User()->rut;
+        //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+        $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
+                    ->where('users.rut','=',$usr)
+                    ->join('rol','rol_users.rol_id','=','rol.id')
+                    ->select('nombre')
+                    ->paginate();
+        // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+        foreach($usr2 as $v)
+        {
+            $v2[]= $v->nombre;
+        }
+        //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
+        $cont = count($v2); //cuenta la cantidad de elementos del array
+        
+        if($cont>1)
+        {
+            return view ('Administrador/salas/create', compact('v2','cont'));
+        }
+        else
+        {
+            return view ('Administrador/salas/create', compact('cont'));
+        }
+        //return view('Administrador/salas/create');
     }
     //el create te lleva a la vista y la vista lleva los datos al store y ese a la bdd
     /**
@@ -102,8 +150,31 @@ class salaController extends Controller
     {
         //variable = modelo:: metodo encunetra un registro en la bdd segun id!!
         $sala = Sala::findOrFail($id);
-        //en el compact se pasa la variable como string
-        return view('Administrador/salas/edit', compact('sala'));
+        //Cambio de rol
+        $usr=Auth::User()->rut;
+        //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+        $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
+                    ->where('users.rut','=',$usr)
+                    ->join('rol','rol_users.rol_id','=','rol.id')
+                    ->select('nombre')
+                    ->paginate();
+        // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+        foreach($usr2 as $v)
+        {
+            $v2[]= $v->nombre;
+        }
+        //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
+        $cont = count($v2); //cuenta la cantidad de elementos del array
+        
+        if($cont>1)
+        {
+            return view ('Administrador/salas/edit', compact('sala','v2','cont'));
+        }
+        else
+        {
+            return view ('Administrador/salas/edit', compact('sala','cont'));
+        }
+        //return view('Administrador/salas/edit', compact('sala'));
     }
 
     /**

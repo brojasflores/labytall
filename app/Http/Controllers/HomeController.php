@@ -23,6 +23,7 @@ class HomeController extends Controller
     {      
         if(empty(Auth::user()->email))
         {
+            //deberia tirar un error no esta vista
             return view('Docente/perfil');
         }
         else

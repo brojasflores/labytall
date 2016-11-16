@@ -9,6 +9,8 @@ use App\Http\Requests;
 use App\Curso;
 
 use App\Asignatura;
+use Auth;
+use App\User;
 
 class cursoController extends Controller
 {
@@ -29,8 +31,32 @@ class cursoController extends Controller
         $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
                             ->select('curso.*','asignatura.nombre')
                             ->paginate();
-        //se pasa la variable sin el peso con compact
-        return view ('Administrador/cursos/index', compact('cursos'));
+        
+        //Cambio de rol
+        $usr=Auth::User()->rut;
+        //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+        $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
+                    ->where('users.rut','=',$usr)
+                    ->join('rol','rol_users.rol_id','=','rol.id')
+                    ->select('nombre')
+                    ->paginate();
+        // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+        foreach($usr2 as $v)
+        {
+            $v2[]= $v->nombre;
+        }
+        //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
+        $cont = count($v2); //cuenta la cantidad de elementos del array
+        
+        if($cont>1)
+        {
+            return view ('Administrador/cursos/index', compact('cursos','v2','cont'));
+        }
+        else
+        {
+            return view ('Administrador/cursos/index', compact('cursos','cont'));
+        }
+        //return view ('Administrador/cursos/index', compact('cursos'));
     }
 
     /**
@@ -41,7 +67,31 @@ class cursoController extends Controller
     public function create()
     {
         $asignaturas = Asignatura::all();
-        return view('Administrador/cursos/create',compact('asignaturas'));
+        //Cambio de rol
+        $usr=Auth::User()->rut;
+        //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+        $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
+                    ->where('users.rut','=',$usr)
+                    ->join('rol','rol_users.rol_id','=','rol.id')
+                    ->select('nombre')
+                    ->paginate();
+        // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+        foreach($usr2 as $v)
+        {
+            $v2[]= $v->nombre;
+        }
+        //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
+        $cont = count($v2); //cuenta la cantidad de elementos del array
+        
+        if($cont>1)
+        {
+            return view ('Administrador/cursos/create',compact('asignaturas','v2','cont'));
+        }
+        else
+        {
+            return view ('Administrador/cursos/create',compact('asignaturas','cont'));
+        }
+        //return view('Administrador/cursos/create',compact('asignaturas'));
     }
 
     /**
@@ -86,7 +136,31 @@ class cursoController extends Controller
         $cursos = Curso::findOrFail($id);
         //en el compact se pasa la variable como string
         $asignaturas = Asignatura::all();
-        return view('Administrador/cursos/edit', compact('cursos','asignaturas'));
+        //Cambio de rol
+        $usr=Auth::User()->rut;
+        //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+        $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
+                    ->where('users.rut','=',$usr)
+                    ->join('rol','rol_users.rol_id','=','rol.id')
+                    ->select('nombre')
+                    ->paginate();
+        // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+        foreach($usr2 as $v)
+        {
+            $v2[]= $v->nombre;
+        }
+        //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
+        $cont = count($v2); //cuenta la cantidad de elementos del array
+        
+        if($cont>1)
+        {
+            return view ('Administrador/cursos/edit', compact('cursos','asignaturas','v2','cont'));
+        }
+        else
+        {
+            return view ('Administrador/cursos/edit', compact('cursos','asignaturas','cont'));
+        }
+        //return view('Administrador/cursos/edit', compact('cursos','asignaturas'));
     }
 
     /**
