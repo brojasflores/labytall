@@ -227,7 +227,7 @@
   		var id = $("#sala").val();
   		var token = $("#token").val();
   		$.ajax({
-  			url: '/administrador/asignar_alumno',
+  			url: '/~brojas/administrador/asignar_alumno',
   			headers:{'X-CSRF-TOKEN': token},
   			type: 'POST',
   			dataType: 'json',

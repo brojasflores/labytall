@@ -32,7 +32,7 @@ class usuarioController extends Controller
     public function index()
     {
         //llamo al modelo de bdd a la tabla usuario en app y luego puedo llamar a la tabla...
-        $usuarios = User::paginate();
+        $usuarios = User::all();
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -40,7 +40,7 @@ class usuarioController extends Controller
                     ->where('users.rut','=',$usr)
                     ->join('rol','rol_users.rol_id','=','rol.id')
                     ->select('nombre')
-                    ->paginate();
+                    ->get();
         // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
         foreach($usr2 as $v)
         {
@@ -75,7 +75,7 @@ class usuarioController extends Controller
                     ->where('users.rut','=',$usr)
                     ->join('rol','rol_users.rol_id','=','rol.id')
                     ->select('nombre')
-                    ->paginate();
+                    ->get();
         // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
         foreach($usr2 as $v)
         {
@@ -166,7 +166,7 @@ class usuarioController extends Controller
                         ->where('users.rut','=',$usr)
                         ->join('rol','rol_users.rol_id','=','rol.id')
                         ->select('nombre')
-                        ->paginate();
+                        ->get();
             // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
             foreach($usr2 as $v)
             {
@@ -196,7 +196,7 @@ class usuarioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+  
         $usuarios = User::findOrFail($id);
         //fill (rellenar)
         $usuarios->fill([

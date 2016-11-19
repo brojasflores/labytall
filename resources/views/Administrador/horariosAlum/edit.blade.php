@@ -212,7 +212,7 @@ $(document).ready(function(){
       var id = $("#sala_id").val();
       var token = $("#token").val();
       $.ajax({
-        url: '/administrador/horarioAlumno/'+id+'/edit',
+        url: '/~brojas/administrador/horarioAlumno/'+id+'/edit',
         headers:{'X-CSRF-TOKEN': token},
         type: 'GET',
         dataType: 'json',
@@ -234,7 +234,7 @@ $(document).ready(function(){
   $.ajax({
     // con .val saco el valor del value
         data:  {'id': $("#horario_id").val()},
-        url:   '/administrador/horarioAlumno/'+$("#horario_id")+'/edit',
+        url:   '/~brojas/administrador/horarioAlumno/'+$("#horario_id")+'/edit',
         type:  'get',
         dataType: 'json',
         success:  function(respuesta) {   

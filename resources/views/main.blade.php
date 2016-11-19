@@ -29,7 +29,10 @@
     <link rel="stylesheet" href="{{ asset('admin-lte/plugins/daterangepicker/daterangepicker-bs3.css') }}">
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="{{ asset('admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
-
+        <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('admin-lte/plugins/datatables/dataTables.bootstrap.css') }}">
+       <!-- DataTables Responsive CSS -->
+    <link href="http://tesis.informatica.utem.cl/~nvera/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
   </head>
   <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">

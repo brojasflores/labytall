@@ -175,7 +175,7 @@ $(document).ready(function(){
 	$.ajax({
 		// con .val saco el valor del value
         data:  {'id': $("#horario_id").val(),'permanencia': $("#permanencia").val()},
-        url:   '/horario/'+$("#horario_id")+'/edit',
+        url:   '/~brojas/horario/'+$("#horario_id")+'/edit',
         type:  'get',
         dataType: 'json',
         success:  function(respuesta) {   

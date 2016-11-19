@@ -158,7 +158,7 @@ $(document).ready(function(){
 	$.ajax({
 		// con .val saco el valor del value
         data:  {'id': $("#usuario_id").val()},
-        url:   '/administrador/usuario/'+$("#usuario_id")+'/edit',
+        url:   '/~brojas/administrador/usuario/'+$("#usuario_id")+'/edit',
         type:  'get',
         dataType: 'json',
         success:  function(respuesta) {          
