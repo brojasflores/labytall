@@ -34,7 +34,7 @@ class horarioAlumnoController extends Controller
                             ->join('users','horario_alum.rut','=','users.rut')
                             ->join('estacion_trabajo','horario_alum.estacion_trabajo_id','=','estacion_trabajo.id')
                             ->select('horario_alum.id','horario_alum.fecha','horario_alum.rut','users.nombres as horario_name','users.apellidos as horario_apell','periodo.bloque','sala.nombre as sala_nombre','estacion_trabajo.id as est_trabajo')
-                            ->paginate();
+                            ->get();
 
         //Cambio de rol
         $usr=Auth::User()->rut;
@@ -43,7 +43,7 @@ class horarioAlumnoController extends Controller
                     ->where('users.rut','=',$usr)
                     ->join('rol','rol_users.rol_id','=','rol.id')
                     ->select('nombre')
-                    ->paginate();
+                    ->get();
         // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
         foreach($usr2 as $v)
         {
@@ -130,7 +130,7 @@ class horarioAlumnoController extends Controller
                         ->where('users.rut','=',$usr)
                         ->join('rol','rol_users.rol_id','=','rol.id')
                         ->select('nombre')
-                        ->paginate();
+                        ->get();
             // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
             foreach($usr2 as $v)
             {
@@ -156,7 +156,7 @@ class horarioAlumnoController extends Controller
     {   
         $var = Horario_Alumno::where('id','=',$id)
              ->select('estacion_trabajo_id')
-             ->paginate();
+             ->get();
 
         foreach($var as $v)
         {
@@ -230,7 +230,7 @@ class horarioAlumnoController extends Controller
     {
         $var = Horario_Alumno::where('id','=',$id)
                ->select('estacion_trabajo_id') 
-               ->paginate();
+               ->get();
         
         foreach($var as $v)
         {

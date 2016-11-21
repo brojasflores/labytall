@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Rol;
 use Auth;
 use App\User;
+use Session;
 
 
 class rolController extends Controller
@@ -35,7 +36,7 @@ class rolController extends Controller
                     ->where('users.rut','=',$usr)
                     ->join('rol','rol_users.rol_id','=','rol.id')
                     ->select('nombre')
-                    ->paginate();
+                    ->get();
         // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
         foreach($usr2 as $v)
         {
@@ -69,7 +70,7 @@ class rolController extends Controller
                     ->where('users.rut','=',$usr)
                     ->join('rol','rol_users.rol_id','=','rol.id')
                     ->select('nombre')
-                    ->paginate();
+                    ->get();
         // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
         foreach($usr2 as $v)
         {
@@ -102,6 +103,7 @@ class rolController extends Controller
             'nombre' => $request->get('nombreRol'),
             'descripcion' => $request->get('descripcionRol'),
             ]);
+        Session::flash('create','¡Rol creado correctamente!');
         return redirect()->route('administrador.rol.index');
     }
 
@@ -132,7 +134,7 @@ class rolController extends Controller
                     ->where('users.rut','=',$usr)
                     ->join('rol','rol_users.rol_id','=','rol.id')
                     ->select('nombre')
-                    ->paginate();
+                    ->get();
         // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
         foreach($usr2 as $v)
         {
@@ -168,7 +170,8 @@ class rolController extends Controller
             'descripcion' => $request->get('descripcionRol'),
         ]);
         $roles->save();
-
+        
+        Session::flash('edit','¡Rol editado correctamente!');
         return redirect()->route('administrador.rol.index');
     }
 
@@ -182,6 +185,7 @@ class rolController extends Controller
     {
         $roles = Rol::findOrFail($id);
         $roles->delete();
+        Session::flash('destroy','¡Rol eliminado correctamente!');
         return redirect()->route('administrador.rol.index');
     }
 }

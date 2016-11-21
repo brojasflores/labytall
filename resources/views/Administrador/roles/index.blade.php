@@ -124,6 +124,24 @@
 <li class="active">Roles</li>
 @stop
 @section('content')
+@if(Session::has('create'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('create') }}</strong>
+    </div>
+@endif
+@if(Session::has('edit'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('edit') }}</strong>
+    </div>
+@endif
+@if(Session::has('destroy'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('destroy') }}</strong>
+    </div>
+@endif
 <h1>Roles</h1>
 <form role="form" method="get" action="{{ route('administrador.rol.create')}}">
   <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
@@ -131,20 +149,23 @@
 <section class="content">
   <div class="row">
     <div class="col-xs-12">
-      <div class="box">
-        <div class="box-body">
-          <table id="example1" class="table table-bordered table-striped">
-            <thead>
-              <tr>
+      <!--ACA EMPIEZA LA DATATABLE-->
+        <div class="box">
+          <div class="box-header">
+          </div><!-- /.box-header -->
+          <div class="box-body">
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+                <tr>
                 <th>#</th>
                 <th>Nombre</th>
                 <th>Descripción</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
               </tr>
-            </thead>
-            <tbody>
-          <!--foreach recorre una coleccion de objetos-->
+              </thead>
+              <tbody>
+              <!--foreach recorre una coleccion de objetos-->
               @foreach($roles as $rol)
               <tr data-id="{{ $rol->id }}">
                 <td>{{ $rol->id }}</td>
@@ -160,20 +181,55 @@
                 </td>    
               </tr>
               @endforeach
-            </tbody>
-            <tfoot>
-              <tr>
+              </tbody>
+              <tfoot>
+                <tr>
                 <th>#</th>
                 <th>Nombre</th>
                 <th>Descripción</th>
-                <th>Editar</th>
+                <th>Editar </th>
                 <th>Eliminar</th>
               </tr>
-            </tfoot>
-          </table>
-        </div><!-- /.box-body -->
-      </div><!-- /.box -->
-    </div><!-- /.col -->
+              </tfoot>
+            </table>
+          </div><!-- /.box-body -->
+        </div><!-- /.box -->
+        <!--ACA TERMINA LA DATATABLE-->
   </div><!-- /.row -->
 </section><!-- /.content -->
+@stop
+
+@section('scripts')
+  <!-- DataTables -->
+  <script src="{{ asset('admin-lte/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+  <script src="{{ asset('admin-lte/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+   <script>
+$(document).ready(function() {
+  
+    $('#example1').DataTable({
+        responsive: true,
+        "language": {
+                "decimal":        "",
+                "emptyTable":     "Sin datos disponibles",
+                "info":           "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                "infoEmpty":      "Mostrando 0 a 0 de 0 entradas",
+                "infoFiltered":   "(Filtrado de un total de _MAX_ entradas)",
+                "infoPostFix":    "",
+                "thousands":      ".",
+                "lengthMenu":     "Mostrar _MENU_ entradas",
+                "loadingRecords": "Cargando...",
+                "processing":     "Procesando...",
+                "search":         "Buscar:",
+                "zeroRecords":    "Ningún registro encontrado.",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Ultimo",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                }
+            }
+    });
+
+});
+    </script>
 @stop

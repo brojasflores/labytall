@@ -17,6 +17,7 @@ use App\RolUsuario;
 use App\Rol;
 use App\User;
 use Carbon\Carbon;
+use Session;
 
 
 class asignarAlumController extends Controller
@@ -57,7 +58,7 @@ class asignarAlumController extends Controller
                     ->where('users.rut','=',$usr)
                     ->join('rol','rol_users.rol_id','=','rol.id')
                     ->select('nombre')
-                    ->paginate();
+                    ->get();
         // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
         foreach($usr2 as $v)
         {
@@ -158,10 +159,11 @@ class asignarAlumController extends Controller
                 else
                 {
                     //no corresponde el lab con la estacion
-                    dd('nop');
+                    Session::flash('alerta4','¡No corresponde el Laboratorio con la Estación de Trabajo!');
                 }
             }
         }
+        Session::flash('create2','¡Reserva tomada correctamente!');
         return redirect()->route('administrador.horarioAlumno.index');
     }
 

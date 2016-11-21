@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Validator;
 use Auth;
+use Session;
 
 
 class usuarioController extends Controller
@@ -113,7 +114,8 @@ class usuarioController extends Controller
             'email' => $request->get('emailUsuario'),
             'nombres' => $request->get('nombresUsuario'),
             'apellidos' => $request->get('apellidosUsuario'),
-            'password' => $pass
+            'password' => $pass,
+            'perfiles' => "perfiles/h1m7G86a6OR1tLguLSNjj20czNunkW-XjSiKjE0nySu06OWdp3dutyuujpnJc-user2-160x160.png"
         ]);
 
         foreach($request->get('roles') as $rol)
@@ -123,6 +125,7 @@ class usuarioController extends Controller
                 'rol_id' => $rol
                 ]);
         }
+        Session::flash('create','¡Usuario creado correctamente!');
         return redirect()->route('administrador.usuario.index');
     }
 
@@ -221,7 +224,7 @@ class usuarioController extends Controller
                 'rol_id' => $rol
                 ]);
         }
-
+        Session::flash('edit','¡Usuario editado correctamente!');
         return redirect()->route('administrador.usuario.index');
     }
 
@@ -235,6 +238,7 @@ class usuarioController extends Controller
     {
         $usuarios = User::findOrFail($id);
         $usuarios->delete();
+        Session::flash('destroy','¡Usuario eliminado correctamente!');
         return redirect()->route('administrador.usuario.index');
     }
 

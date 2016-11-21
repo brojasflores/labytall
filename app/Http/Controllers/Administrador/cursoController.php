@@ -27,10 +27,9 @@ class cursoController extends Controller
     
     public function index()
     {
-        //$cursos = Curso::paginate();
         $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
                             ->select('curso.*','asignatura.nombre')
-                            ->paginate();
+                            ->get();
         
         //Cambio de rol
         $usr=Auth::User()->rut;
@@ -39,7 +38,7 @@ class cursoController extends Controller
                     ->where('users.rut','=',$usr)
                     ->join('rol','rol_users.rol_id','=','rol.id')
                     ->select('nombre')
-                    ->paginate();
+                    ->get();
         // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
         foreach($usr2 as $v)
         {
@@ -74,7 +73,7 @@ class cursoController extends Controller
                     ->where('users.rut','=',$usr)
                     ->join('rol','rol_users.rol_id','=','rol.id')
                     ->select('nombre')
-                    ->paginate();
+                    ->get();
         // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
         foreach($usr2 as $v)
         {
@@ -143,7 +142,7 @@ class cursoController extends Controller
                     ->where('users.rut','=',$usr)
                     ->join('rol','rol_users.rol_id','=','rol.id')
                     ->select('nombre')
-                    ->paginate();
+                    ->get();
         // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
         foreach($usr2 as $v)
         {

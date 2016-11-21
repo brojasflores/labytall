@@ -125,6 +125,24 @@
 <li class="active">Usuarios</li>
 @stop
 @section('content')
+@if(Session::has('create'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('create') }}</strong>
+    </div>
+@endif
+@if(Session::has('edit'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('edit') }}</strong>
+    </div>
+@endif
+@if(Session::has('destroy'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('destroy') }}</strong>
+    </div>
+@endif
 <h1>Usuarios</h1>
 <form role="form" method="get" action="{{ route('administrador.usuario.create')}}">
 	<button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>

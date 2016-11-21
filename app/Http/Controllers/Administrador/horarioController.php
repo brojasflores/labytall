@@ -35,7 +35,7 @@ class horarioController extends Controller
                             ->join('users','horario.rut','=','users.rut')
                             ->select('horario.id','horario.fecha','horario.rut','users.nombres as horario_name','users.apellidos as horario_apell','horario.permanencia','asignatura.nombre as asig_nombre','periodo.bloque','sala.nombre as sala_nombre')
                             ->orderBy('periodo.bloque','asc')
-                            ->paginate();
+                            ->get();
 
         //Cambio de rol
         $usr=Auth::User()->rut;
@@ -44,7 +44,7 @@ class horarioController extends Controller
                     ->where('users.rut','=',$usr)
                     ->join('rol','rol_users.rol_id','=','rol.id')
                     ->select('nombre')
-                    ->paginate();
+                    ->get();
         // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
         foreach($usr2 as $v)
         {
@@ -133,7 +133,7 @@ class horarioController extends Controller
                         ->where('users.rut','=',$usr)
                         ->join('rol','rol_users.rol_id','=','rol.id')
                         ->select('nombre')
-                        ->paginate();
+                        ->get();
             // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
             foreach($usr2 as $v)
             {
@@ -161,7 +161,7 @@ class horarioController extends Controller
     {   
         $var = Horario::where('id','=',$id)
                ->select('sala_id')
-               ->paginate();
+               ->get();
 
         foreach($var as $v)
         {
@@ -170,7 +170,7 @@ class horarioController extends Controller
 
         $esT = Estacion_trabajo::where('sala_id','=',$v2)
                ->select('id')
-               ->paginate();
+               ->get();
 
         foreach($esT as $v)
         {
@@ -214,7 +214,7 @@ class horarioController extends Controller
             $id2 = $request->get('salaHorario');
             $est = Estacion_trabajo::where('sala_id','=',$id2)
                ->select('id')
-               ->paginate();
+               ->get();
             foreach($est as $v)
             {
                 $v4[]= $v->id;
@@ -268,7 +268,7 @@ class horarioController extends Controller
                             $id2 = $request->get('salaHorario');
                             $est = Estacion_trabajo::where('sala_id','=',$id2)
                                ->select('id')
-                               ->paginate();
+                               ->get();
                             foreach($est as $v)
                             {
                                 $v4[]= $v->id;
@@ -302,7 +302,7 @@ class horarioController extends Controller
                             $id2 = $request->get('salaHorario');
                             $est = Estacion_trabajo::where('sala_id','=',$id2)
                                ->select('id')
-                               ->paginate();
+                               ->get();
                             foreach($est as $v)
                             {
                                 $v4[]= $v->id;
@@ -336,7 +336,7 @@ class horarioController extends Controller
                             $id2 = $request->get('salaHorario');
                             $est = Estacion_trabajo::where('sala_id','=',$id2)
                                ->select('id')
-                               ->paginate();
+                               ->get();
                             foreach($est as $v)
                             {
                                 $v4[]= $v->id;
@@ -370,7 +370,7 @@ class horarioController extends Controller
                             $id2 = $request->get('salaHorario');
                             $est = Estacion_trabajo::where('sala_id','=',$id2)
                                ->select('id')
-                               ->paginate();
+                               ->get();
                             foreach($est as $v)
                             {
                                 $v4[]= $v->id;
@@ -404,7 +404,7 @@ class horarioController extends Controller
                             $id2 = $request->get('salaHorario');
                             $est = Estacion_trabajo::where('sala_id','=',$id2)
                                ->select('id')
-                               ->paginate();
+                               ->get();
                             foreach($est as $v)
                             {
                                 $v4[]= $v->id;
@@ -438,7 +438,7 @@ class horarioController extends Controller
                             $id2 = $request->get('salaHorario');
                             $est = Estacion_trabajo::where('sala_id','=',$id2)
                                ->select('id')
-                               ->paginate();
+                               ->get();
                             foreach($est as $v)
                             {
                                 $v4[]= $v->id;
@@ -469,7 +469,7 @@ class horarioController extends Controller
     {
         $var = Horario::where('id','=',$id)
                ->select('sala_id','permanencia')
-               ->paginate();
+               ->get();
         
         foreach($var as $v)
         {
@@ -479,7 +479,7 @@ class horarioController extends Controller
 
         $esT = Estacion_trabajo::where('sala_id','=',$v2)
                ->select('id')
-               ->paginate();
+               ->get();
 
         foreach($esT as $v)
         {

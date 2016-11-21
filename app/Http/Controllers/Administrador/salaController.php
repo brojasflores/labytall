@@ -36,7 +36,7 @@ class salaController extends Controller
                     ->where('users.rut','=',$usr)
                     ->join('rol','rol_users.rol_id','=','rol.id')
                     ->select('nombre')
-                    ->paginate();
+                    ->get();
         // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
         foreach($usr2 as $v)
         {
@@ -70,7 +70,7 @@ class salaController extends Controller
                     ->where('users.rut','=',$usr)
                     ->join('rol','rol_users.rol_id','=','rol.id')
                     ->select('nombre')
-                    ->paginate();
+                    ->get();
         // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
         foreach($usr2 as $v)
         {
@@ -111,7 +111,7 @@ class salaController extends Controller
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
         $sa = Sala::where('nombre','=',$nombre)
                     ->select('id')
-                    ->paginate();
+                    ->get();
 
         foreach($sa as $v)
         {
@@ -157,7 +157,7 @@ class salaController extends Controller
                     ->where('users.rut','=',$usr)
                     ->join('rol','rol_users.rol_id','=','rol.id')
                     ->select('nombre')
-                    ->paginate();
+                    ->get();
         // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
         foreach($usr2 as $v)
         {
@@ -200,7 +200,7 @@ class salaController extends Controller
 
         $esT = Estacion_trabajo::where('sala_id','=',$id)
                ->select('id')
-               ->paginate();
+               ->get();
 
         foreach($esT as $v)
         {
@@ -236,7 +236,7 @@ class salaController extends Controller
     {
         $esT = Estacion_trabajo::where('sala_id','=',$id)
                ->select('id')
-               ->paginate();
+               ->get();
 
         foreach($esT as $v)
         {

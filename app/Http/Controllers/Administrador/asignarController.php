@@ -41,7 +41,7 @@ class asignarController extends Controller
                     ->where('users.rut','=',$usr)
                     ->join('rol','rol_users.rol_id','=','rol.id')
                     ->select('nombre')
-                    ->paginate();
+                    ->get();
         // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
         foreach($usr2 as $v)
         {
@@ -80,7 +80,7 @@ class asignarController extends Controller
                     ->where('users.rut','=',$usr)
                     ->join('rol','rol_users.rol_id','=','rol.id')
                     ->select('nombre')
-                    ->paginate();
+                    ->get();
         // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
         foreach($usr2 as $v)
         {
@@ -119,7 +119,7 @@ class asignarController extends Controller
                     ->where('users.rut','=',$usr)
                     ->join('rol','rol_users.rol_id','=','rol.id')
                     ->select('nombre')
-                    ->paginate();
+                    ->get();
         // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
         foreach($usr2 as $v)
         {
@@ -208,7 +208,7 @@ class asignarController extends Controller
                             $id = $request->get('sala');
                             $esT = Estacion_trabajo::where('sala_id','=',$id)
                                ->select('id')
-                               ->paginate();
+                               ->get();
                             foreach($esT as $v)
                             {
                                 $v2[]= $v->id;
@@ -264,7 +264,7 @@ class asignarController extends Controller
                                             $id = $request->get('sala');
                                             $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                ->select('id')
-                                               ->paginate();
+                                               ->get();
                                             foreach($esT as $v)
                                             {
                                                 $v2[]= $v->id;
@@ -299,7 +299,7 @@ class asignarController extends Controller
                                             $id = $request->get('sala');
                                             $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                ->select('id')
-                                               ->paginate();
+                                               ->get();
                                             foreach($esT as $v)
                                             {
                                                 $v2[]= $v->id;
@@ -334,7 +334,7 @@ class asignarController extends Controller
                                             $id = $request->get('sala');
                                             $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                ->select('id')
-                                               ->paginate();
+                                               ->get();
                                             foreach($esT as $v)
                                             {
                                                 $v2[]= $v->id;
@@ -369,7 +369,7 @@ class asignarController extends Controller
                                             $id = $request->get('sala');
                                             $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                ->select('id')
-                                               ->paginate();
+                                               ->get();
                                             foreach($esT as $v)
                                             {
                                                 $v2[]= $v->id;
@@ -405,7 +405,7 @@ class asignarController extends Controller
                                             $id = $request->get('sala');
                                             $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                ->select('id')
-                                               ->paginate();
+                                               ->get();
                                             foreach($esT as $v)
                                             {
                                                 $v2[]= $v->id;
@@ -441,7 +441,7 @@ class asignarController extends Controller
                                             $id = $request->get('sala');
                                             $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                ->select('id')
-                                               ->paginate();
+                                               ->get();
                                             foreach($esT as $v)
                                             {
                                                 $v2[]= $v->id;
@@ -495,7 +495,7 @@ class asignarController extends Controller
                             $id = $request->get('sala');
                             $esT = Estacion_trabajo::where('sala_id','=',$id)
                                ->select('id')
-                               ->paginate();
+                               ->get();
                             foreach($esT as $v)
                             {
                                 $v2[]= $v->id;
@@ -550,7 +550,7 @@ class asignarController extends Controller
                                             $id = $request->get('sala');
                                             $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                ->select('id')
-                                               ->paginate();
+                                               ->get();
                                             foreach($esT as $v)
                                             {
                                                 $v2[]= $v->id;
@@ -585,7 +585,7 @@ class asignarController extends Controller
                                             $id = $request->get('sala');
                                             $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                ->select('id')
-                                               ->paginate();
+                                               ->get();
                                             foreach($esT as $v)
                                             {
                                                 $v2[]= $v->id;
@@ -620,7 +620,7 @@ class asignarController extends Controller
                                             $id = $request->get('sala');
                                             $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                ->select('id')
-                                               ->paginate();
+                                               ->get();
                                             foreach($esT as $v)
                                             {
                                                 $v2[]= $v->id;
@@ -655,7 +655,7 @@ class asignarController extends Controller
                                             $id = $request->get('sala');
                                             $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                ->select('id')
-                                               ->paginate();
+                                               ->get();
                                             foreach($esT as $v)
                                             {
                                                 $v2[]= $v->id;
@@ -691,7 +691,7 @@ class asignarController extends Controller
                                             $id = $request->get('sala');
                                             $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                ->select('id')
-                                               ->paginate();
+                                               ->get();
                                             foreach($esT as $v)
                                             {
                                                 $v2[]= $v->id;
@@ -727,7 +727,7 @@ class asignarController extends Controller
                                             $id = $request->get('sala');
                                             $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                ->select('id')
-                                               ->paginate();
+                                               ->get();
                                             foreach($esT as $v)
                                             {
                                                 $v2[]= $v->id;
@@ -789,7 +789,7 @@ class asignarController extends Controller
                                     $id = $request->get('sala');
                                     $esT = Estacion_trabajo::where('sala_id','=',$id)
                                        ->select('id')
-                                       ->paginate();
+                                       ->get();
                                     foreach($esT as $v)
                                     {
                                         $v2[]= $v->id;
@@ -844,7 +844,7 @@ class asignarController extends Controller
                                                     $id = $request->get('sala');
                                                     $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                        ->select('id')
-                                                       ->paginate();
+                                                       ->get();
                                                     foreach($esT as $v)
                                                     {
                                                         $v2[]= $v->id;
@@ -880,7 +880,7 @@ class asignarController extends Controller
                                                     $id = $request->get('sala');
                                                     $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                        ->select('id')
-                                                       ->paginate();
+                                                       ->get();
                                                     foreach($esT as $v)
                                                     {
                                                         $v2[]= $v->id;
@@ -914,7 +914,7 @@ class asignarController extends Controller
                                                     $id = $request->get('sala');
                                                     $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                        ->select('id')
-                                                       ->paginate();
+                                                       ->get();
                                                     foreach($esT as $v)
                                                     {
                                                         $v2[]= $v->id;
@@ -949,7 +949,7 @@ class asignarController extends Controller
                                                     $id = $request->get('sala');
                                                     $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                        ->select('id')
-                                                       ->paginate();
+                                                       ->get();
                                                     foreach($esT as $v)
                                                     {
                                                         $v2[]= $v->id;
@@ -983,7 +983,7 @@ class asignarController extends Controller
                                                     $id = $request->get('sala');
                                                     $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                        ->select('id')
-                                                       ->paginate();
+                                                       ->get();
                                                     foreach($esT as $v)
                                                     {
                                                         $v2[]= $v->id;
@@ -1018,7 +1018,7 @@ class asignarController extends Controller
                                                     $id = $request->get('sala');
                                                     $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                        ->select('id')
-                                                       ->paginate();
+                                                       ->get();
                                                     foreach($esT as $v)
                                                     {
                                                         $v2[]= $v->id;
