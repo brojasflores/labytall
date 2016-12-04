@@ -76,6 +76,13 @@ class HomeController extends Controller
                                 {
                                     return view('Alumno/index', compact('v2','cont'));
                                 }
+                                else
+                                {
+                                    if($v2[0]=='director')
+                                    {
+                                        return view('Director/index', compact('v2','cont'));
+                                    }
+                                }
                             }
                         }
                     }
@@ -114,7 +121,14 @@ class HomeController extends Controller
                                 }
                                 else
                                 {
-                                    //return view('sinrol');
+                                    if($v1=='director')
+                                    {
+                                        return view('Director/index', compact('cont'));
+                                    }
+                                    else
+                                    {
+                                        //return view('sinrol');
+                                    }
                                 }
                             }
                         }

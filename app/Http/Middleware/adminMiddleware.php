@@ -32,7 +32,7 @@ class adminMiddleware
         for($i=0;$i<$cont;$i++)
         {
             $v1=$v2[$i];
-            if($v1=='administrador')
+            if($v1=='administrador' || 'director')
             {
                 //return abort(401); 
                 return $next($request);

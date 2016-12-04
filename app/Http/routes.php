@@ -34,6 +34,37 @@ Route::group(['prefix' => 'administrador','namespace' => 'Administrador'], funct
 	Route::get('/listado_graficas', 'GraficasController@index');
 });
 
+//**********************************RUTAS Director*******************************************
+Route::group(['prefix' => 'director','namespace' => 'Director'], function()
+{
+	Route::resource('/','directorController@index');
+	
+	Route::resource('/sala','salaController');
+
+	Route::resource('/usuario','usuarioController'); 
+	Route::get('/usuario_perfil', ['as' => 'director.usuario.perfil', 'uses' => 'perfilController@perfil']);
+	Route::post('/usuario_perfilUpdate', ['as' => 'director.usuario.updateProfile', 'uses' => 'perfilController@updateProfile']);
+	Route::post('/upload_alumno', ['as' => 'director.usuario.update', 'uses' => 'usuarioController@uploadAlum']);
+	Route::post('/upload_docente', ['as' => 'director.usuario.update', 'uses' => 'usuarioController@uploadDocente']);
+
+	Route::resource('/contacto','contactoController');
+	Route::resource('/rol','rolController');
+	Route::resource('/periodo','periodoController');
+	Route::resource('/asignatura','asignaturaController');
+	Route::resource('/curso','cursoController');
+	Route::resource('/horario','horarioController');
+
+	Route::resource('/horarioAlumno','horarioAlumnoController');
+
+	Route::resource('/asignar','asignarController');
+	Route::get('/asignar_docente', ['as' => 'director.asignar.docente', 'uses' => 'asignarController@docente']);
+	Route::get('/asignar_ayudante',['as' => 'director.asignar.ayudante', 'uses' => 'asignarController@ayudante']);
+	Route::resource('/asignar_alumno','asignarAlumController');
+
+	Route::get('/listado_graficas', 'GraficasController@index');
+});
+
+
 //**********************************RUTAS FUNCIONARIO*******************************************
 Route::group(['prefix' => 'funcionario', 'namespace' => 'Funcionario'], function()
 {

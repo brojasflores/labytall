@@ -226,7 +226,7 @@ class SepaUserProvider implements UserProviderInterface
                 {
                     $v2= $v->id;
                 }
-
+                //dd($data2); //Si quiero saber que trae el REST de alumnos
                 if(($usr["email"])==null)
                 {
                     $usuarios = User::findOrFail($v2);
@@ -261,6 +261,7 @@ class SepaUserProvider implements UserProviderInterface
                         $data3 = json_decode($req3->getBody(), true);
                         $docenteOk = 'ok';
                     }
+                    //dd($data3); //Si quiero saber que trae el REST de docentes
                     if($docenteOk == 'ok')
                     {
                         $rut_sdv = substr($credentials['rut'],0,-1);//quita digto verificador
@@ -276,7 +277,7 @@ class SepaUserProvider implements UserProviderInterface
                             'rol_id' => '3'
                             ]);
                         }
-                         //cargamdo datos desde el servico REST
+                         //cargando datos desde el servico REST
                         $usr = User::where('rut','=',$rut_sdv)
                                     ->select('id','email')
                                     ->paginate();
