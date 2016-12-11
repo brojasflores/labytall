@@ -58,7 +58,6 @@
                 <!--Controlador.metodo-->
                 <li><a href="pages/usuarios/admin.html"><i class="glyphicon glyphicon-barcode"></i> Autenticación</a></li>
                 <li><a href="{{ route('director.usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
-                <li><a href="{{ route('director.rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -124,45 +123,45 @@
 @section('content')
 <h1>Agregar Usuario</h1>
 
-{!! Form::open(['action' => 'Director\usuarioController@uploadAlum','files'=>true]) !!}
-
-<div class="form-group">
+<div class="row">
+  <div class="col-xs-12">
+    {!! Form::open(['action' => 'Director\usuarioController@uploadAlum','files'=>true]) !!}
+      <div class="form-group">
         <div class="panel-body">
-          
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            
             <div class="form-group">
-              <label class="col-md-4 control-label">Seleccione el archivo con los Alumnos</label>
-              <div class="col-md-6">
+              <label class="col-md-2 control-label">Seleccione el archivo con los Alumnos</label>
+              <div class="col-md-4">
                 <input type="file" class="form-control" name="file" >
+              </div>
+              <div class="col-md-4">
+                <div align="center"<th><button type="submit" class="btn btn-success">Subir Alumnos</button></th></div>
               </div>
             </div>
         </div>
- </div>
+       </div>
+    {!! Form::close() !!}
 
-     <div align="center"<th><button type="submit" class="btn btn-success">Subir Alumnos</button></th></div>
-
-{!! Form::close() !!}
-
-{!! Form::open(['action' => 'Director\usuarioController@uploadDocente','files'=>true]) !!}
-
-<div class="form-group">
-        <div class="panel-body">
+    {!! Form::open(['action' => 'Director\usuarioController@uploadDocente','files'=>true]) !!}
+    <div class="form-group">
+      <div class="panel-body">
+        
+          <input type="hidden" name="_token" value="{{ csrf_token() }}">
           
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            
-            <div class="form-group">
-              <label class="col-md-4 control-label">Seleccione el archivo con los Docentes</label>
-              <div class="col-md-6">
-                <input type="file" class="form-control" name="file" >
-              </div>
+          <div class="form-group">
+            <label class="col-md-2 control-label">Seleccione el archivo con los Docentes</label>
+            <div class="col-md-4">
+              <input type="file" class="form-control" name="file" >
             </div>
-        </div>
- </div>
-
-     <div align="center"<th><button type="submit" class="btn btn-success">Subir Docentes</button></th></div>
-
-{!! Form::close() !!}
+            <div class="col-md-4">
+              <div align="center"<th><button type="submit" class="btn btn-success">Subir Docentes</button></th></div>
+            </div>
+          </div>
+      </div>
+     </div>
+    {!! Form::close() !!}
+  </div>
+</div>
 
 <form role="form" method="post" action="{{ route('director.usuario.store')}}">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -186,12 +185,14 @@
 	    <div class="form-group">
 	    	<div class="row">
 	    		@foreach($roles as $rol)
+          @if($rol->nombre == 'funcionario' || $rol->nombre == 'docente' || $rol->nombre == 'ayudante' || $rol->nombre == 'alumno')
 	    		<div class="col-md-2">
 			    	<div class="checkbox">
 				    	<!-- Para imprimir el valor de una variable hay que escribir como está aca-->
 				    	<label><input type="checkbox" value="{!! $rol->id !!}" name="roles[]">{!! $rol->nombre!!}</label>
 			    	</div>
 		    	</div>
+          @endif
 		    	@endforeach
 		    </div>
 	    </div>

@@ -11,6 +11,7 @@ use App\Sala;
 use App\Periodo;
 use App\Curso;
 use App\Asignatura;
+use App\UsersDpto;
 use App\Horario_Alumno;
 use App\Estacion_trabajo;
 use App\RolUsuario;
@@ -38,9 +39,16 @@ class asignarAlumController extends Controller
         
         $periodos = Periodo::select('id','bloque')->orderBy('bloque','asc')->get();
 
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                        ->select('departamento_id')
+                        ->get();
+
+
         $salas = Sala::join('estacion_trabajo','sala.id','=','estacion_trabajo.sala_id')
                       ->where('estacion_trabajo.disponibilidad','=','si')
                       ->select('sala.id','sala.nombre')
+                      ->where('departamento_id','=',$dpto->first()->departamento_id)
                       ->orderBy('sala.nombre','asc')
                       ->groupBy('sala.id','sala.nombre')
                       ->get();

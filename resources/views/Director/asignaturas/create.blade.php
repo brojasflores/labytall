@@ -58,7 +58,6 @@
                 <!--Controlador.metodo-->
                 <li><a href="pages/usuarios/admin.html"><i class="glyphicon glyphicon-barcode"></i> Autenticación</a></li>
                 <li><a href="{{ route('director.usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
-                <li><a href="{{ route('director.rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -138,6 +137,23 @@
 	      <label for="exampleInputPassword1">Descripción</label>
 	      <input type="text" class="form-control" name="descripcionAsignatura" id="descripcionAsignatura" placeholder="Ingrese descripción de la asignatura">
 	    </div>
+
+      <div class="form-group">
+        <div class="row">
+        
+          <div class="col-md-2">
+          <div class="form-group">
+            <label for="sel1">Carrera: </label>
+            <select class="form-control" id="asignaturas" name="carreraAsignatura">
+            @foreach($carreras as $car)
+                <option value="{{ $car->id }}" name="carreraAsignatura">{{ $car->nombre }}</option>
+            @endforeach
+            </select>
+          </div>
+          </div>
+        </div>
+      </div>   
+
 	    <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
 	  </div><!-- /.box-body -->
 </form>

@@ -8,6 +8,7 @@ use App\Http\Requests;
 
 use App\Horario;
 use App\Sala;
+use App\UsersDpto;
 use App\Periodo;
 use App\Curso;
 use App\Asignatura;
@@ -28,11 +29,18 @@ class horarioController extends Controller
     
     public function index()
     {
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                            ->select('departamento_id')
+                            ->get();
+
         $horarios = Horario::join('curso','horario.curso_id','=','curso.id')
                             ->join('asignatura','curso.asignatura_id','=','asignatura.id')
                             ->join('periodo','horario.periodo_id','=','periodo.id')
                             ->join('sala','horario.sala_id','=','sala.id')
+                            ->join('departamento','departamento.id','=','sala.departamento_id')
                             ->join('users','horario.rut','=','users.rut')
+                            ->where('departamento.id',$dpto->first()->departamento_id)
                             ->select('horario.id','horario.fecha','horario.rut','users.nombres as horario_name','users.apellidos as horario_apell','horario.permanencia','asignatura.nombre as asig_nombre','periodo.bloque','sala.nombre as sala_nombre')
                             ->orderBy('periodo.bloque','asc')
                             ->get();
@@ -117,15 +125,27 @@ class horarioController extends Controller
 
             $horarios = Horario::findOrFail($id);
 
-            $salas = Sala::all();
-            $periodos = Periodo::all();
+            $usr=Auth::User()->rut;
+            $dpto= UsersDpto::where('rut','=',$usr)
+                            ->select('departamento_id')
+                            ->get();
 
-            Periodo::orderBy('id','asc')->get();
+            $salas= Sala::where('departamento_id','=',$dpto->first()->departamento_id)
+                            ->select('id','nombre')->orderBy('nombre','asc')
+                            ->get();
+
+            $periodos = Periodo::select('id','bloque')
+                                ->orderBy('id','asc')->get();
 
             $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
-                            ->select('curso.id','curso.seccion','asignatura.nombre')
-                            ->get();
-            
+                           ->join('carrera','carrera.id','=','asignatura.carrera_id')
+                           ->join('escuela','escuela.id','=','carrera.escuela_id')
+                           ->join('departamento','departamento.id','=','escuela.departamento_id')
+                           ->where('departamento.id',$dpto->first()->departamento_id)
+                           ->select('curso.id','curso.seccion','asignatura.nombre')
+                           ->orderBy('asignatura.nombre','asc')
+                           ->get();
+
             //Cambio de rol
             $usr=Auth::User()->rut;
             //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla

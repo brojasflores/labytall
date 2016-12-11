@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 //referencia al modelo (importarlo)
 use App\Sala;
+use App\UsersDpto;
 use App\Estacion_trabajo;
 use Auth;
 use App\User;
@@ -26,9 +27,22 @@ class salaController extends Controller
     
     public function index()
     {
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                        ->select('departamento_id')
+                        ->get();
+
+        $salas= Sala::where('departamento_id','=',$dpto->first()->departamento_id)
+                        ->select('sala.*')
+                        ->get();
+
         //tomar todo lo que venga de la tabla lab y mostrar 
         //all devuelve todo
-        $salas = Sala::all();
+        //
+
+//        $salas = Sala::all();
+        
+//
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -100,13 +114,19 @@ class salaController extends Controller
     {
         //variable = nombre del modelo ::(paso metodo)
         //hace insert
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                        ->select('departamento_id')
+                        ->get();            
         $capacidad= $request->get('capacidadSala');
         $nombre = $request->get('nombreSala');
 
         $sala = Sala::create([
             'nombre' => $request->get('nombreSala'),
             'capacidad' => $request->get('capacidadSala'),
+            'departamento_id' => $dpto->first()->departamento_id,
             ]);
+
 
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
         $sa = Sala::where('nombre','=',$nombre)

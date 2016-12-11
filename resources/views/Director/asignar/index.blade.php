@@ -58,7 +58,6 @@
                 <!--Controlador.metodo-->
                 <li><a href="pages/usuarios/admin.html"><i class="glyphicon glyphicon-barcode"></i> Autenticación</a></li>
                 <li><a href="{{ route('director.usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
-                <li><a href="{{ route('director.rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
               </ul>
             </li>
 
@@ -149,9 +148,9 @@
   <div class="row">
     <div class="col-sm-8 col-md-8 col-lg-8 col-md-offset-3">
       <!--div class="form-group"-->
-        <a href="{{URL::to('/administrador/asignar_docente')}}" class="btn btn-primary btn-lg" role="button">Reserva Docentes</a>
-        <a href="{{URL::to('/administrador/asignar_ayudante') }}" class="btn btn-primary btn-lg" role="button">Reserva Ayudantes</a>
-        <a href="{{URL::to('/administrador/asignar_alumno') }}" class="btn btn-primary btn-lg" role="button">Reserva Alumnos</a>
+        <a href="{{URL::to('/director/asignar_docente')}}" class="btn btn-primary btn-lg" role="button">Reserva Docentes</a>
+        <a href="{{URL::to('/director/asignar_ayudante') }}" class="btn btn-primary btn-lg" role="button">Reserva Ayudantes</a>
+        <a href="{{URL::to('/director/asignar_alumno') }}" class="btn btn-primary btn-lg" role="button">Reserva Alumnos</a>
         <!--div class="btn btn-primary btn-lg" href="#" role="button">Reserva Alumnos</div-->
       <!--/div-->
     </div>        

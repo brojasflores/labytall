@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Director;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-
+use App\UsersDpto;
+use App\UsersCarrera;
+use App\Carrera;
+use App\Curso;
 use App\Asignatura;
 use Auth;
 use App\User;
@@ -26,8 +29,19 @@ class asignaturaController extends Controller
 
     public function index()
     {
-        $asignaturas = Asignatura::all();
+        //$asignaturas = Asignatura::all();
 
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                        ->select('departamento_id')
+                        ->get();
+
+        $asignaturas = Asignatura::join('carrera','asignatura.carrera_id','=','carrera.id')
+                        ->join('escuela','escuela.id','=','carrera.escuela_id')
+                        ->join('departamento','departamento.id','=','escuela.departamento_id')
+                        ->where('departamento.id',$dpto->first()->departamento_id)
+                        ->select('asignatura.*','carrera.nombre as carre')
+                        ->get();
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -63,6 +77,17 @@ class asignaturaController extends Controller
      */
     public function create()
     {
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                        ->select('departamento_id')
+                        ->get();
+
+        $carreras = Carrera::join('escuela','carrera.escuela_id','=','escuela.id')
+                           ->join('departamento','departamento.id','=','escuela.departamento_id')
+                           ->where('departamento.id',$dpto->first()->departamento_id)
+                           ->select('carrera.*')
+                           ->get();
+
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -81,11 +106,11 @@ class asignaturaController extends Controller
         
         if($cont>1)
         {
-            return view ('Director/asignaturas/create', compact('v2','cont'));
+            return view ('Director/asignaturas/create', compact('carreras','v2','cont'));
         }
         else
         {
-            return view ('Director/asignaturas/create', compact('cont'));
+            return view ('Director/asignaturas/create', compact('carreras','cont'));
         }
         //return view('Administrador/asignaturas/create');
     }
@@ -101,7 +126,8 @@ class asignaturaController extends Controller
         $asignaturas = Asignatura::create([
             'codigo' => $request->get('codigoAsignatura'),
             'nombre' => $request->get('nombreAsignatura'),
-            'descripcion' => $request->get('descripcionAsignatura')
+            'descripcion' => $request->get('descripcionAsignatura'),
+            'carrera_id' => $request->get('carreraAsignatura')
             ]);
             //$asignaturas = Asignatura::all();        
         return redirect()->route('director.asignatura.index');
@@ -126,6 +152,17 @@ class asignaturaController extends Controller
      */
     public function edit($id)
     {
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                        ->select('departamento_id')
+                        ->get();
+
+        $carreras = Carrera::join('escuela','carrera.escuela_id','=','escuela.id')
+                           ->join('departamento','departamento.id','=','escuela.departamento_id')
+                           ->where('departamento.id',$dpto->first()->departamento_id)
+                           ->select('carrera.*')
+                           ->get();
+
         $asignaturas = Asignatura::findOrFail($id);
         //Cambio de rol
         $usr=Auth::User()->rut;
@@ -145,11 +182,11 @@ class asignaturaController extends Controller
         
         if($cont>1)
         {
-            return view ('Director/asignaturas/edit', compact('asignaturas','v2','cont'));
+            return view ('Director/asignaturas/edit', compact('carreras','asignaturas','v2','cont'));
         }
         else
         {
-            return view ('Director/asignaturas/edit', compact('asignaturas','cont'));
+            return view ('Director/asignaturas/edit', compact('carreras','asignaturas','cont'));
         }
         //return view('Administrador/asignaturas/edit', compact('asignaturas'));
     }
@@ -168,7 +205,8 @@ class asignaturaController extends Controller
         $asignaturas->fill([
             'codigo' => $request->get('codigoAsignatura'),
             'nombre' => $request->get('nombreAsignatura'),
-            'descripcion' => $request->get('descripcionAsignatura')
+            'descripcion' => $request->get('descripcionAsignatura'),
+            'carrera_id' => $request->get('carreraAsignatura')
         ]);
         $asignaturas->save();
         return redirect()->route('director.asignatura.index');

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Horario_Alumno;
+use App\UsersDpto;
 use App\Sala;
 use App\Periodo;
 use App\Curso;
@@ -28,11 +29,17 @@ class horarioAlumnoController extends Controller
     
     public function index()
     {
-
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                            ->select('departamento_id')
+                            ->get();
+        
         $horarios = Horario_Alumno::join('periodo','horario_alum.periodo_id','=','periodo.id')
                             ->join('sala','horario_alum.sala_id','=','sala.id')
+                            ->join('departamento','departamento.id','=','sala.departamento_id')
                             ->join('users','horario_alum.rut','=','users.rut')
                             ->join('estacion_trabajo','horario_alum.estacion_trabajo_id','=','estacion_trabajo.id')
+                            ->where('departamento.id',$dpto->first()->departamento_id)
                             ->select('horario_alum.id','horario_alum.fecha','horario_alum.rut','users.nombres as horario_name','users.apellidos as horario_apell','periodo.bloque','sala.nombre as sala_nombre','estacion_trabajo.id as est_trabajo')
                             ->get();
 
@@ -109,13 +116,19 @@ class horarioAlumnoController extends Controller
 
             $periodos = Periodo::select('id','bloque')->orderBy('bloque','asc')->get();
 
+            $usr=Auth::User()->rut;
+            $dpto= UsersDpto::where('rut','=',$usr)
+                            ->select('departamento_id')
+                            ->get();
+
             $salas = Sala::join('estacion_trabajo','sala.id','=','estacion_trabajo.sala_id')
                           ->where('estacion_trabajo.disponibilidad','=','si')
                           ->select('sala.id','sala.nombre')
+                          ->where('departamento_id','=',$dpto->first()->departamento_id)
                           ->orderBy('sala.nombre','asc')
                           ->groupBy('sala.id','sala.nombre')
                           ->get();
-
+          
             $est = Sala::join('estacion_trabajo','sala.id','=','estacion_trabajo.sala_id')
                           ->join('horario_alum','horario_alum.sala_id','=','sala.id')
                           ->where('horario_alum.id',$id)

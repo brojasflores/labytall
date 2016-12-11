@@ -62,8 +62,7 @@ class perfilController extends Controller
         $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
                     ->where('users.rut','=',$usr)
                     ->join('rol','rol_users.rol_id','=','rol.id')
-                    ->select('nombre')
-                    ->paginate();
+                    ->select('nombre');
         // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
         foreach($usr2 as $v)
         {

@@ -59,7 +59,6 @@
                 <!--Controlador.metodo-->
                 <li><a href="pages/usuarios/admin.html"><i class="glyphicon glyphicon-barcode"></i> Autenticación</a></li>
                 <li><a href="{{ route('director.usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
-                <li><a href="{{ route('director.rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -129,7 +128,7 @@
 @stop
 @section('content')
 <h1>Asignaturas</h1>
-<form role="form" method="get" action="{{ route('diector.asignatura.create')}}">
+<form role="form" method="get" action="{{ route('director.asignatura.create')}}">
   <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
 </form>
 <section class="content">
@@ -147,6 +146,7 @@
                 <th>Código</th>
                 <th>Nombre</th>
                 <th>Descripción</th>
+                <th>Carrera</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
               </tr>
@@ -159,7 +159,7 @@
                 <td>{{ $as->codigo }}</td>
                 <td>{{ $as->nombre}}</td>
                 <td>{{ $as->descripcion}}</td>
-
+                <td>{{ $as->carre}}</td>
                 <!--Paso ruta y parametro para saber cual modificar-->
                 <td><a href="{{ route('director.asignatura.edit',$as->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
                 <td>
@@ -176,6 +176,7 @@
                 <th>Código</th>
                 <th>Nombre</th>
                 <th>Descripción</th>
+                <th>Carrera</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
               </tr>

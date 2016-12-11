@@ -58,7 +58,6 @@
                 <!--Controlador.metodo-->
                 <li><a href="pages/usuarios/admin.html"><i class="glyphicon glyphicon-barcode"></i> Autenticación</a></li>
                 <li><a href="{{ route('director.usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
-                <li><a href="{{ route('director.rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -215,7 +214,7 @@ $(document).ready(function(){
       var id = $("#sala_id").val();
       var token = $("#token").val();
       $.ajax({
-        url: '/~brojas/administrador/horarioAlumno/'+id+'/edit',
+        url: '/~brojas/director/horarioAlumno/'+id+'/edit',
         headers:{'X-CSRF-TOKEN': token},
         type: 'GET',
         dataType: 'json',
@@ -237,7 +236,7 @@ $(document).ready(function(){
   $.ajax({
     // con .val saco el valor del value
         data:  {'id': $("#horario_id").val()},
-        url:   '/~brojas/administrador/horarioAlumno/'+$("#horario_id")+'/edit',
+        url:   '/~brojas/director/horarioAlumno/'+$("#horario_id")+'/edit',
         type:  'get',
         dataType: 'json',
         success:  function(respuesta) {   

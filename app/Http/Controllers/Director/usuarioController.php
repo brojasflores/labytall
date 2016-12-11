@@ -150,6 +150,32 @@ class usuarioController extends Controller
                 'rol_id' => $rol
                 ]);
         }
+
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                        ->select('departamento_id')
+                        ->get();
+
+        foreach($request->get('roles') as $rol2)
+        {
+            if($rol2 == 2 || $rol2 == 3)
+            {
+                UsersDpto::create([
+                'rut' =>$request->get('rutUsuario'),
+                'departamento_id' => $dpto->first()->departamento_id
+                ]);
+            }
+            /*else
+            {
+                if($rol2 =='ayudante' || $rol2 == 'alumno')
+                {
+                    UsersCarrera::create([
+                    'rut' =>$request->get('rutUsuario'),
+                    'carrera_id' => $dpto->first()->departamento_id
+                    ]);
+                }
+            }*/
+        }
         Session::flash('create','¡Usuario creado correctamente!');
         return redirect()->route('director.usuario.index');
     }

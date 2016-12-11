@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use Auth;
+use App\UsersDpto;
 use App\User;
 use App\Sala;
 use App\Periodo;
@@ -64,14 +65,27 @@ class asignarController extends Controller
 
     public function docente()
     {
-        $salas = Sala::select('id','nombre')->orderBy('nombre','asc')->get();
+        //$salas = Sala::select('id','nombre')->orderBy('nombre','asc')->get();
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                        ->select('departamento_id')
+                        ->get();
+
+        $salas= Sala::where('departamento_id','=',$dpto->first()->departamento_id)
+                        ->select('id','nombre')->orderBy('nombre','asc')
+                        ->get();
+
         $periodos = Periodo::select('id','bloque')
                             ->orderBy('id','asc')->get();
 
         $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
-                        ->select('curso.id','curso.seccion','asignatura.nombre')
-                        ->orderBy('asignatura.nombre','asc')
-                        ->get();
+                       ->join('carrera','carrera.id','=','asignatura.carrera_id')
+                       ->join('escuela','escuela.id','=','carrera.escuela_id')
+                       ->join('departamento','departamento.id','=','escuela.departamento_id')
+                       ->where('departamento.id',$dpto->first()->departamento_id)
+                       ->select('curso.id','curso.seccion','asignatura.nombre')
+                       ->orderBy('asignatura.nombre','asc')
+                       ->get();
 
         //Cambio de rol
         $usr=Auth::User()->rut;
@@ -103,14 +117,26 @@ class asignarController extends Controller
 
     public function ayudante()
     {
-        $salas = Sala::select('id','nombre')->orderBy('nombre','asc')->get();
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                        ->select('departamento_id')
+                        ->get();
+
+        $salas= Sala::where('departamento_id','=',$dpto->first()->departamento_id)
+                        ->select('id','nombre')->orderBy('nombre','asc')
+                        ->get();
+
         $periodos = Periodo::select('id','bloque')
                             ->orderBy('id','asc')->get();
 
         $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
-                        ->select('curso.id','curso.seccion','asignatura.nombre')
-                        ->orderBy('asignatura.nombre','asc')
-                        ->get();
+                       ->join('carrera','carrera.id','=','asignatura.carrera_id')
+                       ->join('escuela','escuela.id','=','carrera.escuela_id')
+                       ->join('departamento','departamento.id','=','escuela.departamento_id')
+                       ->where('departamento.id',$dpto->first()->departamento_id)
+                       ->select('curso.id','curso.seccion','asignatura.nombre')
+                       ->orderBy('asignatura.nombre','asc')
+                       ->get();
 
         //Cambio de rol
         $usr=Auth::User()->rut;

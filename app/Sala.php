@@ -9,5 +9,5 @@ class Sala extends Model
     //consltar a la bdd
     protected $table = 'sala';
     //definir campos a llenar
-    protected $fillable = ['nombre','capacidad'];
+    protected $fillable = ['nombre','capacidad','departamento_id'];
 }

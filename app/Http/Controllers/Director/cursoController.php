@@ -11,6 +11,10 @@ use App\Curso;
 use App\Asignatura;
 use Auth;
 use App\User;
+use App\UsersDpto;
+use App\Carrera;
+use App\Departamento;
+use App\UsersCarrera;
 
 class cursoController extends Controller
 {
@@ -27,10 +31,19 @@ class cursoController extends Controller
     
     public function index()
     {
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                        ->select('departamento_id')
+                        ->get();
+
         $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
-                            ->select('curso.*','asignatura.nombre')
-                            ->get();
-        
+                       ->join('carrera','carrera.id','=','asignatura.carrera_id')
+                       ->join('escuela','escuela.id','=','carrera.escuela_id')
+                       ->join('departamento','departamento.id','=','escuela.departamento_id')
+                       ->where('departamento.id',$dpto->first()->departamento_id)
+                       ->select('curso.*','asignatura.nombre')
+                       ->get();
+
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -65,7 +78,17 @@ class cursoController extends Controller
      */
     public function create()
     {
-        $asignaturas = Asignatura::all();
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                        ->select('departamento_id')
+                        ->get();
+
+        $asignaturas = Asignatura::join('carrera','asignatura.carrera_id','=','carrera.id')
+                        ->join('escuela','escuela.id','=','carrera.escuela_id')
+                        ->join('departamento','departamento.id','=','escuela.departamento_id')
+                        ->where('departamento.id',$dpto->first()->departamento_id)
+                        ->select('asignatura.*','carrera.nombre as carre')
+                        ->get();
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -134,7 +157,17 @@ class cursoController extends Controller
     {
         $cursos = Curso::findOrFail($id);
         //en el compact se pasa la variable como string
-        $asignaturas = Asignatura::all();
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                        ->select('departamento_id')
+                        ->get();
+
+        $asignaturas = Asignatura::join('carrera','asignatura.carrera_id','=','carrera.id')
+                        ->join('escuela','escuela.id','=','carrera.escuela_id')
+                        ->join('departamento','departamento.id','=','escuela.departamento_id')
+                        ->where('departamento.id',$dpto->first()->departamento_id)
+                        ->select('asignatura.*','carrera.nombre as carre')
+                        ->get();
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
