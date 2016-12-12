@@ -15,6 +15,9 @@
           @if($as == 'administrador')
             <a href="{{ route('administrador..index')}}"><i class="fa fa-mail-forward"></i> Administrador</a>
           @endif
+          @if($as == 'director')
+            <a href="{{ route('director..index')}}"><i class="fa fa-mail-forward"></i> Director</a>
+          @endif
           @if($as == 'funcionario')
             <a href="{{ route('funcionario..index')}}"><i class="fa fa-mail-forward"></i> Funcionario</a>
           @endif
@@ -46,6 +49,22 @@
 @section('menu')
 <ul class="sidebar-menu">
             <li class="header">Administración</li>
+
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-university"></i> <span>Universidad</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <!--Controlador.metodo-->
+                <li><a href="{{ route('administrador.campus.index')}}"><i class="fa fa-th"></i> Campus</a></li>
+                <li><a href="{{ route('administrador.facultad.index')}}"><i class="fa fa-th"></i> Facultades</a></li>
+                <li><a href="{{ route('administrador.departamento.index')}}"><i class="fa fa-th"></i> Departamentos</a></li>
+                <li><a href="{{ route('administrador.escuela.index')}}"><i class="fa fa-th"></i> Escuelas</a></li>
+                <li><a href="{{ route('administrador.carrera.index')}}"><i class="fa fa-th"></i> Carreras</a></li>
+              </ul>
+            </li>
+
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-user"></i> <span>Gestión Usuarios</span>
