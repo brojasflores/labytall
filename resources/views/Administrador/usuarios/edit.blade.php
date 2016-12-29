@@ -143,19 +143,19 @@
 	  <div class="box-body">
 	    <div class="form-group">
 	      <label for="exampleInputEmail1">Rut</label>
-	      <input type="text" class="form-control" value="{{ $usuario->rut}}" name="rutUsuario" id="nombreSala" placeholder="Ingrese nombre">
+	      <input type="text" class="form-control" value="{{ $usuario->rut}}" name="rutUsuario" id="nombreSala" placeholder="Ingrese Rut">
 	    </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Email</label>
-	      <input type="text" class="form-control" value="{{ $usuario->email}}" name="emailUsuario" id="capacidadSala" placeholder="Ingrese cantidad alumnos">
+	      <input type="text" class="form-control" value="{{ $usuario->email}}" name="emailUsuario" id="capacidadSala" placeholder="Ingrese email">
 	    </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Nombres</label>
-	      <input type="text" class="form-control" value="{{ $usuario->nombres}}" name="nombresUsuario" id="capacidadSala" placeholder="Ingrese cantidad alumnos">
+	      <input type="text" class="form-control" value="{{ $usuario->nombres}}" name="nombresUsuario" id="capacidadSala" placeholder="Ingrese Nombres ">
 	    </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Apellidos</label>
-	      <input type="text" class="form-control" value="{{ $usuario->apellidos}}" name="apellidosUsuario" id="capacidadSala" placeholder="Ingrese cantidad alumnos">
+	      <input type="text" class="form-control" value="{{ $usuario->apellidos}}" name="apellidosUsuario" id="capacidadSala" placeholder="Ingrese Apellidos ">
 	    </div>
       
       <div class="form-group">

@@ -148,7 +148,7 @@
 					  <label for="sel1">Asignatura: </label>
 					  <select class="form-control" id="asignaturas" name="asigCurso">
 					  	@foreach($asignaturas as $asig)
-					    	<option value="{{ $asig->id }}" name="asigCurso">{{ $asig->nombre }}</option>
+					    	<option value="{{ $asig->id }}" name="asigCurso">{{ $asig->nombre }} - {{ $asig->carr}}</option>
 						@endforeach
 					  </select>
 					</div>

@@ -39,6 +39,8 @@ Route::group(['prefix' => 'administrador','namespace' => 'Administrador'], funct
 	Route::get('/asignar_ayudante',['as' => 'administrador.asignar.ayudante', 'uses' => 'asignarController@ayudante']);
 	Route::resource('/asignar_alumno','asignarAlumController');
 
+	Route::post('/upload_asignatura', ['as' => 'administrador.asignatura.upload', 'uses' => 'asignaturaController@uploadAsig']);
+
 	Route::get('/listado_graficas', 'GraficasController@index');
 });
 

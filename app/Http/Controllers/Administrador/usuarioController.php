@@ -326,13 +326,6 @@ class usuarioController extends Controller
             \Excel::load('/storage/app/'.$nombre,function($archivo) 
             {
                 $result = $archivo->get();
-                // En este caso el admin debe ingresar el id correspondiente al dpto que quiere asignar a un docente
-                
-                //$usr=Auth::User()->rut;
-
-                /*$dpto_id = UsersDpto::where('rut','=',$usr)
-                                        ->select('departamento_id')
-                                        ->get();*/
 
                 foreach($result as $key => $value)
                 {

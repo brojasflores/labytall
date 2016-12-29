@@ -158,7 +158,7 @@
                 <tr>
                 <th>#</th>
                 <th>Fecha</th>
-                <th>Rut</th>
+                <th>Nombre</th>
                 <th>Período</th>
                 <th>Sala</th>
                 <th>Estación Trabajo</th>
@@ -172,7 +172,7 @@
               <tr data-id="{{ $hr->id }}">
                 <td>{{ $hr->id }}</td>
                 <td>{{ $hr->fecha }}</td>
-                <td>{{ $hr->rut}}</td>  
+                <td>{{ $hr->horario_name}}</td>  
                 <td>{{ $hr->bloque}}</td>
                 <td>{{ $hr->sala_nombre}}</td>
                 <td>{{ $hr->est_trabajo}}</td>
@@ -190,7 +190,7 @@
                 <tr>
                 <th>#</th>
                 <th>Fecha</th>
-                <th>Rut</th>
+                <th>Nombre</th>
                 <th>Período</th>
                 <th>Sala</th>
                 <th>Estación Trabajo</th>

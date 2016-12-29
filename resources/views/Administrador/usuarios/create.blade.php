@@ -145,7 +145,7 @@
 <h1>Agregar Usuario</h1>
 <div class="row">
   <div class="col-xs-12">
-    {!! Form::open(['action' => 'Director\usuarioController@uploadAlum','files'=>true]) !!}
+    {!! Form::open(['action' => 'Administrador\usuarioController@uploadAlum','files'=>true]) !!}
       <div class="form-group">
         <div class="panel-body">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -162,7 +162,7 @@
        </div>
     {!! Form::close() !!}
 
-    {!! Form::open(['action' => 'Director\usuarioController@uploadDocente','files'=>true]) !!}
+    {!! Form::open(['action' => 'Administrador\usuarioController@uploadDocente','files'=>true]) !!}
     <div class="form-group">
       <div class="panel-body">
         
@@ -215,12 +215,14 @@
 	    <div class="form-group">
 	    	<div class="row">
 	    		@foreach($roles as $rol)
+          @if($rol->nombre == 'funcionario' || $rol->nombre == 'administrador' || $rol->nombre == 'ayudante' || $rol->nombre == 'director')
 	    		<div class="col-md-2">
 			    	<div class="checkbox">
 				    	<!-- Para imprimir el valor de una variable hay que escribir como está aca-->
 				    	<label><input type="checkbox" value="{!! $rol->id !!}" name="roles[]">{!! $rol->nombre!!}</label>
 			    	</div>
 		    	</div>
+          @endif
 		    	@endforeach
 		    </div>
 	    </div>

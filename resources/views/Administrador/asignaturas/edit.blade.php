@@ -153,6 +153,20 @@
 	      <label for="exampleInputPassword1">Descripción</label>
 	      <input type="text" class="form-control" value="{{ $asignaturas->descripcion}}" name="descripcionAsignatura" id="descripcionAsignatura" placeholder="Ingrese descripción de la asignatura">
 	    </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-2">
+          <div class="form-group">
+            <label for="sel1">Carrera: </label>
+            <select class="form-control" id="carreraAsig" name="carreraAsig">
+            @foreach($carreras as $car)
+                <option value="{{ $car->id }}" name="carreraAsig">{{ $car->nombre }}</option>
+            @endforeach
+            </select>
+          </div>
+          </div>
+        </div>
+      </div>
 	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
 	  </div><!-- /.box-body -->
 {!! Form::close() !!}

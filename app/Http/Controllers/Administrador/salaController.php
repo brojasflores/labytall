@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 //referencia al modelo (importarlo)
 use App\Sala;
+use App\Departamento;
 use App\Estacion_trabajo;
 use Auth;
 use App\User;
@@ -78,14 +79,15 @@ class salaController extends Controller
         }
         //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
         $cont = count($v2); //cuenta la cantidad de elementos del array
+        $dptos=Departamento::all();
         
         if($cont>1)
         {
-            return view ('Administrador/salas/create', compact('v2','cont'));
+            return view ('Administrador/salas/create', compact('v2','dptos','cont'));
         }
         else
         {
-            return view ('Administrador/salas/create', compact('cont'));
+            return view ('Administrador/salas/create', compact('dptos','cont'));
         }
         //return view('Administrador/salas/create');
     }
@@ -106,6 +108,7 @@ class salaController extends Controller
         $sala = Sala::create([
             'nombre' => $request->get('nombreSala'),
             'capacidad' => $request->get('capacidadSala'),
+            'departamento_id' => $request->get('dptoSala'),
             ]);
 
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -149,6 +152,7 @@ class salaController extends Controller
     public function edit($id)
     {
         //variable = modelo:: metodo encunetra un registro en la bdd segun id!!
+        $dptos=Departamento::all();
         $sala = Sala::findOrFail($id);
         //Cambio de rol
         $usr=Auth::User()->rut;
@@ -168,11 +172,11 @@ class salaController extends Controller
         
         if($cont>1)
         {
-            return view ('Administrador/salas/edit', compact('sala','v2','cont'));
+            return view ('Administrador/salas/edit', compact('dptos','sala','v2','cont'));
         }
         else
         {
-            return view ('Administrador/salas/edit', compact('sala','cont'));
+            return view ('Administrador/salas/edit', compact('dptos','sala','cont'));
         }
         //return view('Administrador/salas/edit', compact('sala'));
     }
@@ -192,7 +196,7 @@ class salaController extends Controller
         $sala->fill([
             'nombre' => $request->get('nombreSala'),
             'capacidad' => $request->get('capacidadSala'),
-            'disponibilidad' => $request->get('disponibilidadSala')
+            'departamento_id' => $request->get('dptoSala')
         ]);
         $sala->save();
 

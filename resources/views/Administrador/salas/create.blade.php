@@ -148,6 +148,20 @@
 	      <label for="exampleInputPassword1">Capacidad</label>
 	      <input type="text" class="form-control" name="capacidadSala" id="capacidadSala" placeholder="Ingrese cantidad alumnos">
 	    </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-2">
+          <div class="form-group">
+            <label for="sel1">Departamento: </label>
+            <select class="form-control" id="dptoSala" name="dptoSala">
+            @foreach($dptos as $dep)
+                <option value="{{ $dep->id }}" name="dptoSala">{{ $dep->nombre }}</option>
+            @endforeach
+            </select>
+          </div>
+          </div>
+        </div>
+      </div>
 	    <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
 	  </div><!-- /.box-body -->
 </form>

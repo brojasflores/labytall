@@ -65,7 +65,10 @@ class cursoController extends Controller
      */
     public function create()
     {
-        $asignaturas = Asignatura::all();
+        //$asignaturas = Asignatura::all();
+        $asignaturas = Asignatura::join('carrera','asignatura.carrera_id','=','carrera.id')
+                                 ->select('asignatura.*','carrera.nombre as carr')
+                                 ->get();
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -134,7 +137,9 @@ class cursoController extends Controller
     {
         $cursos = Curso::findOrFail($id);
         //en el compact se pasa la variable como string
-        $asignaturas = Asignatura::all();
+        $asignaturas = Asignatura::join('carrera','asignatura.carrera_id','=','carrera.id')
+                                 ->select('asignatura.*','carrera.nombre as carr')
+                                 ->get();
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
