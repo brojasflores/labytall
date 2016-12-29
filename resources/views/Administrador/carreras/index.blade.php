@@ -66,17 +66,6 @@
                 <li><a href="{{ route('administrador.carrera.index')}}"><i class="fa fa-th"></i> Carreras</a></li>
               </ul>
             </li>
-            
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-university"></i> <span>Universidad</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <!--Controlador.metodo-->
-                <li><a href="{{ route('administrador.carrera.index')}}"><i class="fa fa-th"></i> Carreras</a></li>
-              </ul>
-            </li>
 
             <li class="treeview">
               <a href="#">

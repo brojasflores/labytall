@@ -13,7 +13,7 @@
         </p>
         @foreach($v2 as $as)
           @if($as == 'administrador')
-            <a href="{{ route('adminisrador..index')}}"><i class="fa fa-mail-forward"></i> Administrador</a>
+            <a href="{{ route('administrador..index')}}"><i class="fa fa-mail-forward"></i> Administrador</a>
           @endif
           @if($as == 'director')
             <a href="{{ route('director..index')}}"><i class="fa fa-mail-forward"></i> Director</a>
@@ -170,7 +170,7 @@ $(document).ready(function(){
 	$.ajax({
 		// con .val saco el valor del value
         data:  {'id': $("#usuario_id").val()},
-        url:   '/~brojas/administrador/usuario/'+$("#usuario_id")+'/edit',
+        url:   '/~brojas/director/usuario/'+$("#usuario_id")+'/edit',
         type:  'get',
         dataType: 'json',
         success:  function(respuesta) {          

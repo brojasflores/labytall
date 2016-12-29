@@ -15,6 +15,8 @@ Route::group(['prefix' => 'administrador','namespace' => 'Administrador'], funct
 	Route::resource('/usuario','usuarioController'); 
 	Route::get('/usuario_perfil', ['as' => 'administrador.usuario.perfil', 'uses' => 'perfilController@perfil']);
 	Route::post('/usuario_perfilUpdate', ['as' => 'administrador.usuario.updateProfile', 'uses' => 'perfilController@updateProfile']);
+	Route::post('/upload_alumno', ['as' => 'administrador.usuario.upload', 'uses' => 'usuarioController@uploadAlum']);
+	Route::post('/upload_docente', ['as' => 'administrador.usuario.upload', 'uses' => 'usuarioController@uploadDocente']);
 
 
 	Route::resource('/contacto','contactoController');
@@ -24,7 +26,7 @@ Route::group(['prefix' => 'administrador','namespace' => 'Administrador'], funct
 	Route::resource('/curso','cursoController');
 	Route::resource('/horario','horarioController');
 	Route::resource('/carrera','carreraController');
-	Route::post('/upload_carrera', ['as' => 'administrador.carrera.update', 'uses' => 'carreraController@uploadCar']);
+	Route::post('/upload_carrera', ['as' => 'administrador.carrera.upload', 'uses' => 'carreraController@uploadCar']);
 	Route::resource('/campus','campusController');
 	Route::resource('/facultad','facultadController');
 	Route::resource('/departamento','departamentoController');
@@ -50,8 +52,8 @@ Route::group(['prefix' => 'director','namespace' => 'Director'], function()
 	Route::resource('/usuario','usuarioController'); 
 	Route::get('/usuario_perfil', ['as' => 'director.usuario.perfil', 'uses' => 'perfilController@perfil']);
 	Route::post('/usuario_perfilUpdate', ['as' => 'director.usuario.updateProfile', 'uses' => 'perfilController@updateProfile']);
-	Route::post('/upload_alumno', ['as' => 'director.usuario.update', 'uses' => 'usuarioController@uploadAlum']);
-	Route::post('/upload_docente', ['as' => 'director.usuario.update', 'uses' => 'usuarioController@uploadDocente']);
+	Route::post('/upload_alumno', ['as' => 'director.usuario.upload', 'uses' => 'usuarioController@uploadAlum']);
+	Route::post('/upload_docente', ['as' => 'director.usuario.upload', 'uses' => 'usuarioController@uploadDocente']);
 
 	Route::resource('/contacto','contactoController');
 	Route::resource('/rol','rolController');
@@ -60,8 +62,7 @@ Route::group(['prefix' => 'director','namespace' => 'Director'], function()
 	Route::resource('/curso','cursoController');
 	Route::resource('/horario','horarioController');
 	Route::resource('/carrera','carreraController');
-	Route::post('/upload_carrera', ['as' => 'director.carrera.update', 'uses' => 'carreraController@uploadCar']);
-
+	Route::post('/upload_carrera', ['as' => 'director.carrera.upload', 'uses' => 'carreraController@uploadCar']);
 	Route::resource('/horarioAlumno','horarioAlumnoController');
 
 	Route::resource('/asignar','asignarController');

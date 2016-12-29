@@ -6,7 +6,7 @@ use Closure;
 use App\User;
 use App\RolUsuario;
 
-class adminMiddleware
+class dirMiddleware
 {
     /**
      * Handle an incoming request.
@@ -32,7 +32,7 @@ class adminMiddleware
         for($i=0;$i<$cont;$i++)
         {
             $v1=$v2[$i];
-            if($v1=='administrador')
+            if($v1=='director')
             {
                 //return abort(401); 
                 return $next($request);

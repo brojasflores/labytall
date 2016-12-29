@@ -25,7 +25,7 @@ class carreraController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('admin');
+        $this->middleware('dir');
     }
     
     public function index()
@@ -141,6 +141,7 @@ class carreraController extends Controller
         $carr = Carrera::where('codigo','=',$request->get('codigoCarrera'))
                         ->select('carrera.id')
                         ->get();
+                        
         $carr2 = $carr->first()->id;
   
         foreach($salas as $v)
@@ -221,6 +222,23 @@ class carreraController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $carrerasala = CarreraSala::where('carrera_id','=',$id)
+                                  ->select('id')
+                                  ->get();
+
+        foreach($carrerasala as $v)
+        {
+            $v2[]= $v->id;
+        }
+        $cont= count($v2); 
+        
+        for($i=0;$i<$cont;$i++)
+        {
+            $carsa = CarreraSala::findOrFail($v2[$i]);
+            $carsa->delete();
+        }
+
+        /**/
         $carreras = Carrera::findOrFail($id);     
         //fill (rellenar)
         $carreras->fill([
@@ -230,6 +248,29 @@ class carreraController extends Controller
             'descripcion' => $request->get('desCarrera')
         ]);
         $carreras->save();
+
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                        ->select('departamento_id')
+                        ->get();
+
+        $salas= Sala::where('departamento_id','=',$dpto->first()->departamento_id)
+                        ->select('sala.id')
+                        ->get();
+        
+        $carr = Carrera::where('codigo','=',$request->get('codigoCarrera'))
+                        ->select('carrera.id')
+                        ->get();
+                        
+        $carr2 = $carr->first()->id;
+  
+        foreach($salas as $v)
+        {
+           CarreraSala::create([
+            'carrera_id' => $carr2,
+            'sala_id' => $v->id,
+            ]);
+        }
 
         return redirect()->route('director.carrera.index');
     }
@@ -242,6 +283,22 @@ class carreraController extends Controller
      */
     public function destroy($id)
     {
+        $carrerasala = CarreraSala::where('carrera_id','=',$id)
+                                  ->select('id')
+                                  ->get();
+
+        foreach($carrerasala as $v)
+        {
+            $v2[]= $v->id;
+        }
+        $cont= count($v2); 
+
+        for($i=0;$i<$cont;$i++)
+        {
+            $carsa = CarreraSala::findOrFail($v2[$i]);
+            $carsa->delete();
+        }
+        
         $carreras = Carrera::findOrFail($id);
         $carreras->delete();
         return redirect()->route('director.carrera.index');

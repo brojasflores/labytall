@@ -68,16 +68,6 @@
             </li>
             <li class="treeview">
               <a href="#">
-                <i class="fa fa-university"></i> <span>Universidad</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <!--Controlador.metodo-->
-                <li><a href="{{ route('administrador.carrera.index')}}"><i class="fa fa-th"></i> Carreras</a></li>
-              </ul>
-            </li>
-            <li class="treeview">
-              <a href="#">
                 <i class="fa fa-user"></i> <span>Gestión Usuarios</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
@@ -152,7 +142,7 @@
 
 <div class="row">
   <div class="col-xs-24">
-    {!! Form::open(['action' => 'Director\carreraController@uploadCar','files'=>true]) !!}
+    {!! Form::open(['action' => 'Administrador\carreraController@uploadCar','files'=>true]) !!}
       <div class="form-group">
         <div class="panel-body">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">

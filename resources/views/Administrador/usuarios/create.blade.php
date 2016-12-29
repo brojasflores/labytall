@@ -136,7 +136,53 @@
 <li class="active">Agregar Usuarios</li>
 @stop
 @section('content')
+@if(Session::has('message'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('message') }}</strong>
+    </div>
+@endif
 <h1>Agregar Usuario</h1>
+<div class="row">
+  <div class="col-xs-12">
+    {!! Form::open(['action' => 'Director\usuarioController@uploadAlum','files'=>true]) !!}
+      <div class="form-group">
+        <div class="panel-body">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <div class="form-group">
+              <label class="col-md-2 control-label">Seleccione el archivo con los Alumnos</label>
+              <div class="col-md-4">
+                <input type="file" class="form-control" name="file" >
+              </div>
+              <div class="col-md-4">
+                <div align="center"<th><button type="submit" class="btn btn-success">Subir Alumnos</button></th></div>
+              </div>
+            </div>
+        </div>
+       </div>
+    {!! Form::close() !!}
+
+    {!! Form::open(['action' => 'Director\usuarioController@uploadDocente','files'=>true]) !!}
+    <div class="form-group">
+      <div class="panel-body">
+        
+          <input type="hidden" name="_token" value="{{ csrf_token() }}">
+          
+          <div class="form-group">
+            <label class="col-md-2 control-label">Seleccione el archivo con los Docentes</label>
+            <div class="col-md-4">
+              <input type="file" class="form-control" name="file" >
+            </div>
+            <div class="col-md-4">
+              <div align="center"<th><button type="submit" class="btn btn-success">Subir Docentes</button></th></div>
+            </div>
+          </div>
+      </div>
+     </div>
+    {!! Form::close() !!}
+  </div>
+</div>
+
 <form role="form" method="post" action="{{ route('administrador.usuario.store')}}">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
@@ -156,6 +202,16 @@
 	      <label for="exampleInputPassword1">Apellidos</label>
 	      <input type="text" class="form-control" name="apellidosUsuario" id="apellidosUsuario" placeholder="Ingrese Apellidos">
 	    </div>
+
+      <div class="form-group">
+            <label for="sel1">Departamento: </label>
+            <select class="form-control" id="dpt" name="dpt">
+              @foreach($dpt as $d)
+                <option value="{{ $d->id }}" name="dpt">{{ $d->nombre }}</option>
+            @endforeach
+            </select>
+      </div>
+
 	    <div class="form-group">
 	    	<div class="row">
 	    		@foreach($roles as $rol)

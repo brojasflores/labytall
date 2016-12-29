@@ -112,6 +112,28 @@ class carreraController extends Controller
 
         //como llenar la cuestion de carrera_sala
 
+        $dpto= Escuela::where('id','=',$request->get('escuelaCarrera'))
+                         ->select('escuela.departamento_id')
+                         ->get();
+
+
+        $salas= Sala::where('departamento_id','=',$dpto->first()->departamento_id)
+                        ->select('sala.id')
+                        ->get();
+        
+        $carr = Carrera::where('codigo','=',$request->get('codigoCarrera'))
+                        ->select('carrera.id')
+                        ->get();
+                        
+        $carr2 = $carr->first()->id;
+  
+        foreach($salas as $v)
+        {
+           CarreraSala::create([
+            'carrera_id' => $carr2,
+            'sala_id' => $v->id,
+            ]);
+        }
 
         return redirect()->route('administrador.carrera.index');
     }
@@ -162,7 +184,7 @@ class carreraController extends Controller
         {
             return view ('Administrador/carreras/edit', compact('escuelas','carreras','cont'));
         }
-        //return view('Administrador/periodos/edit', compact('periodos'));
+        //eliminar de carrera sala y crear de nuevo
     }
 
     /**
@@ -174,6 +196,25 @@ class carreraController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $carrerasala = CarreraSala::where('carrera_id','=',$id)
+                                  ->select('id')
+                                  ->get();
+
+        foreach($carrerasala as $v)
+        {
+            $v2[]= $v->id;
+        }
+        $cont= count($v2); 
+        
+        for($i=0;$i<$cont;$i++)
+        {
+            $carsa = CarreraSala::findOrFail($v2[$i]);
+            $carsa->delete();
+        }
+
+
+        /**/
         $carreras = Carrera::findOrFail($id);     
         //fill (rellenar)
         $carreras->fill([
@@ -184,6 +225,30 @@ class carreraController extends Controller
         ]);
         $carreras->save();
 
+
+        $dpto= Escuela::where('id','=',$request->get('escuelaCarrera'))
+                         ->select('escuela.departamento_id')
+                         ->get();
+
+
+        $salas= Sala::where('departamento_id','=',$dpto->first()->departamento_id)
+                        ->select('sala.id')
+                        ->get();
+        
+        $carr = Carrera::where('codigo','=',$request->get('codigoCarrera'))
+                        ->select('carrera.id')
+                        ->get();
+                        
+        $carr2 = $carr->first()->id;
+  
+        foreach($salas as $v)
+        {
+           CarreraSala::create([
+            'carrera_id' => $carr2,
+            'sala_id' => $v->id,
+            ]);
+        }
+        
         return redirect()->route('administrador.carrera.index');
     }
 
@@ -195,13 +260,31 @@ class carreraController extends Controller
      */
     public function destroy($id)
     {
+       $carrerasala = CarreraSala::where('carrera_id','=',$id)
+                                  ->select('id')
+                                  ->get();
+
+        foreach($carrerasala as $v)
+        {
+            $v2[]= $v->id;
+        }
+        $cont= count($v2); 
+
+        for($i=0;$i<$cont;$i++)
+        {
+            $carsa = CarreraSala::findOrFail($v2[$i]);
+            $carsa->delete();
+        }
+        
+
         $carreras = Carrera::findOrFail($id);
         $carreras->delete();
+
         return redirect()->route('administrador.carrera.index');
     }
 
     public function uploadCar(Request $request)
-    {
+    {   	
         if(is_null($request->file('file')))
         {
             Session::flash('message', 'Debes seleccionar un archivo.');
@@ -210,7 +293,8 @@ class carreraController extends Controller
            $file = $request->file('file');
      
            $nombre = $file->getClientOriginalName();
-           \Storage::disk('local')->put($nombre,  \File::get($file));
+     
+            \Storage::disk('local')->put($nombre,  \File::get($file));
             \Excel::load('/storage/app/'.$nombre,function($archivo) 
             {
                 $result = $archivo->get();

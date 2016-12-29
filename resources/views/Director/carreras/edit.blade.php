@@ -140,7 +140,7 @@
           <div class="col-md-2">
           <div class="form-group">
             <label for="sel1">Escuela: </label>
-            <select class="form-control" id="escuelas" name="escuelaCarrera">
+            <select class="form-control" id="escuelaCarrera" name="escuelaCarrera">
               @foreach($escuelas as $esc)
                 <option value="{{ $esc->id }}" name="escuelaCarrera">{{ $esc->nombre }}</option>
               @endforeach

@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\User;
 use App\Rol;
 use App\RolUsuario;
+use App\Departamento;
+use App\UsersDpto;
 //Para el hash de la password
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
@@ -69,6 +71,7 @@ class usuarioController extends Controller
     public function create()
     {
         $roles = Rol::all();
+        $dpt= Departamento::all();
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -87,11 +90,11 @@ class usuarioController extends Controller
         
         if($cont>1)
         {
-            return view ('Administrador/usuarios/create', compact('roles','v2','cont'));
+            return view ('Administrador/usuarios/create', compact('roles','dpt','v2','cont'));
         }
         else
         {
-            return view ('Administrador/usuarios/create', compact('roles','cont'));
+            return view ('Administrador/usuarios/create', compact('roles','dpt','cont'));
         }
         //return view('Administrador/usuarios/create',compact('roles'));
     }
@@ -125,6 +128,12 @@ class usuarioController extends Controller
                 'rol_id' => $rol
                 ]);
         }
+
+        UsersDpto::create([
+            'rut' => $request->get('rutUsuario'),
+            'departamento_id' => $request->get('dpt'),
+        ]);
+
         Session::flash('create','¡Usuario creado correctamente!');
         return redirect()->route('administrador.usuario.index');
     }
@@ -177,14 +186,15 @@ class usuarioController extends Controller
             }
             //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
             $cont = count($v2); //cuenta la cantidad de elementos del array
-            
+            $dpt= Departamento::all();
+
             if($cont>1)
             {
-                return view ('Administrador/usuarios/edit', compact('usuario','v2','cont'));
+                return view ('Administrador/usuarios/edit', compact('usuario','dpt','v2','cont'));
             }
             else
             {
-                return view ('Administrador/usuarios/edit', compact('usuario','cont'));
+                return view ('Administrador/usuarios/edit', compact('usuario','dpt','cont'));
             }
             //return view('Administrador/usuarios/edit', compact('usuario'));
         }
@@ -224,6 +234,21 @@ class usuarioController extends Controller
                 'rol_id' => $rol
                 ]);
         }
+        
+        $dpto_usr = UsersDpto::where('rut',$request->get('rutUsuario'))->get();
+        
+        foreach($dpto_usr as $de)
+        {
+            $id2=$de->id;
+        }
+        $dp = UsersDpto::findOrFail($id2);
+        $dp->delete();
+
+        UsersDpto::create([
+            'rut' => $request->get('rutUsuario'),
+            'departamento_id' => $request->get('dpt'),
+        ]);
+
         Session::flash('edit','¡Usuario editado correctamente!');
         return redirect()->route('administrador.usuario.index');
     }
@@ -241,6 +266,87 @@ class usuarioController extends Controller
         Session::flash('destroy','¡Usuario eliminado correctamente!');
         return redirect()->route('administrador.usuario.index');
     }
+    public function uploadAlum(Request $request)
+    {
+        if(is_null($request->file('file')))
+        {
+            Session::flash('message', 'Debes seleccionar un archivo.');
+            return redirect()->back();
+        }
+           $file = $request->file('file');
+     
+           $nombre = $file->getClientOriginalName();
+           \Storage::disk('local')->put($nombre,  \File::get($file));
+            \Excel::load('/storage/app/'.$nombre,function($archivo) 
+            {
+                $result = $archivo->get();
+                foreach($result as $key => $value)
+                {
+                    $var = new User();
+                    $var->fill(['rut' => $value->rut]);
+                    $var->save();
 
+                    $carrera_id = Carrera::where('codigo','=',$value->carrera)
+                                        ->select('id')
+                                        ->get();
+
+                    $var2 = new UsersCarrera();
+                    $var2->fill(['rut' => $value->rut, 'carrera_id' => $carrera_id->first()->id]);
+                    $var2->save();
+
+                    $dpto = Departamento::join('escuela','departamento.id','=','escuela.departamento_id')
+                                        ->join('carrera','escuela.id','=','carrera.escuela_id')
+                                        ->where('carrera.id','=',$carrera_id)
+                                        ->select('departamento.id')
+                                        ->get();
+
+                    $var3 = new UsersDpto();
+                    $var3->fill(['rut' => $value->rut, 'departamento_id' => $dpto->first()->id]);
+                    $var3->save();
+
+
+                   
+                }
+            })->get();
+            Session::flash('message', 'Los Alumnos fueron agregados exitosamente!');
+           return redirect()->route('administrador.usuario.index');
+    }
+
+    public function uploadDocente(Request $request)
+    {
+        if(is_null($request->file('file')))
+        {
+            Session::flash('message', 'Debes seleccionar un archivo.');
+            return redirect()->back();
+        }
+           $file = $request->file('file');
+     
+           $nombre = $file->getClientOriginalName();
+           \Storage::disk('local')->put($nombre,  \File::get($file));
+            \Excel::load('/storage/app/'.$nombre,function($archivo) 
+            {
+                $result = $archivo->get();
+                // En este caso el admin debe ingresar el id correspondiente al dpto que quiere asignar a un docente
+                
+                //$usr=Auth::User()->rut;
+
+                /*$dpto_id = UsersDpto::where('rut','=',$usr)
+                                        ->select('departamento_id')
+                                        ->get();*/
+
+                foreach($result as $key => $value)
+                {
+                    $var = new User();
+                    $var->fill(['rut' => $value->rut]);
+                    $var->save();
+
+                    $var2 = new UsersDpto();
+                    $var2->fill(['rut' => $value->rut, 'departamento_id' => $value->departamento]);
+                    $var2->save();
+                }
+            })->get();
+            Session::flash('message', 'Los Docentes fueron agregados exitosamente!');
+           return redirect()->route('administrador.usuario.index');
+    }
 
 }

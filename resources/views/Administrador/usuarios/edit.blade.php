@@ -157,6 +157,17 @@
 	      <label for="exampleInputPassword1">Apellidos</label>
 	      <input type="text" class="form-control" value="{{ $usuario->apellidos}}" name="apellidosUsuario" id="capacidadSala" placeholder="Ingrese cantidad alumnos">
 	    </div>
+      
+      <div class="form-group">
+            <label for="sel1">Departamento: </label>
+            <select class="form-control" id="dpt" name="dpt">
+              @foreach($dpt as $d)
+                <option value="{{ $d->id }}" name="dpt">{{ $d->nombre }}</option>
+            @endforeach
+            </select>
+      </div>
+
+
 	    <div class="form-group">
 	    	<div class="row" id="roles">
 		   <!-- Aca van los roles que se llenan con jquery-->

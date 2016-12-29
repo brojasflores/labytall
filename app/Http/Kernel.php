@@ -56,5 +56,6 @@ class Kernel extends HttpKernel
         'doc' => \App\Http\Middleware\docMiddleware::class,
         'ayu' => \App\Http\Middleware\ayuMiddleware::class,
         'alum' => \App\Http\Middleware\alumMiddleware::class,
+        'dir' => \App\Http\Middleware\dirMiddleware::class,
     ];
 }
