@@ -132,7 +132,12 @@
 @stop
 @section('content')
 <h1>Agregar Usuario</h1>
-
+@if(Session::has('message'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('message') }}</strong>
+    </div>
+@endif
 <div class="row">
   <div class="col-xs-12">
     {!! Form::open(['action' => 'Director\usuarioController@uploadAlum','files'=>true]) !!}
@@ -195,7 +200,7 @@
 	    <div class="form-group">
 	    	<div class="row">
 	    		@foreach($roles as $rol)
-          @if($rol->nombre == 'funcionario' || $rol->nombre == 'docente' || $rol->nombre == 'ayudante' || $rol->nombre == 'alumno')
+          @if($rol->nombre == 'funcionario' || $rol->nombre == 'ayudante')
 	    		<div class="col-md-2">
 			    	<div class="checkbox">
 				    	<!-- Para imprimir el valor de una variable hay que escribir como está aca-->

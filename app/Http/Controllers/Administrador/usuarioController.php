@@ -10,6 +10,8 @@ use App\Rol;
 use App\RolUsuario;
 use App\Departamento;
 use App\UsersDpto;
+use App\UsersCarrera;
+use App\Carrera;
 //Para el hash de la password
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
@@ -294,18 +296,16 @@ class usuarioController extends Controller
                     $var2->fill(['rut' => $value->rut, 'carrera_id' => $carrera_id->first()->id]);
                     $var2->save();
 
+                    //obtener el dpto correspondiente a la carrera
                     $dpto = Departamento::join('escuela','departamento.id','=','escuela.departamento_id')
                                         ->join('carrera','escuela.id','=','carrera.escuela_id')
-                                        ->where('carrera.id','=',$carrera_id)
+                                        ->where('carrera.id','=',$carrera_id->first()->id)
                                         ->select('departamento.id')
                                         ->get();
 
                     $var3 = new UsersDpto();
                     $var3->fill(['rut' => $value->rut, 'departamento_id' => $dpto->first()->id]);
                     $var3->save();
-
-
-                   
                 }
             })->get();
             Session::flash('message', 'Los Alumnos fueron agregados exitosamente!');

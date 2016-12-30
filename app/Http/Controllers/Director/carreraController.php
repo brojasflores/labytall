@@ -314,26 +314,48 @@ class carreraController extends Controller
            $file = $request->file('file');
      
            $nombre = $file->getClientOriginalName();
-           \Storage::disk('local')->put($nombre,  \File::get($file));
+     
+            \Storage::disk('local')->put($nombre,  \File::get($file));
             \Excel::load('/storage/app/'.$nombre,function($archivo) 
             {
                 $result = $archivo->get();
                 foreach($result as $key => $value)
                 {
-                    $carrera_id = Carrera::where('codigo','=',$value->carrera)
-                                        ->select('id')
-                                        ->get();
+                    //No agregar escuela con la id en el excel
+                    $usr=Auth::User()->rut;
+                    $dpto= UsersDpto::where('rut','=',$usr)
+                                    ->select('departamento_id')
+                                    ->get();
 
-                    $sala_id = Sala::where('nombre','=',$value->sala)
-                                        ->select('id')
-                                        ->get();
+                    $escuela=Escuela::join('departamento','escuela.departamento_id','=','departamento.id')
+                                    ->select('escuela.id')
+                                    ->get();
 
-                    $var = new CarreraSala();
-                    $var->fill(['carrera_id' => $carrera_id->first()->id, 'sala_id' => $sala_id->first()->id]);
+                    $var = new Carrera();
+                    $var->fill(['escuela_id' => $escuela->first()->id, 'codigo' => $value->codigo, 'nombre' => $value->nombre, 'descripcion' => $value->descripcion]);
                     $var->save();
+                    
+
+                    $salas= Sala::where('departamento_id','=',$dpto->first()->departamento_id)
+                                    ->select('sala.id')
+                                    ->get();
+                    
+                    $carr = Carrera::where('codigo','=',$value->codigo)
+                                    ->select('carrera.id')
+                                    ->get();
+                                    
+                    $carr2 = $carr->first()->id;
+              
+                    foreach($salas as $v)
+                    {
+                       CarreraSala::create([
+                        'carrera_id' => $carr2,
+                        'sala_id' => $v->id,
+                        ]);
+                    }   
                 }
             })->get();
             Session::flash('message', '¡El archivo fue subido exitosamente!');
-           return redirect()->route('director.usuario.index');
+           return redirect()->route('director.carrera.index');
     }
 }

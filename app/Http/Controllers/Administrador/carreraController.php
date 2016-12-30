@@ -300,20 +300,35 @@ class carreraController extends Controller
                 $result = $archivo->get();
                 foreach($result as $key => $value)
                 {
-                    $carrera_id = Carrera::where('codigo','=',$value->carrera)
-                                        ->select('id')
-                                        ->get();
-
-                    $sala_id = Sala::where('nombre','=',$value->sala)
-                                        ->select('id')
-                                        ->get();
-
-                    $var = new CarreraSala();
-                    $var->fill(['carrera_id' => $carrera_id->first()->id, 'sala_id' => $sala_id->first()->id]);
+                    //agregar escuela con la id en el excel
+                    $var = new Carrera();
+                    $var->fill(['escuela_id' => $value->escuela, 'codigo' => $value->codigo, 'nombre' => $value->nombre, 'descripcion' => $value->descripcion]);
                     $var->save();
+
+                    $dpto= Escuela::where('id','=',$value->escuela)
+                                     ->select('escuela.departamento_id')
+                                     ->get();
+
+                    $salas= Sala::where('departamento_id','=',$dpto->first()->departamento_id)
+                                    ->select('sala.id')
+                                    ->get();
+
+                    $carr = Carrera::where('codigo','=',$value->codigo)
+                                    ->select('carrera.id')
+                                    ->get();
+
+                    $carr2 = $carr->first()->id;
+              
+                    foreach($salas as $v)
+                    {
+                       CarreraSala::create([
+                        'carrera_id' => $carr2,
+                        'sala_id' => $v->id,
+                        ]);
+                    }
                 }
             })->get();
             Session::flash('message', '¡El archivo fue subido exitosamente!');
-           return redirect()->route('administrador.usuario.index');
+           return redirect()->route('administrador.carrera.index');
     }
 }

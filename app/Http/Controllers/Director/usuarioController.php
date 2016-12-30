@@ -12,6 +12,7 @@ use App\UsersDpto;
 use App\Carrera;
 use App\Departamento;
 use App\UsersCarrera;
+use App\Escuela;
 //Para el hash de la password
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
@@ -158,23 +159,10 @@ class usuarioController extends Controller
 
         foreach($request->get('roles') as $rol2)
         {
-            if($rol2 == 2 || $rol2 == 3)
-            {
-                UsersDpto::create([
-                'rut' =>$request->get('rutUsuario'),
-                'departamento_id' => $dpto->first()->departamento_id
-                ]);
-            }
-            /*else
-            {
-                if($rol2 =='ayudante' || $rol2 == 'alumno')
-                {
-                    UsersCarrera::create([
-                    'rut' =>$request->get('rutUsuario'),
-                    'carrera_id' => $dpto->first()->departamento_id
-                    ]);
-                }
-            }*/
+            UsersDpto::create([
+            'rut' =>$request->get('rutUsuario'),
+            'departamento_id' => $dpto->first()->departamento_id
+            ]);
         }
         Session::flash('create','¡Usuario creado correctamente!');
         return redirect()->route('director.usuario.index');
@@ -309,21 +297,60 @@ class usuarioController extends Controller
                 $result = $archivo->get();
                 foreach($result as $key => $value)
                 {
-                    $var = new User();
-                    $var->fill(['rut' => $value->rut]);
-                    $var->save();
+                    $usr=Auth::User()->rut;
+                    $dpto= UsersDpto::where('rut','=',$usr)
+                                    ->select('departamento_id')
+                                    ->get();
 
                     $carrera_id = Carrera::where('codigo','=',$value->carrera)
                                         ->select('id')
                                         ->get();
 
-                    $var2 = new UsersCarrera();
-                    $var2->fill(['rut' => $value->rut, 'carrera_id' => $carrera_id->first()->id]);
-                    $var2->save();
+                    $escuela_id = Escuela::join('carrera','escuela.id','=','carrera.escuela_id')
+                                         -> select('escuela.id')
+                                         ->get();
+
+                    $dptoCar = Departamento::join('escuela','departamento.id','=','escuela.departamento_id')
+                                           ->join('carrera','escuela.id','=','carrera.escuela_id')
+                                           ->where('carrera.id','=',$carrera_id->first()->id)
+                                           ->select('departamento.id')
+                                           ->get();
+
+                    if(($dpto->first()->departamento_id)==($dptoCar->first()->id))
+                    {
+                        //dd('gg');
+                        $var = new User();
+                        $var->fill(['rut' => $value->rut]);
+                        $var->save();
+
+                        $carrera_id = Carrera::where('codigo','=',$value->carrera)
+                                            ->select('id')
+                                            ->get();
+
+                        $var2 = new UsersCarrera();
+                        $var2->fill(['rut' => $value->rut, 'carrera_id' => $carrera_id->first()->id]);
+                        $var2->save();
+                        Session::flash('message', 'Los Alumnos fueron agregados exitosamente!');
+
+                        $dpto2 = Departamento::join('escuela','departamento.id','=','escuela.departamento_id')
+                                            ->join('carrera','escuela.id','=','carrera.escuela_id')
+                                            ->where('carrera.id','=',$carrera_id->first()->id)
+                                            ->select('departamento.id')
+                                            ->get();
+
+                        $var3 = new UsersDpto();
+                        $var3->fill(['rut' => $value->rut, 'departamento_id' => $dpto2->first()->id]);
+                        $var3->save();
+                    }
+                    else
+                    {
+                        Session::flash('message', 'Permiso denegado, carrera agregada en excel no perteneciente a su Departamento!');
+                        //dd('no puedes');
+                    }
+                    
                 }
             })->get();
-            Session::flash('message', 'Los Alumnos fueron agregados exitosamente!');
-           return redirect()->route('director.usuario.index');
+            return redirect()->route('director.usuario.index');
     }
 
     public function uploadDocente(Request $request)
