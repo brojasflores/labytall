@@ -1,4 +1,41 @@
 @extends('main')
+@section('cambioRol')
+  @if($cont>1)
+  <li class="dropdown user user-menu">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+      <img src="{{asset('admin-lte/dist/img/cambio.png')}}" class="user-image" alt="User Image">
+      <span class="hidden-xs">Cambio Rol</span>
+    </a>
+    <ul class="dropdown-menu">
+      <li class="user-header">
+        <p>
+          Eliga el Rol que quiera utilizar
+        </p>
+        @foreach($v2 as $as)
+          @if($as == 'administrador')
+            <a href="{{ route('administrador..index')}}"><i class="fa fa-mail-forward"></i> Administrador</a>
+          @endif
+          @if($as == 'director')
+            <a href="{{ route('director..index')}}"><i class="fa fa-mail-forward"></i> Director</a>
+          @endif
+          @if($as == 'funcionario')
+            <a href="{{ route('funcionario..index')}}"><i class="fa fa-mail-forward"></i> Funcionario</a>
+          @endif
+          @if($as == 'docente')
+            <a href="{{ route('docente..index')}}"><i class="fa fa-mail-forward"></i> Docente</a>
+          @endif
+          @if($as == 'ayudante')
+            <a href="{{ route('ayudante..index')}}"><i class="fa fa-mail-forward"></i> Ayudante</a>
+          @endif
+          @if($as == 'alumno')
+            <a href="{{ route('alumno..index')}}"><i class="fa fa-mail-forward"></i> Alumno</a>
+          @endif
+        @endforeach
+      </li>
+    </ul>
+  </li>
+@endif
+@stop
 @section('perfil')
 <li class="user-footer">
   <div class="pull-left">
@@ -11,7 +48,7 @@
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Funcionario</li>
+            <li class="header">Administración</li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-user"></i> <span>Gestión Usuarios</span>
@@ -28,8 +65,16 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="{{ route('funcionario.horario.index')}}"><i class="fa fa-eye"></i> Ver horarios</a></li>
-                <!--route ruta del controlador.metodo-->
+                <li class="treeview">
+                  <a href="#">
+                    <i class="fa fa-eye"></i> <span>Ver Horarios</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="{{ route('funcionario.horario.index')}}"><i class="fa fa-clock-o"></i> Docente-Ayudante</a></li>
+                    <li><a href="{{ route('funcionario.horarioAlumno.index')}}"><i class="fa fa-clock-o"></i> Alumno</a></li>
+                  </ul>
+                </li>
                 <li><a href="{{ route('funcionario.sala.index')}}"><i class="fa fa-list-alt"></i>Lista de Salas</a></li>
                 <li><a href="{{ route('funcionario.periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
                 <li><a href="{{ route('funcionario.asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
@@ -92,6 +137,21 @@
 	      <label for="exampleInputPassword1">Descripción</label>
 	      <input type="text" class="form-control" value="{{ $asignaturas->descripcion}}" name="descripcionAsignatura" id="descripcionAsignatura" placeholder="Ingrese descripción de la asignatura">
 	    </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-2">
+          <div class="form-group">
+            <label for="sel1">Carrera: </label>
+            <select class="form-control" id="asignaturas" name="carreraAsignatura">
+            @foreach($carreras as $car)
+                <option value="{{ $car->id }}" name="carreraAsignatura">{{ $car->nombre }}</option>
+            @endforeach
+            </select>
+          </div>
+          </div>
+          
+        </div>
+      </div>
 	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
 	  </div><!-- /.box-body -->
 {!! Form::close() !!}

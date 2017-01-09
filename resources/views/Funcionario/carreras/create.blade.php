@@ -115,66 +115,64 @@
             <li><a href="{{ route('funcionario.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
           </ul>
 @stop
-@section('options')
-<h1>
-    Gestión Usuarios 
-  <small>Usuarios</small>
-</h1>
-@stop
 @section('opcion')
-<li><a href="{{ route('funcionario.usuario.index')}}"><i class="fa fa-user"></i> Usuarios</a></li>
-<li class="active">Perfil Usuario</li>
+<li><a href="{{ route('funcionario.carrera.index')}}"><i class="fa fa-th"></i> Carreras</a></li>
+<li class="active">Agregar Carreras</li>
 @stop
 @section('content')
-<h1>Perfil Usuario</h1>
-<h2>Cambiar imagen de perfil</h2>
-<form  method='post' action='{{url("administrador/usuario_perfilUpdate")}}' enctype='multipart/form-data'>
-  {{csrf_field()}}
-    <div class="row">
-	  	<div class="col-md-4">
-		    <div class="form-group">
-			  <label for="exampleInputPassword1">Email</label>
-			  <input type="text" class="form-control" value="{{ Auth::user()->email }}" name="emailUsuario" id="email">
-			</div> 
-		</div>
-	</div>
-	<div class="row">
-	  	<div class="col-md-4">
-		    <div class="form-group">
-			  <label for="exampleInputPassword1">Nombres</label>
-			  <input type="text" class="form-control" value="{{ Auth::user()->nombres }}" name="nombres" id="nombres">
-			</div> 
-		</div>
-	</div>
-	<div class="row">
-	  	<div class="col-md-4">
-		    <div class="form-group">
-			  <label for="exampleInputPassword1">Apellidos</label>
-			  <input type="text" class="form-control" value="{{ Auth::user()->apellidos }}" name="apellidos" id="apellidos">
-			</div> 
-		</div>
-	</div>
+<h1>Agregar Carreras</h1>
 
-  @if($var2)
-        <div class="row">
-      <div class="col-md-4">
-        <div class="form-group">
-          <label for="exampleInputPassword1">Contraseña</label>
-          <input type="password" class="form-control" name="passwordUsuario" id="passwordUsuario" placeholder="Ingrese contraseña nueva">
-        </div> 
-      </div>
+<div class="row">
+  <div class="col-xs-24">
+    {!! Form::open(['action' => 'Funcionario\carreraController@uploadCar','files'=>true]) !!}
+      <div class="form-group">
+        <div class="panel-body">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <div class="form-group">
+              <label class="col-md-2 control-label">Seleccione el archivo con las carreras y salas correspondiente</label>
+              <div class="col-md-4">
+                <input type="file" class="form-control" name="file" >
+              </div>
+              <div class="col-md-4">
+                <div align="center"<th><button type="submit" class="btn btn-success">Subir Archivo</button></th></div>
+              </div>
+            </div>
+        </div>
+       </div>
+    {!! Form::close() !!}
   </div>
-  @endif
-	<div class="row">
-	  	<div class="col-md-4">
-		  <div class='form-group'>
-		    <label for='image'>Imagen: </label>
-		    <input type="file" name="image" />
-		    <div class='text-danger'>{{$errors->first('image')}}</div>
-		  </div>
-		</div>
-	</div>
-  <button type='submit' class='btn btn-primary'>Actualizar Datos</button>
-</form>
+</div>
 
+
+<form role="form" method="post" action="{{ route('funcionario.carrera.store')}}">
+	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-2">
+          <div class="form-group">
+            <label for="sel1">Escuela: </label>
+            <select class="form-control" id="escuelas" name="escuelaCarrera">
+              @foreach($escuelas as $esc)
+                <option value="{{ $esc->id }}" name="escuelaCarrera">{{ $esc->nombre }}</option>
+            @endforeach
+            </select>
+          </div>
+          </div>
+        </div>
+      </div>
+	    <div class="form-group">
+	      <label for="exampleInputPassword1">Código</label>
+	      <input type="text" class="form-control" name="codigoCarrera" id="codigoCarrera" placeholder="Ingrese Código">
+	    </div>
+	    <div class="form-group">
+	      <label for="exampleInputPassword1">Nombre</label>
+	      <input type="text" class="form-control" name="nombreCarrera" id="nombreCarrera" placeholder="Ingrese Nombre de la carrera">
+	    </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Descripción</label>
+        <input type="text" class="form-control" name="desCarrera" id="desCarrera" placeholder="Ingrese Descripción">
+      </div>
+	    <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
+	  </div><!-- /.box-body -->
+</form>
 @stop

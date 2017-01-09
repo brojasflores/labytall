@@ -115,66 +115,42 @@
             <li><a href="{{ route('funcionario.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
           </ul>
 @stop
-@section('options')
-<h1>
-    Gestión Usuarios 
-  <small>Usuarios</small>
-</h1>
-@stop
 @section('opcion')
-<li><a href="{{ route('funcionario.usuario.index')}}"><i class="fa fa-user"></i> Usuarios</a></li>
-<li class="active">Perfil Usuario</li>
+<li><a href="{{ route('funcionario.carrera.index')}}"><i class="fa fa-clock-o"></i> Carreras</a></li>
+<li class="active">Editar Carreras</li>
 @stop
 @section('content')
-<h1>Perfil Usuario</h1>
-<h2>Cambiar imagen de perfil</h2>
-<form  method='post' action='{{url("administrador/usuario_perfilUpdate")}}' enctype='multipart/form-data'>
-  {{csrf_field()}}
-    <div class="row">
-	  	<div class="col-md-4">
-		    <div class="form-group">
-			  <label for="exampleInputPassword1">Email</label>
-			  <input type="text" class="form-control" value="{{ Auth::user()->email }}" name="emailUsuario" id="email">
-			</div> 
-		</div>
-	</div>
-	<div class="row">
-	  	<div class="col-md-4">
-		    <div class="form-group">
-			  <label for="exampleInputPassword1">Nombres</label>
-			  <input type="text" class="form-control" value="{{ Auth::user()->nombres }}" name="nombres" id="nombres">
-			</div> 
-		</div>
-	</div>
-	<div class="row">
-	  	<div class="col-md-4">
-		    <div class="form-group">
-			  <label for="exampleInputPassword1">Apellidos</label>
-			  <input type="text" class="form-control" value="{{ Auth::user()->apellidos }}" name="apellidos" id="apellidos">
-			</div> 
-		</div>
-	</div>
-
-  @if($var2)
+<h1>Editar Carreras</h1>
+<!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
+{!! Form::model($carreras,['route' => ['funcionario.carrera.update',$carreras], 'method' => 'PUT']) !!}
+	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+      <div class="form-group">
         <div class="row">
-      <div class="col-md-4">
-        <div class="form-group">
-          <label for="exampleInputPassword1">Contraseña</label>
-          <input type="password" class="form-control" name="passwordUsuario" id="passwordUsuario" placeholder="Ingrese contraseña nueva">
-        </div> 
+          <div class="col-md-2">
+          <div class="form-group">
+            <label for="sel1">Escuela: </label>
+            <select class="form-control" id="escuelaCarrera" name="escuelaCarrera">
+              @foreach($escuelas as $esc)
+                <option value="{{ $esc->id }}" name="escuelaCarrera">{{ $esc->nombre }}</option>
+              @endforeach
+            </select>
+          </div>
+          </div>
+        </div>
       </div>
-  </div>
-  @endif
-	<div class="row">
-	  	<div class="col-md-4">
-		  <div class='form-group'>
-		    <label for='image'>Imagen: </label>
-		    <input type="file" name="image" />
-		    <div class='text-danger'>{{$errors->first('image')}}</div>
-		  </div>
-		</div>
-	</div>
-  <button type='submit' class='btn btn-primary'>Actualizar Datos</button>
-</form>
-
+      <div class="form-group">
+        <label for="exampleInputPassword1">Código</label>
+        <input type="text" class="form-control" value="{{ $carreras->codigo}}" name="codigoCarrera" id="codigoCarrera" placeholder="Ingrese Código">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Nombre</label>
+        <input type="text" class="form-control" value="{{ $carreras->nombre}}" name="nombreCarrera" id="nombreCarrera" placeholder="Ingrese Nombre de la carrera">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Descripción</label>
+        <input type="text" class="form-control" value="{{ $carreras->descripcion}}" name="desCarrera" id="desCarrera" placeholder="Ingrese Descripción">
+      </div>
+	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
+	  </div><!-- /.box-body -->
+{!! Form::close() !!}
 @stop

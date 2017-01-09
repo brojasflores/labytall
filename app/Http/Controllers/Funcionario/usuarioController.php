@@ -1,17 +1,24 @@
 <?php
 
 namespace App\Http\Controllers\Funcionario;
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\User;
 use App\Rol;
 use App\RolUsuario;
+use App\UsersDpto;
+use App\Carrera;
+use App\Departamento;
+use App\UsersCarrera;
+use App\Escuela;
 //Para el hash de la password
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Validator;
 use Auth;
+use Session;
 
 class usuarioController extends Controller
 {
@@ -30,8 +37,53 @@ class usuarioController extends Controller
     public function index()
     {
         //llamo al modelo de bdd a la tabla usuario en app y luego puedo llamar a la tabla...
-        $usuarios = User::paginate();
-        return view('Funcionario/usuarios/index', compact('usuarios')); 
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                        ->select('departamento_id')
+                        ->get();
+
+
+        $usuarios1 = User::join('users_dpto','users.rut','=','users_dpto.rut')
+                        ->where('users_dpto.departamento_id',$dpto->first()->departamento_id)
+                        ->select('users.*');
+                        
+
+       
+        $usuarios2 = User::join('users_carrera','users.rut','=','users_carrera.rut')
+                        ->join('carrera','carrera.id','=','users_carrera.carrera_id')
+                        ->join('escuela','escuela.id','=','carrera.escuela_id')
+                        ->join('departamento','departamento.id','=','escuela.departamento_id')
+                        ->where('departamento.id',$dpto->first()->departamento_id)
+                        ->select('users.*');
+                        
+
+        $usuarios = $usuarios1->union($usuarios2)->get();
+
+        //Cambio de rol
+       
+        //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+        $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
+                    ->where('users.rut','=',$usr)
+                    ->join('rol','rol_users.rol_id','=','rol.id')
+                    ->select('nombre')
+                    ->get();
+        // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+        foreach($usr2 as $v)
+        {
+            $v2[]= $v->nombre;
+        }
+        //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
+        $cont = count($v2); //cuenta la cantidad de elementos del array
+        
+        if($cont>1)
+        {
+            return view ('Funcionario/usuarios/index', compact('usuarios','v2','cont'));
+        }
+        else
+        {
+            return view ('Funcionario/usuarios/index', compact('usuarios','cont'));
+        }
+        //return view('Administrador/usuarios/index', compact('usuarios')); 
     }
 
     /**
@@ -42,7 +94,31 @@ class usuarioController extends Controller
     public function create()
     {
         $roles = Rol::all();
-        return view('Funcionario/usuarios/create',compact('roles'));
+        //Cambio de rol
+        $usr=Auth::User()->rut;
+        //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+        $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
+                    ->where('users.rut','=',$usr)
+                    ->join('rol','rol_users.rol_id','=','rol.id')
+                    ->select('nombre')
+                    ->get();
+        // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+        foreach($usr2 as $v)
+        {
+            $v2[]= $v->nombre;
+        }
+        //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
+        $cont = count($v2); //cuenta la cantidad de elementos del array
+        
+        if($cont>1)
+        {
+            return view ('Funcionario/usuarios/create', compact('roles','v2','cont'));
+        }
+        else
+        {
+            return view ('Funcionario/usuarios/create', compact('roles','cont'));
+        }
+        //return view('Administrador/usuarios/create',compact('roles'));
     }
 
     /**
@@ -63,7 +139,8 @@ class usuarioController extends Controller
             'email' => $request->get('emailUsuario'),
             'nombres' => $request->get('nombresUsuario'),
             'apellidos' => $request->get('apellidosUsuario'),
-            'password' => $pass
+            'password' => $pass,
+            'perfiles' => "perfiles/h1m7G86a6OR1tLguLSNjj20czNunkW-XjSiKjE0nySu06OWdp3dutyuujpnJc-user2-160x160.png"
         ]);
 
         foreach($request->get('roles') as $rol)
@@ -73,6 +150,20 @@ class usuarioController extends Controller
                 'rol_id' => $rol
                 ]);
         }
+
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                        ->select('departamento_id')
+                        ->get();
+
+        foreach($request->get('roles') as $rol2)
+        {
+            UsersDpto::create([
+            'rut' =>$request->get('rutUsuario'),
+            'departamento_id' => $dpto->first()->departamento_id
+            ]);
+        }
+        Session::flash('create','¡Usuario creado correctamente!');
         return redirect()->route('funcionario.usuario.index');
     }
 
@@ -109,8 +200,31 @@ class usuarioController extends Controller
         else{
 
             $usuario = User::findOrFail($id);
-            //en el compact se pasa la variable como string
-            return view('Funcionario/usuarios/edit', compact('usuario'));
+            //Cambio de rol
+            $usr=Auth::User()->rut;
+            //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+            $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
+                        ->where('users.rut','=',$usr)
+                        ->join('rol','rol_users.rol_id','=','rol.id')
+                        ->select('nombre')
+                        ->get();
+            // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+            foreach($usr2 as $v)
+            {
+                $v2[]= $v->nombre;
+            }
+            //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
+            $cont = count($v2); //cuenta la cantidad de elementos del array
+            
+            if($cont>1)
+            {
+                return view ('Funcionario/usuarios/edit', compact('usuario','v2','cont'));
+            }
+            else
+            {
+                return view ('Funcionario/usuarios/edit', compact('usuario','cont'));
+            }
+            //return view('Administrador/usuarios/edit', compact('usuario'));
         }
     }
 
@@ -123,7 +237,7 @@ class usuarioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+  
         $usuarios = User::findOrFail($id);
         //fill (rellenar)
         $usuarios->fill([
@@ -148,7 +262,7 @@ class usuarioController extends Controller
                 'rol_id' => $rol
                 ]);
         }
-
+        Session::flash('edit','¡Usuario editado correctamente!');
         return redirect()->route('funcionario.usuario.index');
     }
 
@@ -162,7 +276,116 @@ class usuarioController extends Controller
     {
         $usuarios = User::findOrFail($id);
         $usuarios->delete();
+        Session::flash('destroy','¡Usuario eliminado correctamente!');
         return redirect()->route('funcionario.usuario.index');
     }
 
+    public function uploadAlum(Request $request)
+    {
+        if(is_null($request->file('file')))
+        {
+            Session::flash('message', 'Debes seleccionar un archivo.');
+            return redirect()->back();
+        }
+           $file = $request->file('file');
+     
+           $nombre = $file->getClientOriginalName();
+           \Storage::disk('local')->put($nombre,  \File::get($file));
+            \Excel::load('/storage/app/'.$nombre,function($archivo) 
+            {
+                $result = $archivo->get();
+                foreach($result as $key => $value)
+                {
+                    $usr=Auth::User()->rut;
+                    $dpto= UsersDpto::where('rut','=',$usr)
+                                    ->select('departamento_id')
+                                    ->get();
+
+                    $carrera_id = Carrera::where('codigo','=',$value->carrera)
+                                        ->select('id')
+                                        ->get();
+
+                    $escuela_id = Escuela::join('carrera','escuela.id','=','carrera.escuela_id')
+                                         -> select('escuela.id')
+                                         ->get();
+
+                    $dptoCar = Departamento::join('escuela','departamento.id','=','escuela.departamento_id')
+                                           ->join('carrera','escuela.id','=','carrera.escuela_id')
+                                           ->where('carrera.id','=',$carrera_id->first()->id)
+                                           ->select('departamento.id')
+                                           ->get();
+
+                    if(($dpto->first()->departamento_id)==($dptoCar->first()->id))
+                    {
+                        //dd('gg');
+                        $var = new User();
+                        $var->fill(['rut' => $value->rut]);
+                        $var->save();
+
+                        $carrera_id = Carrera::where('codigo','=',$value->carrera)
+                                            ->select('id')
+                                            ->get();
+
+                        $var2 = new UsersCarrera();
+                        $var2->fill(['rut' => $value->rut, 'carrera_id' => $carrera_id->first()->id]);
+                        $var2->save();
+                        Session::flash('message', 'Los Alumnos fueron agregados exitosamente!');
+
+                        $dpto2 = Departamento::join('escuela','departamento.id','=','escuela.departamento_id')
+                                            ->join('carrera','escuela.id','=','carrera.escuela_id')
+                                            ->where('carrera.id','=',$carrera_id->first()->id)
+                                            ->select('departamento.id')
+                                            ->get();
+
+                        $var3 = new UsersDpto();
+                        $var3->fill(['rut' => $value->rut, 'departamento_id' => $dpto2->first()->id]);
+                        $var3->save();
+                    }
+                    else
+                    {
+                        Session::flash('message', 'Permiso denegado, carrera agregada en excel no perteneciente a su Departamento!');
+                        //dd('no puedes');
+                    }
+                    
+                }
+            })->get();
+            return redirect()->route('funcionario.usuario.index');
+    }
+
+    public function uploadDocente(Request $request)
+    {
+        //solo agregar rut el dpto se asocia solo
+        if(is_null($request->file('file')))
+        {
+            Session::flash('message', 'Debes seleccionar un archivo.');
+            return redirect()->back();
+        }
+           $file = $request->file('file');
+     
+           $nombre = $file->getClientOriginalName();
+           \Storage::disk('local')->put($nombre,  \File::get($file));
+            \Excel::load('/storage/app/'.$nombre,function($archivo) 
+            {
+                $result = $archivo->get();
+                
+                $usr=Auth::User()->rut;
+
+                $dpto_id = UsersDpto::where('rut','=',$usr)
+                                        ->select('departamento_id')
+                                        ->get();
+
+                foreach($result as $key => $value)
+                {
+                    $var = new User();
+                    $var->fill(['rut' => $value->rut]);
+                    $var->save();
+
+                    $var2 = new UsersDpto();
+                    $var2->fill(['rut' => $value->rut, 'departamento_id' => $dpto_id->first()->departamento_id]);
+                    $var2->save();
+                }
+            })->get();
+            Session::flash('message', 'Los Docentes fueron agregados exitosamente!');
+           return redirect()->route('funcionario.usuario.index');
+    }
 }

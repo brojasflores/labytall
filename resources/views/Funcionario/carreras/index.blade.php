@@ -117,64 +117,107 @@
 @stop
 @section('options')
 <h1>
-    Gestión Usuarios 
-  <small>Usuarios</small>
+    Universidad 
+  <small>Carreras</small>
 </h1>
 @stop
 @section('opcion')
-<li><a href="{{ route('funcionario.usuario.index')}}"><i class="fa fa-user"></i> Usuarios</a></li>
-<li class="active">Perfil Usuario</li>
+<li class="active">Carreras</li>
 @stop
 @section('content')
-<h1>Perfil Usuario</h1>
-<h2>Cambiar imagen de perfil</h2>
-<form  method='post' action='{{url("administrador/usuario_perfilUpdate")}}' enctype='multipart/form-data'>
-  {{csrf_field()}}
-    <div class="row">
-	  	<div class="col-md-4">
-		    <div class="form-group">
-			  <label for="exampleInputPassword1">Email</label>
-			  <input type="text" class="form-control" value="{{ Auth::user()->email }}" name="emailUsuario" id="email">
-			</div> 
-		</div>
-	</div>
-	<div class="row">
-	  	<div class="col-md-4">
-		    <div class="form-group">
-			  <label for="exampleInputPassword1">Nombres</label>
-			  <input type="text" class="form-control" value="{{ Auth::user()->nombres }}" name="nombres" id="nombres">
-			</div> 
-		</div>
-	</div>
-	<div class="row">
-	  	<div class="col-md-4">
-		    <div class="form-group">
-			  <label for="exampleInputPassword1">Apellidos</label>
-			  <input type="text" class="form-control" value="{{ Auth::user()->apellidos }}" name="apellidos" id="apellidos">
-			</div> 
-		</div>
-	</div>
-
-  @if($var2)
-        <div class="row">
-      <div class="col-md-4">
-        <div class="form-group">
-          <label for="exampleInputPassword1">Contraseña</label>
-          <input type="password" class="form-control" name="passwordUsuario" id="passwordUsuario" placeholder="Ingrese contraseña nueva">
-        </div> 
-      </div>
-  </div>
-  @endif
-	<div class="row">
-	  	<div class="col-md-4">
-		  <div class='form-group'>
-		    <label for='image'>Imagen: </label>
-		    <input type="file" name="image" />
-		    <div class='text-danger'>{{$errors->first('image')}}</div>
-		  </div>
-		</div>
-	</div>
-  <button type='submit' class='btn btn-primary'>Actualizar Datos</button>
+<h1>Carreras</h1>
+<form role="form" method="get" action="{{ route('funcionario.carrera.create')}}">
+  <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
 </form>
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <!--ACA EMPIEZA LA DATATABLE-->
+        <div class="box">
+          <div class="box-header">
+          </div><!-- /.box-header -->
+          <div class="box-body">
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                <th>#</th>
+                <th>Escuela</th>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Editar </th>
+                <th>Eliminar</th>
+              </tr>
+              </thead>
+              <tbody>
+              <!--foreach recorre una coleccion de objetos-->
+              @foreach($carreras as $ca)
+              <tr data-id="{{ $ca->id }}">
+                <td>{{ $ca->id }}</td>
+                <td>{{ $ca->escuela_id }}</td>
+                <td>{{ $ca->codigo}}</td>
+                <td>{{ $ca->nombre}}</td>
+                <td>{{ $ca->descripcion}}</td>
+                <!--Paso ruta y parametro para saber cual modificar-->
+                <td><a href="{{ route('funcionario.carrera.edit',$ca->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
+                <td>
+                {!! Form::open(['route' => ['funcionario.carrera.destroy', $ca->id], 'method' => 'DELETE', 'id' => 'form-delete'])!!}
+                  <button type="submit" class="fa fa-trash btn btn-danger"> Eliminar</button>
+                {!! Form::close() !!}
+                </td>    
+              </tr>
+              @endforeach
+              </tbody>
+              <tfoot>
+                <tr>
+                <th>#</th>
+                <th>Escuela</th>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Editar </th>
+                <th>Eliminar</th>
+              </tr>
+              </tfoot>
+            </table>
+          </div><!-- /.box-body -->
+        </div><!-- /.box -->
+        <!--ACA TERMINA LA DATATABLE-->
+  </div><!-- /.row -->
+</section><!-- /.content -->
+@stop
 
+@section('scripts')
+  <!-- DataTables -->
+  <script src="{{ asset('admin-lte/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+  <script src="{{ asset('admin-lte/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+   <script>
+$(document).ready(function() {
+  
+    $('#example1').DataTable({
+        responsive: true,
+        "language": {
+                "decimal":        "",
+                "emptyTable":     "Sin datos disponibles",
+                "info":           "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                "infoEmpty":      "Mostrando 0 a 0 de 0 entradas",
+                "infoFiltered":   "(Filtrado de un total de _MAX_ entradas)",
+                "infoPostFix":    "",
+                "thousands":      ".",
+                "lengthMenu":     "Mostrar _MENU_ entradas",
+                "loadingRecords": "Cargando...",
+                "processing":     "Procesando...",
+                "search":         "Buscar:",
+                "zeroRecords":    "Ningún registro encontrado.",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Ultimo",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                }
+            }
+    });
+
+});
+    </script>
 @stop

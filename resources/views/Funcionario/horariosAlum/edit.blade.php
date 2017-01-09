@@ -57,7 +57,7 @@
               <ul class="treeview-menu">
                 <!--Controlador.metodo-->
                 <li><a href="pages/usuarios/admin.html"><i class="glyphicon glyphicon-barcode"></i> Autenticación</a></li>
-              </ul>
+              </ul>funcionario
             </li>
             <li class="treeview">
               <a href="#">
@@ -115,66 +115,144 @@
             <li><a href="{{ route('funcionario.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
           </ul>
 @stop
-@section('options')
-<h1>
-    Gestión Usuarios 
-  <small>Usuarios</small>
-</h1>
-@stop
 @section('opcion')
-<li><a href="{{ route('funcionario.usuario.index')}}"><i class="fa fa-user"></i> Usuarios</a></li>
-<li class="active">Perfil Usuario</li>
+<li><a href="{{ route('funcionario.horarioAlumno.index')}}"><i class="fa fa-clock-o"></i> Horarios Alumnos</a></li>
+<li class="active">Editar Horarios</li>
 @stop
 @section('content')
-<h1>Perfil Usuario</h1>
-<h2>Cambiar imagen de perfil</h2>
-<form  method='post' action='{{url("administrador/usuario_perfilUpdate")}}' enctype='multipart/form-data'>
-  {{csrf_field()}}
-    <div class="row">
-	  	<div class="col-md-4">
-		    <div class="form-group">
-			  <label for="exampleInputPassword1">Email</label>
-			  <input type="text" class="form-control" value="{{ Auth::user()->email }}" name="emailUsuario" id="email">
-			</div> 
-		</div>
-	</div>
-	<div class="row">
-	  	<div class="col-md-4">
-		    <div class="form-group">
-			  <label for="exampleInputPassword1">Nombres</label>
-			  <input type="text" class="form-control" value="{{ Auth::user()->nombres }}" name="nombres" id="nombres">
-			</div> 
-		</div>
-	</div>
-	<div class="row">
-	  	<div class="col-md-4">
-		    <div class="form-group">
-			  <label for="exampleInputPassword1">Apellidos</label>
-			  <input type="text" class="form-control" value="{{ Auth::user()->apellidos }}" name="apellidos" id="apellidos">
-			</div> 
-		</div>
-	</div>
-
-  @if($var2)
+<h1>Editar Horario Alumnos</h1>
+<!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
+{!! Form::model($horarios,['route' => ['funcionario.horarioAlumno.update',$horarios], 'method' => 'PUT']) !!}
+  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <div class="box-body">
+     
+      <div class="form-group">
         <div class="row">
-      <div class="col-md-4">
-        <div class="form-group">
-          <label for="exampleInputPassword1">Contraseña</label>
-          <input type="password" class="form-control" name="passwordUsuario" id="passwordUsuario" placeholder="Ingrese contraseña nueva">
-        </div> 
+          <div class="col-md-3">
+          <div class="form-group">
+            <label for="sel1">Salas: </label>
+            <select class="form-control" id="sala_id" name="salaHorario">
+              
+              @foreach($salas as $sal)
+                <option id="{{ $sal->id }}" value="{{ $sal->id }}" name="salaHorario">{{ $sal->nombre }}</option>
+            @endforeach
+            </select>
+          </div>
+          </div>
+        </div>
+      </div>  
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-3" id="col-fecha">
+          <div class="form-group">
+            <label for="sel1">Fecha: </label>
+              <input type="text" class="form-control" placeholder="Fecha" name="fecha" id="fecha" aria-describedby="basic-addon2">
+          </div>
+          </div>                                          
+        </div>
+      </div> 
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-3">
+          <div class="form-group">
+            <label for="sel1">Período: </label>
+            <select class="form-control" id="periodo_id" name="periodoHorario">
+              @foreach($periodos as $per)
+                <option id="{{ $per->id }}" value="{{ $per->id }}" name="periodoHorario">{{ $per->bloque }}</option>
+            @endforeach
+            </select>
+          </div>
+          </div>
+        </div>
       </div>
-  </div>
-  @endif
-	<div class="row">
-	  	<div class="col-md-4">
-		  <div class='form-group'>
-		    <label for='image'>Imagen: </label>
-		    <input type="file" name="image" />
-		    <div class='text-danger'>{{$errors->first('image')}}</div>
-		  </div>
-		</div>
-	</div>
-  <button type='submit' class='btn btn-primary'>Actualizar Datos</button>
-</form>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-3">
+          <div class="form-group">
+            <label for="sel1">Estaciones de Trabajo: </label>
+            <select class="form-control" id="estacion" name="estacion">
+              @foreach($est as $e)
+            
+                <option value="{{ $e->est_id }}" id="{{ $e->est_id }}" name="estacion">{{ $e->nombre }} - Estación N° {{$e->est_name}}</option>
+            
+            @endforeach
+            </select>
+          </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-3">
+          <div class="form-group">
+            <label for="sel1">Rut: </label>
+              <input type="text" class="form-control" value="{{ $horarios->rut }}" name="rutHorario" id="rutHorario" aria-describedby="basic-addon2"> 
+          </div>
+          </div>
+        </div>
+      </div>      
+      <input type="hidden" id="horario_id" value="{{ $horarios->id }}">
+      <input type="hidden" name="rol" value="alumno">
+      <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
+    </div><!-- /.box-body -->
+{!! Form::close() !!}
+@stop
+
+@section('scripts')
+<script>
+$( function() {
+$( "#fecha" ).datepicker({
+  showButtonPanel: true
+});
+
+} );
+
+$(document).ready(function(){
+    //# es para llamar una id
+    $("#sala_id").change(function(){
+      var id = $("#sala_id").val();
+      var token = $("#token").val();
+      $.ajax({
+        url: '/~brojas/funcionario/horarioAlumno/'+id+'/edit',
+        headers:{'X-CSRF-TOKEN': token},
+        type: 'GET',
+        dataType: 'json',
+        data:{id : id,action: 'edit'},
+        //response es la respuesta que trae desde el controlador
+        success: function(response){  
+          $("#estacion").empty();
+         console.log(response);
+          //el k es un índice (posición) y v (valor ocmo tal del elemento)
+          $.each(response,function(k,v){
+          $("#estacion").append("<option value='"+v.id+"' name='sala'>"+v.sala+" - Estación N°"+v.nombre+"</option>");
+          });
+          
+        }
+      });
+
+    });
+
+  $.ajax({
+    // con .val saco el valor del value
+        data:  {'id': $("#horario_id").val()},
+        url:   '/~brojas/funcionario/horarioAlumno/'+$("#horario_id")+'/edit',
+        type:  'get',
+        dataType: 'json',
+        success:  function(respuesta) {   
+        console.log(respuesta.estacion_trabajo_id);
+
+        $('#sala_id option[id='+respuesta.sala_id+']').attr('selected', 'selected');
+    $('#periodo_id option[id='+respuesta.periodo_id+']').attr('selected', 'selected');
+    $('#estacion option[id='+respuesta.estacion_trabajo_id+']').attr('selected', 'selected'); 
+    var fecha_split = (respuesta.fecha).split('-');
+    console.log(fecha_split);
+    $('#fecha').val(fecha_split[1]+'/'+fecha_split[2]+'/'+fecha_split[0]);
+
+        }
+    });
+
+});
+
+</script>
 
 @stop

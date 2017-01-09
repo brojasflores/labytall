@@ -1,4 +1,42 @@
 @extends('main')
+
+@section('cambioRol')
+  @if($cont>1)
+  <li class="dropdown user user-menu">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+      <img src="{{asset('admin-lte/dist/img/cambio.png')}}" class="user-image" alt="User Image">
+      <span class="hidden-xs">Cambio Rol</span>
+    </a>
+    <ul class="dropdown-menu">
+      <li class="user-header">
+        <p>
+          Eliga el Rol que quiera utilizar
+        </p>
+        @foreach($v2 as $as)
+          @if($as == 'administrador')
+            <a href="{{ route('administrador..index')}}"><i class="fa fa-mail-forward"></i> Administrador</a>
+          @endif
+          @if($as == 'director')
+            <a href="{{ route('director..index')}}"><i class="fa fa-mail-forward"></i> Director</a>
+          @endif
+          @if($as == 'funcionario')
+            <a href="{{ route('funcionario..index')}}"><i class="fa fa-mail-forward"></i> Funcionario</a>
+          @endif
+          @if($as == 'docente')
+            <a href="{{ route('docente..index')}}"><i class="fa fa-mail-forward"></i> Docente</a>
+          @endif
+          @if($as == 'ayudante')
+            <a href="{{ route('ayudante..index')}}"><i class="fa fa-mail-forward"></i> Ayudante</a>
+          @endif
+          @if($as == 'alumno')
+            <a href="{{ route('alumno..index')}}"><i class="fa fa-mail-forward"></i> Alumno</a>
+          @endif
+        @endforeach
+      </li>
+    </ul>
+  </li>
+@endif
+@stop
 @section('perfil')
 <li class="user-footer">
   <div class="pull-left">
@@ -11,7 +49,7 @@
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Funcionario</li>
+            <li class="header">Administración</li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-user"></i> <span>Gestión Usuarios</span>
@@ -28,8 +66,16 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="{{ route('funcionario.horario.index')}}"><i class="fa fa-eye"></i> Ver horarios</a></li>
-                <!--route ruta del controlador.metodo-->
+                <li class="treeview">
+                  <a href="#">
+                    <i class="fa fa-eye"></i> <span>Ver Horarios</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="{{ route('funcionario.horario.index')}}"><i class="fa fa-clock-o"></i> Docente-Ayudante</a></li>
+                    <li><a href="{{ route('funcionario.horarioAlumno.index')}}"><i class="fa fa-clock-o"></i> Alumno</a></li>
+                  </ul>
+                </li>
                 <li><a href="{{ route('funcionario.sala.index')}}"><i class="fa fa-list-alt"></i>Lista de Salas</a></li>
                 <li><a href="{{ route('funcionario.periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
                 <li><a href="{{ route('funcionario.asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
@@ -80,6 +126,30 @@
 <li class="active">Usuarios</li>
 @stop
 @section('content')
+@if(Session::has('create'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('create') }}</strong>
+    </div>
+@endif
+@if(Session::has('edit'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('edit') }}</strong>
+    </div>
+@endif
+@if(Session::has('destroy'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('destroy') }}</strong>
+    </div>
+@endif
+@if(Session::has('message'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('message') }}</strong>
+    </div>
+@endif
 <h1>Usuarios</h1>
 <form role="form" method="get" action="{{ route('funcionario.usuario.create')}}">
 	<button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
@@ -87,25 +157,29 @@
 <section class="content">
   <div class="row">
     <div class="col-xs-12">
-      <div class="box">
-        <div class="box-body">
-          <table id="example1" class="table table-bordered table-striped">
-            <thead>
-              <tr>
-              	<th>#</th>
+        <!--ACA EMPIEZA LA DATATABLE-->
+        <div class="box">
+          <div class="box-header">
+            <h3 class="box-title">Usuarios</h3>
+          </div><!-- /.box-header -->
+          <div class="box-body">
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                <th>#</th>
                 <th>Rut</th>
                 <th>Email</th>
                 <th>Nombres</th>
                 <th>Apellidos</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
-              </tr>
-            </thead>
-            <tbody>
-          <!--foreach recorre una coleccion de objetos-->
+                </tr>
+              </thead>
+              <tbody>
+              <!--foreach recorre una coleccion de objetos-->
               @foreach($usuarios as $usr)
               <tr data-id="{{ $usr->id }}">
-              	<td>{{ $usr->id }}</td>
+                <td>{{ $usr->id }}</td>
                 <td>{{ $usr->rut}}</td>
                 <td>{{ $usr->email}}</td>
                 <td>{{ $usr->nombres}}</td>
@@ -114,14 +188,14 @@
                 <td><a href="{{ route('funcionario.usuario.edit',$usr->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
                 <td>
                 {!! Form::open(['route' => ['funcionario.usuario.destroy', $usr->id], 'method' => 'DELETE', 'id' => 'form-delete'])!!}
-                	<button type="submit" class="fa fa-trash btn btn-danger"> Eliminar</button>
+                  <button type="submit" class="fa fa-trash btn btn-danger"> Eliminar</button>
                 {!! Form::close() !!}
                 </td>    
               </tr>
               @endforeach
-            </tbody>
-            <tfoot>
-              <tr>
+              </tbody>
+              <tfoot>
+                <tr>
                 <th>#</th>
                 <th>Rut</th>
                 <th>Email</th>
@@ -129,14 +203,49 @@
                 <th>Apellidos</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
-              </tr>
-            </tfoot>
-          </table>
-          <!--cuando se usa paginate debo poner esto-->
-              {{ $usuarios->render()}}
-        </div><!-- /.box-body -->
-      </div><!-- /.box -->
+                </tr>
+              </tfoot>
+            </table>
+          </div><!-- /.box-body -->
+        </div><!-- /.box -->
+        <!--ACA TERMINA LA DATATABLE-->
     </div><!-- /.col -->
   </div><!-- /.row -->
 </section><!-- /.content -->
+@stop
+
+<!--SE DEBE AGREGAR ESTO ASI TAL CUAL-->
+@section('scripts')
+  <!-- DataTables -->
+  <script src="{{ asset('admin-lte/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+  <script src="{{ asset('admin-lte/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+   <script>
+$(document).ready(function() {
+  
+    $('#example1').DataTable({
+        responsive: true,
+        "language": {
+                "decimal":        "",
+                "emptyTable":     "Sin datos disponibles",
+                "info":           "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                "infoEmpty":      "Mostrando 0 a 0 de 0 entradas",
+                "infoFiltered":   "(Filtrado de un total de _MAX_ entradas)",
+                "infoPostFix":    "",
+                "thousands":      ".",
+                "lengthMenu":     "Mostrar _MENU_ entradas",
+                "loadingRecords": "Cargando...",
+                "processing":     "Procesando...",
+                "search":         "Buscar:",
+                "zeroRecords":    "Ningún registro encontrado.",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Ultimo",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                }
+            }
+    });
+
+});
+    </script>
 @stop

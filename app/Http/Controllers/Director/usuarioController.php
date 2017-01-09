@@ -355,6 +355,7 @@ class usuarioController extends Controller
 
     public function uploadDocente(Request $request)
     {
+        //solo agregar rut el dpto se asocia solo
         if(is_null($request->file('file')))
         {
             Session::flash('message', 'Debes seleccionar un archivo.');

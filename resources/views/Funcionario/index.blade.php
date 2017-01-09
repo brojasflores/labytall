@@ -15,6 +15,9 @@
           @if($as == 'administrador')
             <a href="{{ route('administrador..index')}}"><i class="fa fa-mail-forward"></i> Administrador</a>
           @endif
+          @if($as == 'director')
+            <a href="{{ route('director..index')}}"><i class="fa fa-mail-forward"></i> Director</a>
+          @endif
           @if($as == 'funcionario')
             <a href="{{ route('funcionario..index')}}"><i class="fa fa-mail-forward"></i> Funcionario</a>
           @endif
@@ -45,7 +48,7 @@
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Funcionario</li>
+            <li class="header">Administración</li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-user"></i> <span>Gestión Usuarios</span>
@@ -56,14 +59,23 @@
                 <li><a href="pages/usuarios/admin.html"><i class="glyphicon glyphicon-barcode"></i> Autenticación</a></li>
               </ul>
             </li>
+            
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-desktop"></i> <span>Salas</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="{{ route('funcionario.horario.index')}}"><i class="fa fa-eye"></i> Ver horarios</a></li>
-                <!--route ruta del controlador.metodo-->
+                <li class="treeview">
+                  <a href="#">
+                    <i class="fa fa-eye"></i> <span>Ver Horarios</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="{{ route('funcionario.horario.index')}}"><i class="fa fa-clock-o"></i> Docente-Ayudante</a></li>
+                    <li><a href="{{ route('funcionario.horarioAlumno.index')}}"><i class="fa fa-clock-o"></i> Alumno</a></li>
+                  </ul>
+                </li>
                 <li><a href="{{ route('funcionario.sala.index')}}"><i class="fa fa-list-alt"></i>Lista de Salas</a></li>
                 <li><a href="{{ route('funcionario.periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
                 <li><a href="{{ route('funcionario.asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
@@ -71,6 +83,7 @@
                 <li><a href="{{ route('funcionario.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
               </ul>
             </li>
+
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-bar-chart"></i> <span>Reportes</span>
@@ -105,12 +118,18 @@
           </ul>
 @stop
 @section('options')
+@if(Session::has('message'))
+  <div class="alert alert-info" role="alert">
+    <strong class="alert-link">{{ Session::get('message') }}</strong>
+  </div>       
+@endif
 <h1>
     Panel de Control 
 	<small>Inicio</small>
 </h1>
 @stop
 @section('content')
+
 <div class="container" style="padding-left: 0px;">
 <h1><img src="{{ asset('admin-lte/dist/img/utem.png') }}" class="user-image" alt="User Image" border="0" width="40" height="40"> Sistema Control y Gestión Salas UTEM </h1>
 </br>
