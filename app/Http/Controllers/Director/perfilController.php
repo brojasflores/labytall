@@ -1,10 +1,7 @@
 <?php
-
 namespace App\Http\Controllers\Director;
-
 use Illuminate\Http\Request;
 use App\Http\Requests;
-
 use App\User;
 use App\Rol;
 use App\RolUsuario;
@@ -12,8 +9,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Validator;
 use Auth;
-
-
 class perfilController extends Controller
 {
     public function perfil()
@@ -32,15 +27,14 @@ class perfilController extends Controller
                             ->where('users.rut','=',$usr)
                             ->join('rol','rol_users.rol_id','=','rol.id')
                             ->select('nombre')
-                            ->paginate();
+                            ->get();
                 // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
                 foreach($usr2 as $v)
                 {
                     $v2[]= $v->nombre;
                 }
                 //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
-                $cont = count($v2); //cuenta la cantidad de elementos del array
-                
+                $cont = count($v2); //cuenta la cantidad de elementos del array              
                 if($cont>1)
                 {
                     return view ('Director/usuarios/perfil', compact('var2','v2','cont'));
@@ -70,7 +64,6 @@ class perfilController extends Controller
         }
         //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
         $cont = count($v2); //cuenta la cantidad de elementos del array
-        
         if($cont>1)
         {
             return view ('Director/usuarios/perfil', compact('var2','v2','cont'));
@@ -81,7 +74,6 @@ class perfilController extends Controller
         }
         //return view('Administrador/usuarios/perfil', compact('var2'));
     }
-
     public function updateProfile(Request $request)
     {
         $var = $request->get('passwordUsuario');
@@ -105,16 +97,13 @@ class perfilController extends Controller
                            'password' => $pass,
                          ]);   
         }
-
         $file = Input::file('image');
-
         $rules = ['image' => 'image|max:1024*1024*1'];
         $messages = [
             'image.image' => 'Formato no permitido',
             'image.max' => 'El máximo permitido es 1 MB'
         ];
         $validator = Validator::make($request->all(), $rules, $messages);
-        
         if ($validator->fails()){
             return redirect('usuario_perfil')->withErrors($validator);
         }
