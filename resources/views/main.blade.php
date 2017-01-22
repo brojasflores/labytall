@@ -39,7 +39,7 @@
 
       <header class="main-header">
         <!-- Logo -->
-        <a href="/" class="logo">
+        <a href="/~brojas" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><img src="{{ asset('admin-lte/dist/img/utem.png') }}" class="user-image" alt="User Image" border="0" width="50" height="50"></span>
           <!-- logo for regular state and mobile devices -->

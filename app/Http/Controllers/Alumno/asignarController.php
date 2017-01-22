@@ -24,7 +24,7 @@ class asignarController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('alum');
+        $this->middleware('ayu');
     }
     
     public function index()
@@ -46,7 +46,7 @@ class asignarController extends Controller
         return view ('Alumno/asignar/docente',compact('salas','periodos','cursos'));
     }
 
-    public function ayudante()
+    public function Alumno()
     {
         $salas = Sala::select('id','nombre')->orderBy('nombre','asc')->get();
         $periodos = Periodo::select('id','bloque')->orderBy('bloque','asc')->get();

@@ -129,6 +129,7 @@ class facultadController extends Controller
     public function edit($id)
     {
         $facultades = Facultad::findOrFail($id);
+
         $campus = Campus::all();
         //Cambio de rol
         $usr=Auth::User()->rut;

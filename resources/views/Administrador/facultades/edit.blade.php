@@ -152,7 +152,7 @@
             <label for="sel1">Campus: </label>
             <select class="form-control" id="campusFac" name="campusFac">
               @foreach($campus as $ca)
-                <option value="{{ $ca->id }}" name="campusFac">{{ $ca->nombre }}</option>
+                <option value="{{ $ca->id }}" id="campus_{{ $ca->id }}" name="campusFac">{{ $ca->nombre }}</option>
               @endforeach
             </select>
           </div>
@@ -167,4 +167,11 @@
 	  </div><!-- /.box-body -->
 {!! Form::close() !!}
 @stop
-
+@section('scripts')
+<script type="text/javascript">
+  $(document).ready(function(){
+    //Selecciona la option del select campusFac que tenga la id del campus de la facultad
+    $('#campusFac option[id=campus_'+{{ $facultades->campus_id }}+']').attr('selected', 'selected');
+  });
+</script>
+@stop
