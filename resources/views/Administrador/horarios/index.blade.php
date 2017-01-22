@@ -164,6 +164,7 @@
                 <th>Nombre</th>
                 <th>Rut</th>
                 <th>Permanencia</th>
+                <th>Asistencia</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
               </tr>
@@ -180,6 +181,7 @@
                 <td>{{ $hr->horario_name}} {{ $hr->horario_apell}}</td>
                 <td>{{ $hr->rut}}</td>  
                 <td>{{ $hr->permanencia}}</td>
+                <td>{{ $hr->asistencia}}</td>
                 <!--Paso ruta y parametro para saber cual modificar-->
                 <td><a href="{{ route('administrador.horario.edit',$hr->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
                 <td>
@@ -200,6 +202,7 @@
                 <th>Nombre</th>
                 <th>Rut</th>
                 <th>Permanencia</th>
+                <th>Asistencia</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
               </tr>

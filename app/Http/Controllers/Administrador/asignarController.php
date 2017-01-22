@@ -202,7 +202,8 @@ class asignarController extends Controller
                                 'periodo_id' => $request->get('periodo'),
                                 'curso_id' => $request->get('curso'),
                                 'rut' => $request->get('usuario'),
-                                'permanencia' => 'dia'
+                                'permanencia' => 'dia',
+                                'asistencia' => 'Pendiente'
                                 ]);
                             //pone disponibilidad en no para un lab completo
                             $id = $request->get('sala');
@@ -258,7 +259,8 @@ class asignarController extends Controller
                                                        'periodo_id' => $request->get('periodo'),
                                                        'curso_id' => $request->get('curso'),
                                                        'rut' => $request->get('usuario'),
-                                                       'permanencia' => 'semestral'
+                                                       'permanencia' => 'semestral',
+                                                       'asistencia' => 'Pendiente'
                                                        ]);
                                             
                                             $id = $request->get('sala');
@@ -293,7 +295,8 @@ class asignarController extends Controller
                                                    'periodo_id' => $request->get('periodo'),
                                                    'curso_id' => $request->get('curso'),
                                                    'rut' => $request->get('usuario'),
-                                                   'permanencia' => 'semestral'
+                                                   'permanencia' => 'semestral',
+                                                   'asistencia' => 'Pendiente'
                                                    ]);
 
                                             $id = $request->get('sala');
@@ -328,7 +331,8 @@ class asignarController extends Controller
                                                    'periodo_id' => $request->get('periodo'),
                                                    'curso_id' => $request->get('curso'),
                                                    'rut' => $request->get('usuario'),
-                                                   'permanencia' => 'semestral'
+                                                   'permanencia' => 'semestral',
+                                                   'asistencia' => 'Pendiente'
                                                    ]);
                                             
                                             $id = $request->get('sala');
@@ -363,7 +367,8 @@ class asignarController extends Controller
                                                    'periodo_id' => $request->get('periodo'),
                                                    'curso_id' => $request->get('curso'),
                                                    'rut' => $request->get('usuario'),
-                                                   'permanencia' => 'semestral'
+                                                   'permanencia' => 'semestral',
+                                                   'asistencia' => 'Pendiente'
                                                    ]);
                                             
                                             $id = $request->get('sala');
@@ -398,7 +403,8 @@ class asignarController extends Controller
                                                    'periodo_id' => $request->get('periodo'),
                                                    'curso_id' => $request->get('curso'),
                                                    'rut' => $request->get('usuario'),
-                                                   'permanencia' => 'semestral'
+                                                   'permanencia' => 'semestral',
+                                                   'asistencia' => 'Pendiente'
                                                    ]);
                                             
 
@@ -434,7 +440,8 @@ class asignarController extends Controller
                                                    'periodo_id' => $request->get('periodo'),
                                                    'curso_id' => $request->get('curso'),
                                                    'rut' => $request->get('usuario'),
-                                                   'permanencia' => 'semestral'
+                                                   'permanencia' => 'semestral',
+                                                   'asistencia' => 'Pendiente'
                                                    ]);
                                             
 
@@ -489,7 +496,8 @@ class asignarController extends Controller
                                 'periodo_id' => $request->get('periodo'),
                                 'curso_id' => $request->get('curso'),
                                 'rut' => $request->get('usuario'),
-                                'permanencia' => 'dia'
+                                'permanencia' => 'dia',
+                                'asistencia' => 'Pendiente'
                                 ]);
                             //pone disponibilidad en no para un lab completo
                             $id = $request->get('sala');
@@ -544,7 +552,8 @@ class asignarController extends Controller
                                                        'periodo_id' => $request->get('periodo'),
                                                        'curso_id' => $request->get('curso'),
                                                        'rut' => $request->get('usuario'),
-                                                       'permanencia' => 'semestral'
+                                                       'permanencia' => 'semestral',
+                                                       'asistencia' => 'Pendiente'
                                                        ]);
                                             
                                             $id = $request->get('sala');
@@ -579,7 +588,8 @@ class asignarController extends Controller
                                                    'periodo_id' => $request->get('periodo'),
                                                    'curso_id' => $request->get('curso'),
                                                    'rut' => $request->get('usuario'),
-                                                   'permanencia' => 'semestral'
+                                                   'permanencia' => 'semestral',
+                                                   'asistencia' => 'Pendiente'
                                                    ]);
 
                                             $id = $request->get('sala');
@@ -614,7 +624,8 @@ class asignarController extends Controller
                                                    'periodo_id' => $request->get('periodo'),
                                                    'curso_id' => $request->get('curso'),
                                                    'rut' => $request->get('usuario'),
-                                                   'permanencia' => 'semestral'
+                                                   'permanencia' => 'semestral',
+                                                   'asistencia' => 'Pendiente'
                                                    ]);
                                             
                                             $id = $request->get('sala');
@@ -649,7 +660,8 @@ class asignarController extends Controller
                                                    'periodo_id' => $request->get('periodo'),
                                                    'curso_id' => $request->get('curso'),
                                                    'rut' => $request->get('usuario'),
-                                                   'permanencia' => 'semestral'
+                                                   'permanencia' => 'semestral',
+                                                   'asistencia' => 'Pendiente'
                                                    ]);
                                             
                                             $id = $request->get('sala');
@@ -684,7 +696,8 @@ class asignarController extends Controller
                                                    'periodo_id' => $request->get('periodo'),
                                                    'curso_id' => $request->get('curso'),
                                                    'rut' => $request->get('usuario'),
-                                                   'permanencia' => 'semestral'
+                                                   'permanencia' => 'semestral',
+                                                   'asistencia' => 'Pendiente'
                                                    ]);
                                             
 
@@ -720,7 +733,8 @@ class asignarController extends Controller
                                                    'periodo_id' => $request->get('periodo'),
                                                    'curso_id' => $request->get('curso'),
                                                    'rut' => $request->get('usuario'),
-                                                   'permanencia' => 'semestral'
+                                                   'permanencia' => 'semestral',
+                                                   'asistencia' => 'Pendiente'
                                                    ]);
                                             
 
@@ -783,7 +797,8 @@ class asignarController extends Controller
                                         'periodo_id' => $request->get('periodo'),
                                         'curso_id' => $request->get('curso'),
                                         'rut' => $request->get('usuario'),
-                                        'permanencia' => 'dia'
+                                        'permanencia' => 'dia',
+                                        'asistencia' => 'Pendiente'
                                         ]);
                                     //pone disponibilidad en no para un lab completo
                                     $id = $request->get('sala');
@@ -838,7 +853,8 @@ class asignarController extends Controller
                                                            'periodo_id' => $request->get('periodo'),
                                                            'curso_id' => $request->get('curso'),
                                                            'rut' => $request->get('usuario'),
-                                                           'permanencia' => 'semestral'
+                                                           'permanencia' => 'semestral',
+                                                           'asistencia' => 'Pendiente'
                                                            ]);
                                                     
                                                     $id = $request->get('sala');
@@ -873,7 +889,8 @@ class asignarController extends Controller
                                                            'periodo_id' => $request->get('periodo'),
                                                            'curso_id' => $request->get('curso'),
                                                            'rut' => $request->get('usuario'),
-                                                           'permanencia' => 'semestral'
+                                                           'permanencia' => 'semestral',
+                                                           'asistencia' => 'Pendiente'
                                                            ]);
                                                     
 
@@ -908,7 +925,8 @@ class asignarController extends Controller
                                                            'periodo_id' => $request->get('periodo'),
                                                            'curso_id' => $request->get('curso'),
                                                            'rut' => $request->get('usuario'),
-                                                           'permanencia' => 'semestral'
+                                                           'permanencia' => 'semestral',
+                                                           'asistencia' => 'Pendiente'
                                                            ]);
                                                     
                                                     $id = $request->get('sala');
@@ -942,7 +960,8 @@ class asignarController extends Controller
                                                            'periodo_id' => $request->get('periodo'),
                                                            'curso_id' => $request->get('curso'),
                                                            'rut' => $request->get('usuario'),
-                                                           'permanencia' => 'semestral'
+                                                           'permanencia' => 'semestral',
+                                                           'asistencia' => 'Pendiente'
                                                            ]);
                                                     
 
@@ -977,7 +996,8 @@ class asignarController extends Controller
                                                            'periodo_id' => $request->get('periodo'),
                                                            'curso_id' => $request->get('curso'),
                                                            'rut' => $request->get('usuario'),
-                                                           'permanencia' => 'semestral'
+                                                           'permanencia' => 'semestral',
+                                                           'asistencia' => 'Pendiente'
                                                            ]);         
 
                                                     $id = $request->get('sala');
@@ -1011,7 +1031,8 @@ class asignarController extends Controller
                                                                'periodo_id' => $request->get('periodo'),
                                                                'curso_id' => $request->get('curso'),
                                                                'rut' => $request->get('usuario'),
-                                                               'permanencia' => 'semestral'
+                                                               'permanencia' => 'semestral',
+                                                               'asistencia' => 'Pendiente'
                                                                ]);
                                                 
 

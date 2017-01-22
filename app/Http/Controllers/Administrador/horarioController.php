@@ -33,7 +33,7 @@ class horarioController extends Controller
                             ->join('periodo','horario.periodo_id','=','periodo.id')
                             ->join('sala','horario.sala_id','=','sala.id')
                             ->join('users','horario.rut','=','users.rut')
-                            ->select('horario.id','horario.fecha','horario.rut','users.nombres as horario_name','users.apellidos as horario_apell','horario.permanencia','asignatura.nombre as asig_nombre','periodo.bloque','sala.nombre as sala_nombre')
+                            ->select('horario.id','horario.fecha','horario.rut','users.nombres as horario_name','users.apellidos as horario_apell','horario.permanencia','asignatura.nombre as asig_nombre','periodo.bloque','sala.nombre as sala_nombre','horario.asistencia')
                             ->orderBy('periodo.bloque','asc')
                             ->get();
 
@@ -208,7 +208,8 @@ class horarioController extends Controller
                 'periodo_id' => $request->get('periodoHorario'),
                 'curso_id' => $request->get('cursoHorario'),
                 'rut' => $request->get('rutHorario'),
-                'permanencia' => 'dia'
+                'permanencia' => 'dia',
+                'asistencia' => $request->get('asistenciaH')
                 ]);
 
             $id2 = $request->get('salaHorario');
@@ -262,7 +263,8 @@ class horarioController extends Controller
                                    'periodo_id' => $request->get('periodoHorario'),
                                    'curso_id' => $request->get('cursoHorario'),
                                    'rut' => $request->get('rutHorario'),
-                                   'permanencia' => 'semestral'
+                                   'permanencia' => 'semestral',
+                                   'asistencia' => $request->get('asistenciaH')
                                    ]);
 
                             $id2 = $request->get('salaHorario');
@@ -296,7 +298,8 @@ class horarioController extends Controller
                                    'periodo_id' => $request->get('periodoHorario'),
                                    'curso_id' => $request->get('cursoHorario'),
                                    'rut' => $request->get('rutHorario'),
-                                   'permanencia' => 'semestral'
+                                   'permanencia' => 'semestral',
+                                   'asistencia' => $request->get('asistenciaH')
                                    ]);
 
                             $id2 = $request->get('salaHorario');
@@ -330,7 +333,8 @@ class horarioController extends Controller
                                    'periodo_id' => $request->get('periodoHorario'),
                                    'curso_id' => $request->get('cursoHorario'),
                                    'rut' => $request->get('rutHorario'),
-                                   'permanencia' => 'semestral'
+                                   'permanencia' => 'semestral',
+                                   'asistencia' => $request->get('asistenciaH')
                                    ]);
 
                             $id2 = $request->get('salaHorario');
@@ -364,7 +368,8 @@ class horarioController extends Controller
                                    'periodo_id' => $request->get('periodoHorario'),
                                    'curso_id' => $request->get('cursoHorario'),
                                    'rut' => $request->get('rutHorario'),
-                                   'permanencia' => 'semestral'
+                                   'permanencia' => 'semestral',
+                                   'asistencia' => $request->get('asistenciaH')
                                    ]);
 
                             $id2 = $request->get('salaHorario');
@@ -398,7 +403,8 @@ class horarioController extends Controller
                                    'periodo_id' => $request->get('periodoHorario'),
                                    'curso_id' => $request->get('cursoHorario'),
                                    'rut' => $request->get('rutHorario'),
-                                   'permanencia' => 'semestral'
+                                   'permanencia' => 'semestral',
+                                   'asistencia' => $request->get('asistenciaH')
                                    ]);
 
                             $id2 = $request->get('salaHorario');
@@ -432,7 +438,8 @@ class horarioController extends Controller
                                    'periodo_id' => $request->get('periodoHorario'),
                                    'curso_id' => $request->get('cursoHorario'),
                                    'rut' => $request->get('rutHorario'),
-                                   'permanencia' => 'semestral'
+                                   'permanencia' => 'semestral',
+                                   'asistencia' => $request->get('asistenciaH')
                                    ]);
 
                             $id2 = $request->get('salaHorario');

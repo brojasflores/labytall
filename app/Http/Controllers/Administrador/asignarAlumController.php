@@ -145,7 +145,9 @@ class asignarAlumController extends Controller
                         'rut' => $request->get('usuario'),
                         'periodo_id' => $request->get('periodo'),
                         'sala_id' => $request->get('sala'),
-                        'estacion_trabajo_id' => $request->get('estacion')
+                        'estacion_trabajo_id' => $request->get('estacion'),
+                        'permanencia' => 'dia',
+                        'asistencia' => 'Pendiente'
                         ]);
 
                     //pone disponibilidad en no para un lab completo
