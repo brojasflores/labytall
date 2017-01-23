@@ -119,9 +119,7 @@ hr {
   <div class="row">
     <div class="col-sm-8 col-md-8 col-lg-8 col-md-offset-3">
       <!--div class="form-group"-->
-        <a href="{{URL::to('/ayudante/asignar_docente')}}" class="btn btn-primary btn-lg" role="button">Reserva Docentes</a>
         <a href="{{URL::to('/ayudante/asignar_ayudante') }}" class="btn btn-primary btn-lg" role="button">Reserva Ayudantes</a>
-        <a href="{{URL::to('/ayudante/asignar_alumno') }}" class="btn btn-primary btn-lg" role="button">Reserva Alumnos</a>
         <!--div class="btn btn-primary btn-lg" href="#" role="button">Reserva Alumnos</div-->
       <!--/div-->
     </div>        

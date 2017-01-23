@@ -12,6 +12,8 @@ use App\Periodo;
 use App\Curso;
 use App\Asignatura;
 use Carbon\Carbon;
+use Auth;
+use App\User;
 
 class horarioController extends Controller
 {

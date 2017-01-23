@@ -74,7 +74,7 @@ hr {
               </a>
               <ul class="treeview-menu">
                 <li><a href="{{ route('alumno.horarioAlumno.index')}}"><i class="fa fa-clock-o"></i> Ver Horarios</a></li>
-                <li><a href="{{ route('alumno.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
+                  <li><a href="{{ route('alumno.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -98,125 +98,112 @@ hr {
 @section('options')
 <h1>
     Salas 
-  <small>Reserva Alumno</small>
+  <small>Ver horario Alumnos</small>
 </h1>
 @stop
 @section('opcion')
-<li><a href="{{ route('alumno.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reserva</a></li>
-<li class="active">Reserva Alumno</li>
+<li class="active">Horarios Alumnos</li>
 @stop
 @section('content')
-<div class="row" style="margin-left: 0px">
-
-<form role="form" method="post" action="{{ route('alumno.asignar_alumno.store') }}">
-	<input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-	  <div class="box-body">
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div class="form-group">
-					  <label for="sel1">Salas: </label>
-					  <select class="form-control" id="sala" name="sala">
-					  	<option value="0" name="sala">Seleccione</option>
-					  	@foreach($salas as $sala)
-					    	<option value="{{ $sala->id }}" name="sala">{{ $sala->nombre }}</option>
-						@endforeach
-					  </select>
-					</div>
-		    	</div>		    	
-		    </div>
-	    </div>	   
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3" id="col-fecha">
-					<div class="form-group">
-					  <label for="sel1">Fecha: </label>
-						  <input type="text" class="form-control" placeholder="Fecha" name="fecha" id="fecha" aria-describedby="basic-addon2">
-					</div>
-		    	</div>
-	    		<div class="col-md-3" id="col-dia" style="display: none";>
-					<div class="form-group">
-					  <label for="sel1">Día: </label>
-						<select class="form-control" id="dia" name="dia">
-					    	<option value="lunes" name="dia">Lunes</option>
-					    	<option value="martes" name="dia">Martes</option>
-					    	<option value="miercoles" name="dia">Miércoles</option>
-					    	<option value="jueves" name="dia">Jueves</option>
-					    	<option value="viernes" name="dia">Viernes</option>
-					    	<option value="sabado" name="dia">Sábado</option>					    						    	
-					    </select>
-					</div>
-		    	</div>			    				    			    			    	
-		    </div>
-	    </div> 	
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div class="form-group">
-					  <label for="sel1">Período: </label>
-					  <select class="form-control" id="periodo" name="periodo">
-					  	@foreach($periodos as $periodo)
-					    	<option value="{{ $periodo->id }}" name="periodo">{{ $periodo->bloque }}</option>
-						@endforeach
-					  </select>
-					</div>
-		    	</div>		    	
-		    </div>
-	    </div>	
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div class="form-group" id="estaciones" style="display: none;">
-					  <label for="sel1">Estaciones de Trabajo: </label>
-					  	<select class="form-control" id="estacion" name="estacion">	
-					  </select>
-					</div>
-		    	</div>
-		    </div>
-	    </div>   
-
-	    <input type="hidden" name="rol" value="alumno">	
-		<button type="submit" class="fa fa-edit btn btn-primary">Reservar</button>
-	</div>
-</div>
+<h1>Horarios</h1>
+<form role="form" method="get" action="{{ route('alumno.asignar.index')}}">
+  <button type="submit" class="fa fa-plus-square btn btn-primary"> Realizar una Reserva</button>
+</form>
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <!--ACA EMPIEZA LA DATATABLE-->
+        <div class="box">
+          <div class="box-header">
+          </div><!-- /.box-header -->
+          <div class="box-body">
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                <th>#</th>
+                <th>Fecha</th>
+                <th>Nombre</th>
+                <th>Período</th>
+                <th>Sala</th>
+                <th>Estación Trabajo</th>
+                <th>Asistencia</th>
+                <th>Editar </th>
+                <th>Eliminar</th>
+              </tr>
+              </thead>
+              <tbody>
+              <!--foreach recorre una coleccion de objetos-->
+              @foreach($horarios as $hr)
+              <tr data-id="{{ $hr->id }}">
+                <td>{{ $hr->id }}</td>
+                <td>{{ $hr->fecha }}</td>
+                <td>{{ $hr->horario_name}}</td>  
+                <td>{{ $hr->bloque}}</td>
+                <td>{{ $hr->sala_nombre}}</td>
+                <td>{{ $hr->est_trabajo}}</td>
+                <td>{{ $hr->asistencia}}</td>
+                <!--Paso ruta y parametro para saber cual modificar-->
+                <td><a href="{{ route('alumno.horarioAlumno.edit',$hr->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
+                <td>
+                {!! Form::open(['route' => ['alumno.horarioAlumno.destroy', $hr->id], 'method' => 'DELETE', 'id' => 'form-delete'])!!}
+                  <button type="submit" class="fa fa-trash btn btn-danger"> Eliminar</button>
+                {!! Form::close() !!}
+                </td>    
+              </tr>
+              @endforeach
+              </tbody>
+              <tfoot>
+                <tr>
+                <th>#</th>
+                <th>Fecha</th>
+                <th>Nombre</th>
+                <th>Período</th>
+                <th>Sala</th>
+                <th>Estación Trabajo</th>
+                <th>Asistencia</th>
+                <th>Editar </th>
+                <th>Eliminar</th>
+              </tr>
+              </tfoot>
+            </table>
+          </div><!-- /.box-body -->
+        </div><!-- /.box -->
+        <!--ACA TERMINA LA DATATABLE-->
+  </div><!-- /.row -->
+</section><!-- /.content -->
 @stop
 
 @section('scripts')
-  <script>
-
-  $( function(){
-    $( "#fecha" ).datepicker({
-      showButtonPanel: true
+  <!-- DataTables -->
+  <script src="{{ asset('admin-lte/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+  <script src="{{ asset('admin-lte/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+   <script>
+$(document).ready(function() {
+  
+    $('#example1').DataTable({
+        responsive: true,
+        "language": {
+                "decimal":        "",
+                "emptyTable":     "Sin datos disponibles",
+                "info":           "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                "infoEmpty":      "Mostrando 0 a 0 de 0 entradas",
+                "infoFiltered":   "(Filtrado de un total de _MAX_ entradas)",
+                "infoPostFix":    "",
+                "thousands":      ".",
+                "lengthMenu":     "Mostrar _MENU_ entradas",
+                "loadingRecords": "Cargando...",
+                "processing":     "Procesando...",
+                "search":         "Buscar:",
+                "zeroRecords":    "Ningún registro encontrado.",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Ultimo",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                }
+            }
     });
 
-  });
-
-  $(document).ready(function(){
-  	//# es para llamar una id
-  	$("#sala").change(function(){
-  		var id = $("#sala").val();
-  		var token = $("#token").val();
-  		$.ajax({
-  			url: '/~brojas/alumno/asignar_alumno',
-  			headers:{'X-CSRF-TOKEN': token},
-  			type: 'POST',
-  			dataType: 'json',
-  			data:{id : id},
-  			//response es la respuesta que trae desde el controlador
-  			success: function(response){	
-  				$("#estacion").empty();
-  				$("#estaciones").css('display','block');
-  				//el k es un índice (posición) y v (valor ocmo tal del elemento)
-  				$.each(response,function(k,v){
-					$("#estacion").append("<option value='"+v.id+"' name='sala'>"+v.sala+" - Estación N°"+v.nombre+"</option>");
-  				});
-  				
-  			}
-  		});
-
-  	});
-
-  });
-
-  </script>
+});
+    </script>
 @stop

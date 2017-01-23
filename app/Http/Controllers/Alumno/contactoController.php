@@ -25,7 +25,7 @@ class contactoController extends Controller
     
     public function index()
     {
-        return view('contacto'); 
+        return view('Alumno/contacto'); 
     }
 
     /**
@@ -53,7 +53,7 @@ class contactoController extends Controller
         //esto no me lo muestra!!
         Session::flash('message','¡Mensaje enviado correctamente!');
         //no segura!
-        return Redirect::to('/contacto');
+        return Redirect::to('alumno/contacto');
     }
 
     /**

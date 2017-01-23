@@ -173,12 +173,12 @@ Route::group(['prefix' => 'alumno', 'namespace' => 'Alumno'], function()
 	Route::resource('/periodo','periodoController');
 	Route::resource('/asignatura','asignaturaController');
 	Route::resource('/curso','cursoController');
-	Route::resource('/horario','horarioController');
+	Route::resource('/horarioAlumno','horarioAlumnoController');
 	Route::resource('/asignar','asignarController');
-	Route::get('/asignar_docente', ['as' => 'alumno.asignar.docente', 'uses' => 'asignarController@docente']);
-	Route::get('/asignar_ayudante',['as' => 'alumno.asignar.ayudante', 'uses' => 'asignarController@ayudante']);
-	Route::get('/asignar_alumno',['as' => 'alumno.asignar.alumno', 'uses' => 'asignarController@alumno']);
+	Route::resource('/asignar_alumno','asignarAlumController');
 	
+	
+
 	Route::get('/listado_graficas', 'GraficasController@index');
 });
 
