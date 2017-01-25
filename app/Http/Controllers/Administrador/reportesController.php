@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Administrador;
 
-use Illuminate\Http\Request;
 
+use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Asignatura;
@@ -14,26 +14,26 @@ use App\Rol;
 use App\RolUsuario;
 use App\Sala;
 use App\Usuario;
+use Auth;
+use App\User;
 
-
-class GraficasController extends Controller
+class reportesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    public function index(Request $request)
+    {
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('admin');
-    }
-    
-    
-    public function index()
-    {
-        dd('a');
+        if($request->ajax())
+        {
+            $periodos = Periodo::select('id','bloque')->orderBy('bloque','asc')->get();
+
+            return response()->json($periodos);
+        }
+
         $periodos = Periodo::select('id','bloque')->orderBy('bloque','asc')->get();
 
 
@@ -61,7 +61,8 @@ class GraficasController extends Controller
         {
             return view ('Administrador/graficas/index',compact('periodos','cont'));
         }
-       //return view ('Administrador/asignar/alumno',compact('salas','periodos','est'));
+
+
     }
 
     /**
@@ -71,9 +72,7 @@ class GraficasController extends Controller
      */
     public function create()
     {
-
-
-
+        //
     }
 
     /**

@@ -126,7 +126,7 @@ hr {
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="{{ url('/administrador/reportes')}}"><i class="fa fa-users"></i>Usuarios</a></li>
+                <li><a href="pages/labs/admin.html"><i class="fa fa-users"></i>Usuarios</a></li>
                 <li><a href="pages/labs/admin.html"><i class="fa fa-tv"></i>Salas</a></li>
                 <li><a href="pages/labs/docente.html"><i class="fa fa-hand-pointer-o"></i>Usabilidad</a></li>
                 <li><a href="pages/labs/ayudante.html"><i class="fa  fa-book"></i>Asignaturas</a></li>
@@ -154,26 +154,63 @@ hr {
           </ul>
 @stop
 @section('options')
-@if(Session::has('message'))
-  <div class="alert alert-info" role="alert">
-    <strong class="alert-link">{{ Session::get('message') }}</strong>
-  </div>       
-@endif
-<h1>
-    Panel de Control 
-	<small>Inicio</small>
-</h1>
-@stop
-@section('content')
+<button id="crear_grafico" class="btn btn-success">Ver</button>
+<div id="chart_div" style="width: 900px; height: 500px;"></div>
+<div id="curve_chart" style="width: 900px; height: 500px;"></div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+<script type="text/javascript">
 
-<div class="container" style="padding-left: 0px;">
-<h1><img src="{{ asset('admin-lte/dist/img/utem.png') }}" class="user-image" alt="User Image" border="0" width="40" height="40"> Sistema Control y Gestión Salas UTEM </h1>
-</br>
-<center>
-    <h2>¡¡BIENVENIDO ADMINISTRADOR!!</h2>
-	<img src="{{ asset('admin-lte/dist/img/aula.png') }}" class="user-image" alt="User Image" border="0" width="300" height="200">
-  	<p>¡Ha iniciado sesión satisfactoriamente!</p>
-</center>
-</div>
+  
+  $("#crear_grafico").click(function(){
+      $.ajax({
+      // con .val saco el valor del value
+        data:  {'id': '1'},
+        url:   '/~brojas/administrador/reportes',
+        type:  'get',
+        dataType: 'json',
+        success:  function(respuesta) {          
+          console.log(respuesta);
+        }
+      });
+  });  
+
+
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Productos', 'mes'],
+            @foreach ($periodos as $p)
+              ['{{ $p->bloque}}', {{ $p->id}}],
+            @endforeach
+        ]);
+        var options = {
+          title: 'Representación grafica de clientes por ubicacion'
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales', 'Expenses'],
+          ['2004',  1000,      400],
+          ['2005',  1170,      460],
+          ['2006',  660,       1120],
+          ['2007',  1030,      540]
+        ]);
+
+        var options = {
+          title: 'Company Performance',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+
+
 @stop
 
