@@ -36,7 +36,6 @@ class GraficasController extends Controller
         dd('a');
         $periodos = Periodo::select('id','bloque')->orderBy('bloque','asc')->get();
 
-
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla

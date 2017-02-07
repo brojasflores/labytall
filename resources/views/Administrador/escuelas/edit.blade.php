@@ -184,7 +184,7 @@ hr {
             <label for="sel1">Departamento: </label>
             <select class="form-control" id="depEsc" name="depEsc">
               @foreach($departamentos as $de)
-                <option value="{{ $de->id }}" name="facDep">{{ $de->nombre }}</option>
+                <option value="{{ $de->id }}" id="departamento_{{ $de->id }}" name="depEsc">{{ $de->nombre }}</option>
               @endforeach
             </select>
           </div>
@@ -199,4 +199,11 @@ hr {
 	  </div><!-- /.box-body -->
 {!! Form::close() !!}
 @stop
-
+@section('scripts')
+<script type="text/javascript">
+  $(document).ready(function(){
+    //Selecciona la option del select campusFac que tenga la id del campus de la facultad
+    $('#depEsc option[id=departamento_'+{{ $escuelas->departamento_id }}+']').attr('selected', 'selected');
+  });
+</script>
+@stop

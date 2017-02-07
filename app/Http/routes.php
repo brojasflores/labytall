@@ -42,6 +42,14 @@ Route::group(['prefix' => 'administrador','namespace' => 'Administrador'], funct
 	Route::post('/upload_asignatura', ['as' => 'administrador.asignatura.upload', 'uses' => 'asignaturaController@uploadAsig']);
 
 	Route::resource('/reportes', 'reportesController');
+
+	
+	/*Route::get('/pdf', function(){
+		$pdf = PDF::loadView('Administrador/graficas/index');
+		return $pdf->download('reporte1.pdf');
+		});*/
+
+	//Route::get('/pdf', 'reportesController@invoice');
 });
 
 //**********************************RUTAS Director*******************************************

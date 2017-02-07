@@ -26,16 +26,18 @@ class horarioController extends Controller
     
     public function index()
     {
+        $usr=Auth::User()->rut;
+
         $horarios = Horario::join('curso','horario.curso_id','=','curso.id')
                             ->join('asignatura','curso.asignatura_id','=','asignatura.id')
                             ->join('periodo','horario.periodo_id','=','periodo.id')
                             ->join('sala','horario.sala_id','=','sala.id')
                             ->join('users','horario.rut','=','users.rut')
                             ->select('horario.id','horario.fecha','horario.rut','users.nombres as horario_name','users.apellidos as horario_apell','horario.permanencia','asignatura.nombre as asig_nombre','periodo.bloque','sala.nombre as sala_nombre')
+                            ->where('horario.rut','=',$usr)
                             ->paginate();
 
         //Cambio de rol
-        $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
         $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
                     ->where('users.rut','=',$usr)

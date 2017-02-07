@@ -188,7 +188,7 @@ hr {
               @foreach($carreras as $ca)
               <tr data-id="{{ $ca->id }}">
                 <td>{{ $ca->id }}</td>
-                <td>{{ $ca->escuela_id }}</td>
+                <td>{{ $ca->esc }}</td>
                 <td>{{ $ca->codigo}}</td>
                 <td>{{ $ca->nombre}}</td>
                 <td>{{ $ca->descripcion}}</td>

@@ -164,7 +164,7 @@ hr {
             <label for="sel1">Escuela: </label>
             <select class="form-control" id="escuelaCarrera" name="escuelaCarrera">
               @foreach($escuelas as $esc)
-                <option value="{{ $esc->id }}" name="escuelaCarrera">{{ $esc->nombre }}</option>
+                <option value="{{ $esc->id }}" id="escuela_{{ $esc->id }}" name="escuelaCarrera">{{ $esc->nombre }}</option>
               @endforeach
             </select>
           </div>
@@ -186,4 +186,12 @@ hr {
 	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
 	  </div><!-- /.box-body -->
 {!! Form::close() !!}
+@stop
+@section('scripts')
+<script type="text/javascript">
+  $(document).ready(function(){
+    //Selecciona la option del select campusFac que tenga la id del campus de la facultad
+    $('#escuelaCarrera option[id=escuela_'+{{ $carreras->escuela_id }}+']').attr('selected', 'selected');
+  });
+</script>
 @stop

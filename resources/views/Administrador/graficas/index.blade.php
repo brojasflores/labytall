@@ -153,30 +153,84 @@ hr {
             <li><a href="{{ route('administrador.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
           </ul>
 @stop
-@section('options')
-<button id="crear_grafico" class="btn btn-success">Ver</button>
-<div id="chart_div" style="width: 900px; height: 500px;"></div>
-<div id="curve_chart" style="width: 900px; height: 500px;"></div>
+@section('content')
+  <div class="row">
+    <div class="col-md-8 col-lg-8" style="height: 500px;">
+      <div id="chart_div" style="width: 100%; height: 500px;"></div>
+      <div id="curve_chart" class="hide" style="width: 900px; height: 500px;"></div>
+     
+    </div>
+    <div class="col-md-4 col-lg-4">
+       <div class="row">
+          <h4>Seleccionar Período</h4>
+          <hr/>
+          <div class="col-md-12">
+            <select id="desde" class="form-control">
+              <option value="I"> 00:00 - 00:00 </option>
+            </select>
+          </div>          
+          <div class="col-md-12">            
+            <select id="hasta" class="form-control">
+              <option value="II"> 00:00 - 00:00  </option>
+            </select>            
+          </div>
+          <div class="col-md-6 col-md-offset-6"> 
+
+            <button class="btn btn-block btn-success filtro" id="enviar" name="enviar" value="enviar">Enviar</button>
+          </div>
+      </div>      
+    </div>
+  </div>
+@stop
+@section('scripts')
+
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script type="text/javascript">
 
   
-  $("#crear_grafico").click(function(){
+  $("#enviar").click(function(){
+    var desde = $("#desde").val();
+    var hasta = $("#hasta").val();
+    console.log(desde);
+    console.log(hasta);
       $.ajax({
       // con .val saco el valor del value
-        data:  {'id': '1'},
+        data:  {'desde': desde, 'hasta': hasta },
         url:   '/~brojas/administrador/reportes',
-        type:  'get',
+        type:  'GET',
         dataType: 'json',
         success:  function(respuesta) {          
+          console.log(respuesta[0].rut);
+
+          google.charts.load('current', {'packages':['corechart']});
+          google.charts.setOnLoadCallback(drawChart);
+          
+          function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Productos', 'mes'],
+            @foreach ($periodos as $p)
+              ['{{ $p->bloque}}', {{ $p->id}}],
+            @endforeach
+        ]);
+        var options = {
+          title: 'Representación grafica'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);     
+      }
+
+
+        },
+        error:  function(respuesta) { 
           console.log(respuesta);
         }
+
       });
+
   });  
-
-
-      google.charts.load('current', {'packages':['corechart']});
+      /*google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
@@ -186,29 +240,12 @@ hr {
             @endforeach
         ]);
         var options = {
-          title: 'Representación grafica de clientes por ubicacion'
+          title: 'Representación grafica'
         };
+
         var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-
-        var data = google.visualization.arrayToDataTable([
-          ['Year', 'Sales', 'Expenses'],
-          ['2004',  1000,      400],
-          ['2005',  1170,      460],
-          ['2006',  660,       1120],
-          ['2007',  1030,      540]
-        ]);
-
-        var options = {
-          title: 'Company Performance',
-          curveType: 'function',
-          legend: { position: 'bottom' }
-        };
-
-        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
-        chart.draw(data, options);
-      }
+        chart.draw(data, options);     
+      }*/
     </script>
 
 

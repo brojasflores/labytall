@@ -30,7 +30,10 @@ class carreraController extends Controller
     
     public function index()
     {
-        $carreras = Carrera::all();
+        //$carreras = Carrera::all();
+        $carreras = Carrera::join('escuela','carrera.escuela_id','=','escuela.id')
+                    ->select('carrera.*','escuela.nombre as esc')
+                    ->get();
         
         //Cambio de rol
         $usr=Auth::User()->rut;

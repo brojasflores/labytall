@@ -26,13 +26,17 @@ class reportesController extends Controller
      */
     public function index(Request $request)
     {
-
         if($request->ajax())
         {
+            //dd($request->desde);
             $periodos = Periodo::select('id','bloque')->orderBy('bloque','asc')->get();
+            //$uso = Horario::select('id','rut')->get();
 
             return response()->json($periodos);
         }
+
+        
+        //dd('pablo');
 
         $periodos = Periodo::select('id','bloque')->orderBy('bloque','asc')->get();
 
@@ -52,7 +56,6 @@ class reportesController extends Controller
         }
         //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
         $cont = count($v2); //cuenta la cantidad de elementos del array
-        
         if($cont>1)
         {
             return view ('Administrador/graficas/index',compact('periodos','v2','cont'));
@@ -61,7 +64,6 @@ class reportesController extends Controller
         {
             return view ('Administrador/graficas/index',compact('periodos','cont'));
         }
-
 
     }
 
@@ -130,4 +132,45 @@ class reportesController extends Controller
     {
         //
     }
+
+    /*public function invoice() 
+    {
+
+        $periodos = Periodo::select('id','bloque')->orderBy('bloque','asc')->get();
+
+        //Cambio de rol
+        $usr=Auth::User()->rut;
+        //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+        $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
+                    ->where('users.rut','=',$usr)
+                    ->join('rol','rol_users.rol_id','=','rol.id')
+                    ->select('nombre')
+                    ->get();
+        // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+        foreach($usr2 as $v)
+        {
+            $v2[]= $v->nombre;
+        }
+        //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
+        $cont = count($v2); //cuenta la cantidad de elementos del array
+        if($cont>1)
+        {
+            $view =  \View::make('Administrador/graficas/index',compact('periodos','v2','cont'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view);
+            //return $pdf->stream('invoice');
+            //$pdf = PDF::loadView($view);
+            return $pdf->download('reporte1.pdf');
+            //return view ('Administrador/graficas/index',compact('periodos','v2','cont'));
+        }
+        else
+        {
+            $view =  \View::make('Administrador/graficas/index',compact('periodos','cont'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view);
+            //return $pdf->stream('invoice');
+            //$pdf = PDF::loadView($view);
+            return $pdf->download('reporte1.pdf');
+        }
+    }*/
 }
