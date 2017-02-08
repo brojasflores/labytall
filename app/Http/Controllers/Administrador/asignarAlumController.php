@@ -45,9 +45,15 @@ class asignarAlumController extends Controller
                       ->groupBy('sala.id','sala.nombre')
                       ->get();
 
-        $est = Sala::join('estacion_trabajo','sala.id','=','estacion_trabajo.sala_id')
+        /*$est = Sala::join('estacion_trabajo','sala.id','=','estacion_trabajo.sala_id')
                       ->where('estacion_trabajo.disponibilidad','=','si')
                       ->select('estacion_trabajo.sala_id as est_salaid','estacion_trabajo.id as est_id','estacion_trabajo.nombre as est_name','sala.nombre')
+                      ->orderBy('sala.nombre','asc')->get();*/
+
+        $est = Sala::join('estacion_trabajo','sala.id','=','estacion_trabajo.sala_id')
+                      ->where('estacion_trabajo.disponibilidad','=','si')
+                      ->join('periodo','estacion_trabajo.periodo_id','=','periodo.id')
+                      ->select('estacion_trabajo.sala_id as est_salaid','estacion_trabajo.id as est_id','estacion_trabajo.nombre as est_name','sala.nombre','periodo.bloque as blo')
                       ->orderBy('sala.nombre','asc')->get();
 
 
@@ -100,9 +106,11 @@ class asignarAlumController extends Controller
     {
         if($request->ajax()){
             $estacion = Estacion_trabajo::join('sala','estacion_trabajo.sala_id','=','sala.id')
+                                        ->join('periodo','estacion_trabajo.periodo_id','=','periodo.id')
                                         ->where('estacion_trabajo.sala_id',$request->get('id'))
                                         ->where('estacion_trabajo.disponibilidad','si')
-                                        ->select('estacion_trabajo.*','sala.nombre as sala')
+                                        ->where('estacion_trabajo.periodo_id',$request->get('periodo'))
+                                        ->select('estacion_trabajo.*','sala.nombre as sala','periodo.bloque as blo')
                                         ->orderBy('estacion_trabajo.id','asc')
                                         ->get();
 
@@ -140,23 +148,33 @@ class asignarAlumController extends Controller
                     $fecha_con_guion = [$fecha_separada[2],$fecha_separada[0],$fecha_separada[1]];
                     $fecha_formateada = implode('-',$fecha_con_guion);
                
-                    Horario_Alumno::create([
-                        'fecha' => $fecha_formateada,
-                        'rut' => $request->get('usuario'),
-                        'periodo_id' => $request->get('periodo'),
-                        'sala_id' => $request->get('sala'),
-                        'estacion_trabajo_id' => $request->get('estacion'),
-                        'permanencia' => 'dia',
-                        'asistencia' => 'Pendiente'
-                        ]);
+                    $fechita = Horario_Alumno::select('id')
+                                             ->where('fecha','=',$fecha_formateada)
+                                             ->where('periodo_id','=',$request->get('periodo'))
+                                             ->get();
 
-                    //pone disponibilidad en no para un lab completo
-                    $id = $request->get('estacion');
-                    $est = Estacion_trabajo::findOrFail($id);
-                    $est->fill([
-                        'disponibilidad' => "no",
-                        ]); 
-                    $est->save();
+                    //dd($fechita);
+
+                    if($fechita->isEmpty())
+                    {
+                        //dd($fechita);
+                        Horario_Alumno::create([
+                            'fecha' => $fecha_formateada,
+                            'rut' => $request->get('usuario'),
+                            'periodo_id' => $request->get('periodo'),
+                            'sala_id' => $request->get('sala'),
+                            'estacion_trabajo_id' => $request->get('estacion'),
+                            'permanencia' => 'dia',
+                            'asistencia' => 'Pendiente'
+                            ]);
+
+                        $id = $request->get('estacion');
+                        $est = Estacion_trabajo::findOrFail($id);
+                        $est->fill([
+                            'disponibilidad' => "no",
+                            ]); 
+                        $est->save();
+                    }
                 }
                 else
                 {

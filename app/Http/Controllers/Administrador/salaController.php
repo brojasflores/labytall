@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Sala;
 use App\Departamento;
 use App\Estacion_trabajo;
+use App\Periodo;
 use Auth;
 use App\User;
 
@@ -102,6 +103,10 @@ class salaController extends Controller
     {
         //variable = nombre del modelo ::(paso metodo)
         //hace insert
+        $periodos = Periodo::All();
+
+        $per = count($periodos);
+        
         $capacidad= $request->get('capacidadSala');
         $nombre = $request->get('nombreSala');
 
@@ -121,13 +126,22 @@ class salaController extends Controller
             $v2= $v->id;
         }
         
-        for($i=0; $i<$capacidad; $i++)
+        foreach($periodos as $v)
         {
-            Estacion_trabajo::create([
-                'nombre' => ($i+1),
-                'disponibilidad'=> "si",
-                'sala_id' => $v2,
-            ]);
+            $v3[]= $v->id;
+        }
+
+        for($j=0; $j<$per; $j++)
+        {
+            for($i=0; $i<$capacidad; $i++)
+            {
+                Estacion_trabajo::create([
+                    'nombre' => ($i+1),
+                    'disponibilidad'=> "si",
+                    'sala_id' => $v2,
+                    'periodo_id' => $v3[$j],
+                ]);
+            }
         }
         return redirect()->route('administrador.sala.index');
     }
@@ -190,6 +204,9 @@ class salaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $periodos = Periodo::All();
+        $per = count($periodos);
+
         $capacidad= $request->get('capacidadSala');
         $sala = Sala::findOrFail($id);     
         //fill (rellenar)
@@ -217,15 +234,23 @@ class salaController extends Controller
             $est->delete();
         }
 
-        for($i=0; $i<$capacidad; $i++)
+        foreach($periodos as $v)
         {
-            Estacion_trabajo::create([
-                'nombre' => ($i+1),
-                'disponibilidad'=> "si",
-                'sala_id' => $id,
-            ]);
+            $v3[]= $v->id;
         }
 
+        for($j=0; $j<$per; $j++)
+        {
+            for($i=0; $i<$capacidad; $i++)
+            {
+                Estacion_trabajo::create([
+                    'nombre' => ($i+1),
+                    'disponibilidad'=> "si",
+                    'sala_id' => $id,
+                    'periodo_id' => $v3[$j],
+                ]);
+            }
+        }
 
         return redirect()->route('administrador.sala.index');
     }
