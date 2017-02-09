@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Horario_Alumno;
+use App\Horario;
 use App\Sala;
 use App\Periodo;
 use App\Curso;
@@ -16,6 +17,7 @@ use App\RolUsuario;
 use Carbon\Carbon;
 use Auth;
 use App\User;
+use Session;
 
 class horarioAlumnoController extends Controller
 {
@@ -83,18 +85,19 @@ class horarioAlumnoController extends Controller
     public function edit($id,Request $request)
     {
         if($request->ajax()){
-         //dd($request);
+            //dd($request);
             if($request->get('action') == 'edit')
             {
-
                 $estacion = Estacion_trabajo::join('sala','estacion_trabajo.sala_id','=','sala.id')
-                                            ->where('estacion_trabajo.sala_id',$request->get('id'))
-                                            ->where('estacion_trabajo.disponibilidad','si')
-                                            ->select('estacion_trabajo.*','sala.nombre as sala')
-                                            ->orderBy('estacion_trabajo.id','asc')
-                                            ->get();
+                                        ->join('periodo','estacion_trabajo.periodo_id','=','periodo.id')
+                                        ->where('estacion_trabajo.sala_id',$request->get('id'))
+                                        ->where('estacion_trabajo.disponibilidad','si')
+                                        ->where('estacion_trabajo.periodo_id',$request->get('periodo'))
+                                        ->select('estacion_trabajo.*','sala.nombre as sala','periodo.bloque as blo')
+                                        ->orderBy('estacion_trabajo.id','asc')
+                                        ->get();
 
-                return response()->json($estacion);                
+                return response()->json($estacion);             
             }
 
 
@@ -121,6 +124,12 @@ class horarioAlumnoController extends Controller
                           ->where('horario_alum.id',$id)
                           ->select('estacion_trabajo.sala_id as est_salaid','estacion_trabajo.id as est_id','estacion_trabajo.nombre as est_name','sala.nombre')
                           ->orderBy('sala.nombre','asc')->get();
+
+            $est = Sala::join('estacion_trabajo','sala.id','=','estacion_trabajo.sala_id')
+                      ->where('estacion_trabajo.disponibilidad','=','si')
+                      ->join('periodo','estacion_trabajo.periodo_id','=','periodo.id')
+                      ->select('estacion_trabajo.sala_id as est_salaid','estacion_trabajo.id as est_id','estacion_trabajo.nombre as est_name','sala.nombre','periodo.bloque as blo')
+                      ->orderBy('sala.nombre','asc')->get();
 
 
             //Cambio de rol
@@ -198,8 +207,23 @@ class horarioAlumnoController extends Controller
                     $fecha_con_guion = [$fecha_separada[2],$fecha_separada[0],$fecha_separada[1]];
                     $fecha_formateada = implode('-',$fecha_con_guion);
 
-                    $h = Horario_Alumno::findOrFail($id);
-                    $h->fill([
+
+                    $fechita = Horario_Alumno::select('id')
+                                             ->where('fecha','=',$fecha_formateada)
+                                             ->where('periodo_id','=',$request->get('periodoHorario'))
+                                             ->where('sala_id','=',$request->get('sala'))
+                                             ->get();
+
+                    $fechita2 = Horario::select('id')
+                                       ->where('fecha','=',$fecha_formateada)
+                                       ->where('periodo_id','=',$request->get('periodoHorario'))
+                                       ->where('sala_id','=',$request->get('sala'))
+                                       ->get();
+
+                    if($fechita->isEmpty() && $fechita2->isEmpty())
+                    {
+                        $h = Horario_Alumno::findOrFail($id);
+                        $h->fill([
                         'fecha' => $fecha_formateada,
                         'rut' => $request->get('rutHorario'),
                         'periodo_id' => $request->get('periodoHorario'),
@@ -207,15 +231,21 @@ class horarioAlumnoController extends Controller
                         'estacion_trabajo_id' => $request->get('estacion'),
                         'permanencia' => 'dia',
                         'asistencia' => $request->get('asistenciaH')
-                    ]); 
-                    $h->save();
-
-                    $id2 = $request->get('estacion');
-                    $est2 = Estacion_trabajo::findOrFail($id2);
-                    $est2->fill([
-                        'disponibilidad' => "no",
                         ]); 
-                    $est2->save();
+                        $h->save();
+
+                        $id2 = $request->get('estacion');
+                        $est2 = Estacion_trabajo::findOrFail($id2);
+                        $est2->fill([
+                            'disponibilidad' => "si",
+                            ]); 
+                        $est2->save();
+                    }
+                    else
+                    {
+                        Session::flash('reservado','¡Estación ya reservada!');
+                        return redirect()->route('administrador.horarioAlumno.index');
+                    }
                 }
                 else
                 {

@@ -257,27 +257,26 @@ $( "#fecha" ).datepicker({
 
 $(document).ready(function(){
     //# es para llamar una id
-    $("#sala_id").change(function(){
+    $("#sala_id,#periodo_id").change(function(){
       var id = $("#sala_id").val();
+      var periodo = $("#periodo_id").val();
       var token = $("#token").val();
       $.ajax({
         url: '/~brojas/administrador/horarioAlumno/'+id+'/edit',
         headers:{'X-CSRF-TOKEN': token},
         type: 'GET',
         dataType: 'json',
-        data:{id : id,action: 'edit'},
+        data:{id : id,periodo:periodo,action: 'edit'},
         //response es la respuesta que trae desde el controlador
         success: function(response){  
           $("#estacion").empty();
          console.log(response);
           //el k es un índice (posición) y v (valor ocmo tal del elemento)
           $.each(response,function(k,v){
-          $("#estacion").append("<option value='"+v.id+"' name='sala'>"+v.sala+" - Estación N°"+v.nombre+"</option>");
-          });
-          
+          $("#estacion").append("<option value='"+v.id+"' name='sala'>"+v.sala+" - Estación N°"+v.nombre+"- Periodo:"+v.blo+"</option>");
+          }); 
         }
       });
-
     });
 
   $.ajax({

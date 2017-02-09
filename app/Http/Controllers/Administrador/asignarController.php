@@ -219,7 +219,7 @@ class asignarController extends Controller
                             {
                                 $est = Estacion_trabajo::findOrFail($v2[$i]);
                                 $est->fill([
-                                'disponibilidad' => "no",
+                                'disponibilidad' => "si",
                                 ]); 
                                 $est->save();
                             }
@@ -276,7 +276,7 @@ class asignarController extends Controller
                                             {
                                                 $est = Estacion_trabajo::findOrFail($v2[$i]);
                                                 $est->fill([
-                                                'disponibilidad' => "no",
+                                                'disponibilidad' => "si",
                                                 ]); 
                                                 $est->save();
                                             }
@@ -312,7 +312,7 @@ class asignarController extends Controller
                                             {
                                                 $est = Estacion_trabajo::findOrFail($v2[$i]);
                                                 $est->fill([
-                                                'disponibilidad' => "no",
+                                                'disponibilidad' => "si",
                                                 ]); 
                                                 $est->save();
                                             }
@@ -348,7 +348,7 @@ class asignarController extends Controller
                                             {
                                                 $est = Estacion_trabajo::findOrFail($v2[$i]);
                                                 $est->fill([
-                                                'disponibilidad' => "no",
+                                                'disponibilidad' => "si",
                                                 ]); 
                                                 $est->save();
                                             }
@@ -384,7 +384,7 @@ class asignarController extends Controller
                                             {
                                                 $est = Estacion_trabajo::findOrFail($v2[$i]);
                                                 $est->fill([
-                                                'disponibilidad' => "no",
+                                                'disponibilidad' => "si",
                                                 ]); 
                                                 $est->save();
                                             }
@@ -421,7 +421,7 @@ class asignarController extends Controller
                                             {
                                                 $est = Estacion_trabajo::findOrFail($v2[$i]);
                                                 $est->fill([
-                                                'disponibilidad' => "no",
+                                                'disponibilidad' => "si",
                                                 ]); 
                                                 $est->save();
                                             }
@@ -458,7 +458,7 @@ class asignarController extends Controller
                                             {
                                                 $est = Estacion_trabajo::findOrFail($v2[$i]);
                                                 $est->fill([
-                                                'disponibilidad' => "no",
+                                                'disponibilidad' => "si",
                                                 ]); 
                                                 $est->save();
                                             }
@@ -513,7 +513,7 @@ class asignarController extends Controller
                             {
                                 $est = Estacion_trabajo::findOrFail($v2[$i]);
                                 $est->fill([
-                                'disponibilidad' => "no",
+                                'disponibilidad' => "si",
                                 ]); 
                                 $est->save();
                             }
@@ -569,7 +569,7 @@ class asignarController extends Controller
                                             {
                                                 $est = Estacion_trabajo::findOrFail($v2[$i]);
                                                 $est->fill([
-                                                'disponibilidad' => "no",
+                                                'disponibilidad' => "si",
                                                 ]); 
                                                 $est->save();
                                             }
@@ -605,7 +605,7 @@ class asignarController extends Controller
                                             {
                                                 $est = Estacion_trabajo::findOrFail($v2[$i]);
                                                 $est->fill([
-                                                'disponibilidad' => "no",
+                                                'disponibilidad' => "si",
                                                 ]); 
                                                 $est->save();
                                             }
@@ -641,7 +641,7 @@ class asignarController extends Controller
                                             {
                                                 $est = Estacion_trabajo::findOrFail($v2[$i]);
                                                 $est->fill([
-                                                'disponibilidad' => "no",
+                                                'disponibilidad' => "si",
                                                 ]); 
                                                 $est->save();
                                             }
@@ -677,7 +677,7 @@ class asignarController extends Controller
                                             {
                                                 $est = Estacion_trabajo::findOrFail($v2[$i]);
                                                 $est->fill([
-                                                'disponibilidad' => "no",
+                                                'disponibilidad' => "si",
                                                 ]); 
                                                 $est->save();
                                             }
@@ -714,7 +714,7 @@ class asignarController extends Controller
                                             {
                                                 $est = Estacion_trabajo::findOrFail($v2[$i]);
                                                 $est->fill([
-                                                'disponibilidad' => "no",
+                                                'disponibilidad' => "si",
                                                 ]); 
                                                 $est->save();
                                             }
@@ -751,7 +751,7 @@ class asignarController extends Controller
                                             {
                                                 $est = Estacion_trabajo::findOrFail($v2[$i]);
                                                 $est->fill([
-                                                'disponibilidad' => "no",
+                                                'disponibilidad' => "si",
                                                 ]); 
                                                 $est->save();
                                             }
@@ -814,7 +814,7 @@ class asignarController extends Controller
                                     {
                                         $est = Estacion_trabajo::findOrFail($v2[$i]);
                                         $est->fill([
-                                        'disponibilidad' => "no",
+                                        'disponibilidad' => "si",
                                         ]); 
                                         $est->save();
                                     }
@@ -870,7 +870,7 @@ class asignarController extends Controller
                                                     {
                                                         $est = Estacion_trabajo::findOrFail($v2[$i]);
                                                         $est->fill([
-                                                        'disponibilidad' => "no",
+                                                        'disponibilidad' => "si",
                                                         ]); 
                                                         $est->save();
                                                     }
@@ -907,7 +907,7 @@ class asignarController extends Controller
                                                     {
                                                         $est = Estacion_trabajo::findOrFail($v2[$i]);
                                                         $est->fill([
-                                                        'disponibilidad' => "no",
+                                                        'disponibilidad' => "si",
                                                         ]); 
                                                         $est->save();
                                                     }
@@ -942,7 +942,7 @@ class asignarController extends Controller
                                                     {
                                                         $est = Estacion_trabajo::findOrFail($v2[$i]);
                                                         $est->fill([
-                                                        'disponibilidad' => "no",
+                                                        'disponibilidad' => "si",
                                                         ]); 
                                                         $est->save();
                                                     }
@@ -978,7 +978,7 @@ class asignarController extends Controller
                                                     {
                                                         $est = Estacion_trabajo::findOrFail($v2[$i]);
                                                         $est->fill([
-                                                        'disponibilidad' => "no",
+                                                        'disponibilidad' => "si",
                                                         ]); 
                                                         $est->save();
                                                     }
@@ -1013,7 +1013,7 @@ class asignarController extends Controller
                                                     {
                                                         $est = Estacion_trabajo::findOrFail($v2[$i]);
                                                         $est->fill([
-                                                        'disponibilidad' => "no",
+                                                        'disponibilidad' => "si",
                                                         ]); 
                                                         $est->save();
                                                     }
@@ -1049,7 +1049,7 @@ class asignarController extends Controller
                                                     {
                                                         $est = Estacion_trabajo::findOrFail($v2[$i]);
                                                         $est->fill([
-                                                        'disponibilidad' => "no",
+                                                        'disponibilidad' => "si",
                                                         ]); 
                                                         $est->save();
                                                     }

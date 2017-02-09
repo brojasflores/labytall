@@ -12,6 +12,7 @@ use App\Periodo;
 use App\Curso;
 use App\Asignatura;
 use App\Horario_Alumno;
+use App\Horario;
 use App\Estacion_trabajo;
 use App\RolUsuario;
 use App\Rol;
@@ -44,11 +45,6 @@ class asignarAlumController extends Controller
                       ->orderBy('sala.nombre','asc')
                       ->groupBy('sala.id','sala.nombre')
                       ->get();
-
-        /*$est = Sala::join('estacion_trabajo','sala.id','=','estacion_trabajo.sala_id')
-                      ->where('estacion_trabajo.disponibilidad','=','si')
-                      ->select('estacion_trabajo.sala_id as est_salaid','estacion_trabajo.id as est_id','estacion_trabajo.nombre as est_name','sala.nombre')
-                      ->orderBy('sala.nombre','asc')->get();*/
 
         $est = Sala::join('estacion_trabajo','sala.id','=','estacion_trabajo.sala_id')
                       ->where('estacion_trabajo.disponibilidad','=','si')
@@ -151,11 +147,18 @@ class asignarAlumController extends Controller
                     $fechita = Horario_Alumno::select('id')
                                              ->where('fecha','=',$fecha_formateada)
                                              ->where('periodo_id','=',$request->get('periodo'))
+                                             ->where('sala_id','=',$request->get('sala'))
                                              ->get();
 
-                    //dd($fechita);
+                    $fechita2 = Horario::select('id')
+                                       ->where('fecha','=',$fecha_formateada)
+                                       ->where('periodo_id','=',$request->get('periodo'))
+                                       ->where('sala_id','=',$request->get('sala'))
+                                       ->get();
 
-                    if($fechita->isEmpty())
+                  //  dd($fechita2);
+
+                    if($fechita->isEmpty() && $fechita2->isEmpty())
                     {
                         //dd($fechita);
                         Horario_Alumno::create([
@@ -171,9 +174,14 @@ class asignarAlumController extends Controller
                         $id = $request->get('estacion');
                         $est = Estacion_trabajo::findOrFail($id);
                         $est->fill([
-                            'disponibilidad' => "no",
+                            'disponibilidad' => "si",
                             ]); 
                         $est->save();
+                    }
+                    else
+                    {
+                        Session::flash('reservado','¡Estación ya reservada!');
+                        return redirect()->route('administrador.horarioAlumno.index');
                     }
                 }
                 else
