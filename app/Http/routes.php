@@ -80,7 +80,6 @@ Route::group(['prefix' => 'director','namespace' => 'Director'], function()
 	Route::get('/asignar_ayudante',['as' => 'director.asignar.ayudante', 'uses' => 'asignarController@ayudante']);
 	Route::resource('/asignar_alumno','asignarAlumController');
 
-	Route::get('/listado_graficas', 'GraficasController@index');
 });
 
 
@@ -112,7 +111,6 @@ Route::group(['prefix' => 'funcionario', 'namespace' => 'Funcionario'], function
 	Route::get('/asignar_ayudante',['as' => 'funcionario.asignar.ayudante', 'uses' => 'asignarController@ayudante']);
 	Route::resource('/asignar_alumno','asignarAlumController');
 
-	Route::get('/listado_graficas', 'GraficasController@index');
 });
 
 //***********************************RUTAS DOCENTE*******************************************
@@ -136,8 +134,7 @@ Route::group(['prefix' => 'docente', 'namespace' => 'Docente'], function()
 	Route::get('/asignar_docente', ['as' => 'docente.asignar.docente', 'uses' => 'asignarController@docente']);
 	Route::get('/asignar_ayudante',['as' => 'docente.asignar.ayudante', 'uses' => 'asignarController@ayudante']);
 	Route::get('/asignar_alumno',['as' => 'docente.asignar.alumno', 'uses' => 'asignarController@alumno']);
-	
-	Route::get('/listado_graficas', 'GraficasController@index');
+
 });
 
 //***********************************RUTAS AYUDANTE*******************************************
@@ -161,8 +158,7 @@ Route::group(['prefix' => 'ayudante', 'namespace' => 'Ayudante'], function()
 	Route::get('/asignar_docente', ['as' => 'ayudante.asignar.docente', 'uses' => 'asignarController@docente']);
 	Route::get('/asignar_ayudante',['as' => 'ayudante.asignar.ayudante', 'uses' => 'asignarController@ayudante']);
 	Route::get('/asignar_alumno',['as' => 'ayudante.asignar.alumno', 'uses' => 'asignarController@alumno']);
-	
-	Route::get('/listado_graficas', 'GraficasController@index');
+
 });
 
 //***********************************RUTAS ALUMNO*******************************************
@@ -185,9 +181,6 @@ Route::group(['prefix' => 'alumno', 'namespace' => 'Alumno'], function()
 	Route::resource('/asignar','asignarController');
 	Route::resource('/asignar_alumno','asignarAlumController');
 	
-	
-
-	Route::get('/listado_graficas', 'GraficasController@index');
 });
 
 Route::auth();

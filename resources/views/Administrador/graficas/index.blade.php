@@ -1,5 +1,6 @@
 @extends('main')
 @section('cambioRol')
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
 <style type="text/css">
 .navbar-nav>.user-menu>.dropdown-menu>li.user-header {
     height: 197px;
@@ -154,99 +155,175 @@ hr {
           </ul>
 @stop
 @section('content')
-  <div class="row">
-    <div class="col-md-8 col-lg-8" style="height: 500px;">
-      <div id="chart_div" style="width: 100%; height: 500px;"></div>
-      <div id="curve_chart" class="hide" style="width: 900px; height: 500px;"></div>
-     
-    </div>
-    <div class="col-md-4 col-lg-4">
-       <div class="row">
-          <h4>Seleccionar Período</h4>
-          <hr/>
-          <div class="col-md-12">
-            <select id="desde" class="form-control">
-              <option value="I"> 00:00 - 00:00 </option>
-            </select>
-          </div>          
-          <div class="col-md-12">            
-            <select id="hasta" class="form-control">
-              <option value="II"> 00:00 - 00:00  </option>
-            </select>            
-          </div>
-          <div class="col-md-6 col-md-offset-6"> 
 
-            <button class="btn btn-block btn-success filtro" id="enviar" name="enviar" value="enviar">Enviar</button>
+  <div class="row">
+    <div class="col-md-10 col-lg-10">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-6 col-lg-6">
+                        <h2> Estadísticas </h2>
+                        @if(Session::has('message'))
+                            <div class="alert alert-success alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <strong>{{ Session::get('message') }}</strong>
+                            </div>
+                        @endif                                    
+                    </div>
+                    <div class="col-md-6 col-lg-6">
+                    </div>
+               </div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Horarios alumnos
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div id="alumno-chart"></div>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+                    <!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Horarios normal
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div id="normal-chart"></div>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+                    <!-- /.col-lg-6 -->
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <div class="col-md-2 col-lg-2">
+       <div class="row">
+          <div class="col-lg-12">
+              <div class="form-group" id="form-fecha-ini">
+                  <h4>Fecha de inicio</h4>
+                  <input type="text" class="form-control datepicker" data-date-format="dd/mm/yyyy" id="fecha_inicio" name="fecha_inicio">
+              </div>                                
+          </div>
+          <div class="col-lg-12">
+              <div class="form-group" id="form-fecha-term">
+                  <h4>Fecha de término</h4>
+                  <input type="text" class="form-control datepicker" data-date-format="dd/mm/yyyy" id="fecha_termino" name="fecha_termino">
+              </div>
+          </div>     
+          <div class="col-md-6 col-md-offset-3"> 
+            <button class="btn btn-block btn-success filtro" id="buscar" name="buscar" value="buscar">Buscar</button>
           </div>
       </div>      
     </div>
   </div>
 @stop
+
 @section('scripts')
 
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
 <script type="text/javascript">
 
-  
-  $("#enviar").click(function(){
-    var desde = $("#desde").val();
-    var hasta = $("#hasta").val();
-    console.log(desde);
-    console.log(hasta);
-      $.ajax({
-      // con .val saco el valor del value
-        data:  {'desde': desde, 'hasta': hasta },
-        url:   '/~brojas/administrador/reportes',
-        type:  'GET',
-        dataType: 'json',
-        success:  function(respuesta) {          
-          console.log(respuesta[0].rut);
+  $(document).ready(function(){
+    
+    $("#fecha_inicio").datepicker();
+    $("#fecha_termino").datepicker();
+    column_chart('normal','','');
+    column_chart('alumno','','');
 
-          google.charts.load('current', {'packages':['corechart']});
-          google.charts.setOnLoadCallback(drawChart);
-          
-          function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Productos', 'mes'],
-            @foreach ($periodos as $p)
-              ['{{ $p->bloque}}', {{ $p->id}}],
-            @endforeach
-        ]);
-        var options = {
-          title: 'Representación grafica'
-        };
+  });
 
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-        chart.draw(data, options);     
-      }
+  $("#buscar").click(function(){
 
+    var fecha_inicio = $("#fecha_inicio").val();
+    var fecha_termino = $("#fecha_termino").val();
 
+    column_chart('normal',fecha_inicio,fecha_termino);
+    column_chart('alumno',fecha_inicio,fecha_termino);
+
+  });
+
+  function column_chart(tipo,fecha_inicio,fecha_termino){
+
+    var options =  {
+        chart: {
+            renderTo: tipo+'-chart',
+            type: 'column'
         },
-        error:  function(respuesta) { 
-          console.log(respuesta);
-        }
+        title: {
+            text: 'Reservas '+tipo
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            type: 'category',
+            labels: {
+                rotation: -45,
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Número de reservas'
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: 'Uso: <b>{point.y:.1f} horarios</b>'
+        },
+        series: [{
+            name: 'Population',
+            data: [],
+            dataLabels: {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                format: '{point.y:.1f}', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        }]
+    };
 
-      });
+    $.getJSON("{{ route('administrador.reportes.index') }}",{tipo: tipo,fecha_inicio: fecha_inicio, fecha_termino: fecha_termino}, function(json) {
 
-  });  
-      /*google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Productos', 'mes'],
-            @foreach ($periodos as $p)
-              ['{{ $p->bloque}}', {{ $p->id}}],
-            @endforeach
-        ]);
-        var options = {
-          title: 'Representación grafica'
-        };
+        $.each(json,function(k,v){
+            options.series[0].data.push(v);
+        }); 
 
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-        chart.draw(data, options);     
-      }*/
-    </script>
+        chart = new Highcharts.Chart(options);
+
+    });
+  }   
+
+</script>
 
 
 @stop

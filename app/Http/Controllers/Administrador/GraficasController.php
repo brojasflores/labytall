@@ -33,7 +33,7 @@ class GraficasController extends Controller
     
     public function index()
     {
-        dd('a');
+       
         $periodos = Periodo::select('id','bloque')->orderBy('bloque','asc')->get();
 
         //Cambio de rol

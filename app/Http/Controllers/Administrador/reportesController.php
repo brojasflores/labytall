@@ -16,6 +16,7 @@ use App\Sala;
 use App\Usuario;
 use Auth;
 use App\User;
+use DB;
 
 class reportesController extends Controller
 {
@@ -28,11 +29,46 @@ class reportesController extends Controller
     {
         if($request->ajax())
         {
-            //dd($request->desde);
-            $periodos = Periodo::select('id','bloque')->orderBy('bloque','asc')->get();
-            //$uso = Horario::select('id','rut')->get();
 
-            return response()->json($periodos);
+            $condicion = "0 = 0"; 
+
+            if($request->get('fecha_inicio') != '' && $request->get('fecha_termino') != '')
+            {
+                $fecha_ini_separada = explode("/",$request->get('fecha_inicio'));
+                $fecha_ini_formateada = $fecha_ini_separada[2]."-".$fecha_ini_separada[1]."-".$fecha_ini_separada[0]; 
+                $fecha_term_separada = explode("/",$request->get('fecha_termino'));
+                $fecha_term_formateada = $fecha_term_separada[2]."-".$fecha_term_separada[1]."-".$fecha_term_separada[0];
+                $condicion .= " and a.fecha between to_date('".$fecha_ini_formateada."','YYYY-MM-DD') and to_date('".$fecha_term_formateada."','YYYY-MM-DD')";                   
+            }
+
+
+            if($request->get('tipo') == 'normal')
+            {
+                $horario = DB::select("select c.nombre, count(a.id) as cantidad
+                                        from horario a
+                                        inner join sala c on a.sala_id = c.id
+                                        where ".$condicion."
+                                        group by c.nombre 
+                                        order by cantidad desc");                
+            }
+
+            if($request->get('tipo') == 'alumno')
+            {
+                $horario = DB::select("select c.nombre, count(a.id) as cantidad
+                                        from horario_alum a
+                                        inner join sala c on a.sala_id = c.id
+                                        where ".$condicion."
+                                        group by c.nombre 
+                                        order by cantidad desc");
+            }
+
+            $arreglo = [];
+
+            foreach ($horario as $key => $value) {
+                $arreglo[] = [$value->nombre,$value->cantidad];
+            }
+
+            return response()->json($arreglo);
         }
 
         

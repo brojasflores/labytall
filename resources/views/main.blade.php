@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Gestión y Control | Laboratorios y Talleres</title>
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('favicon.ico') }}"/>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -20,7 +22,7 @@
     <!-- iCheck -->
     <link rel="stylesheet" href="{{ asset('admin-lte/plugins/iCheck/flat/blue.css') }}">
     <!-- Morris chart -->
-    <link rel="stylesheet" href="{{ asset('admin-lte/plugins/morris/morris.css') }}">
+    <!--link rel="stylesheet" href="{{ asset('admin-lte/plugins/morris/morris.css') }}"-->
     <!-- jvectormap -->
     <link rel="stylesheet" href="{{ asset('admin-lte/plugins/jvectormap/jquery-jvectormap-1.2.2.css') }}">
     <!-- Date Picker -->
@@ -318,8 +320,8 @@
     <!-- Bootstrap 3.3.5 -->
     <script src="{{ asset('admin-lte/bootstrap/js/bootstrap.min.js') }}"></script>
     <!-- Morris.js charts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-    <script src="{{ asset('admin-lte/plugins/morris/morris.min.js') }}"></script>
+    <!--script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script-->
+    <!--script src="{{ asset('admin-lte/plugins/morris/morris.min.js') }}"></script-->
     <!-- Sparkline -->
     <script src="{{ asset('admin-lte/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
     <!-- jvectormap -->
@@ -341,16 +343,9 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('admin-lte/dist/js/app.min.js') }}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="{{ asset('admin-lte/dist/js/pages/dashboard.js') }}"></script>
+    <!--script src="{{ asset('admin-lte/dist/js/pages/dashboard.js') }}"></script-->
     <!-- AdminLTE for demo purposes -->
-    <script src="{{ asset('admin-lte/dist/js/demo.js') }}"></script>
-
-    <!-- javascripts para garficas -->
-    <script src="{{ asset('js/sistemalaravel.js') }}"></script>
-    <script src="{{ asset('js/highcharts.js') }}"></script>
-    <script src="{{ asset('js/graficas.js') }}"></script>
-
-    <script>cargarlistado(4);</script>
+    <!--script src="{{ asset('admin-lte/dist/js/demo.js') }}"></script-->
 
   </body>
 </html>
