@@ -126,7 +126,7 @@ hr {
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="pages/labs/admin.html"><i class="fa fa-users"></i>Usuarios</a></li>
+                <li><a href="{{ url('/administrador/reportes_usuario')}}"><i class="fa fa-users"></i>Usuarios</a></li>
                 <li><a href="pages/labs/admin.html"><i class="fa fa-tv"></i>Salas</a></li>
                 <li><a href="pages/labs/ayudante.html"><i class="fa  fa-book"></i>Asignaturas</a></li>
                 <li><a href="pages/labs/alumno.html"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
@@ -201,6 +201,35 @@ hr {
                         <!-- /.panel -->
                     </div>
                     <!-- /.col-lg-6 -->
+
+                    <div class="col-lg-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Usuarios que dictan cátedra que más asisten a un cierto Laboratorio
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div id="masasistenormal-chart"></div>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Alumnos que más asisten a un cierto Laboratorio
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div id="masasistealum-chart"></div>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+
                 </div>
             </div>
             <!-- /.panel-body -->
@@ -220,7 +249,15 @@ hr {
                   <h4>Fecha de término</h4>
                   <input type="text" class="form-control datepicker" data-date-format="dd/mm/yyyy" id="fecha_termino" name="fecha_termino">
               </div>
-          </div>     
+          </div>    
+          <div class="col-lg-12">
+                <label for="sel1">Laboratorio </label>
+                <select class="form-control" id="lab" name="lab" placeholder = "Seleccione:">
+                  @foreach($sala as $sal)
+                    <option id="{{ $sal->id }}" value="{{ $sal->id }}" name="lab">{{ $sal->nombre }}</option>
+                @endforeach
+                </select>
+          </div> 
           <div class="col-md-6 col-md-offset-3"> 
             <button class="btn btn-block btn-success filtro" id="buscar" name="buscar" value="buscar">Buscar</button>
           </div>
@@ -240,8 +277,12 @@ hr {
     
     $("#fecha_inicio").datepicker();
     $("#fecha_termino").datepicker();
+    var lab = $("#lab").val();
+
     column_chart('normal','','');
     column_chart('alumno','','');
+    column_chart('masasistenormal','','',lab);
+    column_chart('masasistealum','','',lab);
 
   });
 
@@ -249,13 +290,16 @@ hr {
 
     var fecha_inicio = $("#fecha_inicio").val();
     var fecha_termino = $("#fecha_termino").val();
+    var lab = $("#lab").val();
 
     column_chart('normal',fecha_inicio,fecha_termino);
     column_chart('alumno',fecha_inicio,fecha_termino);
+    column_chart('masasistenormal',fecha_inicio,fecha_termino,lab);
+    column_chart('masasistealum',fecha_inicio,fecha_termino,lab);
 
   });
 
-  function column_chart(tipo,fecha_inicio,fecha_termino){
+  function column_chart(tipo,fecha_inicio,fecha_termino,lab){
 
     var options =  {
         chart: {
@@ -308,7 +352,9 @@ hr {
         }]
     };
 
-    $.getJSON("{{ route('administrador.reportes.index') }}",{tipo: tipo,fecha_inicio: fecha_inicio, fecha_termino: fecha_termino}, function(json) {
+    $.getJSON("{{ route('administrador.reportes.repusr') }}",{tipo: tipo,fecha_inicio: fecha_inicio, fecha_termino: fecha_termino, lab:lab}, function(json) {
+
+        console.log(json);
 
         $.each(json,function(k,v){
             options.series[0].data.push(v);

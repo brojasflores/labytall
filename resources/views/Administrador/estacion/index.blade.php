@@ -123,10 +123,7 @@ hr {
               <ul class="treeview-menu">
                 <li><a href="{{ url('/administrador/reportes_usuario')}}"><i class="fa fa-users"></i>Usuarios</a></li>
                 <li><a href="pages/labs/admin.html"><i class="fa fa-tv"></i>Salas</a></li>
-                <li><a href="pages/labs/docente.html"><i class="fa fa-hand-pointer-o"></i>Usabilidad</a></li>
                 <li><a href="pages/labs/ayudante.html"><i class="fa  fa-book"></i>Asignaturas</a></li>
-                <!--li><a href="pages/labs/alumno.html"><i class="fa fa-calendar"></i>Fechas</a></li-->
-                <li class="active"><a href="javascript:void(0);" onclick="cargarlistado(4);" ><i class="fa fa-calendar"></i>Fechas</a></li>
                 <li><a href="pages/labs/alumno.html"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
               </ul>
             </li>
@@ -148,40 +145,100 @@ hr {
             <li><a href="{{ route('administrador.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
           </ul>
 @stop
+@section('options')
+<h1>
+    Estaciones de Trabajo 
+  <small>Estaciones de Trabajo</small>
+</h1>
+@stop
 @section('opcion')
-<li><a href="{{ route('administrador.departamento.index')}}"><i class="fa fa-clock-o"></i> Departamentos</a></li>
-<li class="active">Agregar Departamentos</li>
+<li class="active">Estaciones</li>
 @stop
 @section('content')
-<h1>Agregar Departamentos</h1>
-<form role="form" method="post" action="{{ route('administrador.departamento.store')}}">
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-	  <div class="box-body">
-	    <div class="form-group">
-	      <label for="exampleInputEmail1">Nombre</label>
-	      <input type="text" class="form-control" name="nombreDep" id="nombreDep" placeholder="Ingrese nombre del departamento">
-	    </div>
-	    <div class="form-group">
-        <div class="row">
-          <div class="col-md-2">
-          <div class="form-group">
-            <label for="sel1">Facultad: </label>
-            <select class="form-control" id="facDep" name="facDep">
-            @foreach($facultades as $fac)
-                <option value="{{ $fac->id }}" name="facDep">{{ $fac->nombre }}</option>
-            @endforeach
-            </select>
-          </div>
-          </div>
-        </div>
-      </div>
-	    <div class="form-group">
-	      <label for="exampleInputPassword1">Descripción</label>
-	      <input type="text" class="form-control" name="desDep" id="desDep" placeholder="Ingrese descripción del departamento">
-	    </div>
-	    <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
-	  </div><!-- /.box-body -->
-</form>
+<h1>Estaciones</h1>
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <!--ACA EMPIEZA LA DATATABLE-->
+        <div class="box">
+          <div class="box-header">
+          </div><!-- /.box-header -->
+          <div class="box-body">
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                <th>#</th>
+                <th>Sala</th>
+                <th>Estación</th>
+                <th>Período</th>
+                <th>Disponible</th>
+                <th>Editar </th>
+              </tr>
+              </thead>
+              <tbody>
+              <!--foreach recorre una coleccion de objetos-->
+               @foreach($estaciones as $sa)
+               <tr data-id="{{ $sa->id }}">
+                <td>{{ $sa->id }}</td>
+                <td>{{ $sa->lab }}</td>
+                <td>{{ $sa->nombre }}</td>
+                <td>{{ $sa->per }}</td>
+                <td>{{ $sa->disponibilidad}}</td>
+
+                <!--Paso ruta y parametro para saber cual modificar-->
+                <td><a href="{{ route('administrador.estacion.edit',$sa->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>   
+              </tr>
+              @endforeach
+              </tbody>
+              <tfoot>
+                <tr>
+                <th>#</th>
+                <th>Sala</th>
+                <th>Estación</th>
+                <th>Período</th>
+                <th>Disponible</th>
+                <th>Editar </th>
+              </tr>
+              </tfoot>
+            </table>
+          </div><!-- /.box-body -->
+        </div><!-- /.box -->
+        <!--ACA TERMINA LA DATATABLE-->
+  </div><!-- /.row -->
+</section><!-- /.content -->
 @stop
 
+@section('scripts')
+  <!-- DataTables -->
+  <script src="{{ asset('admin-lte/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+  <script src="{{ asset('admin-lte/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+   <script>
+$(document).ready(function() {
+  
+    $('#example1').DataTable({
+        responsive: true,
+        "language": {
+                "decimal":        "",
+                "emptyTable":     "Sin datos disponibles",
+                "info":           "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                "infoEmpty":      "Mostrando 0 a 0 de 0 entradas",
+                "infoFiltered":   "(Filtrado de un total de _MAX_ entradas)",
+                "infoPostFix":    "",
+                "thousands":      ".",
+                "lengthMenu":     "Mostrar _MENU_ entradas",
+                "loadingRecords": "Cargando...",
+                "processing":     "Procesando...",
+                "search":         "Buscar:",
+                "zeroRecords":    "Ningún registro encontrado.",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Ultimo",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                }
+            }
+    });
 
+});
+    </script>
+@stop

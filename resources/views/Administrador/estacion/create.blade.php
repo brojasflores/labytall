@@ -149,39 +149,37 @@ hr {
           </ul>
 @stop
 @section('opcion')
-<li><a href="{{ route('administrador.departamento.index')}}"><i class="fa fa-clock-o"></i> Departamentos</a></li>
-<li class="active">Agregar Departamentos</li>
+<li><a href="{{ route('administrador.sala.index')}}"><i class="fa fa-desktop"></i> Salas</a></li>
+<li class="active">Agregar Salas</li>
 @stop
 @section('content')
-<h1>Agregar Departamentos</h1>
-<form role="form" method="post" action="{{ route('administrador.departamento.store')}}">
+<h1>Agregar Sala</h1>
+<form role="form" method="post" action="{{ route('administrador.sala.store')}}">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
 	    <div class="form-group">
-	      <label for="exampleInputEmail1">Nombre</label>
-	      <input type="text" class="form-control" name="nombreDep" id="nombreDep" placeholder="Ingrese nombre del departamento">
+	      <label for="exampleInputEmail1">Nombre Sala</label>
+	      <input type="text" class="form-control" name="nombreSala" id="nombreSala" placeholder="Ingrese nombre">
 	    </div>
 	    <div class="form-group">
+	      <label for="exampleInputPassword1">Capacidad</label>
+	      <input type="text" class="form-control" name="capacidadSala" id="capacidadSala" placeholder="Ingrese cantidad alumnos">
+	    </div>
+      <div class="form-group">
         <div class="row">
           <div class="col-md-2">
           <div class="form-group">
-            <label for="sel1">Facultad: </label>
-            <select class="form-control" id="facDep" name="facDep">
-            @foreach($facultades as $fac)
-                <option value="{{ $fac->id }}" name="facDep">{{ $fac->nombre }}</option>
+            <label for="sel1">Departamento: </label>
+            <select class="form-control" id="dptoSala" name="dptoSala">
+            @foreach($dptos as $dep)
+                <option value="{{ $dep->id }}" name="dptoSala">{{ $dep->nombre }}</option>
             @endforeach
             </select>
           </div>
           </div>
         </div>
       </div>
-	    <div class="form-group">
-	      <label for="exampleInputPassword1">Descripción</label>
-	      <input type="text" class="form-control" name="desDep" id="desDep" placeholder="Ingrese descripción del departamento">
-	    </div>
 	    <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
 	  </div><!-- /.box-body -->
 </form>
 @stop
-
-
