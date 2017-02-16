@@ -43,6 +43,7 @@ Route::group(['prefix' => 'administrador','namespace' => 'Administrador'], funct
 
 	Route::resource('/reportes', 'reportesController');
 	Route::get('/reportes_usuario', ['as' => 'administrador.reportes.repusr', 'uses' => 'reportesController@RepUsr']);
+	Route::get('/reportes_sala', ['as' => 'administrador.reportes.repsa', 'uses' => 'reportesController@RepSa']);
 
 
 

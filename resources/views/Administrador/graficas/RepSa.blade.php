@@ -158,7 +158,7 @@ hr {
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-6 col-lg-6">
-                        <h2> Estadísticas Usuarios</h2>
+                        <h2> Estadísticas Salas</h2>
                         @if(Session::has('message'))
                             <div class="alert alert-success alert-dismissable">
                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -176,40 +176,11 @@ hr {
                     <div class="col-lg-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Asistencia de Alumnos a Laboratorios en fecha específica
+                                Cantidad de reservas de Laboratorios por Carrera
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <div id="alumno-chart"></div>
-                            </div>
-                            <!-- /.panel-body -->
-                        </div>
-                        <!-- /.panel -->
-                    </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                Asistencia de Docentes y Ayudantes a Laboratorios en fecha específica
-                            </div>
-                            <!-- /.panel-heading -->
-                            <div class="panel-body">
-                                <div id="normal-chart"></div>
-                            </div>
-                            <!-- /.panel-body -->
-                        </div>
-                        <!-- /.panel -->
-                    </div>
-                    <!-- /.col-lg-6 -->
-
-                    <div class="col-lg-6">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                Mayor asistencia de Docentes y Ayudantes a un cierto Laboratorio
-                            </div>
-                            <!-- /.panel-heading -->
-                            <div class="panel-body">
-                                <div id="masasistenormal-chart"></div>
+                                <div id="carrera-chart"></div>
                             </div>
                             <!-- /.panel-body -->
                         </div>
@@ -219,11 +190,11 @@ hr {
                     <div class="col-lg-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Mayor asistencia de Alumnos a un cierto Laboratorio
+                                Cantidad de reservas de Docentes y Ayudantes por Período
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <div id="masasistealum-chart"></div>
+                                <div id="maslabperinor-chart"></div>
                             </div>
                             <!-- /.panel-body -->
                         </div>
@@ -234,11 +205,11 @@ hr {
                     <div class="col-lg-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Mayor inasistencia de Docentes y Ayudantes a un cierto Laboratorio en particular
+                                Cantidad de reservas de Alumnos por Período
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <div id="masfaltannormal-chart"></div>
+                                <div id="maslabperialum-chart"></div>
                             </div>
                             <!-- /.panel-body -->
                         </div>
@@ -248,11 +219,26 @@ hr {
                     <div class="col-lg-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Mayor inasistencia de Alumnos a un cierto Laboratorio en particular
+                                Cantidad de inasistencias de Docentes y Ayudantes por Período
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <div id="masfaltanalum-chart"></div>
+                                <div id="menlabperinor-chart"></div>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+
+
+                    <div class="col-lg-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Cantidad de inasistencias de Alumnos por Período
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div id="menlabperialum-chart"></div>
                             </div>
                             <!-- /.panel-body -->
                         </div>
@@ -262,11 +248,11 @@ hr {
                     <div class="col-lg-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Cantidad de Docentes y Ayudantes asistentes en cierto período
+                                Laboratorio más usado por Docentes y Ayudantes
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <div id="asistpernor-chart"></div>
+                                <div id="masusnor-chart"></div>
                             </div>
                             <!-- /.panel-body -->
                         </div>
@@ -276,11 +262,11 @@ hr {
                     <div class="col-lg-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Cantidad de Alumnos asistentes en cierto período
+                                Laboratorio menos usado por Docentes y Ayudantes
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <div id="asistperayu-chart"></div>
+                                <div id="menusnor-chart"></div>
                             </div>
                             <!-- /.panel-body -->
                         </div>
@@ -290,11 +276,11 @@ hr {
                     <div class="col-lg-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Cantidad de Docentes y Ayudantes inasistentes en cierto período
+                                Laboratorio más usado por Alumnos
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <div id="inasistpernor-chart"></div>
+                                <div id="masusalum-chart"></div>
                             </div>
                             <!-- /.panel-body -->
                         </div>
@@ -304,16 +290,17 @@ hr {
                     <div class="col-lg-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Cantidad de Alumnos inasistentes en cierto período
+                                Laboratorio menos usado por Alumnos
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <div id="inasistperayu-chart"></div>
+                                <div id="menusalum-chart"></div>
                             </div>
                             <!-- /.panel-body -->
                         </div>
                         <!-- /.panel -->
                     </div>
+
 
 
                 </div>
@@ -365,16 +352,15 @@ hr {
     $("#fecha_termino").datepicker();
     var lab = $("#lab").val();
 
-    column_chart('normal','','');
-    column_chart('alumno','','');
-    column_chart('masasistenormal','','',lab);
-    column_chart('masasistealum','','',lab);
-    column_chart('masfaltannormal','','',lab);
-    column_chart('masfaltanalum','','',lab);
-    column_chart('asistpernor','','','');
-    column_chart('asistperayu','','','');
-    column_chart('inasistpernor','','','');
-    column_chart('inasistperayu','','','');
+    column_chart('carrera','','');
+    column_chart('maslabperinor','','');
+    column_chart('maslabperialum','','');
+    column_chart('menlabperinor','','');
+    column_chart('menlabperialum','','');
+    column_chart('masusnor','','');
+    column_chart('menusnor','','');
+    column_chart('masusalum','','');
+    column_chart('menusalum','','');
     
   });
 
@@ -384,70 +370,67 @@ hr {
     var fecha_termino = $("#fecha_termino").val();
     var lab = $("#lab").val();
 
-    column_chart('normal',fecha_inicio,fecha_termino);
-    column_chart('alumno',fecha_inicio,fecha_termino);
-    column_chart('masasistenormal',fecha_inicio,fecha_termino,lab);
-    column_chart('masasistealum',fecha_inicio,fecha_termino,lab);
-    column_chart('masfaltannormal',fecha_inicio,fecha_termino,lab);
-    column_chart('masfaltanalum',fecha_inicio,fecha_termino,lab);
-    column_chart('asistpernor',fecha_inicio,fecha_termino,lab);
-    column_chart('asistperayu',fecha_inicio,fecha_termino,lab);
-    column_chart('inasistpernor',fecha_inicio,fecha_termino,lab);
-    column_chart('inasistperayu',fecha_inicio,fecha_termino,lab);
+    column_chart('carrera',fecha_inicio,fecha_termino,lab);
+    column_chart('maslabperinor',fecha_inicio,fecha_termino,lab);
+    column_chart('maslabperialum',fecha_inicio,fecha_termino,lab);
+    column_chart('menlabperinor',fecha_inicio,fecha_termino,lab);
+    column_chart('menlabperialum',fecha_inicio,fecha_termino,lab);
+    column_chart('masusnor',fecha_inicio,fecha_termino,lab);
+    column_chart('menusnor',fecha_inicio,fecha_termino,lab);
+    column_chart('masusalum',fecha_inicio,fecha_termino,lab);
+    column_chart('menusalum',fecha_inicio,fecha_termino,lab);
+
   });
 
   function column_chart(tipo,fecha_inicio,fecha_termino,lab){
 
-    if(tipo == 'normal')
+    if(tipo == 'carrera')
     {
-      nombre = 'Reservas Docentes y Ayudantes'
+      nombre = 'Asistencia de Carreras a los Laboratorios'
       ejey = 'Número de Reservas'
     }
-    if(tipo == 'alumno')
+    if(tipo == 'maslabperinor')
     {
-      nombre = 'Reservas Alumnos'
+      nombre = 'Período en que Docentes y Ayudantes utilizan más un Laboratorio'
       ejey = 'Número de Reservas'
     }
-    if(tipo == 'masasistenormal')
+    if(tipo == 'maslabperialum')
     {
-      nombre = 'Reservas Docentes y Ayudantes'
+      nombre = 'Período en que Alumnos utilizan más un Laboratorio'
       ejey = 'Número de Reservas'
     }
-    if(tipo == 'masasistealum')
+    if(tipo == 'menlabperinor')
     {
-      nombre = 'Reservas Alumnos'
+      nombre = 'Período en que Docentes y Ayudantes utilizan menos un Laboratorio'
       ejey = 'Número de Reservas'
     }
-    if(tipo == 'masfaltannormal')
+    if(tipo == 'menlabperialum')
     {
-      nombre = 'Inasistencias de Docentes y Ayudantes'
-      ejey = 'Número de Reservas inasistidas'
-    }
-    if(tipo == 'masfaltanalum')
-    {
-      nombre = 'Inasistencias de Alumnos'
-      ejey = 'Número de Reservas inasistidas'
-    }
-    if(tipo == 'asistpernor')
-    {
-      nombre = 'Asistencia de Docentes y Ayudantes en cierto período'
+      nombre = 'Período en que Alumnos utilizan menos un Laboratorio'
       ejey = 'Número de Reservas'
     }
-    if(tipo == 'asistperayu')
+    if(tipo == 'masusnor')
     {
-      nombre = 'Asistencia de Alumnos en cierto período'
+      nombre = 'Laboratorio más reservado por Docentes y Ayudantes'
       ejey = 'Número de Reservas'
     }
-    if(tipo == 'inasistpernor')
+    if(tipo == 'menusnor')
     {
-      nombre = 'Inasistencia de Docentes y Ayudantes en cierto período'
-      ejey = 'Número de Reservas inasistidas'
+      nombre = 'Laboratorio menos reservado por Docentes y Ayudantes'
+      ejey = 'Número de Reservas'
     }
-    if(tipo == 'inasistperayu')
+    if(tipo == 'masusalum')
     {
-      nombre = 'Inasistencia de Alumnos en cierto período'
-      ejey = 'Número de Reservas inasistidas'
+      nombre = 'Laboratorio más reservado por Alumnos'
+      ejey = 'Número de Reservas'
     }
+    if(tipo == 'menusalum')
+    {
+      nombre = 'Laboratorio menos reservado por Alumnos'
+      ejey = 'Número de Reservas'
+    }
+    
+    
 
     var options =  {
         chart: {
@@ -500,7 +483,7 @@ hr {
         }]
     };
 
-    $.getJSON("{{ route('administrador.reportes.repusr') }}",{tipo: tipo,fecha_inicio: fecha_inicio, fecha_termino: fecha_termino, lab:lab}, function(json) {
+    $.getJSON("{{ route('administrador.reportes.repsa') }}",{tipo: tipo,fecha_inicio: fecha_inicio, fecha_termino: fecha_termino, lab:lab}, function(json) {
 
         console.log(json);
 
