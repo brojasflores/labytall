@@ -101,14 +101,10 @@
             </div>
           </div>
           <!-- search form -->
-          <form action="#" method="get" class="sidebar-form">
-            <div class="input-group">
-              <input type="text" name="q" class="form-control" placeholder="Buscar...">
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-              </span>
-            </div>
-          </form>
+          <ul class="sidebar-menu">
+          <li class="header text-center" style="color:#fff !important; ">PANEL</li>
+          <li  style="border-bottom: 1px solid  #367fa9;"></li>
+          </ul>
           <!-- /.search form -->
           <!-- sidebar menu: : style can be found in sidebar.less -->
           @yield('menu')
@@ -122,7 +118,7 @@
         <section class="content-header">
            @yield('options')  
           <ol class="breadcrumb">          
-            <li><a href="/"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li><a href="/~brojas"><i class="fa fa-dashboard"></i> Inicio</a></li>
             @yield('opcion')
             <!--li class="active">Opciones</li-->
           </ol>
