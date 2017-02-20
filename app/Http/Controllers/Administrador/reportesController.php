@@ -454,4 +454,108 @@ class reportesController extends Controller
         }
 
     }
+
+
+
+    public function RepAsig(Request $request)
+    {
+        if($request->ajax())
+        {
+            //dd($request->rut);
+            $condicion = "0 = 0"; 
+            $asignatura = $request->asig;
+            $ru = $request->rut;
+
+            if($request->get('fecha_inicio') != '' && $request->get('fecha_termino') != '')
+            {
+                $fecha_ini_separada = explode("/",$request->get('fecha_inicio'));
+                $fecha_ini_formateada = $fecha_ini_separada[2]."-".$fecha_ini_separada[1]."-".$fecha_ini_separada[0]; 
+                $fecha_term_separada = explode("/",$request->get('fecha_termino'));
+                $fecha_term_formateada = $fecha_term_separada[2]."-".$fecha_term_separada[1]."-".$fecha_term_separada[0];
+                $condicion .= " and a.fecha between to_date('".$fecha_ini_formateada."','YYYY-MM-DD') and to_date('".$fecha_term_formateada."','YYYY-MM-DD')";                   
+            }
+
+
+            //Usabilidad de sala por asignatura
+            if($request->get('tipo') == 'asignatura')
+            {
+                $horario = DB::select("select d.nombre, count(a.id) as cantidad
+                                        from horario a
+                                        inner join curso c on a.curso_id = c.id
+                                        inner join asignatura d on c.asignatura_id = d.id
+                                        where a.asistencia = 'si'
+                                        group by d.nombre
+                                        order by cantidad
+                                        limit 5 offset 0");                                     
+            }
+
+            //Usabilidad de sala por curso (hay que ingresar la asignatura que se quieren saber sus cursos)
+            if($request->get('tipo') == 'asigCur')
+            {
+                $asign = $asignatura = "" ? "" : $asignatura;
+                $horario = DB::select("select c.seccion nombre, count(a.id) as cantidad
+                                        from horario a
+                                        inner join curso c on a.curso_id = c.id
+                                        inner join asignatura d on c.asignatura_id = d.id
+                                        where a.asistencia = 'si'
+                                        and d.id = ".$asign."
+                                        group by c.seccion
+                                        order by cantidad
+                                        limit 5 offset 0");                                     
+            }
+
+            //Usabilidad de salas por alumno
+            if(empty($ru))
+            {
+                $ru = Auth::User()->rut;
+                $ru = (string) $ru;
+            }
+            if($request->get('tipo') == 'salAlum')
+            {
+                $horario = DB::select("select d.nombre, count(a.id) as cantidad
+                                        from horario_alum a
+                                        inner join users c on a.rut = c.rut
+                                        inner join sala d on a.sala_id = d.id
+                                        where a.asistencia = 'si'
+                                        and a.rut = '".$ru."'
+                                        group by d.nombre
+                                        order by cantidad desc");                                     
+            }
+
+            $arreglo = [];
+
+            foreach ($horario as $key => $value) {
+                $arreglo[] = [$value->nombre,$value->cantidad];
+            }
+
+
+            return response()->json($arreglo);
+        }
+
+        $asignatura = Asignatura::all();
+        //Cambio de rol
+        $usr=Auth::User()->rut;
+        //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+        $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
+                    ->where('users.rut','=',$usr)
+                    ->join('rol','rol_users.rol_id','=','rol.id')
+                    ->select('nombre')
+                    ->get();
+        // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+        foreach($usr2 as $v)
+        {
+            $v2[]= $v->nombre;
+        }
+        //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
+        $cont = count($v2); //cuenta la cantidad de elementos del array
+        if($cont>1)
+        {
+            return view ('Administrador/graficas/RepAsig',compact('asignatura','v2','cont'));
+        }
+        else
+        {
+            return view ('Administrador/graficas/RepAsig',compact('asignatura','cont'));
+        }
+
+    }
 }
