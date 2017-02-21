@@ -1,5 +1,6 @@
 @extends('main')
 @section('cambioRol')
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
 <style type="text/css">
 .navbar-nav>.user-menu>.dropdown-menu>li.user-header {
     height: 197px;
@@ -67,6 +68,7 @@ hr {
 @section('menu')
 <ul class="sidebar-menu">
             <li class="header">Administración</li>
+
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-university"></i> <span>Universidad</span>
@@ -81,6 +83,7 @@ hr {
                 <li><a href="{{ route('administrador.carrera.index')}}"><i class="fa fa-th"></i> Carreras</a></li>
               </ul>
             </li>
+
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-user"></i> <span>Gestión Usuarios</span>
@@ -91,6 +94,7 @@ hr {
                 <li><a href="{{ route('administrador.rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
               </ul>
             </li>
+            
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-desktop"></i> <span>Salas</span>
@@ -115,6 +119,7 @@ hr {
                 <li><a href="{{ route('administrador.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
               </ul>
             </li>
+
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-bar-chart"></i> <span>Reportes</span>
@@ -145,43 +150,185 @@ hr {
             <li><a href="{{ route('administrador.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
           </ul>
 @stop
-@section('options')
-<h1>
-    Salas 
-  <small>Reserva</small>
-</h1>
-@stop
-@section('opcion')
-<li class="active">Reserva</li>
-@stop
 @section('content')
-<div class="jumbotron">
-  <h1>¡Bienvenido a la reserva de Salas!</h1>
-  </br></br>
-  <center>
-    <form role="form" method="get" action="{{ route('administrador.horario.index')}}">
-      <button type="submit" class="fa fa-eye btn btn-primary"> Ver horarios Docentes-Ayudantes</button>
-    </form>
-    </br>
-    <form role="form" method="get" action="{{ route('administrador.horarioAlumno.index')}}">
-      <button type="submit" class="fa fa-eye btn btn-primary"> Ver horarios Alumnos</button>
-    </form>
-  </center>
-  </br></br>
-  <p>En este módulo usted podrá reservar salas a Docentes, Ayudantes y Alumnos.</p>
-  </br></br>
+
   <div class="row">
-    <div class="col-sm-8 col-md-8 col-lg-8 col-md-offset-3">
-      <!--div class="form-group"-->
-        <a href="{{URL::to('/administrador/asignar_docente')}}" class="btn btn-primary btn-lg" role="button">Reserva Docentes</a>
-        <a href="{{URL::to('/administrador/asignar_ayudante') }}" class="btn btn-primary btn-lg" role="button">Reserva Ayudantes</a>
-        <a href="{{URL::to('/administrador/asignar_alumno') }}" class="btn btn-primary btn-lg" role="button">Reserva Alumnos</a>
-        <!--div class="btn btn-primary btn-lg" href="#" role="button">Reserva Alumnos</div-->
-      <!--/div-->
-    </div>        
-</div>  
-</div>
+    <div class="col-md-10 col-lg-10">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-6 col-lg-6">
+                        <h2> Estadísticas Estaciones de Trabajo dañadas</h2>
+                        @if(Session::has('message'))
+                            <div class="alert alert-success alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <strong>{{ Session::get('message') }}</strong>
+                            </div>
+                        @endif                                    
+                    </div>
+                    <div class="col-md-6 col-lg-6">
+                    </div>
+               </div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="row">
+
+                    <div class="col-lg-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Estaciones de Trabajo dañadas por Laboratorios
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div id="estdaña-chart"></div>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+
+
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <div class="col-md-2 col-lg-2">
+       <div class="row">
+          <div class="col-lg-12">
+              <div class="form-group" id="form-fecha-ini">
+                  <h4>Fecha de inicio</h4>
+                  <input type="text" class="form-control datepicker" data-date-format="dd/mm/yyyy" id="fecha_inicio" name="fecha_inicio">
+              </div>                                
+          </div>
+          <div class="col-lg-12">
+              <div class="form-group" id="form-fecha-term">
+                  <h4>Fecha de término</h4>
+                  <input type="text" class="form-control datepicker" data-date-format="dd/mm/yyyy" id="fecha_termino" name="fecha_termino">
+              </div>
+          </div>    
+          <div class="col-lg-12">
+                <label for="sel1">Laboratorio </label>
+                <select class="form-control" id="lab" name="lab">
+                  @foreach($sala as $sal)
+                    <option id="{{ $sal->id }}" value="{{ $sal->id }}" name="lab">{{ $sal->nombre }}</option>
+                @endforeach
+                </select>
+          </div> 
+          <div class="col-md-6 col-md-offset-3"> 
+            <button class="btn btn-block btn-success filtro" id="buscar" name="buscar" value="buscar">Buscar</button>
+          </div>
+      </div>      
+    </div>
+  </div>
 @stop
 
+@section('scripts')
 
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    
+    $("#fecha_inicio").datepicker();
+    $("#fecha_termino").datepicker();
+    var lab = $("#lab").val();
+
+    column_chart('estdaña','','',lab);
+    
+  });
+
+  $("#buscar").click(function(){
+
+    var fecha_inicio = $("#fecha_inicio").val();
+    var fecha_termino = $("#fecha_termino").val();
+    var lab = $("#lab").val();
+
+    column_chart('estdaña',fecha_inicio,fecha_termino,lab);
+
+
+  });
+
+  function column_chart(tipo,fecha_inicio,fecha_termino,lab){
+
+    if(tipo == 'estdaña')
+    {
+      nombre = 'Cantidad de Estaciones de Trabajo dañadas por Laboratorio'
+      ejey = 'Estaciones dañadas'
+      sub = ''
+    }    
+    
+
+    var options =  {
+        chart: {
+            renderTo: tipo+'-chart',
+            type: 'column'
+        },
+        title: {
+            text: nombre
+        },
+        subtitle: {
+            text: sub
+        },
+        xAxis: {
+            type: 'category',
+            labels: {
+                rotation: -45,
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: ejey
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: 'Esatciones: <b>{point.y:.1f} dañadas</b>'
+        },
+        series: [{
+            name: 'Population',
+            data: [],
+            dataLabels: {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                format: '{point.y:.1f}', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        }]
+    };
+
+    $.getJSON("{{ route('administrador.reportes.repfalla') }}",{tipo: tipo,fecha_inicio: fecha_inicio, fecha_termino: fecha_termino, lab:lab}, function(json) {
+
+        console.log(json);
+
+        $.each(json,function(k,v){
+            options.series[0].data.push(v);
+        }); 
+
+        chart = new Highcharts.Chart(options);
+
+    });
+  }   
+
+</script>
+
+
+@stop
 

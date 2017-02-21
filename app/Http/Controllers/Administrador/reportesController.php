@@ -134,7 +134,7 @@ class reportesController extends Controller
                                         group by c.nombre 
                                         order by cantidad desc");
             }
-//condicion
+
             //doc y ayu (top 5) que más asisten a los lab
             if($request->get('tipo') == 'masasistenormal')
             {
@@ -475,7 +475,6 @@ class reportesController extends Controller
                 $condicion .= " and a.fecha between to_date('".$fecha_ini_formateada."','YYYY-MM-DD') and to_date('".$fecha_term_formateada."','YYYY-MM-DD')";                   
             }
 
-
             //Usabilidad de sala por asignatura
             if($request->get('tipo') == 'asignatura')
             {
@@ -555,6 +554,93 @@ class reportesController extends Controller
         else
         {
             return view ('Administrador/graficas/RepAsig',compact('asignatura','cont'));
+        }
+
+    }
+
+
+
+
+    public function RepFall(Request $request)
+    {
+        if($request->ajax())
+        {
+            $condicion = "0 = 0"; 
+            $laboratorio = $request->lab;
+
+            if($request->get('fecha_inicio') != '' && $request->get('fecha_termino') != '')
+            {
+                $fecha_ini_separada = explode("/",$request->get('fecha_inicio'));
+                $fecha_ini_formateada = $fecha_ini_separada[2]."-".$fecha_ini_separada[1]."-".$fecha_ini_separada[0]; 
+                $fecha_term_separada = explode("/",$request->get('fecha_termino'));
+                $fecha_term_formateada = $fecha_term_separada[2]."-".$fecha_term_separada[1]."-".$fecha_term_separada[0];
+                $condicion .= " and a.fecha between to_date('".$fecha_ini_formateada."','YYYY-MM-DD') and to_date('".$fecha_term_formateada."','YYYY-MM-DD')";                   
+            }
+
+            //Cantidad de estaciones de trabajo dañadas por lab
+            if($request->get('tipo') == 'estdaña')
+            {
+                $horario = DB::select("select c.nombre, count(a.id) as cantidad
+                                        from estacion_trabajo a
+                                        inner join sala c on a.sala_id = c.id
+                                        where a.disponibilidad = 'no'
+                                        and a.periodo_id = 1
+                                        group by c.nombre
+                                        order by cantidad desc");                                     
+            }  
+
+            //como mandar esto para la vista y hacer una ventanita que me muestre, segun el lab seleccionado, sus estaciones dañadas
+            $dañados = DB::select("select a.nombre estacion
+                                    from estacion_trabajo a
+                                    inner join sala c on a.sala_id = c.id
+                                    where a.disponibilidad = 'no'
+                                    and a.periodo_id = 1
+                                    and c.id = ".$laboratorio."
+                                    order by estacion desc");
+            dd($dañados);
+
+            $arreglo = [];
+
+            foreach ($horario as $key => $value) {
+                $arreglo[] = [$value->nombre,$value->cantidad];
+            }
+
+
+            return response()->json($arreglo);
+        }
+
+        $sala = Sala::all();
+
+        /*$dañados = DB::select("select a.nombre estacion
+                                    from estacion_trabajo a
+                                    inner join sala c on a.sala_id = c.id
+                                    where a.disponibilidad = 'no'
+                                    and a.periodo_id = 1
+                                    and c.id = ".$laboratorio."
+                                    order by estacion desc");
+        dd($dañados);*/
+        //Cambio de rol
+        $usr=Auth::User()->rut;
+        //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+        $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
+                    ->where('users.rut','=',$usr)
+                    ->join('rol','rol_users.rol_id','=','rol.id')
+                    ->select('nombre')
+                    ->get();
+        // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+        foreach($usr2 as $v)
+        {
+            $v2[]= $v->nombre;
+        }
+        //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
+        $cont = count($v2); //cuenta la cantidad de elementos del array
+        if($cont>1)
+        {
+            return view ('Administrador/graficas/RepFall',compact('sala','v2','cont'));
+        }
+        else
+        {
+            return view ('Administrador/graficas/RepFall',compact('sala','cont'));
         }
 
     }
