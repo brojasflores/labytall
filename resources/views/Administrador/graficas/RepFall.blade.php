@@ -182,6 +182,8 @@ hr {
                             <!-- /.panel-heading -->
                             <div class="panel-body">
                                 <div id="estdaña-chart"></div>
+                                <hr style="margin-top: 15px; margin-bottom: 15px;"/>
+                                <div id="dad" class="well"></div>
                             </div>
                             <!-- /.panel-body -->
                         </div>
@@ -249,7 +251,7 @@ hr {
     var lab = $("#lab").val();
 
     column_chart('estdaña',fecha_inicio,fecha_termino,lab);
-
+    daño('dañadas',lab);
 
   });
 
@@ -316,7 +318,7 @@ hr {
 
     $.getJSON("{{ route('administrador.reportes.repfalla') }}",{tipo: tipo,fecha_inicio: fecha_inicio, fecha_termino: fecha_termino, lab:lab}, function(json) {
 
-        console.log(json);
+        //console.log(json);
 
         $.each(json,function(k,v){
             options.series[0].data.push(v);
@@ -327,6 +329,33 @@ hr {
     });
   }   
 
+  function daño(tipo,lab){
+
+
+    $.getJSON("{{ route('administrador.reportes.repfalla') }}",{tipo: tipo, lab:lab}, function(json) {
+
+        console.log(json);
+
+        $("#dad").html("<strong>Laboratorio seleccionado:</strong>" +" Laboratorio Nº "+ lab +"</br> <strong>Estación o Estaciones dañada(s): </strong> ");
+
+        
+        var count = Object.keys(json).length;
+        
+        if (count) {
+          $.each(json,function(k,v){
+            if (k == 0) {
+              $("#dad").append(v);
+            }
+            else{
+              $("#dad").append(" - "+v);
+            }
+          });           
+        }else{
+          $("#dad").append(0);
+        }
+
+    });
+  }   
 </script>
 
 

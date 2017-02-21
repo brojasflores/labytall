@@ -559,8 +559,6 @@ class reportesController extends Controller
     }
 
 
-
-
     public function RepFall(Request $request)
     {
         if($request->ajax())
@@ -586,23 +584,36 @@ class reportesController extends Controller
                                         where a.disponibilidad = 'no'
                                         and a.periodo_id = 1
                                         group by c.nombre
-                                        order by cantidad desc");                                     
+                                        order by cantidad desc");    
+
+                $arreglo = [];
+
+                foreach ($horario as $key => $value) {
+                    $arreglo[] = [$value->nombre,$value->cantidad];
+                }                                  
             }  
 
-            //como mandar esto para la vista y hacer una ventanita que me muestre, segun el lab seleccionado, sus estaciones dañadas
-            $dañados = DB::select("select a.nombre estacion
-                                    from estacion_trabajo a
-                                    inner join sala c on a.sala_id = c.id
-                                    where a.disponibilidad = 'no'
-                                    and a.periodo_id = 1
-                                    and c.id = ".$laboratorio."
-                                    order by estacion desc");
+             
 
-            $arreglo = [];
+            //Cantidad de estaciones de trabajo dañadas por lab
+            if($request->get('tipo') == 'dañadas')
+            {
+                //como mandar esto para la vista y hacer una ventanita que me muestre, segun el lab seleccionado, sus estaciones dañadas
+                $dañados = DB::select("select a.nombre estacion
+                                        from estacion_trabajo a
+                                        inner join sala c on a.sala_id = c.id
+                                        where a.disponibilidad = 'no'
+                                        and a.periodo_id = 1
+                                        and c.id = ".$laboratorio."
+                                        order by estacion desc");
 
-            foreach ($horario as $key => $value) {
-                $arreglo[] = [$value->nombre,$value->cantidad];
-            }
+                $arreglo = [];
+
+                foreach ($dañados as $key => $value) {
+                    $arreglo[] = [$value->estacion];
+                }                                
+            }  
+           
 
 
             return response()->json($arreglo);
@@ -610,14 +621,6 @@ class reportesController extends Controller
 
         $sala = Sala::all();
 
-        /*$dañados = DB::select("select a.nombre estacion
-                                    from estacion_trabajo a
-                                    inner join sala c on a.sala_id = c.id
-                                    where a.disponibilidad = 'no'
-                                    and a.periodo_id = 1
-                                    and c.id = ".$laboratorio."
-                                    order by estacion desc");
-        dd($dañados);*/
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla

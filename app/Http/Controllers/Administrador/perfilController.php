@@ -49,7 +49,6 @@ class perfilController extends Controller
                 {
                     return view ('Administrador/usuarios/perfil', compact('var2','cont'));
                 }
-                //return view('Administrador/usuarios/perfil', compact('var2'));
             }
             else
             {
@@ -80,7 +79,6 @@ class perfilController extends Controller
                 {
                     return view ('Administrador/usuarios/perfil', compact('var2','cont'));
                 }
-                //return view('Administrador/usuarios/perfil', compact('var2'));
             }
         }
     }
