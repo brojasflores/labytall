@@ -597,7 +597,6 @@ class reportesController extends Controller
                                     and a.periodo_id = 1
                                     and c.id = ".$laboratorio."
                                     order by estacion desc");
-            dd($dañados);
 
             $arreglo = [];
 

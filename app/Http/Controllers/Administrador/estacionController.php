@@ -100,11 +100,40 @@ class estacionController extends Controller
 
     public function update(Request $request, $id)
     {
-        $estaT = Estacion_trabajo::findOrFail($id);     
-        $estaT->fill([
-            'disponibilidad' => $request->get('disp')
-        ]);
-        $estaT->save();
+        $salaid = Estacion_trabajo::where('id','=',$id)
+                                  ->select('sala_id')
+                                  ->get();
+
+        $salaid = $salaid->first()->sala_id;
+
+        $numEst = Estacion_trabajo::where('id','=',$id)
+                                  ->select('nombre')
+                                  ->get();
+
+        $numEst = $numEst->first()->nombre;
+
+        
+        $est = Estacion_trabajo::where('sala_id','=',$salaid)
+                               ->where('nombre','=',$numEst)
+                               ->select('id')
+                               ->get();
+
+        foreach($est as $v)
+        {
+            $v2[]= $v->id;
+        }
+
+        $cont= count($v2);
+
+        for($j=0;$j<$cont;$j++)
+        {
+            $est = Estacion_trabajo::findOrFail($v2[$j]);
+            $est->fill([
+            'disponibilidad' => $request->get('disp'),
+            ]); 
+            $est->save();
+        }
+        $est->save();
 
         return redirect()->route('administrador.estacion.index');
     }
