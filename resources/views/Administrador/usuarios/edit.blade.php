@@ -167,7 +167,7 @@ hr {
 	  <div class="box-body">
 	    <div class="form-group">
 	      <label for="exampleInputEmail1">Rut</label>
-	      <input type="text" class="form-control" value="{{ $usuario->rut}}" name="rut" id="nombreSala" placeholder="Ingrese Rut">
+	      <input type="text" class="form-control" value="{{ $rut}}" name="rut" id="nombreSala" placeholder="Ingrese Rut">
 	    </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Email</label>

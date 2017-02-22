@@ -225,6 +225,30 @@ class usuarioController extends Controller
         }
         else{
 
+            $numero = User::where('id','=',$id)
+                          ->select('rut')
+                          ->get();
+            $numero = $numero->first()->rut;
+
+            $i = 2;
+            $suma = 0;
+            foreach(array_reverse(str_split($numero)) as $v)
+            {
+                if($i==8)
+                    $i = 2;
+                $suma += $v * $i;
+                ++$i;
+            }
+            $dvr = 11 - ($suma % 11);
+            
+            if($dvr == 11)
+                $dvr = 0;
+            if($dvr == 10)
+                $dvr = 'K';
+
+            $rut= $numero.$dvr;
+
+
             $usuario = User::findOrFail($id);
 
             $rutd = User::where('id','=',$id)
@@ -258,11 +282,11 @@ class usuarioController extends Controller
 
             if($cont>1)
             {
-                return view ('Administrador/usuarios/edit', compact('depa','usuario','dpt','v2','cont'));
+                return view ('Administrador/usuarios/edit', compact('rut','depa','usuario','dpt','v2','cont'));
             }
             else
             {
-                return view ('Administrador/usuarios/edit', compact('depa','usuario','dpt','cont'));
+                return view ('Administrador/usuarios/edit', compact('rut','depa','usuario','dpt','cont'));
             }
             //return view('Administrador/usuarios/edit', compact('usuario'));
         }
