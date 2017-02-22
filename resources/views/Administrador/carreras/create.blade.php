@@ -88,6 +88,7 @@ hr {
               </a>
               <ul class="treeview-menu">
                 <li><a href="{{ route('administrador.usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
+                <li><a href="{{ route('administrador.rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -150,7 +151,16 @@ hr {
 @stop
 @section('content')
 <h1>Agregar Carreras</h1>
-
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
 <div class="row">
   <div class="col-xs-24">
     {!! Form::open(['action' => 'Administrador\carreraController@uploadCar','files'=>true]) !!}
@@ -180,7 +190,7 @@ hr {
           <div class="col-md-2">
           <div class="form-group">
             <label for="sel1">Escuela: </label>
-            <select class="form-control" id="escuelas" name="escuelaCarrera">
+            <select class="form-control" id="escuelas" name="escuela_id">
               @foreach($escuelas as $esc)
                 <option value="{{ $esc->id }}" name="escuelaCarrera">{{ $esc->nombre }}</option>
             @endforeach
@@ -191,15 +201,15 @@ hr {
       </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Código</label>
-	      <input type="text" class="form-control" name="codigoCarrera" id="codigoCarrera" placeholder="Ingrese Código">
+	      <input type="text" class="form-control" name="codigo" id="codigoCarrera" placeholder="Ingrese Código">
 	    </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Nombre</label>
-	      <input type="text" class="form-control" name="nombreCarrera" id="nombreCarrera" placeholder="Ingrese Nombre de la carrera">
+	      <input type="text" class="form-control" name="nombre" id="nombreCarrera" placeholder="Ingrese Nombre de la carrera">
 	    </div>
       <div class="form-group">
         <label for="exampleInputPassword1">Descripción</label>
-        <input type="text" class="form-control" name="desCarrera" id="desCarrera" placeholder="Ingrese Descripción">
+        <input type="text" class="form-control" name="descripcion" id="desCarrera" placeholder="Ingrese Descripción">
       </div>
 	    <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
 	  </div><!-- /.box-body -->

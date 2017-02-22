@@ -88,6 +88,7 @@ hr {
               </a>
               <ul class="treeview-menu">
                 <li><a href="{{ route('administrador.usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
+                <li><a href="{{ route('administrador.rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -150,6 +151,16 @@ hr {
 @stop
 @section('content')
 <h1>Editar Carreras</h1>
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
 {!! Form::model($carreras,['route' => ['administrador.carrera.update',$carreras], 'method' => 'PUT']) !!}
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -158,9 +169,9 @@ hr {
           <div class="col-md-2">
           <div class="form-group">
             <label for="sel1">Escuela: </label>
-            <select class="form-control" id="escuelaCarrera" name="escuelaCarrera">
+            <select class="form-control" id="escuelaCarrera" name="escuela_id">
               @foreach($escuelas as $esc)
-                <option value="{{ $esc->id }}" id="escuela_{{ $esc->id }}" name="escuelaCarrera">{{ $esc->nombre }}</option>
+                <option value="{{ $esc->id }}" id="escuela_{{ $esc->id }}" name="escuela_id">{{ $esc->nombre }}</option>
               @endforeach
             </select>
           </div>
@@ -169,15 +180,15 @@ hr {
       </div>
       <div class="form-group">
         <label for="exampleInputPassword1">Código</label>
-        <input type="text" class="form-control" value="{{ $carreras->codigo}}" name="codigoCarrera" id="codigoCarrera" placeholder="Ingrese Código">
+        <input type="text" class="form-control" value="{{ $carreras->codigo}}" name="codigo" id="codigoCarrera" placeholder="Ingrese Código">
       </div>
       <div class="form-group">
         <label for="exampleInputPassword1">Nombre</label>
-        <input type="text" class="form-control" value="{{ $carreras->nombre}}" name="nombreCarrera" id="nombreCarrera" placeholder="Ingrese Nombre de la carrera">
+        <input type="text" class="form-control" value="{{ $carreras->nombre}}" name="nombre" id="nombreCarrera" placeholder="Ingrese Nombre de la carrera">
       </div>
       <div class="form-group">
         <label for="exampleInputPassword1">Descripción</label>
-        <input type="text" class="form-control" value="{{ $carreras->descripcion}}" name="desCarrera" id="desCarrera" placeholder="Ingrese Descripción">
+        <input type="text" class="form-control" value="{{ $carreras->descripcion}}" name="descripcion" id="desCarrera" placeholder="Ingrese Descripción">
       </div>
 	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
 	  </div><!-- /.box-body -->

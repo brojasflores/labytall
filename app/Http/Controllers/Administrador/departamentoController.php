@@ -11,6 +11,7 @@ use App\Facultad;
 use App\Campus;
 use Auth;
 use App\User;
+use Session;
 
 
 class departamentoController extends Controller
@@ -101,12 +102,20 @@ class departamentoController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+
+            'nombre' => 'required',
+            'facultad_id' => 'required',
+            'descripcion' => 'required'
+            ]);
+
         $departamentos = Departamento::create([
-            'nombre' => $request->get('nombreDep'),
-            'facultad_id' => $request->get('facDep'),
-            'descripcion' => $request->get('desDep')
+            'nombre' => $request->get('nombre'),
+            'facultad_id' => $request->get('facultad_id'),
+            'descripcion' => $request->get('descripcion')
             ]);
         
+        Session::flash('create','¡Departamento creado correctamente!');
         return redirect()->route('administrador.departamento.index');
     }
 
@@ -167,15 +176,22 @@ class departamentoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'nombre' => 'required',
+            'facultad_id' => 'required',
+            'descripcion' => 'required'
+            ]);
+
         $departamentos = Departamento::findOrFail($id);     
         //fill (rellenar)
         $departamentos->fill([
-            'nombre' => $request->get('nombreDep'),
-            'facultad_id' => $request->get('facDep'),
-            'descripcion' => $request->get('desDep')
+            'nombre' => $request->get('nombre'),
+            'facultad_id' => $request->get('facultad_id'),
+            'descripcion' => $request->get('descripcion')
         ]);
         $departamentos->save();
 
+        Session::flash('edit','¡Departamento editado correctamente!');
         return redirect()->route('administrador.departamento.index');
     }
 
@@ -189,6 +205,8 @@ class departamentoController extends Controller
     {
         $departamentos = Departamento::findOrFail($id);
         $departamentos->delete();
+        
+        Session::flash('delete','¡Departamento eliminado correctamente!');
         return redirect()->route('administrador.departamento.index');
     }
 }

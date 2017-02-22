@@ -150,6 +150,12 @@ hr {
 <li class="active">Agregar Usuarios</li>
 @stop
 @section('content')
+@if(Session::has('rut'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('rut') }}</strong>
+    </div>
+@endif
 @if(Session::has('message'))
     <div class="alert alert-info" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -157,6 +163,16 @@ hr {
     </div>
 @endif
 <h1>Agregar Usuario</h1>
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
 <div class="row">
   <div class="col-xs-12">
     {!! Form::open(['action' => 'Administrador\usuarioController@uploadAlum','files'=>true]) !!}
@@ -202,19 +218,19 @@ hr {
 	  <div class="box-body">
 	    <div class="form-group">
 	      <label for="exampleInputEmail1">Rut</label>
-	      <input type="text" class="form-control" name="rutUsuario" id="rutUsuario" placeholder="Ingrese Rut">
+	      <input type="text" class="form-control" name="rut" id="rutUsuario" placeholder="Ingrese Rut con dígito verificador (sin guión ni espacios)">
 	    </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Email</label>
-	      <input type="text" class="form-control" name="emailUsuario" id="emailUsuario" placeholder="Ingrese Email">
+	      <input type="text" class="form-control" name="email" id="emailUsuario" placeholder="Ingrese Email">
 	    </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Nombres</label>
-	      <input type="text" class="form-control" name="nombresUsuario" id="nombresUsuario" placeholder="Ingrese Nombres">
+	      <input type="text" class="form-control" name="nombres" id="nombresUsuario" placeholder="Ingrese Nombres">
 	    </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Apellidos</label>
-	      <input type="text" class="form-control" name="apellidosUsuario" id="apellidosUsuario" placeholder="Ingrese Apellidos">
+	      <input type="text" class="form-control" name="apellidos" id="apellidosUsuario" placeholder="Ingrese Apellidos">
 	    </div>
 
       <div class="form-group">

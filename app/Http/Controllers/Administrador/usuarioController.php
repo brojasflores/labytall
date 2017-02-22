@@ -109,35 +109,88 @@ class usuarioController extends Controller
      */
     public function store(Request $request)
     {
-        
-        //para encriptar la clave y mandar una por defecto (en este caso el mismo rut)
-       // $pass = Hash::make($request->get('rut'));
-        $pass = Hash::make($request->get('rutUsuario'));
-      
-        User::create([
-            'rut' => $request->get('rutUsuario'),
-            'email' => $request->get('emailUsuario'),
-            'nombres' => $request->get('nombresUsuario'),
-            'apellidos' => $request->get('apellidosUsuario'),
-            'password' => $pass,
-            'perfiles' => "perfiles/h1m7G86a6OR1tLguLSNjj20czNunkW-XjSiKjE0nySu06OWdp3dutyuujpnJc-user2-160x160.png"
-        ]);
-
-        foreach($request->get('roles') as $rol)
+        $rut = preg_replace('/[^k0-9]/i', '', $request->rut);
+        $dv  = substr($rut, -1);
+        $numero = substr($rut, 0, strlen($rut)-1);
+        //dd($numero);
+        $i = 2;
+        $suma = 0;
+        foreach(array_reverse(str_split($numero)) as $v)
         {
-            RolUsuario::create([
-                'rut' =>$request->get('rutUsuario'),
-                'rol_id' => $rol
-                ]);
+            if($i==8)
+                $i = 2;
+            $suma += $v * $i;
+            ++$i;
         }
+        $dvr = 11 - ($suma % 11);
+        
+        if($dvr == 11)
+            $dvr = 0;
+        if($dvr == 10)
+            $dvr = 'K';
+        if($dvr == strtoupper($dv))
+            $ok='si';
+        else
+            $ok='no';
 
-        UsersDpto::create([
-            'rut' => $request->get('rutUsuario'),
-            'departamento_id' => $request->get('dpt'),
-        ]);
+    $esta = User::where('rut','=',$numero)
+                ->select('id')
+                ->get();
 
-        Session::flash('create','¡Usuario creado correctamente!');
-        return redirect()->route('administrador.usuario.index');
+    if($esta->isEmpty())
+    {
+        if($ok == 'no'){
+       $this->validate($request, [
+            'rut' => 'required|max:9|url',
+            'email' => 'required|email',
+            'nombres' => 'required',
+            'apellidos' => 'required',
+            ]); 
+         }
+         else{
+            $this->validate($request, [
+                'rut' => 'required|max:9',
+                'email' => 'required|email',
+                'nombres' => 'required',
+                'apellidos' => 'required',
+                ]); 
+         }
+           
+           //para encriptar la clave y mandar una por defecto (en este caso el mismo rut)
+           // $pass = Hash::make($request->get('rut'));
+            $pass = Hash::make($numero);
+          
+            User::create([
+                'rut' => $numero,
+                'email' => $request->get('email'),
+                'nombres' => $request->get('nombres'),
+                'apellidos' => $request->get('apellidos'),
+                'password' => $pass,
+                'perfiles' => "perfiles/h1m7G86a6OR1tLguLSNjj20czNunkW-XjSiKjE0nySu06OWdp3dutyuujpnJc-user2-160x160.png"
+            ]);
+
+            foreach($request->get('roles') as $rol)
+            {
+                RolUsuario::create([
+                    'rut' =>$numero,
+                    'rol_id' => $rol
+                    ]);
+            }
+
+            UsersDpto::create([
+                'rut' => $numero,
+                'departamento_id' => $request->get('dpt'),
+            ]);
+
+            Session::flash('create','¡Usuario creado correctamente!');
+            return redirect()->route('administrador.usuario.index');
+    }
+    else{
+        Session::flash('rut','¡Usuario ya ingresado anteriormente!');
+        return redirect()->route('administrador.usuario.create');
+    }
+
+     
     }
 
     /**
@@ -164,7 +217,7 @@ class usuarioController extends Controller
 
             $usuario = User::findOrFail($request->get('id'));
             $roles = RolUsuario::where('rut',$usuario->rut)->select('rut','rol_id')->get();
-            $rolesTotales = Rol::select('id','nombre')->get();
+            $rolesTotales = Rol::where('nombre','!=','docente')->where('nombre','!=','alumno')->select('id','nombre')->get();
 
             $respuesta = ['roles' => $rolesTotales, 'roles_usuario' => $roles];
      
@@ -173,6 +226,17 @@ class usuarioController extends Controller
         else{
 
             $usuario = User::findOrFail($id);
+
+            $rutd = User::where('id','=',$id)
+                       ->select('rut')
+                       ->get();
+            $rutd=$rutd->first()->rut;
+
+            $depa = UsersDpto::where('rut','=',$rutd)
+                             ->select('departamento_id')
+                             ->get();
+            $depa = $depa->first()->departamento_id;
+
             //Cambio de rol
             $usr=Auth::User()->rut;
             //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -188,15 +252,17 @@ class usuarioController extends Controller
             }
             //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
             $cont = count($v2); //cuenta la cantidad de elementos del array
+            
             $dpt= Departamento::all();
+
 
             if($cont>1)
             {
-                return view ('Administrador/usuarios/edit', compact('usuario','dpt','v2','cont'));
+                return view ('Administrador/usuarios/edit', compact('depa','usuario','dpt','v2','cont'));
             }
             else
             {
-                return view ('Administrador/usuarios/edit', compact('usuario','dpt','cont'));
+                return view ('Administrador/usuarios/edit', compact('depa','usuario','dpt','cont'));
             }
             //return view('Administrador/usuarios/edit', compact('usuario'));
         }
@@ -211,19 +277,60 @@ class usuarioController extends Controller
      */
     public function update(Request $request, $id)
     {
-  
+        $rut = preg_replace('/[^k0-9]/i', '', $request->rut);
+        $dv  = substr($rut, -1);
+        $numero = substr($rut, 0, strlen($rut)-1);
+        //dd($numero);
+        $i = 2;
+        $suma = 0;
+        foreach(array_reverse(str_split($numero)) as $v)
+        {
+            if($i==8)
+                $i = 2;
+            $suma += $v * $i;
+            ++$i;
+        }
+        $dvr = 11 - ($suma % 11);
+        
+        if($dvr == 11)
+            $dvr = 0;
+        if($dvr == 10)
+            $dvr = 'K';
+        if($dvr == strtoupper($dv))
+            $ok='si';
+        else
+            $ok='no';
+
+     if($ok == 'no'){
+       $this->validate($request, [
+            'rut' => 'required|max:9|url',
+            'email' => 'required|email',
+            'nombres' => 'required',
+            'apellidos' => 'required',
+            ]); 
+     }
+     else{
+        $this->validate($request, [
+            'rut' => 'required|max:9',
+            'email' => 'required|email',
+            'nombres' => 'required',
+            'apellidos' => 'required',
+            ]); 
+     }
+
+        
         $usuarios = User::findOrFail($id);
         //fill (rellenar)
         $usuarios->fill([
-            'rut' => $request->get('rutUsuario'),
-            'email' => $request->get('emailUsuario'),
-            'nombres' => $request->get('nombresUsuario'),
-            'apellidos' => $request->get('apellidosUsuario')
+            'rut' => $numero,
+            'email' => $request->get('email'),
+            'nombres' => $request->get('nombres'),
+            'apellidos' => $request->get('apellidos')
         ]);
         $usuarios->save();
 
         //Busca en la tabla rol_usuario el rut que sea igual al rut que viene de la vista(request->get('rutUsuario')) y con el get lo toma
-        $roles_usuario = RolUsuario::where('rut',$request->get('rutUsuario'))->get();
+        $roles_usuario = RolUsuario::where('rut',$numero)->get();
         foreach($roles_usuario as $ru)
         {
             $ru->delete();
@@ -232,12 +339,12 @@ class usuarioController extends Controller
         foreach($request->get('roles') as $rol)
         {
             RolUsuario::create([
-                'rut' =>$request->get('rutUsuario'),
+                'rut' =>$numero,
                 'rol_id' => $rol
                 ]);
         }
         
-        $dpto_usr = UsersDpto::where('rut',$request->get('rutUsuario'))->get();
+        $dpto_usr = UsersDpto::where('rut',$numero)->get();
         
         foreach($dpto_usr as $de)
         {
@@ -247,7 +354,7 @@ class usuarioController extends Controller
         $dp->delete();
 
         UsersDpto::create([
-            'rut' => $request->get('rutUsuario'),
+            'rut' => $numero,
             'departamento_id' => $request->get('dpt'),
         ]);
 

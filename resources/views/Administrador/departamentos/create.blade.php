@@ -152,19 +152,31 @@ hr {
 @stop
 @section('content')
 <h1>Agregar Departamentos</h1>
+
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
+
 <form role="form" method="post" action="{{ route('administrador.departamento.store')}}">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
 	    <div class="form-group">
 	      <label for="exampleInputEmail1">Nombre</label>
-	      <input type="text" class="form-control" name="nombreDep" id="nombreDep" placeholder="Ingrese nombre del departamento">
+	      <input type="text" class="form-control" name="nombre" id="nombreDep" placeholder="Ingrese nombre del departamento">
 	    </div>
 	    <div class="form-group">
         <div class="row">
           <div class="col-md-2">
           <div class="form-group">
             <label for="sel1">Facultad: </label>
-            <select class="form-control" id="facDep" name="facDep">
+            <select class="form-control" id="facDep" name="facultad_id">
             @foreach($facultades as $fac)
                 <option value="{{ $fac->id }}" name="facDep">{{ $fac->nombre }}</option>
             @endforeach
@@ -175,7 +187,7 @@ hr {
       </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Descripción</label>
-	      <input type="text" class="form-control" name="desDep" id="desDep" placeholder="Ingrese descripción del departamento">
+	      <input type="text" class="form-control" name="descripcion" id="desDep" placeholder="Ingrese descripción del departamento">
 	    </div>
 	    <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
 	  </div><!-- /.box-body -->

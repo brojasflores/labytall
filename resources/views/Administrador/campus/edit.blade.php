@@ -151,21 +151,32 @@ hr {
 @stop
 @section('content')
 <h1>Editar Campus</h1>
-<!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
+
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
+
 {!! Form::model($campus,['route' => ['administrador.campus.update',$campus], 'method' => 'PUT']) !!}
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
 	    <div class="form-group">
 	      <label for="exampleInputEmail1">Nombre</label>
-	      <input type="text" class="form-control" value="{{ $campus->nombre}}" name="nombreCampus" id="nombreCampus" placeholder="Ingrese bloque (Ej. I, II, III)">
+	      <input type="text" class="form-control" value="{{ $campus->nombre}}" name="nombre" id="nombreCampus" placeholder="Ingrese bloque (Ej. I, II, III)">
 	    </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Dirección</label>
-	      <input type="text" class="form-control" value="{{ $campus->direccion}}" name="direccionCampus" id="direccionCampus" placeholder="Ingrese hora inicio período (Ej. 08:00)">
+	      <input type="text" class="form-control" value="{{ $campus->direccion}}" name="direccion" id="direccionCampus" placeholder="Ingrese hora inicio período (Ej. 08:00)">
 	    </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Descripción</label>
-	      <input type="text" class="form-control" value="{{ $campus->descripcion}}" name="desCampus" id="desCampus" placeholder="Ingrese hora fin período (Ej. 21:00)">
+	      <input type="text" class="form-control" value="{{ $campus->descripcion}}" name="descripcion" id="desCampus" placeholder="Ingrese hora fin período (Ej. 21:00)">
 	    </div>
 	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
 	  </div><!-- /.box-body -->

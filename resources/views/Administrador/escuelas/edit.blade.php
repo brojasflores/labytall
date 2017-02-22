@@ -151,13 +151,23 @@ hr {
 @stop
 @section('content')
 <h1>Editar Escuelas</h1>
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
 {!! Form::model($escuelas,['route' => ['administrador.escuela.update',$escuelas], 'method' => 'PUT']) !!}
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
 	    <div class="form-group">
 	      <label for="exampleInputEmail1">Nombre</label>
-	      <input type="text" class="form-control" value="{{ $escuelas->nombre}}" name="nombreEsc" id="nombreEsc" placeholder="Ingrese bloque (Ej. I, II, III)">
+	      <input type="text" class="form-control" value="{{ $escuelas->nombre}}" name="nombre" id="nombreEsc" placeholder="Ingrese bloque (Ej. I, II, III)">
 	    </div>
 	    <div class="form-group">
         <div class="row">
@@ -166,7 +176,7 @@ hr {
             <label for="sel1">Departamento: </label>
             <select class="form-control" id="depEsc" name="depEsc">
               @foreach($departamentos as $de)
-                <option value="{{ $de->id }}" id="departamento_{{ $de->id }}" name="depEsc">{{ $de->nombre }}</option>
+                <option value="{{ $de->id }}" id="departamento_{{ $de->id }}" name="departamento_id">{{ $de->nombre }}</option>
               @endforeach
             </select>
           </div>
@@ -175,7 +185,7 @@ hr {
       </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Descripción</label>
-	      <input type="text" class="form-control" value="{{ $escuelas->descripcion}}" name="desEsc" id="desEsc" placeholder="Ingrese hora fin período (Ej. 21:00)">
+	      <input type="text" class="form-control" value="{{ $escuelas->descripcion}}" name="descripcion" id="desEsc" placeholder="Ingrese hora fin período (Ej. 21:00)">
 	    </div>
 	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
 	  </div><!-- /.box-body -->

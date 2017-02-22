@@ -106,30 +106,41 @@ class carreraController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+
+            'escuela_id' => 'required',
+            'codigo' => 'required|numeric',
+            'nombre' => 'required',
+            'descripcion' => 'required'
+            ]);
+
         $carrera = Carrera::create([
-            'escuela_id' => $request->get('escuelaCarrera'),
-            'codigo' => $request->get('codigoCarrera'),
-            'nombre' => $request->get('nombreCarrera'),
-            'descripcion' => $request->get('desCarrera')
+            'escuela_id' => $request->get('escuela_id'),
+            'codigo' => $request->get('codigo'),
+            'nombre' => $request->get('nombre'),
+            'descripcion' => $request->get('descripcion')
             ]);
 
         //como llenar la cuestion de carrera_sala
 
-        $dpto= Escuela::where('id','=',$request->get('escuelaCarrera'))
+        $dpto= Escuela::where('id','=',$request->get('escuela_id'))
                          ->select('escuela.departamento_id')
                          ->get();
 
-
+        //dd($dpto);
         $salas= Sala::where('departamento_id','=',$dpto->first()->departamento_id)
                         ->select('sala.id')
                         ->get();
         
-        $carr = Carrera::where('codigo','=',$request->get('codigoCarrera'))
+        //dd($salas);
+        $carr = Carrera::where('codigo','=',$request->get('codigo'))
                         ->select('carrera.id')
                         ->get();
-                        
+        //dd($carr);     
+
         $carr2 = $carr->first()->id;
-  
+        //dd($carr2);    
+
         foreach($salas as $v)
         {
            CarreraSala::create([
@@ -138,6 +149,7 @@ class carreraController extends Controller
             ]);
         }
 
+        Session::flash('create','¡Carrera creada correctamente!');
         return redirect()->route('administrador.carrera.index');
     }
 
@@ -199,37 +211,44 @@ class carreraController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //dd($id);
+        $this->validate($request, [
 
+            'escuela_id' => 'required',
+            'codigo' => 'required|numeric',
+            'nombre' => 'required',
+            'descripcion' => 'required'
+            ]);
+        
         $carrerasala = CarreraSala::where('carrera_id','=',$id)
                                   ->select('id')
                                   ->get();
 
+        //dd($carrerasala);
         foreach($carrerasala as $v)
         {
             $v2[]= $v->id;
         }
         $cont= count($v2); 
-        
+        //dd($cont);
         for($i=0;$i<$cont;$i++)
         {
             $carsa = CarreraSala::findOrFail($v2[$i]);
             $carsa->delete();
         }
 
-
-        /**/
         $carreras = Carrera::findOrFail($id);     
         //fill (rellenar)
         $carreras->fill([
-            'escuela_id' => $request->get('escuelaCarrera'),
-            'codigo' => $request->get('codigoCarrera'),
-            'nombre' => $request->get('nombreCarrera'),
-            'descripcion' => $request->get('desCarrera')
+            'escuela_id' => $request->get('escuela_id'),
+            'codigo' => $request->get('codigo'),
+            'nombre' => $request->get('nombre'),
+            'descripcion' => $request->get('descripcion')
         ]);
         $carreras->save();
 
 
-        $dpto= Escuela::where('id','=',$request->get('escuelaCarrera'))
+        $dpto= Escuela::where('id','=',$request->get('escuela_id'))
                          ->select('escuela.departamento_id')
                          ->get();
 
@@ -238,7 +257,7 @@ class carreraController extends Controller
                         ->select('sala.id')
                         ->get();
         
-        $carr = Carrera::where('codigo','=',$request->get('codigoCarrera'))
+        $carr = Carrera::where('codigo','=',$request->get('codigo'))
                         ->select('carrera.id')
                         ->get();
                         
@@ -252,6 +271,7 @@ class carreraController extends Controller
             ]);
         }
         
+        Session::flash('edit','¡Carrera editada correctamente!');
         return redirect()->route('administrador.carrera.index');
     }
 
@@ -283,6 +303,7 @@ class carreraController extends Controller
         $carreras = Carrera::findOrFail($id);
         $carreras->delete();
 
+        Session::flash('delete','¡Carrera eliminada correctamente!');
         return redirect()->route('administrador.carrera.index');
     }
 

@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Administrador;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
-
 use App\Campus;
 use Auth;
 use App\User;
-
+use Session;
+use App\Http\Controllers\Controller;
 
 class campusController extends Controller
 {
@@ -96,12 +95,21 @@ class campusController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request);
+        $this->validate($request, [
+
+            'nombre' => 'required',
+            'direccion' => 'required',
+            'descripcion' => 'required'
+            ]);
+
         $campus = Campus::create([
-            'nombre' => $request->get('nombreCampus'),
-            'direccion' => $request->get('direccionCampus'),
-            'descripcion' => $request->get('desCampus')
+            'nombre' => $request->get('nombre'),
+            'direccion' => $request->get('direccion'),
+            'descripcion' => $request->get('descripcion')
             ]);
         
+        Session::flash('create','¡Campus creado correctamente!');
         return redirect()->route('administrador.campus.index');
     }
 
@@ -161,15 +169,23 @@ class campusController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+
+            'nombre' => 'required',
+            'direccion' => 'required',
+            'descripcion' => 'required'
+            ]);
+
         $campus = Campus::findOrFail($id);     
         //fill (rellenar)
         $campus->fill([
-            'nombre' => $request->get('nombreCampus'),
-            'direccion' => $request->get('direccionCampus'),
-            'descripcion' => $request->get('desCampus')
+            'nombre' => $request->get('nombre'),
+            'direccion' => $request->get('direccion'),
+            'descripcion' => $request->get('descripcion')
         ]);
         $campus->save();
 
+        Session::flash('edit','¡Campus editado correctamente!');
         return redirect()->route('administrador.campus.index');
     }
 
@@ -183,6 +199,8 @@ class campusController extends Controller
     {
         $campus = Campus::findOrFail($id);
         $campus->delete();
+
+        Session::flash('delete','¡Campus eliminado correctamente!');
         return redirect()->route('administrador.campus.index');
     }
 }

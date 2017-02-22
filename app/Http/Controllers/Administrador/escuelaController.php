@@ -11,6 +11,7 @@ use App\Escuela;
 use App\Campus;
 use Auth;
 use App\User;
+use Session;
 
 
 class escuelaController extends Controller
@@ -102,12 +103,20 @@ class escuelaController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+
+            'nombre' => 'required',
+            'departamento_id' => 'required',
+            'descripcion' => 'required'
+            ]);
+
         $escuelas = Escuela::create([
-            'nombre' => $request->get('nombreEsc'),
-            'departamento_id' => $request->get('depEsc'),
-            'descripcion' => $request->get('desEsc')
+            'nombre' => $request->get('nombre'),
+            'departamento_id' => $request->get('departamento_id'),
+            'descripcion' => $request->get('descripcion')
             ]);
         
+        Session::flash('create','¡Escuela creada correctamente!');
         return redirect()->route('administrador.escuela.index');
     }
 
@@ -168,15 +177,23 @@ class escuelaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+
+            'nombre' => 'required',
+            'departamento_id' => 'required',
+            'descripcion' => 'required'
+            ]);
+
         $escuelas = Escuela::findOrFail($id);     
         //fill (rellenar)
         $escuelas->fill([
-            'nombre' => $request->get('nombreEsc'),
-            'departamento_id' => $request->get('depEsc'),
-            'descripcion' => $request->get('desEsc')
+            'nombre' => $request->get('nombre'),
+            'departamento_id' => $request->get('departamento_id'),
+            'descripcion' => $request->get('descripcion')
         ]);
         $escuelas->save();
 
+        Session::flash('edit','¡Escuela editada correctamente!');
         return redirect()->route('administrador.escuela.index');
     }
 
@@ -190,6 +207,8 @@ class escuelaController extends Controller
     {
         $escuelas = Escuela::findOrFail($id);
         $escuelas->delete();
+        
+        Session::flash('delete','¡Escuela eliminada correctamente!');
         return redirect()->route('administrador.escuela.index');
     }
 }

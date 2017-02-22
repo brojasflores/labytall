@@ -10,6 +10,7 @@ use App\Facultad;
 use App\Campus;
 use Auth;
 use App\User;
+use Session;
 
 
 class facultadController extends Controller
@@ -100,12 +101,20 @@ class facultadController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+
+            'nombre' => 'required',
+            'campus_id' => 'required',
+            'descripcion' => 'required'
+            ]);
+
         $facultades = Facultad::create([
-            'nombre' => $request->get('nombreFac'),
-            'campus_id' => $request->get('campusFac'),
-            'descripcion' => $request->get('desFac')
+            'nombre' => $request->get('nombre'),
+            'campus_id' => $request->get('campus_id'),
+            'descripcion' => $request->get('descripcion')
             ]);
         
+        Session::flash('create','¡Facultad creada correctamente!');
         return redirect()->route('administrador.facultad.index');
     }
 
@@ -167,15 +176,23 @@ class facultadController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+
+            'nombre' => 'required',
+            'campus_id' => 'required',
+            'descripcion' => 'required'
+            ]);
+
         $facultades = Facultad::findOrFail($id);     
         //fill (rellenar)
         $facultades->fill([
-            'nombre' => $request->get('nombreFac'),
-            'campus_id' => $request->get('campusFac'),
-            'descripcion' => $request->get('desFac')
+            'nombre' => $request->get('nombre'),
+            'campus_id' => $request->get('campus_id'),
+            'descripcion' => $request->get('descripcion')
         ]);
         $facultades->save();
 
+        Session::flash('edit','¡Facultad editada correctamente!');
         return redirect()->route('administrador.facultad.index');
     }
 
@@ -189,6 +206,8 @@ class facultadController extends Controller
     {
         $facultades = Facultad::findOrFail($id);
         $facultades->delete();
+        
+        Session::flash('delete','¡Facultad eliminada correctamente!');
         return redirect()->route('administrador.facultad.index');
     }
 }
