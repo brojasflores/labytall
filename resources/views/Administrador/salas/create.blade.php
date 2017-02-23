@@ -151,23 +151,33 @@ hr {
 @stop
 @section('content')
 <h1>Agregar Sala</h1>
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
 <form role="form" method="post" action="{{ route('administrador.sala.store')}}">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
 	    <div class="form-group">
 	      <label for="exampleInputEmail1">Nombre Sala</label>
-	      <input type="text" class="form-control" name="nombreSala" id="nombreSala" placeholder="Ingrese nombre">
+	      <input type="text" class="form-control" name="nombre" id="nombreSala" placeholder="Ingrese nombre">
 	    </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Capacidad</label>
-	      <input type="text" class="form-control" name="capacidadSala" id="capacidadSala" placeholder="Ingrese cantidad alumnos">
+	      <input type="text" class="form-control" name="capacidad" id="capacidadSala" placeholder="Ingrese cantidad alumnos">
 	    </div>
       <div class="form-group">
         <div class="row">
           <div class="col-md-2">
           <div class="form-group">
             <label for="sel1">Departamento: </label>
-            <select class="form-control" id="dptoSala" name="dptoSala">
+            <select class="form-control" id="dptoSala" name="departamento_id">
             @foreach($dptos as $dep)
                 <option value="{{ $dep->id }}" name="dptoSala">{{ $dep->nombre }}</option>
             @endforeach

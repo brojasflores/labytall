@@ -151,17 +151,27 @@ hr {
 @stop
 @section('content')
 <h1>Editar Rol</h1>
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
 {!! Form::model($roles,['route' => ['administrador.rol.update',$roles], 'method' => 'PUT']) !!}
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
 	    <div class="form-group">
 	      <label for="exampleInputEmail1">Nombre Rol</label>
-	      <input type="text" class="form-control" value="{{ $roles->nombre}}" name="nombreRol" id="nombreRol" placeholder="Ingrese nombre del rol">
+	      <input type="text" class="form-control" value="{{ $roles->nombre}}" name="nombre" id="nombreRol" placeholder="Ingrese nombre del rol">
 	    </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Descripción</label>
-	      <input type="text" class="form-control" value="{{ $roles->descripcion}}" name="descripcionRol" id="descripcionRol" placeholder="Ingrese una descripción">
+	      <input type="text" class="form-control" value="{{ $roles->descripcion}}" name="descripcion" id="descripcionRol" placeholder="Ingrese una descripción">
 	    </div>
 	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
 	  </div><!-- /.box-body -->

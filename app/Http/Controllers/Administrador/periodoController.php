@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Periodo;
 use Auth;
 use App\User;
+use Session;
 
 
 class periodoController extends Controller
@@ -96,12 +97,19 @@ class periodoController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'bloque' => 'required',
+            'inicio' => 'required|date_format:H:m',
+            'fin' => 'required|date_format:H:m|after:inicio'
+            ]);
+
         $periodos = Periodo::create([
-            'bloque' => $request->get('bloquePeriodo'),
-            'inicio' => $request->get('inicioPeriodo'),
-            'fin' => $request->get('finPeriodo')
+            'bloque' => $request->get('bloque'),
+            'inicio' => $request->get('inicio'),
+            'fin' => $request->get('fin')
             ]);
         
+        Session::flash('create','¡Período creado correctamente!');
         return redirect()->route('administrador.periodo.index');
     }
 
@@ -125,6 +133,17 @@ class periodoController extends Controller
     public function edit($id)
     {
         $periodos = Periodo::findOrFail($id);
+        $inifin = Periodo::where('id','=',$id)
+                          ->select('inicio','fin')
+                          ->get();
+
+        $inicio = $inifin->first()->inicio;
+        $inicio = substr($inicio,0,-3); 
+
+        $fin = $inifin->first()->fin;
+        $fin = substr($fin,0,-3); 
+        
+
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -143,11 +162,11 @@ class periodoController extends Controller
         
         if($cont>1)
         {
-            return view ('Administrador/periodos/edit', compact('periodos','v2','cont'));
+            return view ('Administrador/periodos/edit', compact('inicio','fin','periodos','v2','cont'));
         }
         else
         {
-            return view ('Administrador/periodos/edit', compact('periodos','cont'));
+            return view ('Administrador/periodos/edit', compact('inicio','fin','periodos','cont'));
         }
         //return view('Administrador/periodos/edit', compact('periodos'));
     }
@@ -161,15 +180,22 @@ class periodoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'bloque' => 'required',
+            'inicio' => 'required|date_format:H:m',
+            'fin' => 'required|date_format:H:m|after:inicio'
+            ]);
+
         $periodos = Periodo::findOrFail($id);     
         //fill (rellenar)
         $periodos->fill([
-            'bloque' => $request->get('bloquePeriodo'),
-            'inicio' => $request->get('inicioPeriodo'),
-            'fin' => $request->get('finPeriodo')
+            'bloque' => $request->get('bloque'),
+            'inicio' => $request->get('inicio'),
+            'fin' => $request->get('fin')
         ]);
         $periodos->save();
 
+        Session::flash('edit','¡Período editado correctamente!');
         return redirect()->route('administrador.periodo.index');
     }
 
@@ -183,6 +209,8 @@ class periodoController extends Controller
     {
         $periodos = Periodo::findOrFail($id);
         $periodos->delete();
+
+        Session::flash('delete','¡Período eliminado correctamente!');
         return redirect()->route('administrador.periodo.index');
     }
 }

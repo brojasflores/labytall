@@ -98,11 +98,16 @@ class rolController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'nombre' => 'required',
+            'descripcion' => 'required'
+            ]);
         
         $roles = Rol::create([
-            'nombre' => $request->get('nombreRol'),
-            'descripcion' => $request->get('descripcionRol'),
+            'nombre' => $request->get('nombre'),
+            'descripcion' => $request->get('descripcion'),
             ]);
+
         Session::flash('create','¡Rol creado correctamente!');
         return redirect()->route('administrador.rol.index');
     }
@@ -163,11 +168,16 @@ class rolController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'nombre' => 'required',
+            'descripcion' => 'required'
+            ]);
+
         $roles = Rol::findOrFail($id);     
         //fill (rellenar)
         $roles->fill([
-            'nombre' => $request->get('nombreRol'),
-            'descripcion' => $request->get('descripcionRol'),
+            'nombre' => $request->get('nombre'),
+            'descripcion' => $request->get('descripcion'),
         ]);
         $roles->save();
         

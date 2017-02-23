@@ -151,26 +151,36 @@ hr {
 @stop
 @section('content')
 <h1>Editar Sala</h1>
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
 {!! Form::model($sala,['route' => ['administrador.sala.update',$sala], 'method' => 'PUT']) !!}
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
 	    <div class="form-group">
 	      <label for="exampleInputEmail1">Nombre Sala</label>
-	      <input type="text" class="form-control" value="{{ $sala->nombre}}" name="nombreSala" id="nombreSala" placeholder="Ingrese nombre">
+	      <input type="text" class="form-control" value="{{ $sala->nombre}}" name="nombre" id="nombreSala" placeholder="Ingrese nombre">
 	    </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Capacidad</label>
-	      <input type="text" class="form-control" value="{{ $sala->capacidad}}" name="capacidadSala" id="capacidadSala" placeholder="Ingrese cantidad alumnos">
+	      <input type="text" class="form-control" value="{{ $sala->capacidad}}" name="capacidad" id="capacidadSala" placeholder="Ingrese cantidad alumnos">
 	    </div>
       <div class="form-group">
         <div class="row">
           <div class="col-md-2">
           <div class="form-group">
             <label for="sel1">Departamento: </label>
-            <select class="form-control" id="dptoSala" name="dptoSala">
+            <select class="form-control" id="departamento_id" name="departamento_id">
             @foreach($dptos as $dep)
-                <option value="{{ $dep->id }}" name="dptoSala">{{ $dep->nombre }}</option>
+                <option value="{{ $dep->id }}" id="departamento_{{ $dep->id }}" name="departamento_id">{{ $dep->nombre }}</option>
             @endforeach
             </select>
           </div>
@@ -179,5 +189,13 @@ hr {
       </div>
 	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
 	  </div><!-- /.box-body -->
+
 {!! Form::close() !!}
+@stop
+@section('scripts')
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#departamento_id option[id=departamento_'+{{ $sala->departamento_id }}+']').attr('selected', 'selected');
+  });
+</script>
 @stop

@@ -151,16 +151,26 @@ hr {
 @stop
 @section('content')
 <h1>Agregar Rol</h1>
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
 <form role="form" method="post" action="{{ route('administrador.rol.store')}}">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
 	    <div class="form-group">
 	      <label for="exampleInputEmail1">Nombre Rol</label>
-	      <input type="text" class="form-control" name="nombreRol" id="nombreRol" placeholder="Ingrese nombre del rol">
+	      <input type="text" class="form-control" name="nombre" id="nombreRol" placeholder="Ingrese nombre del rol">
 	    </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Descripción</label>
-	      <input type="text" class="form-control" name="descripcionRol" id="descripcionRol" placeholder="Ingrese una descripción">
+	      <input type="text" class="form-control" name="descripcion" id="descripcionRol" placeholder="Ingrese una descripción">
 	    </div>
 	    <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
 	  </div><!-- /.box-body -->

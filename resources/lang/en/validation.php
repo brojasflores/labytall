@@ -20,7 +20,7 @@ return array(
 
 	"accepted"       => "El campo :attribute debe ser aceptado.",
 	"active_url"     => "El campo :attribute no es una URL válida.",
-	"after"          => "El campo :attribute debe ser una fecha después de :date.",
+	"after"          => "El campo :attribute debe no puede ocurrir antes de :date.",
 	"alpha"          => "El campo :attribute sólo puede contener letras.",
 	"alpha_dash"     => "El campo :attribute sólo puede contener letras, números y guiones.",
 	"alpha_num"      => "El campo :attribute sólo puede contener letras y números.",

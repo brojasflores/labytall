@@ -151,21 +151,31 @@ hr {
 @stop
 @section('content')
 <h1>Editar Período</h1>
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
 {!! Form::model($periodos,['route' => ['administrador.periodo.update',$periodos], 'method' => 'PUT']) !!}
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
 	    <div class="form-group">
 	      <label for="exampleInputEmail1">Bloque</label>
-	      <input type="text" class="form-control" value="{{ $periodos->bloque}}" name="bloquePeriodo" id="bloquePeriodo" placeholder="Ingrese bloque (Ej. I, II, III)">
+	      <input type="text" class="form-control" value="{{ $periodos->bloque}}" name="bloque" id="bloquePeriodo" placeholder="Ingrese bloque (Ej. I, II, III)">
 	    </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Inicio</label>
-	      <input type="text" class="form-control" value="{{ $periodos->inicio}}" name="inicioPeriodo" id="inicioPeriodo" placeholder="Ingrese hora inicio período (Ej. 08:00)">
+	      <input type="text" class="form-control" value="{{ $inicio}}" name="inicio" id="inicioPeriodo" placeholder="Ingrese hora inicio período (Ej. 08:00)">
 	    </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Fin</label>
-	      <input type="text" class="form-control" value="{{ $periodos->fin}}" name="finPeriodo" id="finPeriodo" placeholder="Ingrese hora fin período (Ej. 21:00)">
+	      <input type="text" class="form-control" value="{{ $fin}}" name="fin" id="finPeriodo" placeholder="Ingrese hora fin período (Ej. 21:00)">
 	    </div>
 	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
 	  </div><!-- /.box-body -->
