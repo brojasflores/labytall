@@ -100,13 +100,22 @@ class asignaturaController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+                'codigo' => 'required',
+                'nombre' => 'required',
+                'descripcion' => 'required',
+                'carrera_id' => 'required'
+                ]);
+
         $asignaturas = Asignatura::create([
-            'codigo' => $request->get('codigoAsignatura'),
-            'nombre' => $request->get('nombreAsignatura'),
-            'descripcion' => $request->get('descripcionAsignatura'),
-            'carrera_id' => $request->get('carreraAsig')
+            'codigo' => $request->get('codigo'),
+            'nombre' => $request->get('nombre'),
+            'descripcion' => $request->get('descripcion'),
+            'carrera_id' => $request->get('carrera_id')
             ]);
             //$asignaturas = Asignatura::all();        
+        
+        Session::flash('create','¡Asignatura creada correctamente!');
         return redirect()->route('administrador.asignatura.index');
     }
 
@@ -167,15 +176,24 @@ class asignaturaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+                'codigo' => 'required',
+                'nombre' => 'required',
+                'descripcion' => 'required',
+                'carrera_id' => 'required'
+                ]);
+
         $asignaturas = Asignatura::findOrFail($id);     
         //fill (rellenar)
         $asignaturas->fill([
-            'codigo' => $request->get('codigoAsignatura'),
-            'nombre' => $request->get('nombreAsignatura'),
-            'descripcion' => $request->get('descripcionAsignatura'),
-            'carrera_id' => $request->get('carreraAsig')
+            'codigo' => $request->get('codigo'),
+            'nombre' => $request->get('nombre'),
+            'descripcion' => $request->get('descripcion'),
+            'carrera_id' => $request->get('carrera_id')
         ]);
         $asignaturas->save();
+        
+        Session::flash('edit','¡Asignatura editada correctamente!');
         return redirect()->route('administrador.asignatura.index');
     }
 
@@ -189,6 +207,8 @@ class asignaturaController extends Controller
     {
         $asignaturas = Asignatura::findOrFail($id);
         $asignaturas->delete();
+
+        Session::flash('destroy','¡Asignatura eliminada correctamente!');
         return redirect()->route('administrador.asignatura.index');
     }
 

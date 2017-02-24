@@ -349,8 +349,9 @@ class periodoController extends Controller
 
         if($fecha == 'nook')
         {
-            Session::flash('horas','¡Las horas son incorrectas, no se pudo editar su período, intente nuevamente!');
-            return redirect()->route('administrador.periodo.index');
+            Session::flash('horas','¡Las horas son incorrectas!');
+            return redirect()->href({{ url('administrador/periodo/{{$id}}')}});
+
         }
         else
         {

@@ -151,30 +151,40 @@ hr {
 @stop
 @section('content')
 <h1>Editar Asignatura</h1>
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
 {!! Form::model($asignaturas,['route' => ['administrador.asignatura.update',$asignaturas], 'method' => 'PUT']) !!}
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
 	    <div class="form-group">
 	      <label for="exampleInputEmail1">Código</label>
-	      <input type="text" class="form-control" value="{{ $asignaturas->codigo}}" name="codigoAsignatura" id="codigoAsignatura" placeholder="Ingrese código de la asignatura">
+	      <input type="text" class="form-control" value="{{ $asignaturas->codigo}}" name="codigo" id="codigoAsignatura" placeholder="Ingrese código de la asignatura">
 	    </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Nombre</label>
-	      <input type="text" class="form-control" value="{{ $asignaturas->nombre}}" name="nombreAsignatura" id="nombreAsignatura" placeholder="Ingrese nombre de la asignatura">
+	      <input type="text" class="form-control" value="{{ $asignaturas->nombre}}" name="nombre" id="nombreAsignatura" placeholder="Ingrese nombre de la asignatura">
 	    </div>
 	    <div class="form-group">
 	      <label for="exampleInputPassword1">Descripción</label>
-	      <input type="text" class="form-control" value="{{ $asignaturas->descripcion}}" name="descripcionAsignatura" id="descripcionAsignatura" placeholder="Ingrese descripción de la asignatura">
+	      <input type="text" class="form-control" value="{{ $asignaturas->descripcion}}" name="descripcion" id="descripcionAsignatura" placeholder="Ingrese descripción de la asignatura">
 	    </div>
       <div class="form-group">
         <div class="row">
           <div class="col-md-2">
           <div class="form-group">
             <label for="sel1">Carrera: </label>
-            <select class="form-control" id="carreraAsig" name="carreraAsig">
+            <select class="form-control" id="carrera_id" name="carrera_id">
             @foreach($carreras as $car)
-                <option value="{{ $car->id }}" name="carreraAsig">{{ $car->nombre }}</option>
+                <option value="{{ $car->id }}" id="carrera_{{ $car->id }}" name="carrera_id">{{ $car->nombre }}</option>
             @endforeach
             </select>
           </div>
@@ -184,4 +194,11 @@ hr {
 	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
 	  </div><!-- /.box-body -->
 {!! Form::close() !!}
+@stop
+@section('scripts')
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#carrera_id option[id=carrera_'+{{ $asignaturas->carrera_id }}+']').attr('selected', 'selected');
+  });
+</script>
 @stop

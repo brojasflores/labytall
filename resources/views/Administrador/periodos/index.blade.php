@@ -173,6 +173,12 @@ hr {
         <strong class="alert-link">{{ Session::get('delete') }}</strong>
     </div>
 @endif
+@if(Session::has('horas'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('horas') }}</strong>
+    </div>
+@endif
 <h1>Períodos</h1>
 <form role="form" method="get" action="{{ route('administrador.periodo.create')}}">
   <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
