@@ -155,6 +155,12 @@ hr {
 <li class="active">Horarios</li>
 @stop
 @section('content')
+@if(Session::has('create'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('create') }}</strong>
+    </div>
+@endif
 <h1>Horarios</h1>
 <form role="form" method="get" action="{{ route('administrador.asignar.index')}}">
   <button type="submit" class="fa fa-plus-square btn btn-primary"> Realizar una Reserva</button>

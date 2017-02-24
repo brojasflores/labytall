@@ -49,7 +49,7 @@ return array(
 	"json"           => "El campo :attribute debe ser una cadena JSON válida.",
 	"match"          => "El formato :attribute es inválido.",
 	"max"            => array(
-			"numeric" => "El campo :attribute debe ser menor que :max.",
+			"numeric" => "El campo :attribute debe ser menor que :max dígitos.",
 			"file"    => "El campo :attribute debe ser menor que :max kilobytes.",
 			"string"  => "El campo :attribute debe ser menor que :max caracteres.",
 			"array"   => "El campo :attribute debe tener al menos :min elementos.",
@@ -57,7 +57,7 @@ return array(
 
 	"mimes"         => "El campo :attribute debe ser un archivo de tipo :values.",
 	"min"           => array(
-			"numeric" => "El campo :attribute debe tener al menos :min.",
+			"numeric" => "El campo :attribute debe tener al menos :min dígitos.",
 			"file"    => "El campo :attribute debe tener al menos :min kilobytes.",
 			"string"  => "El campo :attribute debe tener al menos :min caracteres.",
 	),
@@ -73,7 +73,7 @@ return array(
 	"required_without_all"  => "El campo :attribute es requerido cuando ningún :values está presente.",
 	"same"                  => "El campo :attribute y :other debe coincidir.",
 	"size"                  => array(
-				"numeric" => "El campo :attribute debe ser :size.",
+				"numeric" => "El campo :attribute debe contener :size.",
 				"file"    => "El campo :attribute debe tener :size kilobytes.",
 				"string"  => "El campo :attribute debe tener :size caracteres.",
 				"array"   => "El campo :attribute debe contener :size elementos.",
