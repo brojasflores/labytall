@@ -151,6 +151,7 @@ hr {
 @stop
 @section('content')
 <h1>Editar Horario</h1>
+
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
 {!! Form::model($horarios,['route' => ['administrador.horario.update',$horarios], 'method' => 'PUT']) !!}
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -161,9 +162,9 @@ hr {
 	    		<div class="col-md-3">
 					<div class="form-group">
 					  <label for="sel1">Sala: </label>
-					  <select class="form-control" id="sala_id" name="salaHorario">
+					  <select class="form-control" id="sala_id" name="sala_id">
 					  	@foreach($salas as $sal)
-					    	<option id="{{ $sal->id }}" value="{{ $sal->id }}" name="sala">{{ $sal->nombre }}</option>
+					    	<option id="{{ $sal->id }}" value="{{ $sal->id }}" name="sala_id">{{ $sal->nombre }}</option>
 						@endforeach
 					  </select>
 					</div>
@@ -223,9 +224,9 @@ hr {
 	    		<div class="col-md-3">
 					<div class="form-group">
 					  <label for="sel1">Período: </label>
-					  <select class="form-control" id="periodo_id" name="periodo">
+					  <select class="form-control" id="periodo_id" name="periodo_id">
 					  	@foreach($periodos as $per)
-					    	<option id="{{ $per->id }}" value="{{ $per->id }}" name="periodo">{{ $per->bloque }}</option>
+					    	<option id="{{ $per->id }}" value="{{ $per->id }}" name="periodo_id">{{ $per->bloque }}</option>
 						@endforeach
 					  </select>
 					</div>
@@ -237,9 +238,9 @@ hr {
 	    		<div class="col-md-3">
 					<div class="form-group">
 					  <label for="sel1">Curso - Sección: </label>
-					  <select class="form-control" id="curso_id" name="cursoHorario">
+					  <select class="form-control" id="curso_id" name="curso_id">
 					  	@foreach($cursos as $curso)
-					    	<option id="{{ $curso->id }}" value="{{ $curso->id }}" name="cursoHorario">{{ $curso->nombre }} - {{ $curso->seccion }}</option>
+					    	<option id="{{ $curso->id }}" value="{{ $curso->id }}" name="curso_id">{{ $curso->nombre }} - {{ $curso->seccion }}</option>
 						@endforeach
 					  </select>
 					</div>
@@ -264,8 +265,21 @@ hr {
 	    	<div class="row">
 	    		<div class="col-md-3">
 					<div class="form-group">
+					  <label for="sel1">Tipo de reserva: </label>
+					  <select class="form-control" id="rol" name="rol">
+					  	   	<option id="docente" value="docente" name="docente">Docente</option>
+					  	   	<option id="ayudante" value="ayudante" name="ayudante">Ayudante</option>
+					  </select>
+					</div>
+		    	</div>
+		    </div>
+	    </div>
+	    <div class="form-group">
+	    	<div class="row">
+	    		<div class="col-md-3">
+					<div class="form-group">
 					  <label for="sel1">Rut: </label>
-						  <input type="text" class="form-control" value="{{ $horarios->rut }}" name="rutHorario" id="rutHorario" aria-describedby="basic-addon2"> 
+						  <input type="text" class="form-control" value="{{ $rut }}" name="rut" id="rut" aria-describedby="basic-addon2"> 
 					</div>
 		    	</div>
 		    </div>

@@ -6,17 +6,20 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-use App\Horario;
-use App\Horario_Alumno;
+use Auth;
+use App\User;
 use App\Sala;
 use App\Periodo;
 use App\Curso;
 use App\Asignatura;
+use App\Horario;
+use App\Horario_Alumno;
 use App\Estacion_trabajo;
+use App\RolUsuario;
+use App\Rol;
 use Carbon\Carbon;
-use Auth;
-use App\User;
 use Session;
+
 
 class horarioController extends Controller
 {
@@ -115,6 +118,29 @@ class horarioController extends Controller
           
         }
         else{
+                $numero = Horario::where('id','=',$id)
+                              ->select('rut')
+                              ->get();
+
+                $numero = $numero->first()->rut;
+
+                $i = 2;
+                $suma = 0;
+                foreach(array_reverse(str_split($numero)) as $v)
+                {
+                    if($i==8)
+                        $i = 2;
+                    $suma += $v * $i;
+                    ++$i;
+                }
+                $dvr = 11 - ($suma % 11);
+                
+                if($dvr == 11)
+                    $dvr = 0;
+                if($dvr == 10)
+                    $dvr = 'K';
+
+                $rut= $numero.$dvr;
 
             $horarios = Horario::findOrFail($id);
 
@@ -145,11 +171,11 @@ class horarioController extends Controller
             
             if($cont>1)
             {
-                return view ('Administrador/horarios/edit',compact('horarios','salas','periodos','cursos','v2','cont'));
+                return view ('Administrador/horarios/edit',compact('rut','horarios','salas','periodos','cursos','v2','cont'));
             }
             else
             {
-                return view ('Administrador/horarios/edit',compact('horarios','salas','periodos','cursos','cont'));
+                return view ('Administrador/horarios/edit',compact('rut','horarios','salas','periodos','cursos','cont'));
             }
 
             //return view('Administrador/horarios/edit',compact('horarios','salas','periodos','cursos'));
@@ -160,7 +186,185 @@ class horarioController extends Controller
 
     public function update(Request $request, $id)
     {   
-        //VALIDACION    
+        //dd($request);
+        //VAIDA RUT
+        $rut = preg_replace('/[^k0-9]/i', '', $request->rut);
+        $dv  = substr($rut, -1);
+        $numero = substr($rut, 0, strlen($rut)-1);
+        //dd($numero);
+        $i = 2;
+        $suma = 0;
+        foreach(array_reverse(str_split($numero)) as $v)
+        {
+            if($i==8)
+                $i = 2;
+            $suma += $v * $i;
+            ++$i;
+        }
+        $dvr = 11 - ($suma % 11);
+        
+        if($dvr == 11)
+            $dvr = 0;
+        if($dvr == 10)
+            $dvr = 'K';
+        if($dvr == strtoupper($dv))
+            $ok='si';
+        else
+            $ok='no';
+        //
+
+        if($ok == 'si')
+        {
+            $idrol = Rol::where('nombre','=',$request->get('rol'))
+                    ->select('id')
+                    ->get();
+
+            $idrol = $idrol->first()->id;
+
+            $encontrado = RolUsuario::where('rut','=',$numero)
+                                    ->where('rol_id','=',$idrol)
+                                    ->select('id')
+                                    ->get();
+
+            if($encontrado->isEmpty())
+            {
+                Session::flash('create','¡El rut ingresado no puede hacer este tipo de reservas!');
+                return redirect()->route('administrador.horario.index');
+            }
+        }
+        else
+        {
+            Session::flash('create','¡El rut ingresado en inválido, ingrese rut con dígito verificador y sin guión!');
+            return redirect()->route('administrador.horario.index');
+        }
+
+//
+        if($request->get('rol')=='docente')
+        {
+            if($request->get('permanencia') == 'dia')
+            {
+                if($request->get('fecha')==null)
+                {
+                    //seleccione un dia en el calenario
+                    Session::flash('create','¡Seleccione un día en el calendario!');
+                    return redirect()->route('administrador.asignar.docente');
+                }
+            }
+            else
+            {
+                if($request->get('permanencia')=='semestral')
+                {
+                    if($request->get('fecha_inicio')==null || $request->get('fecha_fin')==null)
+                    {
+                        //seleccione fecha inicio y fecha fin en el calendario
+                        Session::flash('create','¡Seleccione fecha inicio y fin en el calendario!');
+                        return redirect()->route('administrador.asignar.docente');
+                    }
+                }
+                else
+                {
+                    Session::flash('create','¡Ingrese permanencia!');
+                    return redirect()->route('administrador.asignar.docente');
+                }
+            }
+            
+        }
+
+        if($request->get('rol')=='ayudante')
+        {
+            if($request->get('permanencia') == 'dia')
+            {
+                if($request->get('fecha')==null)
+                {
+                    //seleccione un dia en el calenario
+                    Session::flash('create','¡Seleccione un día en el calendario!');
+                    return redirect()->route('administrador.asignar.ayudante');
+                }
+            }
+            else
+            {
+                if($request->get('permanencia')=='semestral')
+                {
+                    if($request->get('fecha_inicio')==null || $request->get('fecha_fin')==null)
+                    {
+                        //seleccione fecha inicio y fecha fin en el calendario
+                        Session::flash('create','¡Seleccione fecha inicio y fin en el calendario!');
+                        return redirect()->route('administrador.asignar.ayudante');
+                    }
+                }
+                else
+                {
+                    Session::flash('create','¡Ingrese permanencia!');
+                    return redirect()->route('administrador.asignar.ayudante');
+                }
+            }
+            
+        }
+
+        if($request->get('permanencia') === 'semestral')
+        {
+            $fecha_separada1 = explode('/',$request->get('fecha_inicio'));
+            $fecha_con_guion1 = [$fecha_separada1[2],$fecha_separada1[0],$fecha_separada1[1]];
+            $fecha_formateada = implode('-',$fecha_con_guion1);
+
+            $fecha_separada2 = explode('/',$request->get('fecha_fin'));
+            $fecha_con_guion2 = [$fecha_separada2[2],$fecha_separada2[0],$fecha_separada2[1]];
+            $fecha_formateada2 = implode('-',$fecha_con_guion2);
+
+            $inicio = new Carbon($fecha_formateada);
+            $termino = new Carbon($fecha_formateada2); 
+
+            if($inicio>$termino)
+            {
+                Session::flash('create','¡La fecha final debe ser mayor a la fecha inicial, intente nuevamente!');
+                return redirect()->route('administrador.horario.index');
+            }
+        }
+
+        // 
+
+        $var = Horario::where('id','=',$id)
+               ->select('sala_id','permanencia')
+               ->get();
+        
+        foreach($var as $v)
+        {
+            $v2= $v->sala_id;
+            $per=$v->permanencia;
+        }
+
+        $esT = Estacion_trabajo::where('sala_id','=',$v2)
+               ->select('id')
+               ->get();
+
+        foreach($esT as $v)
+        {
+            $v3[]= $v->id;
+        }
+
+        $cont= count($v3); 
+        for($i=0;$i<$cont;$i++)
+        {
+            $est = Estacion_trabajo::findOrFail($v3[$i]);
+            $est->fill([
+            'disponibilidad' => "si",
+            ]); 
+            $est->save();
+        }
+        $est->save();
+
+        $horarios = Horario::findOrFail($id);
+        $curso = $horarios->curso_id;
+        $periodo = $horarios->periodo_id;
+        
+        Horario::where('curso_id',$curso)
+                ->where('periodo_id',$periodo)
+                ->where('permanencia',$per)
+                ->delete();
+
+        //
+
+
         if($request->get('permanencia') === 'dia')
         {
             $si=0;
@@ -170,12 +374,16 @@ class horarioController extends Controller
             $fecha_formateada = implode('-',$fecha_con_guion);
 
             $con = Horario::where('fecha','=',$fecha_formateada)
-                      ->where('periodo_id','=',$request->get('periodo'))
+                      ->where('periodo_id','=',$request->get('periodo_id'))
+                      ->where('sala_id','=',$request->get('sala_id'))
+                      ->where('id','!=',$id)
                       ->select('id')
                       ->get();
 
             $con2 = Horario_Alumno::where('fecha','=',$fecha_formateada)
-                          ->where('periodo_id','=',$request->get('periodo'))
+                          ->where('periodo_id','=',$request->get('periodo_id'))
+                          ->where('sala_id','=',$request->get('sala_id'))
+                          ->where('id','!=',$id)
                           ->select('id')
                           ->get();
             
@@ -224,12 +432,14 @@ class horarioController extends Controller
                         $fech[$i] = $lunes;
                         //dd($fech[$i]);
                         $con = Horario::where('fecha','=',$fech[$i])
-                              ->where('periodo_id','=',$request->get('periodo'))
+                              ->where('periodo_id','=',$request->get('periodo_id'))
+                              ->where('sala_id','=',$request->get('sala_id'))
                               ->select('id')
                               ->get();
 
                         $con2 = Horario_Alumno::where('fecha','=',$fech[$i])
-                                      ->where('periodo_id','=',$request->get('periodo'))
+                                      ->where('periodo_id','=',$request->get('periodo_id'))
+                                      ->where('sala_id','=',$request->get('sala_id'))
                                       ->select('id')
                                       ->get();
 
@@ -252,12 +462,14 @@ class horarioController extends Controller
                         $fech[$i] = $martes;
                         //dd($fech[$i]);
                         $con = Horario::where('fecha','=',$fech[$i])
-                              ->where('periodo_id','=',$request->get('periodo'))
+                              ->where('periodo_id','=',$request->get('periodo_id'))
+                              ->where('sala_id','=',$request->get('sala_id'))
                               ->select('id')
                               ->get();
 
                         $con2 = Horario_Alumno::where('fecha','=',$fech[$i])
-                                      ->where('periodo_id','=',$request->get('periodo'))
+                                      ->where('periodo_id','=',$request->get('periodo_id'))
+                                      ->where('sala_id','=',$request->get('sala_id'))
                                       ->select('id')
                                       ->get();
 
@@ -281,12 +493,14 @@ class horarioController extends Controller
                         $fech[$i] = $miercoles;
                         //dd($fech[$i]);
                         $con = Horario::where('fecha','=',$fech[$i])
-                              ->where('periodo_id','=',$request->get('periodo'))
+                              ->where('periodo_id','=',$request->get('periodo_id'))
+                              ->where('sala_id','=',$request->get('sala_id'))
                               ->select('id')
                               ->get();
 
                         $con2 = Horario_Alumno::where('fecha','=',$fech[$i])
-                                      ->where('periodo_id','=',$request->get('periodo'))
+                                      ->where('periodo_id','=',$request->get('periodo_id'))
+                                      ->where('sala_id','=',$request->get('sala_id'))
                                       ->select('id')
                                       ->get();
 
@@ -310,12 +524,14 @@ class horarioController extends Controller
                         $fech[$i] = $jueves;
                         //dd($fech[$i]);
                         $con = Horario::where('fecha','=',$fech[$i])
-                              ->where('periodo_id','=',$request->get('periodo'))
+                              ->where('periodo_id','=',$request->get('periodo_id'))
+                              ->where('sala_id','=',$request->get('sala_id'))
                               ->select('id')
                               ->get();
 
                         $con2 = Horario_Alumno::where('fecha','=',$fech[$i])
-                                      ->where('periodo_id','=',$request->get('periodo'))
+                                      ->where('periodo_id','=',$request->get('periodo_id'))
+                                      ->where('sala_id','=',$request->get('sala_id'))
                                       ->select('id')
                                       ->get();
 
@@ -339,12 +555,14 @@ class horarioController extends Controller
                         $fech[$i] = $viernes;
                         //dd($fech[$i]);
                         $con = Horario::where('fecha','=',$fech[$i])
-                              ->where('periodo_id','=',$request->get('periodo'))
+                              ->where('periodo_id','=',$request->get('periodo_id'))
+                              ->where('sala_id','=',$request->get('sala_id'))
                               ->select('id')
                               ->get();
 
                         $con2 = Horario_Alumno::where('fecha','=',$fech[$i])
-                                      ->where('periodo_id','=',$request->get('periodo'))
+                                      ->where('periodo_id','=',$request->get('periodo_id'))
+                                      ->where('sala_id','=',$request->get('sala_id'))
                                       ->select('id')
                                       ->get();
 
@@ -368,12 +586,14 @@ class horarioController extends Controller
                         $fech[$i] = $sabado;
                         //dd($fech[$i]);
                         $con = Horario::where('fecha','=',$fech[$i])
-                              ->where('periodo_id','=',$request->get('periodo'))
+                              ->where('periodo_id','=',$request->get('periodo_id'))
+                              ->where('sala_id','=',$request->get('sala_id'))
                               ->select('id')
                               ->get();
 
                         $con2 = Horario_Alumno::where('fecha','=',$fech[$i])
-                                      ->where('periodo_id','=',$request->get('periodo'))
+                                      ->where('periodo_id','=',$request->get('periodo_id'))
+                                      ->where('sala_id','=',$request->get('sala_id'))
                                       ->select('id')
                                       ->get();
 
@@ -393,322 +613,547 @@ class horarioController extends Controller
             }
             //termina la validación de si estan las fechas;
         }
-        
-        if ($si==0) 
+
+        if($si==0)
         {
-            $var = Horario::where('id','=',$id)
-               ->select('sala_id')
-               ->get();
+            $curso = Horario::where('curso_id','=',$request->get('curso_id'))
+                            ->where('fecha','=',$fecha_formateada)
+                            ->get(); 
 
-            foreach($var as $v)
+            if($curso->count() == 0)
             {
-                $v2= $v->sala_id;
-            }
-
-            $esT = Estacion_trabajo::where('sala_id','=',$v2)
-                   ->select('id')
-                   ->get();
-
-            foreach($esT as $v)
-            {
-                $v3[]= $v->id;
-            }
-
-            $cont= count($v3); 
-            for($i=0;$i<$cont;$i++)
-            {
-                $est = Estacion_trabajo::findOrFail($v3[$i]);
-                $est->fill([
-                'disponibilidad' => "si",
-                ]); 
-                $est->save();
-            }
-            $est->save();
-            
-            $horarios = Horario::findOrFail($id);
-            $curso = $horarios->curso_id;
-            $periodo = $horarios->periodo_id;
-            Horario::where('curso_id',$curso)
-                    ->where('periodo_id',$periodo)
-                    ->delete();
-
-            if($request->get('permanencia') === 'dia')
-            {
-                //Formatear la fecha de mm/dd/aaaa => aaaa-mm-dd
-                $fecha_separada = explode('/',$request->get('fecha'));
-                $fecha_con_guion = [$fecha_separada[2],$fecha_separada[0],$fecha_separada[1]];
-                $fecha_formateada = implode('-',$fecha_con_guion);
-           
-                Horario::create([
-                    'fecha' => $fecha_formateada,
-                    'sala_id' => $request->get('sala'),
-                    'periodo_id' => $request->get('periodo'),
-                    'curso_id' => $request->get('cursoHorario'),
-                    'rut' => $request->get('rutHorario'),
-                    'permanencia' => 'dia',
-                    'asistencia' => $request->get('asistenciaH')
-                    ]);
-
-                $id2 = $request->get('sala');
-                $est = Estacion_trabajo::where('sala_id','=',$id2)
-                   ->select('id')
-                   ->get();
-                foreach($est as $v)
+                //insertar max 2 registros
+                if($request->get('rol') == 'docente')
                 {
-                    $v4[]= $v->id;
-                }
-                $cont2= count($v4); 
-                for($j=0;$j<$cont2;$j++)
-                {
-                    $est = Estacion_trabajo::findOrFail($v4[$j]);
-                    $est->fill([
-                    'disponibilidad' => "no",
-                    ]); 
-                    $est->save();
-                }
-                $est->save();
+                    $docente = RolUsuario::join('rol','rol.id','=','rol_users.rol_id')
+                                        ->where('rol_users.rut','=',$numero)->select('rol.nombre')->get();              
+                
+                    foreach($docente as $d){
 
-                Session::flash('create','¡Horario editado con éxito!');
-                return redirect()->route('administrador.horario.index');
-            }
-            else
-            {
-                if($request->get('permanencia') === 'semestral')
-                {
-
-                    $fecha_separada1 = explode('/',$request->get('fecha_inicio'));
-                    $fecha_con_guion1 = [$fecha_separada1[2],$fecha_separada1[0],$fecha_separada1[1]];
-                    $fecha_formateada1 = implode('-',$fecha_con_guion1);
-
-                    $fecha_separada2 = explode('/',$request->get('fecha_fin'));
-                    $fecha_con_guion2 = [$fecha_separada2[2],$fecha_separada2[0],$fecha_separada2[1]];
-                    $fecha_formateada2 = implode('-',$fecha_con_guion2);
-
-                    $inicio = new Carbon($fecha_formateada1);
-                    $termino = new Carbon($fecha_formateada2);
-
-                    while($inicio <= $termino)
-                    {
-                        Carbon::setTestNow($inicio);
-                        if($request->get('dia') === 'lunes')
+                        if($d->nombre == 'docente')
                         {
-                            $lunes = new Carbon('this monday');
-                            if($lunes <= $termino)
-                            {
-                                $lun = Horario::create([
-                                       'fecha' => $lunes,
-                                       'sala_id' => $request->get('sala'),
-                                       'periodo_id' => $request->get('periodo'),
-                                       'curso_id' => $request->get('cursoHorario'),
-                                       'rut' => $request->get('rutHorario'),
-                                       'permanencia' => 'semestral',
-                                       'asistencia' => $request->get('asistenciaH')
-                                       ]);
 
-                                $id2 = $request->get('sala');
-                                $est = Estacion_trabajo::where('sala_id','=',$id2)
+                            if($request->get('permanencia') === 'dia')
+                            {
+                                //Formatear la fecha de mm/dd/aaaa => aaaa-mm-dd
+                                $fecha_separada = explode('/',$request->get('fecha'));
+                                $fecha_con_guion = [$fecha_separada[2],$fecha_separada[0],$fecha_separada[1]];
+                                $fecha_formateada = implode('-',$fecha_con_guion);
+
+                                Horario::create([
+                                    'fecha' => $fecha_formateada,
+                                    'sala_id' => $request->get('sala_id'),
+                                    'periodo_id' => $request->get('periodo_id'),
+                                    'curso_id' => $request->get('curso_id'),
+                                    'rut' => $numero,
+                                    'permanencia' => 'dia',
+                                    'asistencia' => 'Pendiente'
+                                    ]);
+                                //pone disponibilidad en no para un lab completo
+                                $id = $request->get('sala_id');
+                                $esT = Estacion_trabajo::where('sala_id','=',$id)
                                    ->select('id')
                                    ->get();
-                                foreach($est as $v)
+                                foreach($esT as $v)
                                 {
-                                    $v4[]= $v->id;
+                                    $v2[]= $v->id;
                                 }
-                                $cont2= count($v4); 
-                                for($j=0;$j<$cont2;$j++)
+                                $cont= count($v2); 
+                                for($i=0;$i<$cont;$i++)
                                 {
-                                    $est = Estacion_trabajo::findOrFail($v4[$j]);
+                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
                                     $est->fill([
-                                    'disponibilidad' => "no",
+                                    'disponibilidad' => "si",
                                     ]); 
                                     $est->save();
                                 }
                                 $est->save();
-                            }
-                        }
-                        if($request->get('dia') === 'martes')
-                        {
-                            $martes = new Carbon('this tuesday');
-                            if($martes <= $termino)
-                            {
-                                $mar = Horario::create([
-                                       'fecha' => $martes,
-                                       'sala_id' => $request->get('sala'),
-                                       'periodo_id' => $request->get('periodo'),
-                                       'curso_id' => $request->get('cursoHorario'),
-                                       'rut' => $request->get('rutHorario'),
-                                       'permanencia' => 'semestral',
-                                       'asistencia' => $request->get('asistenciaH')
-                                       ]);
 
-                                $id2 = $request->get('sala');
-                                $est = Estacion_trabajo::where('sala_id','=',$id2)
-                                   ->select('id')
-                                   ->get();
-                                foreach($est as $v)
-                                {
-                                    $v4[]= $v->id;
-                                }
-                                $cont2= count($v4); 
-                                for($j=0;$j<$cont2;$j++)
-                                {
-                                    $est = Estacion_trabajo::findOrFail($v4[$j]);
-                                    $est->fill([
-                                    'disponibilidad' => "no",
-                                    ]); 
-                                    $est->save();
-                                }
-                                $est->save();
+                                //horario diario creado con exito docente
+                                Session::flash('create','¡Horario diario Docente reservado correctamente!');
+                                return redirect()->route('administrador.horario.index');
                             }
-                        }
-                        if($request->get('dia') === 'miercoles')
-                        {
-                            $miercoles = new Carbon('this wednesday');
-                            if($miercoles <= $termino)
+                            else
                             {
-                                $mier = Horario::create([
-                                       'fecha' => $miercoles,
-                                       'sala_id' => $request->get('sala'),
-                                       'periodo_id' => $request->get('periodo'),
-                                       'curso_id' => $request->get('cursoHorario'),
-                                       'rut' => $request->get('rutHorario'),
-                                       'permanencia' => 'semestral',
-                                       'asistencia' => $request->get('asistenciaH')
-                                       ]);
+                                if($request->get('permanencia') === 'semestral')
+                                {
+                                    //dd('crea');
+                                    $fecha_separada1 = explode('/',$request->get('fecha_inicio'));
+                                    $fecha_con_guion1 = [$fecha_separada1[2],$fecha_separada1[0],$fecha_separada1[1]];
+                                    $fecha_formateada1 = implode('-',$fecha_con_guion1);
 
-                                $id2 = $request->get('sala');
-                                $est = Estacion_trabajo::where('sala_id','=',$id2)
-                                   ->select('id')
-                                   ->get();
-                                foreach($est as $v)
-                                {
-                                    $v4[]= $v->id;
+                                    $fecha_separada2 = explode('/',$request->get('fecha_fin'));
+                                    $fecha_con_guion2 = [$fecha_separada2[2],$fecha_separada2[0],$fecha_separada2[1]];
+                                    $fecha_formateada2 = implode('-',$fecha_con_guion2);
+
+                                    $inicio = new Carbon($fecha_formateada1);
+                                    $termino = new Carbon($fecha_formateada2); 
+
+
+                                    while($inicio <= $termino)
+                                    {
+                                        Carbon::setTestNow($inicio);
+                                        if($request->get('dia') === 'lunes')
+                                        {
+                                            $lunes = new Carbon('this monday');
+                                            if($lunes <= $termino)
+                                            {
+                                            
+                                                    $lun = Horario::create([
+                                                           'fecha' => $lunes,
+                                                           'sala_id' => $request->get('sala_id'),
+                                                           'periodo_id' => $request->get('periodo_id'),
+                                                           'curso_id' => $request->get('curso_id'),
+                                                           'rut' => $numero,
+                                                           'permanencia' => 'semestral',
+                                                           'asistencia' => 'Pendiente'
+                                                           ]);
+                                            }
+                                        }
+                                        if($request->get('dia') === 'martes')
+                                        {
+                                            $martes = new Carbon('this tuesday');
+                                            if($martes <= $termino)
+                                            {
+
+                                                $mar = Horario::create([
+                                                       'fecha' => $martes,
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
+                                                       'permanencia' => 'semestral',
+                                                       'asistencia' => 'Pendiente'
+                                                       ]);
+                                            }
+                                        }
+                                        if($request->get('dia') === 'miercoles')
+                                        {
+
+                                            $miercoles = new Carbon('this wednesday');
+                                            if($miercoles <= $termino)
+                                            {
+
+                                                $mier = Horario::create([
+                                                       'fecha' => $miercoles,
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
+                                                       'permanencia' => 'semestral',
+                                                       'asistencia' => 'Pendiente'
+                                                       ]);
+                                            }
+                                        }
+                                        if($request->get('dia') === 'jueves')
+                                        {
+                                            $jueves = new Carbon('this thursday');
+                                            if($jueves <= $termino)
+                                            {                      
+                                                $jue = Horario::create([
+                                                       'fecha' => $jueves,
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
+                                                       'permanencia' => 'semestral',
+                                                       'asistencia' => 'Pendiente'
+                                                       ]);
+                                            }
+                                        }
+                                        if($request->get('dia') === 'viernes')
+                                        {
+                                            $viernes = new Carbon('this friday');
+                                            if($viernes <= $termino)
+                                            {
+                                               
+                                                $vier = Horario::create([
+                                                       'fecha' => $viernes,
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
+                                                       'permanencia' => 'semestral',
+                                                       'asistencia' => 'Pendiente'
+                                                       ]);
+                                            }
+                                        }
+                                        if($request->get('dia') === 'sabado')
+                                        {
+                                            $sabado = new Carbon('this saturday');
+                                            if($sabado <= $termino)
+                                            {
+
+                                                $sab = Horario::create([
+                                                       'fecha' => $sabado,
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
+                                                       'permanencia' => 'semestral',
+                                                       'asistencia' => 'Pendiente'
+                                                       ]);
+                                            }
+                                        }
+                                        $inicio->addWeek(1);
+                                    }
                                 }
-                                $cont2= count($v4); 
-                                for($j=0;$j<$cont2;$j++)
-                                {
-                                    $est = Estacion_trabajo::findOrFail($v4[$j]);
-                                    $est->fill([
-                                    'disponibilidad' => "no",
-                                    ]); 
-                                    $est->save();
-                                }
-                                $est->save();
+                                //horario docente creado con exito! semestral
+                                Session::flash('create','¡Horario semestral Docente reservado correctamente!');
+                                return redirect()->route('administrador.horario.index');
                             }
                         }
-                        if($request->get('dia') === 'jueves')
-                        {
-                            $jueves = new Carbon('this thursday');
-                            if($jueves <= $termino)
-                            {
-                                $jue = Horario::create([
-                                       'fecha' => $jueves,
-                                       'sala_id' => $request->get('sala'),
-                                       'periodo_id' => $request->get('periodo'),
-                                       'curso_id' => $request->get('cursoHorario'),
-                                       'rut' => $request->get('rutHorario'),
-                                       'permanencia' => 'semestral',
-                                       'asistencia' => $request->get('asistenciaH')
-                                       ]);
-
-                                $id2 = $request->get('sala');
-                                $est = Estacion_trabajo::where('sala_id','=',$id2)
-                                   ->select('id')
-                                   ->get();
-                                foreach($est as $v)
-                                {
-                                    $v4[]= $v->id;
-                                }
-                                $cont2= count($v4); 
-                                for($j=0;$j<$cont2;$j++)
-                                {
-                                    $est = Estacion_trabajo::findOrFail($v4[$j]);
-                                    $est->fill([
-                                    'disponibilidad' => "no",
-                                    ]); 
-                                    $est->save();
-                                }
-                                $est->save();
-                            }
-                        }
-                        if($request->get('dia') === 'viernes')
-                        {
-                            $viernes = new Carbon('this friday');
-                            if($viernes <= $termino)
-                            {
-                                $vier = Horario::create([
-                                       'fecha' => $viernes,
-                                       'sala_id' => $request->get('sala'),
-                                       'periodo_id' => $request->get('periodo'),
-                                       'curso_id' => $request->get('cursoHorario'),
-                                       'rut' => $request->get('rutHorario'),
-                                       'permanencia' => 'semestral',
-                                       'asistencia' => $request->get('asistenciaH')
-                                       ]);
-
-                                $id2 = $request->get('sala');
-                                $est = Estacion_trabajo::where('sala_id','=',$id2)
-                                   ->select('id')
-                                   ->get();
-                                foreach($est as $v)
-                                {
-                                    $v4[]= $v->id;
-                                }
-                                $cont2= count($v4); 
-                                for($j=0;$j<$cont2;$j++)
-                                {
-                                    $est = Estacion_trabajo::findOrFail($v4[$j]);
-                                    $est->fill([
-                                    'disponibilidad' => "no",
-                                    ]); 
-                                    $est->save();
-                                }
-                                $est->save();
-                            }
-                        }
-                        if($request->get('dia') === 'sabado')
-                        {
-                            $sabado = new Carbon('this saturday');
-                            if($sabado <= $termino)
-                            {
-                                $sab = Horario::create([
-                                       'fecha' => $sabado,
-                                       'sala_id' => $request->get('sala'),
-                                       'periodo_id' => $request->get('periodo'),
-                                       'curso_id' => $request->get('cursoHorario'),
-                                       'rut' => $request->get('rutHorario'),
-                                       'permanencia' => 'semestral',
-                                       'asistencia' => $request->get('asistenciaH')
-                                       ]);
-
-                                $id2 = $request->get('sala');
-                                $est = Estacion_trabajo::where('sala_id','=',$id2)
-                                   ->select('id')
-                                   ->get();
-                                foreach($est as $v)
-                                {
-                                    $v4[]= $v->id;
-                                }
-                                $cont2= count($v4); 
-                                for($j=0;$j<$cont2;$j++)
-                                {
-                                    $est = Estacion_trabajo::findOrFail($v4[$j]);
-                                    $est->fill([
-                                    'disponibilidad' => "no",
-                                    ]); 
-                                    $est->save();
-                                }
-                                $est->save();
-                            }
-                        }
-                        $inicio->addWeek(1);
                     }
                 }
-                Session::flash('create','¡Horario editado con éxito!');
+
+                if($request->get('rol') == 'ayudante')
+                {
+                    $docente = RolUsuario::join('rol','rol.id','=','rol_users.rol_id')
+                                        ->where('rol_users.rut','=',$numero)->select('rol.nombre')->get();
+
+                    foreach($docente as $d){
+
+                        if($d->nombre == 'ayudante')
+                        {
+                            if($request->get('permanencia') === 'dia')
+                            {
+                                //Formatear la fecha de mm/dd/aaaa => aaaa-mm-dd
+                                $fecha_separada = explode('/',$request->get('fecha'));
+                                $fecha_con_guion = [$fecha_separada[2],$fecha_separada[0],$fecha_separada[1]];
+                                $fecha_formateada = implode('-',$fecha_con_guion);
+
+                                Horario::create([
+                                    'fecha' => $fecha_formateada,
+                                    'sala_id' => $request->get('sala_id'),
+                                    'periodo_id' => $request->get('periodo_id'),
+                                    'curso_id' => $request->get('curso_id'),
+                                    'rut' => $numero,
+                                    'permanencia' => 'dia',
+                                    'asistencia' => 'Pendiente'
+                                    ]);
+
+                                Session::flash('create','¡Horario diario Ayudante reservado correctamente!');
+                                return redirect()->route('administrador.horario.index');
+                            }
+                            else
+                            {
+                                if($request->get('permanencia') === 'semestral')
+                                {
+
+                                    $fecha_separada1 = explode('/',$request->get('fecha_inicio'));
+                                    $fecha_con_guion1 = [$fecha_separada1[2],$fecha_separada1[0],$fecha_separada1[1]];
+                                    $fecha_formateada1 = implode('-',$fecha_con_guion1);
+
+                                    $fecha_separada2 = explode('/',$request->get('fecha_fin'));
+                                    $fecha_con_guion2 = [$fecha_separada2[2],$fecha_separada2[0],$fecha_separada2[1]];
+                                    $fecha_formateada2 = implode('-',$fecha_con_guion2);
+
+                                    $inicio = new Carbon($fecha_formateada1);
+                                    $termino = new Carbon($fecha_formateada2);
+
+                                    while($inicio <= $termino)
+                                    {
+                                        Carbon::setTestNow($inicio);
+                                        if($request->get('dia') === 'lunes')
+                                        {
+                                            $lunes = new Carbon('this monday');
+                                            if($lunes <= $termino)
+                                            {
+                                                    $lun = Horario::create([
+                                                           'fecha' => $lunes,
+                                                           'sala_id' => $request->get('sala_id'),
+                                                           'periodo_id' => $request->get('periodo_id'),
+                                                           'curso_id' => $request->get('curso_id'),
+                                                           'rut' => $numero,
+                                                           'permanencia' => 'semestral',
+                                                           'asistencia' => 'Pendiente'
+                                                           ]);
+                                            }
+                                        }
+                                        if($request->get('dia') === 'martes')
+                                        {
+                                            $martes = new Carbon('this tuesday');
+                                            if($martes <= $termino)
+                                            {
+                                                $mar = Horario::create([
+                                                       'fecha' => $martes,
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
+                                                       'permanencia' => 'semestral',
+                                                       'asistencia' => 'Pendiente'
+                                                       ]);
+                                            }
+                                        }
+                                        if($request->get('dia') === 'miercoles')
+                                        {
+                                            $miercoles = new Carbon('this wednesday');
+                                            if($miercoles <= $termino)
+                                            {                                           
+                                                $mier = Horario::create([
+                                                       'fecha' => $miercoles,
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
+                                                       'permanencia' => 'semestral',
+                                                       'asistencia' => 'Pendiente'
+                                                       ]);
+                                            }
+                                        }
+                                        if($request->get('dia') === 'jueves')
+                                        {
+                                            $jueves = new Carbon('this thursday');
+                                            if($jueves <= $termino)
+                                            {
+                                                $jue = Horario::create([
+                                                       'fecha' => $jueves,
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
+                                                       'permanencia' => 'semestral',
+                                                       'asistencia' => 'Pendiente'
+                                                       ]);
+                                            }
+                                        }
+                                        if($request->get('dia') === 'viernes')
+                                        {
+                                            $viernes = new Carbon('this friday');
+                                            if($viernes <= $termino)
+                                            {                                               
+                                                $vier = Horario::create([
+                                                       'fecha' => $viernes,
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
+                                                       'permanencia' => 'semestral',
+                                                       'asistencia' => 'Pendiente'
+                                                       ]);
+                                            }
+                                        }
+                                        if($request->get('dia') === 'sabado')
+                                        {
+                                            $sabado = new Carbon('this saturday');
+                                            if($sabado <= $termino)
+                                            {
+                                                $sab = Horario::create([
+                                                       'fecha' => $sabado,
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
+                                                       'permanencia' => 'semestral',
+                                                       'asistencia' => 'Pendiente'
+                                                       ]);
+                                            }
+                                        }
+                                        $inicio->addWeek(1);
+                                    }
+                                }
+                                //Horario creado con exito de ayudante semestral
+                                Session::flash('create','¡Horario semestral ayudante reservado correctamente!');
+                                return redirect()->route('administrador.horario.index');
+                            }
+                        }
+                    }
+                }
+            }
+
+            if($curso->count() == 1)
+            {
+                foreach($curso as $c)
+                {
+                    if($c->periodo_id != $request->get('periodo_id'))
+                    {
+                        //insertar
+                        if($request->get('rol') == 'docente')
+                        {
+                            $docente = RolUsuario::join('rol','rol.id','=','rol_users.rol_id')
+                                                ->where('rol_users.rut','=',$numero)->select('rol.nombre')->get();
+
+                            foreach($docente as $d){
+
+                                if($d->nombre == 'docente')
+                                {
+                                    if($request->get('permanencia') === 'dia')
+                                    {
+                                        //Formatear la fecha de mm/dd/aaaa => aaaa-mm-dd
+                                        $fecha_separada = explode('/',$request->get('fecha'));
+                                        $fecha_con_guion = [$fecha_separada[2],$fecha_separada[0],$fecha_separada[1]];
+                                        $fecha_formateada = implode('-',$fecha_con_guion);
+                                   
+                                        Horario::create([
+                                            'fecha' => $fecha_formateada,
+                                            'sala_id' => $request->get('sala_id'),
+                                            'periodo_id' => $request->get('periodo_id'),
+                                            'curso_id' => $request->get('curso_id'),
+                                            'rut' => $numero,
+                                            'permanencia' => 'dia',
+                                            'asistencia' => 'Pendiente'
+                                            ]);
+
+                                        //docente diario creado con exito
+                                        Session::flash('create','¡Horario diario Docente reservado correctamente!');
+                                        return redirect()->route('administrador.horario.index');
+                                    }
+                                    else
+                                    {
+                                        if($request->get('permanencia') === 'semestral')
+                                        {
+
+                                            $fecha_separada1 = explode('/',$request->get('fecha_inicio'));
+                                            $fecha_con_guion1 = [$fecha_separada1[2],$fecha_separada1[0],$fecha_separada1[1]];
+                                            $fecha_formateada1 = implode('-',$fecha_con_guion1);
+
+                                            $fecha_separada2 = explode('/',$request->get('fecha_fin'));
+                                            $fecha_con_guion2 = [$fecha_separada2[2],$fecha_separada2[0],$fecha_separada2[1]];
+                                            $fecha_formateada2 = implode('-',$fecha_con_guion2);
+
+                                            $inicio = new Carbon($fecha_formateada1);
+                                            $termino = new Carbon($fecha_formateada2);
+
+                                            while($inicio <= $termino)
+                                            {
+                                                Carbon::setTestNow($inicio);
+                                                if($request->get('dia') === 'lunes')
+                                                {
+                                                    $lunes = new Carbon('this monday');
+                                                    if($lunes <= $termino)
+                                                    {
+                                                        $lun = Horario::create([
+                                                               'fecha' => $lunes,
+                                                               'sala_id' => $request->get('sala_id'),
+                                                               'periodo_id' => $request->get('periodo_id'),
+                                                               'curso_id' => $request->get('curso_id'),
+                                                               'rut' => $numero,
+                                                               'permanencia' => 'semestral',
+                                                               'asistencia' => 'Pendiente'
+                                                               ]);
+                                                    }
+                                                }
+                                                if($request->get('dia') === 'martes')
+                                                {
+                                                    $martes = new Carbon('this tuesday');
+                                                    if($martes <= $termino)
+                                                    {        
+                                                        $mar = Horario::create([
+                                                               'fecha' => $martes,
+                                                               'sala_id' => $request->get('sala_id'),
+                                                               'periodo_id' => $request->get('periodo_id'),
+                                                               'curso_id' => $request->get('curso_id'),
+                                                               'rut' => $numero,
+                                                               'permanencia' => 'semestral',
+                                                               'asistencia' => 'Pendiente'
+                                                               ]);
+                                                    }
+                                                }
+                                                if($request->get('dia') === 'miercoles')
+                                                {
+                                                    $miercoles = new Carbon('this wednesday');
+                                                    if($miercoles <= $termino)
+                                                    {
+                                                        $mier = Horario::create([
+                                                               'fecha' => $miercoles,
+                                                               'sala_id' => $request->get('sala_id'),
+                                                               'periodo_id' => $request->get('periodo_id'),
+                                                               'curso_id' => $request->get('curso_id'),
+                                                               'rut' => $numero,
+                                                               'permanencia' => 'semestral',
+                                                               'asistencia' => 'Pendiente'
+                                                               ]);
+                                                    }
+                                                }
+                                                if($request->get('dia') === 'jueves')
+                                                {
+                                                    $jueves = new Carbon('this thursday');
+                                                    if($jueves <= $termino)
+                                                    {                       
+                                                        $jue = Horario::create([
+                                                               'fecha' => $jueves,
+                                                               'sala_id' => $request->get('sala_id'),
+                                                               'periodo_id' => $request->get('periodo_id'),
+                                                               'curso_id' => $request->get('curso_id'),
+                                                               'rut' => $numero,
+                                                               'permanencia' => 'semestral',
+                                                               'asistencia' => 'Pendiente'
+                                                               ]);
+                                                    }
+                                                }
+                                                if($request->get('dia') === 'viernes')
+                                                {
+                                                    $viernes = new Carbon('this friday');
+                                                    if($viernes <= $termino)
+                                                    {
+                                                        $vier = Horario::create([
+                                                               'fecha' => $viernes,
+                                                               'sala_id' => $request->get('sala_id'),
+                                                               'periodo_id' => $request->get('periodo_id'),
+                                                               'curso_id' => $request->get('curso_id'),
+                                                               'rut' => $numero,
+                                                               'permanencia' => 'semestral',
+                                                               'asistencia' => 'Pendiente'
+                                                               ]);         
+                                                    }
+                                                }
+                                                if($request->get('dia') === 'sabado')
+                                                {
+                                                    $sabado = new Carbon('this saturday');
+                                                    if($sabado <= $termino)
+                                                    {
+                                                            $sab = Horario::create([
+                                                                   'fecha' => $sabado,
+                                                                   'sala_id' => $request->get('sala_id'),
+                                                                   'periodo_id' => $request->get('periodo_id'),
+                                                                   'curso_id' => $request->get('curso_id'),
+                                                                   'rut' => $numero,
+                                                                   'permanencia' => 'semestral',
+                                                                   'asistencia' => 'Pendiente'
+                                                                   ]);
+                                                    }
+                                                }
+                                                $inicio->addWeek(1);
+                                            }
+                                        }
+                                        //docernte semestral exito
+                                        Session::flash('create','¡Horario semestral Docente reservado correctamente!');
+                                        return redirect()->route('administrador.horario.index');
+                                    }
+                                }
+                            }
+                        }
+                        if($request->get('rol') == 'ayudante')
+                        {
+                            //devolver mensaje de periodo por ayudante(max 1)
+                            Session::flash('create','¡Los Ayudantes pueden reservar sólamente un período por curso-sección!');
+                            return redirect()->route('administrador.horario.index');
+                        }
+
+                    }
+                    else
+                    {
+                        //devolver mensaje de periodo que son iguales
+                        Session::flash('create','¡Período ya reservado!');
+                        return redirect()->route('administrador.horario.index');
+                    }
+
+                }
+            }
+
+            if($curso->count() > 1)
+            {
+                //devuelve mensaje de que no se pueden tomar mas de 2 periodos por docente
+                Session::flash('create','¡Los Docentes pueden reservar máximo dos períodos por curso-sección!');
                 return redirect()->route('administrador.horario.index');
             }
         }
-        Session::flash('create','¡Horario ya reservado con anteroridad!');
-        return redirect()->route('administrador.horario.index');
+        else
+        {
+            Session::flash('create','¡Horario ya reservado con anteroridad. El horario que deseaba modificar fue eliminado, reserve nuevamente!');
+            return redirect()->route('administrador.horario.index');
+        }
     }
 
     public function destroy($id)
@@ -746,6 +1191,7 @@ class horarioController extends Controller
         $horarios = Horario::findOrFail($id);
         $curso = $horarios->curso_id;
         $periodo = $horarios->periodo_id;
+        
         Horario::where('curso_id',$curso)
                 ->where('periodo_id',$periodo)
                 ->where('permanencia',$per)

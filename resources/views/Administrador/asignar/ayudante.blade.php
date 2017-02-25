@@ -158,6 +158,12 @@ hr {
 <li class="active">Reserva Ayudante</li>
 @stop
 @section('content')
+@if(Session::has('create'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('create') }}</strong>
+    </div>
+@endif
 <div class="row" style="margin-left: 0px">
 
 <form role="form" method="post" action="{{ route('administrador.asignar.store') }}">
@@ -168,9 +174,9 @@ hr {
 	    		<div class="col-md-3">
 					<div class="form-group">
 					  <label for="sel1">Salas: </label>
-					  <select class="form-control" id="sala" name="sala">
+					  <select class="form-control" id="sala_id" name="sala_id">
 					  	@foreach($salas as $sala)
-					    	<option value="{{ $sala->id }}" name="sala">{{ $sala->nombre }}</option>
+					    	<option value="{{ $sala->id }}" name="sala_id">{{ $sala->nombre }}</option>
 						@endforeach
 					  </select>
 					</div>
@@ -231,9 +237,9 @@ hr {
 	    		<div class="col-md-3">
 					<div class="form-group">
 					  <label for="sel1">Período: </label>
-					  <select class="form-control" id="periodo" name="periodo">
+					  <select class="form-control" id="periodo_id" name="periodo_id">
 					  	@foreach($periodos as $periodo)
-					    	<option value="{{ $periodo->id }}" name="periodo">{{ $periodo->bloque }}</option>
+					    	<option value="{{ $periodo->id }}" name="periodo_id">{{ $periodo->bloque }}</option>
 						@endforeach
 					  </select>
 					</div>
@@ -245,9 +251,9 @@ hr {
 	    		<div class="col-md-3">
 					<div class="form-group">
 					  <label for="sel1">Curso: </label>
-					  <select class="form-control" id="curso" name="curso">
+					  <select class="form-control" id="curso_id" name="curso_id">
 					  	@foreach($cursos as $curso)
-					    	<option value="{{ $curso->id }}" name="curso">{{ $curso->nombre }} - {{ $curso->seccion }}</option>
+					    	<option value="{{ $curso->id }}" name="curso_id">{{ $curso->nombre }} - {{ $curso->seccion }}</option>
 						@endforeach
 					  </select>
 					</div>
@@ -259,7 +265,7 @@ hr {
 	    		<div class="col-md-3">
 					<div class="form-group">
 					  <label for="sel1">Rut Usuario: </label>
-						  <input type="text" name="usuario" class="form-control" placeholder="12234123" aria-describedby="basic-addon2">
+						  <input type="text" name="rut" class="form-control" placeholder="12234123" aria-describedby="basic-addon2">
 					</div>
 		    	</div>
 		    </div>

@@ -159,6 +159,122 @@ class asignarController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request);
+        //VAIDA RUT
+        $rut = preg_replace('/[^k0-9]/i', '', $request->rut);
+        $dv  = substr($rut, -1);
+        $numero = substr($rut, 0, strlen($rut)-1);
+        //dd($numero);
+        $i = 2;
+        $suma = 0;
+        foreach(array_reverse(str_split($numero)) as $v)
+        {
+            if($i==8)
+                $i = 2;
+            $suma += $v * $i;
+            ++$i;
+        }
+        $dvr = 11 - ($suma % 11);
+        
+        if($dvr == 11)
+            $dvr = 0;
+        if($dvr == 10)
+            $dvr = 'K';
+        if($dvr == strtoupper($dv))
+            $ok='si';
+        else
+            $ok='no';
+        //
+
+        if($ok == 'si')
+        {
+            $idrol = Rol::where('nombre','=',$request->get('rol'))
+                    ->select('id')
+                    ->get();
+
+            $idrol = $idrol->first()->id;
+
+            $encontrado = RolUsuario::where('rut','=',$numero)
+                                    ->where('rol_id','=',$idrol)
+                                    ->select('id')
+                                    ->get();
+
+            if($encontrado->isEmpty())
+            {
+                Session::flash('create','¡El rut ingresado no puede hacer este tipo de reservas!');
+                return redirect()->route('administrador.horario.index');
+            }
+        }
+        else
+        {
+            Session::flash('create','¡El rut ingresado en inválido, ingrese rut con dígito verificador y sin guión!');
+            return redirect()->route('administrador.horario.index');
+        }
+
+//
+        if($request->get('rol')=='docente')
+        {
+            if($request->get('permanencia') == 'dia')
+            {
+                if($request->get('fecha')==null)
+                {
+                    //seleccione un dia en el calenario
+                    Session::flash('create','¡Seleccione un día en el calendario!');
+                    return redirect()->route('administrador.asignar.docente');
+                }
+            }
+            else
+            {
+                if($request->get('permanencia')=='semestral')
+                {
+                    if($request->get('fecha_inicio')==null || $request->get('fecha_fin')==null)
+                    {
+                        //seleccione fecha inicio y fecha fin en el calendario
+                        Session::flash('create','¡Seleccione fecha inicio y fin en el calendario!');
+                        return redirect()->route('administrador.asignar.docente');
+                    }
+                }
+                else
+                {
+                    Session::flash('create','¡Ingrese permanencia!');
+                    return redirect()->route('administrador.asignar.docente');
+                }
+            }
+            
+        }
+
+        if($request->get('rol')=='ayudante')
+        {
+            if($request->get('permanencia') == 'dia')
+            {
+                if($request->get('fecha')==null)
+                {
+                    //seleccione un dia en el calenario
+                    Session::flash('create','¡Seleccione un día en el calendario!');
+                    return redirect()->route('administrador.asignar.ayudante');
+                }
+            }
+            else
+            {
+                if($request->get('permanencia')=='semestral')
+                {
+                    if($request->get('fecha_inicio')==null || $request->get('fecha_fin')==null)
+                    {
+                        //seleccione fecha inicio y fecha fin en el calendario
+                        Session::flash('create','¡Seleccione fecha inicio y fin en el calendario!');
+                        return redirect()->route('administrador.asignar.ayudante');
+                    }
+                }
+                else
+                {
+                    Session::flash('create','¡Ingrese permanencia!');
+                    return redirect()->route('administrador.asignar.ayudante');
+                }
+            }
+            
+        }
+        //           
+
         if($request->get('permanencia') === 'dia')
         {
             $si=0;
@@ -168,12 +284,14 @@ class asignarController extends Controller
             $fecha_formateada = implode('-',$fecha_con_guion);
 
             $con = Horario::where('fecha','=',$fecha_formateada)
-                      ->where('periodo_id','=',$request->get('periodo'))
+                      ->where('periodo_id','=',$request->get('periodo_id'))
+                      ->where('sala_id','=',$request->get('sala_id'))
                       ->select('id')
                       ->get();
 
             $con2 = Horario_Alumno::where('fecha','=',$fecha_formateada)
-                          ->where('periodo_id','=',$request->get('periodo'))
+                          ->where('periodo_id','=',$request->get('periodo_id'))
+                          ->where('sala_id','=',$request->get('sala_id'))
                           ->select('id')
                           ->get();
             
@@ -222,12 +340,14 @@ class asignarController extends Controller
                         $fech[$i] = $lunes;
                         //dd($fech[$i]);
                         $con = Horario::where('fecha','=',$fech[$i])
-                              ->where('periodo_id','=',$request->get('periodo'))
+                              ->where('periodo_id','=',$request->get('periodo_id'))
+                              ->where('sala_id','=',$request->get('sala_id'))
                               ->select('id')
                               ->get();
 
                         $con2 = Horario_Alumno::where('fecha','=',$fech[$i])
-                                      ->where('periodo_id','=',$request->get('periodo'))
+                                      ->where('periodo_id','=',$request->get('periodo_id'))
+                                      ->where('sala_id','=',$request->get('sala_id'))
                                       ->select('id')
                                       ->get();
 
@@ -250,12 +370,14 @@ class asignarController extends Controller
                         $fech[$i] = $martes;
                         //dd($fech[$i]);
                         $con = Horario::where('fecha','=',$fech[$i])
-                              ->where('periodo_id','=',$request->get('periodo'))
+                              ->where('periodo_id','=',$request->get('periodo_id'))
+                              ->where('sala_id','=',$request->get('sala_id'))
                               ->select('id')
                               ->get();
 
                         $con2 = Horario_Alumno::where('fecha','=',$fech[$i])
-                                      ->where('periodo_id','=',$request->get('periodo'))
+                                      ->where('periodo_id','=',$request->get('periodo_id'))
+                                      ->where('sala_id','=',$request->get('sala_id'))
                                       ->select('id')
                                       ->get();
 
@@ -279,12 +401,14 @@ class asignarController extends Controller
                         $fech[$i] = $miercoles;
                         //dd($fech[$i]);
                         $con = Horario::where('fecha','=',$fech[$i])
-                              ->where('periodo_id','=',$request->get('periodo'))
+                              ->where('periodo_id','=',$request->get('periodo_id'))
+                              ->where('sala_id','=',$request->get('sala_id'))
                               ->select('id')
                               ->get();
 
                         $con2 = Horario_Alumno::where('fecha','=',$fech[$i])
-                                      ->where('periodo_id','=',$request->get('periodo'))
+                                      ->where('periodo_id','=',$request->get('periodo_id'))
+                                      ->where('sala_id','=',$request->get('sala_id'))
                                       ->select('id')
                                       ->get();
 
@@ -308,12 +432,14 @@ class asignarController extends Controller
                         $fech[$i] = $jueves;
                         //dd($fech[$i]);
                         $con = Horario::where('fecha','=',$fech[$i])
-                              ->where('periodo_id','=',$request->get('periodo'))
+                              ->where('periodo_id','=',$request->get('periodo_id'))
+                              ->where('sala_id','=',$request->get('sala_id'))
                               ->select('id')
                               ->get();
 
                         $con2 = Horario_Alumno::where('fecha','=',$fech[$i])
-                                      ->where('periodo_id','=',$request->get('periodo'))
+                                      ->where('periodo_id','=',$request->get('periodo_id'))
+                                      ->where('sala_id','=',$request->get('sala_id'))
                                       ->select('id')
                                       ->get();
 
@@ -337,12 +463,14 @@ class asignarController extends Controller
                         $fech[$i] = $viernes;
                         //dd($fech[$i]);
                         $con = Horario::where('fecha','=',$fech[$i])
-                              ->where('periodo_id','=',$request->get('periodo'))
+                              ->where('periodo_id','=',$request->get('periodo_id'))
+                              ->where('sala_id','=',$request->get('sala_id'))
                               ->select('id')
                               ->get();
 
                         $con2 = Horario_Alumno::where('fecha','=',$fech[$i])
-                                      ->where('periodo_id','=',$request->get('periodo'))
+                                      ->where('periodo_id','=',$request->get('periodo_id'))
+                                      ->where('sala_id','=',$request->get('sala_id'))
                                       ->select('id')
                                       ->get();
 
@@ -366,12 +494,14 @@ class asignarController extends Controller
                         $fech[$i] = $sabado;
                         //dd($fech[$i]);
                         $con = Horario::where('fecha','=',$fech[$i])
-                              ->where('periodo_id','=',$request->get('periodo'))
+                              ->where('periodo_id','=',$request->get('periodo_id'))
+                              ->where('sala_id','=',$request->get('sala_id'))
                               ->select('id')
                               ->get();
 
                         $con2 = Horario_Alumno::where('fecha','=',$fech[$i])
-                                      ->where('periodo_id','=',$request->get('periodo'))
+                                      ->where('periodo_id','=',$request->get('periodo_id'))
+                                      ->where('sala_id','=',$request->get('sala_id'))
                                       ->select('id')
                                       ->get();
 
@@ -394,7 +524,7 @@ class asignarController extends Controller
 
         if($si==0)
         {
-            $curso = Horario::where('curso_id','=',$request->get('curso'))
+            $curso = Horario::where('curso_id','=',$request->get('curso_id'))
                             ->where('fecha','=',$fecha_formateada)
                             ->get(); 
 
@@ -404,7 +534,7 @@ class asignarController extends Controller
                 if($request->get('rol') == 'docente')
                 {
                     $docente = RolUsuario::join('rol','rol.id','=','rol_users.rol_id')
-                                        ->where('rol_users.rut','=',$request->get('usuario'))->select('rol.nombre')->get();              
+                                        ->where('rol_users.rut','=',$numero)->select('rol.nombre')->get();              
                 
                     foreach($docente as $d){
 
@@ -417,18 +547,18 @@ class asignarController extends Controller
                                 $fecha_separada = explode('/',$request->get('fecha'));
                                 $fecha_con_guion = [$fecha_separada[2],$fecha_separada[0],$fecha_separada[1]];
                                 $fecha_formateada = implode('-',$fecha_con_guion);
-                           
+
                                 Horario::create([
                                     'fecha' => $fecha_formateada,
-                                    'sala_id' => $request->get('sala'),
-                                    'periodo_id' => $request->get('periodo'),
-                                    'curso_id' => $request->get('curso'),
-                                    'rut' => $request->get('usuario'),
+                                    'sala_id' => $request->get('sala_id'),
+                                    'periodo_id' => $request->get('periodo_id'),
+                                    'curso_id' => $request->get('curso_id'),
+                                    'rut' => $numero,
                                     'permanencia' => 'dia',
                                     'asistencia' => 'Pendiente'
                                     ]);
                                 //pone disponibilidad en no para un lab completo
-                                $id = $request->get('sala');
+                                $id = $request->get('sala_id');
                                 $esT = Estacion_trabajo::where('sala_id','=',$id)
                                    ->select('id')
                                    ->get();
@@ -479,15 +609,15 @@ class asignarController extends Controller
                                             
                                                     $lun = Horario::create([
                                                            'fecha' => $lunes,
-                                                           'sala_id' => $request->get('sala'),
-                                                           'periodo_id' => $request->get('periodo'),
-                                                           'curso_id' => $request->get('curso'),
-                                                           'rut' => $request->get('usuario'),
+                                                           'sala_id' => $request->get('sala_id'),
+                                                           'periodo_id' => $request->get('periodo_id'),
+                                                           'curso_id' => $request->get('curso_id'),
+                                                           'rut' => $numero,
                                                            'permanencia' => 'semestral',
                                                            'asistencia' => 'Pendiente'
                                                            ]);
                                                 
-                                                $id = $request->get('sala');
+                                                $id = $request->get('sala_id');
                                                 $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                    ->select('id')
                                                    ->get();
@@ -512,18 +642,18 @@ class asignarController extends Controller
                                             $martes = new Carbon('this tuesday');
                                             if($martes <= $termino)
                                             {
-                                                                      
+
                                                 $mar = Horario::create([
                                                        'fecha' => $martes,
-                                                       'sala_id' => $request->get('sala'),
-                                                       'periodo_id' => $request->get('periodo'),
-                                                       'curso_id' => $request->get('curso'),
-                                                       'rut' => $request->get('usuario'),
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => 'Pendiente'
                                                        ]);
 
-                                                $id = $request->get('sala');
+                                                $id = $request->get('sala_id');
                                                 $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                    ->select('id')
                                                    ->get();
@@ -545,21 +675,22 @@ class asignarController extends Controller
                                         }
                                         if($request->get('dia') === 'miercoles')
                                         {
+
                                             $miercoles = new Carbon('this wednesday');
                                             if($miercoles <= $termino)
                                             {
 
                                                 $mier = Horario::create([
                                                        'fecha' => $miercoles,
-                                                       'sala_id' => $request->get('sala'),
-                                                       'periodo_id' => $request->get('periodo'),
-                                                       'curso_id' => $request->get('curso'),
-                                                       'rut' => $request->get('usuario'),
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => 'Pendiente'
                                                        ]);
                                                 
-                                                $id = $request->get('sala');
+                                                $id = $request->get('sala_id');
                                                 $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                    ->select('id')
                                                    ->get();
@@ -583,19 +714,18 @@ class asignarController extends Controller
                                         {
                                             $jueves = new Carbon('this thursday');
                                             if($jueves <= $termino)
-                                            {
-                                                                       
+                                            {                      
                                                 $jue = Horario::create([
                                                        'fecha' => $jueves,
-                                                       'sala_id' => $request->get('sala'),
-                                                       'periodo_id' => $request->get('periodo'),
-                                                       'curso_id' => $request->get('curso'),
-                                                       'rut' => $request->get('usuario'),
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => 'Pendiente'
                                                        ]);
                                                 
-                                                $id = $request->get('sala');
+                                                $id = $request->get('sala_id');
                                                 $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                    ->select('id')
                                                    ->get();
@@ -620,19 +750,19 @@ class asignarController extends Controller
                                             $viernes = new Carbon('this friday');
                                             if($viernes <= $termino)
                                             {
-
+                                               
                                                 $vier = Horario::create([
                                                        'fecha' => $viernes,
-                                                       'sala_id' => $request->get('sala'),
-                                                       'periodo_id' => $request->get('periodo'),
-                                                       'curso_id' => $request->get('curso'),
-                                                       'rut' => $request->get('usuario'),
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => 'Pendiente'
                                                        ]);
                                                 
 
-                                                $id = $request->get('sala');
+                                                $id = $request->get('sala_id');
                                                 $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                    ->select('id')
                                                    ->get();
@@ -660,16 +790,16 @@ class asignarController extends Controller
 
                                                 $sab = Horario::create([
                                                        'fecha' => $sabado,
-                                                       'sala_id' => $request->get('sala'),
-                                                       'periodo_id' => $request->get('periodo'),
-                                                       'curso_id' => $request->get('curso'),
-                                                       'rut' => $request->get('usuario'),
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => 'Pendiente'
                                                        ]);
                                                 
 
-                                                $id = $request->get('sala');
+                                                $id = $request->get('sala_id');
                                                 $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                    ->select('id')
                                                    ->get();
@@ -703,7 +833,7 @@ class asignarController extends Controller
                 if($request->get('rol') == 'ayudante')
                 {
                     $docente = RolUsuario::join('rol','rol.id','=','rol_users.rol_id')
-                                        ->where('rol_users.rut','=',$request->get('usuario'))->select('rol.nombre')->get();
+                                        ->where('rol_users.rut','=',$numero)->select('rol.nombre')->get();
 
                     foreach($docente as $d){
 
@@ -715,18 +845,18 @@ class asignarController extends Controller
                                 $fecha_separada = explode('/',$request->get('fecha'));
                                 $fecha_con_guion = [$fecha_separada[2],$fecha_separada[0],$fecha_separada[1]];
                                 $fecha_formateada = implode('-',$fecha_con_guion);
-                           
+
                                 Horario::create([
                                     'fecha' => $fecha_formateada,
-                                    'sala_id' => $request->get('sala'),
-                                    'periodo_id' => $request->get('periodo'),
-                                    'curso_id' => $request->get('curso'),
-                                    'rut' => $request->get('usuario'),
+                                    'sala_id' => $request->get('sala_id'),
+                                    'periodo_id' => $request->get('periodo_id'),
+                                    'curso_id' => $request->get('curso_id'),
+                                    'rut' => $numero,
                                     'permanencia' => 'dia',
                                     'asistencia' => 'Pendiente'
                                     ]);
                                 //pone disponibilidad en no para un lab completo
-                                $id = $request->get('sala');
+                                $id = $request->get('sala_id');
                                 $esT = Estacion_trabajo::where('sala_id','=',$id)
                                    ->select('id')
                                    ->get();
@@ -772,18 +902,17 @@ class asignarController extends Controller
                                             $lunes = new Carbon('this monday');
                                             if($lunes <= $termino)
                                             {
-                                            
                                                     $lun = Horario::create([
                                                            'fecha' => $lunes,
-                                                           'sala_id' => $request->get('sala'),
-                                                           'periodo_id' => $request->get('periodo'),
-                                                           'curso_id' => $request->get('curso'),
-                                                           'rut' => $request->get('usuario'),
+                                                           'sala_id' => $request->get('sala_id'),
+                                                           'periodo_id' => $request->get('periodo_id'),
+                                                           'curso_id' => $request->get('curso_id'),
+                                                           'rut' => $numero,
                                                            'permanencia' => 'semestral',
                                                            'asistencia' => 'Pendiente'
                                                            ]);
                                                 
-                                                $id = $request->get('sala');
+                                                $id = $request->get('sala_id');
                                                 $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                    ->select('id')
                                                    ->get();
@@ -808,18 +937,17 @@ class asignarController extends Controller
                                             $martes = new Carbon('this tuesday');
                                             if($martes <= $termino)
                                             {
-                                                                      
                                                 $mar = Horario::create([
                                                        'fecha' => $martes,
-                                                       'sala_id' => $request->get('sala'),
-                                                       'periodo_id' => $request->get('periodo'),
-                                                       'curso_id' => $request->get('curso'),
-                                                       'rut' => $request->get('usuario'),
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => 'Pendiente'
                                                        ]);
 
-                                                $id = $request->get('sala');
+                                                $id = $request->get('sala_id');
                                                 $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                    ->select('id')
                                                    ->get();
@@ -843,19 +971,18 @@ class asignarController extends Controller
                                         {
                                             $miercoles = new Carbon('this wednesday');
                                             if($miercoles <= $termino)
-                                            {
-
+                                            {                                           
                                                 $mier = Horario::create([
                                                        'fecha' => $miercoles,
-                                                       'sala_id' => $request->get('sala'),
-                                                       'periodo_id' => $request->get('periodo'),
-                                                       'curso_id' => $request->get('curso'),
-                                                       'rut' => $request->get('usuario'),
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => 'Pendiente'
                                                        ]);
                                                 
-                                                $id = $request->get('sala');
+                                                $id = $request->get('sala_id');
                                                 $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                    ->select('id')
                                                    ->get();
@@ -880,18 +1007,17 @@ class asignarController extends Controller
                                             $jueves = new Carbon('this thursday');
                                             if($jueves <= $termino)
                                             {
-                                                                       
                                                 $jue = Horario::create([
                                                        'fecha' => $jueves,
-                                                       'sala_id' => $request->get('sala'),
-                                                       'periodo_id' => $request->get('periodo'),
-                                                       'curso_id' => $request->get('curso'),
-                                                       'rut' => $request->get('usuario'),
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => 'Pendiente'
                                                        ]);
                                                 
-                                                $id = $request->get('sala');
+                                                $id = $request->get('sala_id');
                                                 $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                    ->select('id')
                                                    ->get();
@@ -915,20 +1041,19 @@ class asignarController extends Controller
                                         {
                                             $viernes = new Carbon('this friday');
                                             if($viernes <= $termino)
-                                            {
-
+                                            {                                               
                                                 $vier = Horario::create([
                                                        'fecha' => $viernes,
-                                                       'sala_id' => $request->get('sala'),
-                                                       'periodo_id' => $request->get('periodo'),
-                                                       'curso_id' => $request->get('curso'),
-                                                       'rut' => $request->get('usuario'),
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => 'Pendiente'
                                                        ]);
                                                 
 
-                                                $id = $request->get('sala');
+                                                $id = $request->get('sala_id');
                                                 $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                    ->select('id')
                                                    ->get();
@@ -953,19 +1078,18 @@ class asignarController extends Controller
                                             $sabado = new Carbon('this saturday');
                                             if($sabado <= $termino)
                                             {
-
                                                 $sab = Horario::create([
                                                        'fecha' => $sabado,
-                                                       'sala_id' => $request->get('sala'),
-                                                       'periodo_id' => $request->get('periodo'),
-                                                       'curso_id' => $request->get('curso'),
-                                                       'rut' => $request->get('usuario'),
+                                                       'sala_id' => $request->get('sala_id'),
+                                                       'periodo_id' => $request->get('periodo_id'),
+                                                       'curso_id' => $request->get('curso_id'),
+                                                       'rut' => $numero,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => 'Pendiente'
                                                        ]);
                                                 
 
-                                                $id = $request->get('sala');
+                                                $id = $request->get('sala_id');
                                                 $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                    ->select('id')
                                                    ->get();
@@ -1001,13 +1125,13 @@ class asignarController extends Controller
             {
                 foreach($curso as $c)
                 {
-                    if($c->periodo_id != $request->get('periodo'))
+                    if($c->periodo_id != $request->get('periodo_id'))
                     {
                         //insertar
                         if($request->get('rol') == 'docente')
                         {
                             $docente = RolUsuario::join('rol','rol.id','=','rol_users.rol_id')
-                                                ->where('rol_users.rut','=',$request->get('usuario'))->select('rol.nombre')->get();
+                                                ->where('rol_users.rut','=',$numero)->select('rol.nombre')->get();
 
                             foreach($docente as $d){
 
@@ -1022,15 +1146,15 @@ class asignarController extends Controller
                                    
                                         Horario::create([
                                             'fecha' => $fecha_formateada,
-                                            'sala_id' => $request->get('sala'),
-                                            'periodo_id' => $request->get('periodo'),
-                                            'curso_id' => $request->get('curso'),
-                                            'rut' => $request->get('usuario'),
+                                            'sala_id' => $request->get('sala_id'),
+                                            'periodo_id' => $request->get('periodo_id'),
+                                            'curso_id' => $request->get('curso_id'),
+                                            'rut' => $numero,
                                             'permanencia' => 'dia',
                                             'asistencia' => 'Pendiente'
                                             ]);
                                         //pone disponibilidad en no para un lab completo
-                                        $id = $request->get('sala');
+                                        $id = $request->get('sala_id');
                                         $esT = Estacion_trabajo::where('sala_id','=',$id)
                                            ->select('id')
                                            ->get();
@@ -1077,18 +1201,17 @@ class asignarController extends Controller
                                                     $lunes = new Carbon('this monday');
                                                     if($lunes <= $termino)
                                                     {
-
                                                         $lun = Horario::create([
                                                                'fecha' => $lunes,
-                                                               'sala_id' => $request->get('sala'),
-                                                               'periodo_id' => $request->get('periodo'),
-                                                               'curso_id' => $request->get('curso'),
-                                                               'rut' => $request->get('usuario'),
+                                                               'sala_id' => $request->get('sala_id'),
+                                                               'periodo_id' => $request->get('periodo_id'),
+                                                               'curso_id' => $request->get('curso_id'),
+                                                               'rut' => $numero,
                                                                'permanencia' => 'semestral',
                                                                'asistencia' => 'Pendiente'
                                                                ]);
                                                         
-                                                        $id = $request->get('sala');
+                                                        $id = $request->get('sala_id');
                                                         $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                            ->select('id')
                                                            ->get();
@@ -1112,20 +1235,19 @@ class asignarController extends Controller
                                                 {
                                                     $martes = new Carbon('this tuesday');
                                                     if($martes <= $termino)
-                                                    {
-                                                                           
+                                                    {        
                                                         $mar = Horario::create([
                                                                'fecha' => $martes,
-                                                               'sala_id' => $request->get('sala'),
-                                                               'periodo_id' => $request->get('periodo'),
-                                                               'curso_id' => $request->get('curso'),
-                                                               'rut' => $request->get('usuario'),
+                                                               'sala_id' => $request->get('sala_id'),
+                                                               'periodo_id' => $request->get('periodo_id'),
+                                                               'curso_id' => $request->get('curso_id'),
+                                                               'rut' => $numero,
                                                                'permanencia' => 'semestral',
                                                                'asistencia' => 'Pendiente'
                                                                ]);
                                                         
 
-                                                        $id = $request->get('sala');
+                                                        $id = $request->get('sala_id');
                                                         $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                            ->select('id')
                                                            ->get();
@@ -1152,15 +1274,15 @@ class asignarController extends Controller
                                                     {
                                                         $mier = Horario::create([
                                                                'fecha' => $miercoles,
-                                                               'sala_id' => $request->get('sala'),
-                                                               'periodo_id' => $request->get('periodo'),
-                                                               'curso_id' => $request->get('curso'),
-                                                               'rut' => $request->get('usuario'),
+                                                               'sala_id' => $request->get('sala_id'),
+                                                               'periodo_id' => $request->get('periodo_id'),
+                                                               'curso_id' => $request->get('curso_id'),
+                                                               'rut' => $numero,
                                                                'permanencia' => 'semestral',
                                                                'asistencia' => 'Pendiente'
                                                                ]);
                                                         
-                                                        $id = $request->get('sala');
+                                                        $id = $request->get('sala_id');
                                                         $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                            ->select('id')
                                                            ->get();
@@ -1187,16 +1309,16 @@ class asignarController extends Controller
                                                     {                       
                                                         $jue = Horario::create([
                                                                'fecha' => $jueves,
-                                                               'sala_id' => $request->get('sala'),
-                                                               'periodo_id' => $request->get('periodo'),
-                                                               'curso_id' => $request->get('curso'),
-                                                               'rut' => $request->get('usuario'),
+                                                               'sala_id' => $request->get('sala_id'),
+                                                               'periodo_id' => $request->get('periodo_id'),
+                                                               'curso_id' => $request->get('curso_id'),
+                                                               'rut' => $numero,
                                                                'permanencia' => 'semestral',
                                                                'asistencia' => 'Pendiente'
                                                                ]);
                                                         
 
-                                                        $id = $request->get('sala');
+                                                        $id = $request->get('sala_id');
                                                         $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                            ->select('id')
                                                            ->get();
@@ -1223,15 +1345,15 @@ class asignarController extends Controller
                                                     {
                                                         $vier = Horario::create([
                                                                'fecha' => $viernes,
-                                                               'sala_id' => $request->get('sala'),
-                                                               'periodo_id' => $request->get('periodo'),
-                                                               'curso_id' => $request->get('curso'),
-                                                               'rut' => $request->get('usuario'),
+                                                               'sala_id' => $request->get('sala_id'),
+                                                               'periodo_id' => $request->get('periodo_id'),
+                                                               'curso_id' => $request->get('curso_id'),
+                                                               'rut' => $numero,
                                                                'permanencia' => 'semestral',
                                                                'asistencia' => 'Pendiente'
                                                                ]);         
 
-                                                        $id = $request->get('sala');
+                                                        $id = $request->get('sala_id');
                                                         $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                            ->select('id')
                                                            ->get();
@@ -1258,16 +1380,16 @@ class asignarController extends Controller
                                                     {
                                                             $sab = Horario::create([
                                                                    'fecha' => $sabado,
-                                                                   'sala_id' => $request->get('sala'),
-                                                                   'periodo_id' => $request->get('periodo'),
-                                                                   'curso_id' => $request->get('curso'),
-                                                                   'rut' => $request->get('usuario'),
+                                                                   'sala_id' => $request->get('sala_id'),
+                                                                   'periodo_id' => $request->get('periodo_id'),
+                                                                   'curso_id' => $request->get('curso_id'),
+                                                                   'rut' => $numero,
                                                                    'permanencia' => 'semestral',
                                                                    'asistencia' => 'Pendiente'
                                                                    ]);
                                                     
 
-                                                        $id = $request->get('sala');
+                                                        $id = $request->get('sala_id');
                                                         $esT = Estacion_trabajo::where('sala_id','=',$id)
                                                            ->select('id')
                                                            ->get();
@@ -1321,12 +1443,12 @@ class asignarController extends Controller
                 Session::flash('create','¡Los Docentes pueden reservar máximo dos períodos por curso-sección!');
                 return redirect()->route('administrador.horario.index');
             }
-    }
-    else
-    {
-        Session::flash('create','¡Horario ya reservado con anteroridad!');
-        return redirect()->route('administrador.horario.index');
-    }
+        }
+        else
+        {
+            Session::flash('create','¡Horario ya reservado con anteroridad!');
+            return redirect()->route('administrador.horario.index');
+        }
 
     //Validación de la asignación        
         
