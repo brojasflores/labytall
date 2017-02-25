@@ -163,7 +163,7 @@ hr {
 					  <label for="sel1">Sala: </label>
 					  <select class="form-control" id="sala_id" name="salaHorario">
 					  	@foreach($salas as $sal)
-					    	<option id="{{ $sal->id }}" value="{{ $sal->id }}" name="salaHorario">{{ $sal->nombre }}</option>
+					    	<option id="{{ $sal->id }}" value="{{ $sal->id }}" name="sala">{{ $sal->nombre }}</option>
 						@endforeach
 					  </select>
 					</div>
@@ -223,9 +223,9 @@ hr {
 	    		<div class="col-md-3">
 					<div class="form-group">
 					  <label for="sel1">Período: </label>
-					  <select class="form-control" id="periodo_id" name="periodoHorario">
+					  <select class="form-control" id="periodo_id" name="periodo">
 					  	@foreach($periodos as $per)
-					    	<option id="{{ $per->id }}" value="{{ $per->id }}" name="periodoHorario">{{ $per->bloque }}</option>
+					    	<option id="{{ $per->id }}" value="{{ $per->id }}" name="periodo">{{ $per->bloque }}</option>
 						@endforeach
 					  </select>
 					</div>

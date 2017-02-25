@@ -192,14 +192,20 @@ class asignarController extends Controller
         {
             $fecha_separada1 = explode('/',$request->get('fecha_inicio'));
             $fecha_con_guion1 = [$fecha_separada1[2],$fecha_separada1[0],$fecha_separada1[1]];
-            $fecha_formateada1 = implode('-',$fecha_con_guion1);
+            $fecha_formateada = implode('-',$fecha_con_guion1);
 
             $fecha_separada2 = explode('/',$request->get('fecha_fin'));
             $fecha_con_guion2 = [$fecha_separada2[2],$fecha_separada2[0],$fecha_separada2[1]];
             $fecha_formateada2 = implode('-',$fecha_con_guion2);
 
-            $inicio = new Carbon($fecha_formateada1);
+            $inicio = new Carbon($fecha_formateada);
             $termino = new Carbon($fecha_formateada2); 
+
+            if($inicio>$termino)
+            {
+                Session::flash('create','¡La fecha final debe ser mayor a la fecha inicial, intente nuevamente!');
+                return redirect()->route('administrador.horario.index');
+            }
 
             $i=0;
             $si=0;
