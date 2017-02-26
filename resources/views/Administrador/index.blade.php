@@ -161,7 +161,12 @@ hr {
 </h1>
 @stop
 @section('content')
-
+@if(Session::has('create'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('create') }}</strong>
+    </div>
+@endif
 <div class="container" style="padding-left: 0px;">
 <h1><img src="{{ asset('admin-lte/dist/img/utem.png') }}" class="user-image" alt="User Image" border="0" width="40" height="40"> Sistema Control y Gestión Salas UTEM </h1>
 </br>

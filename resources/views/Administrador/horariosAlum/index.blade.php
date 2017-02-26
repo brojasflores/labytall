@@ -155,10 +155,10 @@ hr {
 <li class="active">Horarios Alumnos</li>
 @stop
 @section('content')
-@if(Session::has('reservado'))
+@if(Session::has('create'))
     <div class="alert alert-info" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <strong class="alert-link">{{ Session::get('reservado') }}</strong>
+        <strong class="alert-link">{{ Session::get('create') }}</strong>
     </div>
 @endif
 <h1>Horarios</h1>

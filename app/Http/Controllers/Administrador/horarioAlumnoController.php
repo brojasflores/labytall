@@ -163,6 +163,47 @@ class horarioAlumnoController extends Controller
 
     public function update(Request $request, $id)
     {   
+        //dd($request);
+        //VAIDA RUT
+        $rut = preg_replace('/[^k0-9]/i', '', $request->get('rutHorario'));
+        $dv  = substr($rut, -1);
+        $numero = substr($rut, 0, strlen($rut)-1);
+        //dd($numero);
+        $i = 2;
+        $suma = 0;
+        foreach(array_reverse(str_split($numero)) as $v)
+        {
+            if($i==8)
+                $i = 2;
+            $suma += $v * $i;
+            ++$i;
+        }
+        $dvr = 11 - ($suma % 11);
+        
+        if($dvr == 11)
+            $dvr = 0;
+        if($dvr == 10)
+            $dvr = 'K';
+        if($dvr == strtoupper($dv))
+            $ok='si';
+        else
+            $ok='no';
+        //
+
+        if($ok == 'si')
+        {
+            if($request->get('fecha')==null || $numero==null)
+            {
+                Session::flash('create','¡Debe ingresar fecha y/o rut válidos!');
+                return redirect()->route('administrador.horarioAlumno.index');
+            }
+        }
+        else
+        {
+            Session::flash('create','¡El rut ingresado es inválido, ingrese rut con dígito verificador y sin guión!');
+            return redirect()->route('administrador.horarioAlumno.index');
+        }
+
         $var = Horario_Alumno::where('id','=',$id)
              ->select('estacion_trabajo_id')
              ->get();
@@ -195,7 +236,8 @@ class horarioAlumnoController extends Controller
         if($request->get('rol') == 'alumno')
         {
             $alumno = RolUsuario::join('rol','rol.id','=','rol_users.rol_id')
-                                ->where('rol_users.rut','=',$request->get('rutHorario'))->select('rol.nombre')->get();
+                                ->where('rol_users.rut','=',$numero)
+                                ->select('rol.nombre')->get();
         }  
         foreach($alumno as $d)
         {
@@ -225,7 +267,7 @@ class horarioAlumnoController extends Controller
                         $h = Horario_Alumno::findOrFail($id);
                         $h->fill([
                         'fecha' => $fecha_formateada,
-                        'rut' => $request->get('rutHorario'),
+                        'rut' => $numero,
                         'periodo_id' => $request->get('periodoHorario'),
                         'sala_id' => $request->get('salaHorario'),
                         'estacion_trabajo_id' => $request->get('estacion'),
@@ -243,16 +285,22 @@ class horarioAlumnoController extends Controller
                     }
                     else
                     {
-                        Session::flash('reservado','¡Estación ya reservada!');
+                        Session::flash('create','¡Estación ya reservada!');
                         return redirect()->route('administrador.horarioAlumno.index');
                     }
                 }
                 else
                 {
-                    //no corresponde el lab con la estacion
-                    dd('nop');
+                    Session::flash('create','¡No corresponde el Laboratorio con la Estación de Trabajo!');
+                    return redirect()->route('administrador.horarioAlumno.index');
                 }
             }
+            else
+            {
+                Session::flash('create','¡Rut ingresado no corresponde a un alumno!');
+                return redirect()->route('administrador.horarioAlumno.index');
+            }
+            Session::flash('create','¡Reserva editada correctamente!');
             return redirect()->route('administrador.horarioAlumno.index');
         }
     }

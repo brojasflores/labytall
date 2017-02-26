@@ -158,6 +158,12 @@ hr {
 <li class="active">Reserva Alumno</li>
 @stop
 @section('content')
+@if(Session::has('create'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('create') }}</strong>
+    </div>
+@endif
 <div class="row" style="margin-left: 0px">
 
 <form role="form" method="post" action="{{ route('administrador.asignar_alumno.store') }}">

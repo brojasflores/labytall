@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Validator;
 use Auth;
+use Session;
 
 
 class perfilController extends Controller
@@ -85,12 +86,19 @@ class perfilController extends Controller
 
     public function updateProfile(Request $request)
     {
+        $this->validate($request, [
+
+            'email' => 'required|email',
+            'nombres' => 'required|string',
+            'apellidos' => 'required|string'
+            ]);
+
         $var = $request->get('passwordUsuario');
         if(empty ($var))
         {
             $user = new User;
             $user->where('rut', '=', Auth::user()->rut)
-                 ->update(['email' => $request->get('emailUsuario'),
+                 ->update(['email' => $request->get('email'),
                            'nombres' => $request->get('nombres'),
                            'apellidos' => $request->get('apellidos'),
                          ]);  
@@ -100,7 +108,7 @@ class perfilController extends Controller
             $pass = Hash::make($request->get('passwordUsuario'));
             $user = new User;
             $user->where('rut', '=', Auth::user()->rut)
-                 ->update(['email' => $request->get('emailUsuario'),
+                 ->update(['email' => $request->get('email'),
                            'nombres' => $request->get('nombres'),
                            'apellidos' => $request->get('apellidos'),
                            'password' => $pass,
@@ -122,6 +130,7 @@ class perfilController extends Controller
         else{
             if(!$file)
             {
+                Session::flash('create','¡Sus datos de perfil han sido actualizados!');
                 return redirect('home')->with('status', 'Sus datos de perfil han sido actualizados');
             }
             else
@@ -131,6 +140,7 @@ class perfilController extends Controller
                 $user = new User;
                 $user->where('rut', '=', Auth::user()->rut)
                      ->update(['perfiles' => 'perfiles/'.$name]);
+                Session::flash('create','¡Sus datos de perfil han sido actualizados!');
                 return redirect('home')->with('status', 'Sus datos de perfil han sido actualizados');
             }
         }

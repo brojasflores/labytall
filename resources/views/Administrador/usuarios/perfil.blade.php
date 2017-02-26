@@ -158,13 +158,23 @@ hr {
 @section('content')
 <h1>Perfil Usuario</h1>
 <h2>Cambiar imagen de perfil</h2>
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
 <form  method='post' action='{{url("administrador/usuario_perfilUpdate")}}' enctype='multipart/form-data'>
   {{csrf_field()}}
     <div class="row">
 	  	<div class="col-md-4">
 		    <div class="form-group">
 			  <label for="exampleInputPassword1">Email</label>
-			  <input type="text" class="form-control" value="{{ Auth::user()->email }}" name="emailUsuario" id="email">
+			  <input type="text" class="form-control" value="{{ Auth::user()->email }}" name="email" id="email">
 			</div> 
 		</div>
 	</div>
@@ -189,7 +199,7 @@ hr {
         <div class="row">
       <div class="col-md-4">
         <div class="form-group">
-          <label for="exampleInputPassword1">Contraseña</label>
+          <label for="exampleInputPassword1">Contraseña (opcional)</label>
           <input type="password" class="form-control" name="passwordUsuario" id="passwordUsuario" placeholder="Ingrese contraseña nueva">
         </div> 
       </div>

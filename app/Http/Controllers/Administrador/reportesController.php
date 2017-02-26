@@ -17,6 +17,7 @@ use App\Usuario;
 use Auth;
 use App\User;
 use DB;
+use Session;
 
 class reportesController extends Controller
 {

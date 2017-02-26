@@ -234,7 +234,7 @@ class horarioController extends Controller
         }
         else
         {
-            Session::flash('create','¡El rut ingresado en inválido, ingrese rut con dígito verificador y sin guión!');
+            Session::flash('create','¡El rut ingresado es inválido, ingrese rut con dígito verificador y sin guión!');
             return redirect()->route('administrador.horario.index');
         }
 
@@ -649,28 +649,9 @@ class horarioController extends Controller
                                     'permanencia' => 'dia',
                                     'asistencia' => 'Pendiente'
                                     ]);
-                                //pone disponibilidad en no para un lab completo
-                                $id = $request->get('sala_id');
-                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                   ->select('id')
-                                   ->get();
-                                foreach($esT as $v)
-                                {
-                                    $v2[]= $v->id;
-                                }
-                                $cont= count($v2); 
-                                for($i=0;$i<$cont;$i++)
-                                {
-                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                    $est->fill([
-                                    'disponibilidad' => "si",
-                                    ]); 
-                                    $est->save();
-                                }
-                                $est->save();
 
                                 //horario diario creado con exito docente
-                                Session::flash('create','¡Horario diario Docente reservado correctamente!');
+                                Session::flash('create','¡Horario diario Docente editado correctamente!');
                                 return redirect()->route('administrador.horario.index');
                             }
                             else
@@ -799,7 +780,7 @@ class horarioController extends Controller
                                     }
                                 }
                                 //horario docente creado con exito! semestral
-                                Session::flash('create','¡Horario semestral Docente reservado correctamente!');
+                                Session::flash('create','¡Horario semestral Docente editado correctamente!');
                                 return redirect()->route('administrador.horario.index');
                             }
                         }
@@ -832,7 +813,7 @@ class horarioController extends Controller
                                     'asistencia' => 'Pendiente'
                                     ]);
 
-                                Session::flash('create','¡Horario diario Ayudante reservado correctamente!');
+                                Session::flash('create','¡Horario diario Ayudante editado correctamente!');
                                 return redirect()->route('administrador.horario.index');
                             }
                             else
@@ -954,7 +935,7 @@ class horarioController extends Controller
                                     }
                                 }
                                 //Horario creado con exito de ayudante semestral
-                                Session::flash('create','¡Horario semestral ayudante reservado correctamente!');
+                                Session::flash('create','¡Horario semestral ayudante editado correctamente!');
                                 return redirect()->route('administrador.horario.index');
                             }
                         }
@@ -996,7 +977,7 @@ class horarioController extends Controller
                                             ]);
 
                                         //docente diario creado con exito
-                                        Session::flash('create','¡Horario diario Docente reservado correctamente!');
+                                        Session::flash('create','¡Horario diario Docente editado correctamente!');
                                         return redirect()->route('administrador.horario.index');
                                     }
                                     else
