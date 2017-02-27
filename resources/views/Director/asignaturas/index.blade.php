@@ -67,7 +67,7 @@ hr {
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Administración</li>
+            <li class="header">Dirección</li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-university"></i> <span>Universidad</span>
@@ -153,6 +153,24 @@ hr {
 <li class="active">Asignaturas</li>
 @stop
 @section('content')
+@if(Session::has('create'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('create') }}</strong>
+    </div>
+@endif
+@if(Session::has('edit'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('edit') }}</strong>
+    </div>
+@endif
+@if(Session::has('destroy'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('destroy') }}</strong>
+    </div>
+@endif
 <h1>Asignaturas</h1>
 <form role="form" method="get" action="{{ route('director.asignatura.create')}}">
   <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
@@ -172,7 +190,6 @@ hr {
                 <th>Código</th>
                 <th>Nombre</th>
                 <th>Descripción</th>
-                <th>Carrera</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
               </tr>
@@ -185,7 +202,7 @@ hr {
                 <td>{{ $as->codigo }}</td>
                 <td>{{ $as->nombre}}</td>
                 <td>{{ $as->descripcion}}</td>
-                <td>{{ $as->carre}}</td>
+
                 <!--Paso ruta y parametro para saber cual modificar-->
                 <td><a href="{{ route('director.asignatura.edit',$as->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
                 <td>
@@ -202,7 +219,6 @@ hr {
                 <th>Código</th>
                 <th>Nombre</th>
                 <th>Descripción</th>
-                <th>Carrera</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
               </tr>

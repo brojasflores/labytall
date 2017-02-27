@@ -79,6 +79,7 @@ Route::group(['prefix' => 'director','namespace' => 'Director'], function()
 	Route::get('/asignar_ayudante',['as' => 'director.asignar.ayudante', 'uses' => 'asignarController@ayudante']);
 	Route::resource('/asignar_alumno','asignarAlumController');
 
+	Route::post('/upload_asignatura', ['as' => 'director.asignatura.upload', 'uses' => 'asignaturaController@uploadAsig']);
 
 	Route::resource('/reportes', 'reportesController');
 	Route::get('/reportes_usuario', ['as' => 'director.reportes.repusr', 'uses' => 'reportesController@RepUsr']);

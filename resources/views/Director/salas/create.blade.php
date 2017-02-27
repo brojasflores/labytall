@@ -66,7 +66,7 @@ hr {
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Administración</li>
+            <li class="header">Dirección</li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-university"></i> <span>Universidad</span>
@@ -148,18 +148,28 @@ hr {
 @stop
 @section('content')
 <h1>Agregar Sala</h1>
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
 <form role="form" method="post" action="{{ route('director.sala.store')}}">
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-	  <div class="box-body">
-	    <div class="form-group">
-	      <label for="exampleInputEmail1">Nombre Sala</label>
-	      <input type="text" class="form-control" name="nombreSala" id="nombreSala" placeholder="Ingrese nombre">
-	    </div>
-	    <div class="form-group">
-	      <label for="exampleInputPassword1">Capacidad</label>
-	      <input type="text" class="form-control" name="capacidadSala" id="capacidadSala" placeholder="Ingrese cantidad alumnos">
-	    </div>
-	    <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
-	  </div><!-- /.box-body -->
+  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <div class="box-body">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Nombre Sala</label>
+        <input type="text" class="form-control" name="nombre" id="nombreSala" placeholder="Ingrese nombre">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Capacidad</label>
+        <input type="text" class="form-control" name="capacidad" id="capacidadSala" placeholder="Ingrese cantidad alumnos">
+      </div>
+      <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
+    </div><!-- /.box-body -->
 </form>
 @stop

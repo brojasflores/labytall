@@ -66,7 +66,7 @@ hr {
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Administración</li>
+            <li class="header">Dirección</li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-university"></i> <span>Universidad</span>
@@ -146,23 +146,39 @@ hr {
 <li class="active">Agregar Períodos</li>
 @stop
 @section('content')
+@if(Session::has('horas'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('horas') }}</strong>
+    </div>
+@endif
 <h1>Agregar Período</h1>
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
 <form role="form" method="post" action="{{ route('director.periodo.store')}}">
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-	  <div class="box-body">
-	    <div class="form-group">
-	      <label for="exampleInputEmail1">Bloque</label>
-	      <input type="text" class="form-control" name="bloquePeriodo" id="bloquePeriodo" placeholder="Ingrese bloque (Ej. I, II, III)">
-	    </div>
-	    <div class="form-group">
-	      <label for="exampleInputPassword1">Inicio</label>
-	      <input type="text" class="form-control" name="inicioPeriodo" id="inicioPeriodo" placeholder="Ingrese hora inicio período (Ej. 08:00)">
-	    </div>
-	    <div class="form-group">
-	      <label for="exampleInputPassword1">Fin</label>
-	      <input type="text" class="form-control" name="finPeriodo" id="finPeriodo" placeholder="Ingrese hora fin período (Ej. 21:00)">
-	    </div>
-	    <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
-	  </div><!-- /.box-body -->
+  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <div class="box-body">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Bloque</label>
+        <input type="text" class="form-control" name="bloque" id="bloquePeriodo" placeholder="Ingrese bloque (Ej. I, II, III)">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Inicio</label>
+        <input type="text" class="form-control" name="inicio" id="inicioPeriodo" placeholder="Ingrese hora inicio período (Ej. 08:00)">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Fin</label>
+        <input type="text" class="form-control" name="fin" id="finPeriodo" placeholder="Ingrese hora fin período (Ej. 21:00)">
+      </div>
+      <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
+    </div><!-- /.box-body -->
 </form>
 @stop

@@ -66,7 +66,7 @@ hr {
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Administración</li>
+            <li class="header">Dirección</li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-university"></i> <span>Universidad</span>
@@ -148,19 +148,30 @@ hr {
 @stop
 @section('content')
 <h1>Editar Sala</h1>
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
 {!! Form::model($sala,['route' => ['director.sala.update',$sala], 'method' => 'PUT']) !!}
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-	  <div class="box-body">
-	    <div class="form-group">
-	      <label for="exampleInputEmail1">Nombre Sala</label>
-	      <input type="text" class="form-control" value="{{ $sala->nombre}}" name="nombreSala" id="nombreSala" placeholder="Ingrese nombre">
-	    </div>
-	    <div class="form-group">
-	      <label for="exampleInputPassword1">Capacidad</label>
-	      <input type="text" class="form-control" value="{{ $sala->capacidad}}" name="capacidadSala" id="capacidadSala" placeholder="Ingrese cantidad alumnos">
-	    </div>
-	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
-	  </div><!-- /.box-body -->
+  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <div class="box-body">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Nombre Sala</label>
+        <input type="text" class="form-control" value="{{ $sala->nombre}}" name="nombre" id="nombreSala" placeholder="Ingrese nombre">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Capacidad</label>
+        <input type="text" class="form-control" value="{{ $sala->capacidad}}" name="capacidad" id="capacidadSala" placeholder="Ingrese cantidad alumnos">
+      </div>
+      <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
+    </div><!-- /.box-body -->
+
 {!! Form::close() !!}
 @stop

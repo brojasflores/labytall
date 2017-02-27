@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Director;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-//referencia al modelo (importarlo)
 use App\Sala;
-use App\UsersDpto;
+use App\Departamento;
 use App\Estacion_trabajo;
+use App\Periodo;
 use Auth;
 use App\User;
+use App\UsersDpto;
+use Session;
+
 
 class salaController extends Controller
 {
@@ -22,7 +25,7 @@ class salaController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('dir');
+        $this->middleware('admin');
     }
     
     public function index()
@@ -31,18 +34,11 @@ class salaController extends Controller
         $dpto= UsersDpto::where('rut','=',$usr)
                         ->select('departamento_id')
                         ->get();
-
         $salas= Sala::where('departamento_id','=',$dpto->first()->departamento_id)
                         ->select('sala.*')
                         ->get();
 
-        //tomar todo lo que venga de la tabla lab y mostrar 
-        //all devuelve todo
-        //
-
-//        $salas = Sala::all();
-        
-//
+        //$salas = Sala::all();
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -67,7 +63,7 @@ class salaController extends Controller
         {
             return view ('Director/salas/index', compact('salas','cont'));
         }
-        //return view ('Administrador/salas/index', compact('salas'));
+        //return view ('Director/salas/index', compact('salas'));
     }
 
     /**
@@ -101,7 +97,7 @@ class salaController extends Controller
         {
             return view ('Director/salas/create', compact('cont'));
         }
-        //return view('Administrador/salas/create');
+        //return view('Director/salas/create');
     }
     //el create te lleva a la vista y la vista lleva los datos al store y ese a la bdd
     /**
@@ -112,21 +108,29 @@ class salaController extends Controller
      */
     public function store(Request $request)
     {
-        //variable = nombre del modelo ::(paso metodo)
-        //hace insert
+        $this->validate($request, [
+
+            'nombre' => 'required',
+            'capacidad' => 'required|numeric',
+            ]);
+
         $usr=Auth::User()->rut;
         $dpto= UsersDpto::where('rut','=',$usr)
                         ->select('departamento_id')
-                        ->get();            
-        $capacidad= $request->get('capacidadSala');
-        $nombre = $request->get('nombreSala');
+                        ->get();
+
+        $periodos = Periodo::All();
+
+        $per = count($periodos);
+        
+        $capacidad= $request->get('capacidad');
+        $nombre = $request->get('nombre');
 
         $sala = Sala::create([
-            'nombre' => $request->get('nombreSala'),
-            'capacidad' => $request->get('capacidadSala'),
+            'nombre' => $request->get('nombre'),
+            'capacidad' => $request->get('capacidad'),
             'departamento_id' => $dpto->first()->departamento_id,
             ]);
-
 
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
         $sa = Sala::where('nombre','=',$nombre)
@@ -138,14 +142,25 @@ class salaController extends Controller
             $v2= $v->id;
         }
         
-        for($i=0; $i<$capacidad; $i++)
+        foreach($periodos as $v)
         {
-            Estacion_trabajo::create([
-                'nombre' => ($i+1),
-                'disponibilidad'=> "si",
-                'sala_id' => $v2,
-            ]);
+            $v3[]= $v->id;
         }
+
+        for($j=0; $j<$per; $j++)
+        {
+            for($i=0; $i<$capacidad; $i++)
+            {
+                Estacion_trabajo::create([
+                    'nombre' => ($i+1),
+                    'disponibilidad'=> "si",
+                    'sala_id' => $v2,
+                    'periodo_id' => $v3[$j],
+                ]);
+            }
+        }
+        
+        Session::flash('create','¡Sala creada correctamente!');
         return redirect()->route('director.sala.index');
     }
 
@@ -168,8 +183,12 @@ class salaController extends Controller
      */
     public function edit($id)
     {
-        //variable = modelo:: metodo encunetra un registro en la bdd segun id!!
         $sala = Sala::findOrFail($id);
+        //variable = modelo:: metodo encunetra un registro en la bdd segun id!!
+        //$dptos=Departamento::all();
+        
+
+        //$sala = Sala::findOrFail($id);
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -194,7 +213,7 @@ class salaController extends Controller
         {
             return view ('Director/salas/edit', compact('sala','cont'));
         }
-        //return view('Administrador/salas/edit', compact('sala'));
+        //return view('Director/salas/edit', compact('sala'));
     }
 
     /**
@@ -206,13 +225,20 @@ class salaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $capacidad= $request->get('capacidadSala');
+        $this->validate($request, [
+            'nombre' => 'required',
+            'capacidad' => 'required|numeric',
+            ]);
+
+        $periodos = Periodo::All();
+        $per = count($periodos);
+
+        $capacidad= $request->get('capacidad');
         $sala = Sala::findOrFail($id);     
-        //fill (rellenar)
+
         $sala->fill([
-            'nombre' => $request->get('nombreSala'),
-            'capacidad' => $request->get('capacidadSala'),
-            'disponibilidad' => $request->get('disponibilidadSala')
+            'nombre' => $request->get('nombre'),
+            'capacidad' => $request->get('capacidad'),
         ]);
         $sala->save();
 
@@ -233,16 +259,25 @@ class salaController extends Controller
             $est->delete();
         }
 
-        for($i=0; $i<$capacidad; $i++)
+        foreach($periodos as $v)
         {
-            Estacion_trabajo::create([
-                'nombre' => ($i+1),
-                'disponibilidad'=> "si",
-                'sala_id' => $id,
-            ]);
+            $v3[]= $v->id;
         }
 
+        for($j=0; $j<$per; $j++)
+        {
+            for($i=0; $i<$capacidad; $i++)
+            {
+                Estacion_trabajo::create([
+                    'nombre' => ($i+1),
+                    'disponibilidad'=> "si",
+                    'sala_id' => $id,
+                    'periodo_id' => $v3[$j],
+                ]);
+            }
+        }
 
+        Session::flash('edit','¡Sala editada correctamente!');
         return redirect()->route('director.sala.index');
     }
     
@@ -272,6 +307,7 @@ class salaController extends Controller
         $sala = Sala::findOrFail($id);
         $sala->delete();
 
+        Session::flash('delete','¡Sala eliminada correctamente!');
         return redirect()->route('director.sala.index');
     }
 }

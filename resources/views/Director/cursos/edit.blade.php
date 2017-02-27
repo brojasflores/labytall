@@ -66,7 +66,7 @@ hr {
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Administración</li>
+            <li class="header">Dirección</li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-university"></i> <span>Universidad</span>
@@ -148,38 +148,55 @@ hr {
 @stop
 @section('content')
 <h1>Editar Curso</h1>
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
 {!! Form::model($cursos,['route' => ['director.curso.update',$cursos], 'method' => 'PUT']) !!}
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-	  <div class="box-body">
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-2">
-					<div class="form-group">
-					  <label for="sel1">Asignatura: </label>
-					  <select class="form-control" id="asignaturas" name="asigCurso">
-					  	@foreach($asignaturas as $asig)
-					    	<option value="{{ $asig->id }}" name="asigCurso">{{ $asig->nombre }}</option>
-						@endforeach
-					  </select>
-					</div>
-		    	</div>
-		    	
-		    </div>
-	    </div>
-	    <div class="form-group">
-	      <label for="exampleInputPassword1">Semestre</label>
-	      <input type="text" class="form-control" value="{{ $cursos->semestre}}" name="semestreCurso" id="semestreCurso" placeholder="Ingrese hora inicio período (Ej. 08:00)">
-	    </div>
-	    <div class="form-group">
-	      <label for="exampleInputPassword1">Año</label>
-	      <input type="text" class="form-control" value="{{ $cursos->anio}}" name="anioCurso" id="anioCurso" placeholder="Ingrese hora fin período (Ej. 21:00)">
-	    </div>
-	    <div class="form-group">
-	      <label for="exampleInputPassword1">Sección</label>
-	      <input type="text" class="form-control" value="{{ $cursos->seccion}}" name="seccionCurso" id="seccionCurso" placeholder="Ingrese hora fin período (Ej. 21:00)">
-	    </div>
-	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
-	  </div><!-- /.box-body -->
+  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <div class="box-body">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-2">
+          <div class="form-group">
+            <label for="sel1">Asignatura: </label>
+            <select class="form-control" id="asignatura_id" name="asignatura_id">
+              @foreach($asignaturas as $asig)
+                <option value="{{ $asig->id }}" id= "asignatura_{{ $asig->id }}" name="asignatura_id">{{ $asig->nombre }} - {{ $asig->carr}}</option>
+              @endforeach
+            </select>
+          </div>
+          </div>
+          
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Semestre</label>
+        <input type="text" class="form-control" value="{{ $cursos->semestre}}" name="semestre" id="semestreCurso">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Año</label>
+        <input type="text" class="form-control" value="{{ $cursos->anio}}" name="anio" id="anioCurso">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Sección</label>
+        <input type="text" class="form-control" value="{{ $cursos->seccion}}" name="seccion" id="seccionCurso">
+      </div>
+      <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
+    </div><!-- /.box-body -->
 {!! Form::close() !!}
+@stop
+@section('scripts')
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#asignatura_id option[id=asignatura_'+{{ $cursos->asignatura_id }}+']').attr('selected', 'selected');
+  });
+</script>
 @stop
