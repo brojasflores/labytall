@@ -312,11 +312,18 @@ class reportesController extends Controller
 
     }
 
-//SEGUIR VALIDANDO!!!
     public function RepSa(Request $request)
     {
         if($request->ajax())
         {
+            $usr=Auth::User()->rut;
+            $dpto= UsersDpto::where('rut','=',$usr)
+                            ->select('departamento_id')
+                            ->get();
+            
+            $dpto=$dpto->first()->departamento_id;
+
+
             $condicion = "0 = 0"; 
             $laboratorio = $request->lab;
 
@@ -330,7 +337,7 @@ class reportesController extends Controller
             }
 
 
-            //Carrera que más usa los lab (hay que recibir una asignatura)
+            //Carrera que más usa los lab 
             if($request->get('tipo') == 'carrera')
             {
                 $horario = DB::select("select b.nombre, count(a.id) as cantidad
@@ -338,11 +345,13 @@ class reportesController extends Controller
                                         inner join curso c on a.curso_id = c.id
                                         inner join asignatura d on c.asignatura_id = d.id
                                         inner join carrera b on d.carrera_id = b.id
+                                        inner join escuela e on b.escuela_id = e.id
                                         where a.asistencia = 'si'
+                                        and e.departamento_id = ".$dpto."
                                         and ".$condicion."
                                         group by b.nombre
                                         order by cantidad desc
-                                        limit 5 offset 0 ");                                     
+                                        limit 5 offset 0");                                     
             }
 
             //Periodo en que más se usa un lab doc y ayud
@@ -351,11 +360,13 @@ class reportesController extends Controller
                 $horario = DB::select("select c.bloque nombre, count(a.id) as cantidad
                                         from horario a
                                         inner join periodo c on a.periodo_id = c.id
+                                        inner join  sala d on a.sala_id = d.id
                                         where a.asistencia = 'si'
+                                        and d.departamento_id = ".$dpto."
                                         and ".$condicion."
                                         group by c.bloque 
                                         order by cantidad desc
-                                        limit 5 offset 0 ");                                     
+                                        limit 5 offset 0");                                     
             }
 
             //Periodo en que más se usa un lab alum
@@ -364,10 +375,12 @@ class reportesController extends Controller
                 $horario = DB::select("select c.bloque nombre, count(a.id) as cantidad
                                         from horario_alum a
                                         inner join periodo c on a.periodo_id = c.id
+                                        inner join  sala d on a.sala_id = d.id
                                         where a.asistencia = 'si'
+                                        and d.departamento_id = ".$dpto."
                                         and ".$condicion."
                                         group by c.bloque 
-                                        order by cantidad
+                                        order by cantidad desc
                                         limit 5 offset 0");                                     
             }
 
@@ -377,11 +390,13 @@ class reportesController extends Controller
                 $horario = DB::select("select c.bloque nombre, count(a.id) as cantidad
                                         from horario a
                                         inner join periodo c on a.periodo_id = c.id
+                                        inner join  sala d on a.sala_id = d.id
                                         where a.asistencia = 'no'
+                                        and d.departamento_id = ".$dpto."
                                         and ".$condicion."
                                         group by c.bloque 
                                         order by cantidad desc
-                                        limit 5 offset 0 ");                                     
+                                        limit 5 offset 0");                                     
             }
 
             //Periodo en que menos se usa un lab alum
@@ -390,10 +405,12 @@ class reportesController extends Controller
                 $horario = DB::select("select c.bloque nombre, count(a.id) as cantidad
                                         from horario_alum a
                                         inner join periodo c on a.periodo_id = c.id
+                                        inner join  sala d on a.sala_id = d.id
                                         where a.asistencia = 'no'
+                                        and d.departamento_id = ".$dpto."
                                         and ".$condicion."
                                         group by c.bloque 
-                                        order by cantidad
+                                        order by cantidad desc
                                         limit 5 offset 0");                                     
             }
 
@@ -404,6 +421,7 @@ class reportesController extends Controller
                                         from horario a
                                         inner join sala c on a.sala_id = c.id
                                         where a.asistencia = 'si'
+                                        and c.departamento_id = ".$dpto."
                                         and ".$condicion."
                                         group by c.nombre
                                         order by cantidad
@@ -417,6 +435,7 @@ class reportesController extends Controller
                                         from horario a
                                         inner join sala c on a.sala_id = c.id
                                         where a.asistencia = 'no'
+                                        and c.departamento_id = ".$dpto."
                                         and ".$condicion."
                                         group by c.nombre
                                         order by cantidad
@@ -430,6 +449,7 @@ class reportesController extends Controller
                                         from horario_alum a
                                         inner join sala c on a.sala_id = c.id
                                         where a.asistencia = 'si'
+                                        and c.departamento_id = ".$dpto."
                                         and ".$condicion."
                                         group by c.nombre
                                         order by cantidad
@@ -443,6 +463,7 @@ class reportesController extends Controller
                                         from horario_alum a
                                         inner join sala c on a.sala_id = c.id
                                         where a.asistencia = 'no'
+                                        and c.departamento_id = ".$dpto."
                                         and ".$condicion."
                                         group by c.nombre
                                         order by cantidad
@@ -494,13 +515,18 @@ class reportesController extends Controller
 
     }
 
-
-
     public function RepAsig(Request $request)
     {
         if($request->ajax())
         {
-            //dd($request->rut);
+            $usr=Auth::User()->rut;
+            $dpto= UsersDpto::where('rut','=',$usr)
+                            ->select('departamento_id')
+                            ->get();
+            
+            $dpto=$dpto->first()->departamento_id;
+
+
             $condicion = "0 = 0"; 
             $asignatura = $request->asig;
             $ru = $request->rut;
@@ -521,7 +547,9 @@ class reportesController extends Controller
                                         from horario a
                                         inner join curso c on a.curso_id = c.id
                                         inner join asignatura d on c.asignatura_id = d.id
+                                        inner join sala e on a.sala_id = e.id
                                         where a.asistencia = 'si'
+                                        and e.departamento_id = ".$dpto."
                                         group by d.nombre
                                         order by cantidad
                                         limit 5 offset 0");                                     
@@ -555,6 +583,7 @@ class reportesController extends Controller
                                         inner join users c on a.rut = c.rut
                                         inner join sala d on a.sala_id = d.id
                                         where a.asistencia = 'si'
+                                        and d.departamento_id = ".$dpto."
                                         and a.rut = '".$ru."'
                                         group by d.nombre
                                         order by cantidad desc");                                     
@@ -613,6 +642,15 @@ class reportesController extends Controller
     {
         if($request->ajax())
         {
+            $usr=Auth::User()->rut;
+            $dpto= UsersDpto::where('rut','=',$usr)
+                            ->select('departamento_id')
+                            ->get();
+            
+            $dpto=$dpto->first()->departamento_id;
+
+
+
             $condicion = "0 = 0"; 
             $laboratorio = $request->lab;
 
@@ -632,6 +670,7 @@ class reportesController extends Controller
                                         from estacion_trabajo a
                                         inner join sala c on a.sala_id = c.id
                                         where a.disponibilidad = 'no'
+                                        and c.departamento_id = ".$dpto."
                                         and a.periodo_id = 1
                                         group by c.nombre
                                         order by cantidad desc");    

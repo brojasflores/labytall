@@ -368,6 +368,7 @@ $(document).ready(function(){
 			$("#col-fecha-fin").css('display','none');
 		}
 	});
+	$('#asistenciaH option[id={{ $horarios->asistencia }}]').attr('selected', 'selected');
 });
 
 </script>

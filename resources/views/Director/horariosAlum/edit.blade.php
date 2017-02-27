@@ -231,7 +231,7 @@ hr {
           </div>
           </div>
         </div>
-      </div>     
+      </div>    
       <input type="hidden" id="horario_id" value="{{ $horarios->id }}">
       <input type="hidden" name="rol" value="alumno">
       <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
@@ -290,7 +290,7 @@ $(document).ready(function(){
 
         }
     });
-
+    $('#asistenciaH option[id={{ $horarios->asistencia }}]').attr('selected', 'selected');
 });
 
 </script>

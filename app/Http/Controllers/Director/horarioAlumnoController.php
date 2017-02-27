@@ -26,7 +26,7 @@ class horarioAlumnoController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('admin');
+        $this->middleware('dir');
     }
     
     public function index()
@@ -42,7 +42,7 @@ class horarioAlumnoController extends Controller
                             ->join('users','horario_alum.rut','=','users.rut')
                             ->join('estacion_trabajo','horario_alum.estacion_trabajo_id','=','estacion_trabajo.id')
                             ->where('departamento.id',$dpto->first()->departamento_id)
-                            ->select('horario_alum.id','horario_alum.fecha','horario_alum.rut','users.nombres as horario_name','users.apellidos as horario_apell','periodo.bloque','sala.nombre as sala_nombre','estacion_trabajo.id as est_trabajo')
+                            ->select('horario_alum.id','horario_alum.fecha','horario_alum.rut','users.nombres as horario_name','users.apellidos as horario_apell','periodo.bloque','sala.nombre as sala_nombre','estacion_trabajo.id as est_trabajo','horario_alum.asistencia')
                             ->get();
 
         //Cambio de rol

@@ -647,7 +647,7 @@ class horarioController extends Controller
                                     'curso_id' => $request->get('curso_id'),
                                     'rut' => $numero,
                                     'permanencia' => 'dia',
-                                    'asistencia' => 'Pendiente'
+                                    'asistencia' => $request->get('asistenciaH'),
                                     ]);
 
                                 //horario diario creado con exito docente
@@ -687,7 +687,7 @@ class horarioController extends Controller
                                                            'curso_id' => $request->get('curso_id'),
                                                            'rut' => $numero,
                                                            'permanencia' => 'semestral',
-                                                           'asistencia' => 'Pendiente'
+                                                           'asistencia' => $request->get('asistenciaH'),
                                                            ]);
                                             }
                                         }
@@ -704,7 +704,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $numero,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => 'Pendiente'
+                                                       'asistencia' => $request->get('asistenciaH'),
                                                        ]);
                                             }
                                         }
@@ -722,7 +722,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $numero,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => 'Pendiente'
+                                                       'asistencia' => $request->get('asistenciaH'),
                                                        ]);
                                             }
                                         }
@@ -738,7 +738,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $numero,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => 'Pendiente'
+                                                       'asistencia' => $request->get('asistenciaH'),
                                                        ]);
                                             }
                                         }
@@ -755,7 +755,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $numero,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => 'Pendiente'
+                                                       'asistencia' => $request->get('asistenciaH'),
                                                        ]);
                                             }
                                         }
@@ -772,7 +772,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $numero,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => 'Pendiente'
+                                                       'asistencia' => $request->get('asistenciaH'),
                                                        ]);
                                             }
                                         }
@@ -810,7 +810,7 @@ class horarioController extends Controller
                                     'curso_id' => $request->get('curso_id'),
                                     'rut' => $numero,
                                     'permanencia' => 'dia',
-                                    'asistencia' => 'Pendiente'
+                                    'asistencia' => $request->get('asistenciaH'),
                                     ]);
 
                                 Session::flash('create','¡Horario diario Ayudante editado correctamente!');
@@ -847,7 +847,7 @@ class horarioController extends Controller
                                                            'curso_id' => $request->get('curso_id'),
                                                            'rut' => $numero,
                                                            'permanencia' => 'semestral',
-                                                           'asistencia' => 'Pendiente'
+                                                           'asistencia' => $request->get('asistenciaH'),
                                                            ]);
                                             }
                                         }
@@ -863,7 +863,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $numero,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => 'Pendiente'
+                                                       'asistencia' => $request->get('asistenciaH'),
                                                        ]);
                                             }
                                         }
@@ -879,7 +879,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $numero,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => 'Pendiente'
+                                                       'asistencia' => $request->get('asistenciaH'),
                                                        ]);
                                             }
                                         }
@@ -895,7 +895,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $numero,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => 'Pendiente'
+                                                       'asistencia' => $request->get('asistenciaH'),
                                                        ]);
                                             }
                                         }
@@ -911,7 +911,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $numero,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => 'Pendiente'
+                                                       'asistencia' => $request->get('asistenciaH'),
                                                        ]);
                                             }
                                         }
@@ -927,7 +927,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $numero,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => 'Pendiente'
+                                                       'asistencia' => $request->get('asistenciaH'),
                                                        ]);
                                             }
                                         }
@@ -973,7 +973,7 @@ class horarioController extends Controller
                                             'curso_id' => $request->get('curso_id'),
                                             'rut' => $numero,
                                             'permanencia' => 'dia',
-                                            'asistencia' => 'Pendiente'
+                                            'asistencia' => $request->get('asistenciaH'),
                                             ]);
 
                                         //docente diario creado con exito
@@ -1011,7 +1011,7 @@ class horarioController extends Controller
                                                                'curso_id' => $request->get('curso_id'),
                                                                'rut' => $numero,
                                                                'permanencia' => 'semestral',
-                                                               'asistencia' => 'Pendiente'
+                                                               'asistencia' => $request->get('asistenciaH'),
                                                                ]);
                                                     }
                                                 }
@@ -1027,7 +1027,7 @@ class horarioController extends Controller
                                                                'curso_id' => $request->get('curso_id'),
                                                                'rut' => $numero,
                                                                'permanencia' => 'semestral',
-                                                               'asistencia' => 'Pendiente'
+                                                               'asistencia' => $request->get('asistenciaH'),
                                                                ]);
                                                     }
                                                 }
@@ -1043,7 +1043,7 @@ class horarioController extends Controller
                                                                'curso_id' => $request->get('curso_id'),
                                                                'rut' => $numero,
                                                                'permanencia' => 'semestral',
-                                                               'asistencia' => 'Pendiente'
+                                                               'asistencia' => $request->get('asistenciaH'),
                                                                ]);
                                                     }
                                                 }
@@ -1059,7 +1059,7 @@ class horarioController extends Controller
                                                                'curso_id' => $request->get('curso_id'),
                                                                'rut' => $numero,
                                                                'permanencia' => 'semestral',
-                                                               'asistencia' => 'Pendiente'
+                                                               'asistencia' => $request->get('asistenciaH'),
                                                                ]);
                                                     }
                                                 }
@@ -1075,7 +1075,7 @@ class horarioController extends Controller
                                                                'curso_id' => $request->get('curso_id'),
                                                                'rut' => $numero,
                                                                'permanencia' => 'semestral',
-                                                               'asistencia' => 'Pendiente'
+                                                               'asistencia' => $request->get('asistenciaH'),
                                                                ]);         
                                                     }
                                                 }
@@ -1091,7 +1091,7 @@ class horarioController extends Controller
                                                                    'curso_id' => $request->get('curso_id'),
                                                                    'rut' => $numero,
                                                                    'permanencia' => 'semestral',
-                                                                   'asistencia' => 'Pendiente'
+                                                                   'asistencia' => $request->get('asistenciaH'),
                                                                    ]);
                                                     }
                                                 }

@@ -293,7 +293,7 @@ $(document).ready(function(){
 
         }
     });
-
+    $('#asistenciaH option[id={{ $horarios->asistencia }}]').attr('selected', 'selected');
 });
 
 </script>

@@ -179,6 +179,7 @@ hr {
                 <th>Período</th>
                 <th>Sala</th>
                 <th>Estación Trabajo</th>
+                <th>Asistencia</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
               </tr>
@@ -193,6 +194,7 @@ hr {
                 <td>{{ $hr->bloque}}</td>
                 <td>{{ $hr->sala_nombre}}</td>
                 <td>{{ $hr->est_trabajo}}</td>
+                <td>{{ $hr->asistencia}}</td>
                 <!--Paso ruta y parametro para saber cual modificar-->
                 <td><a href="{{ route('director.horarioAlumno.edit',$hr->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
                 <td>
@@ -211,6 +213,7 @@ hr {
                 <th>Período</th>
                 <th>Sala</th>
                 <th>Estación Trabajo</th>
+                <th>Asistencia</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
               </tr>
