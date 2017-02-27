@@ -1,11 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Director;
-
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
-
 use App\Carrera;
 use App\CarreraSala;
 use App\Sala;
@@ -40,7 +37,7 @@ class carreraController extends Controller
         $carreras= Carrera::join('escuela','carrera.escuela_id','=','escuela.id')
                         ->join('departamento','departamento.id','=','escuela.departamento_id')
                         ->where('departamento_id','=',$dpto->first()->departamento_id)
-                        ->select('carrera.*')
+                        ->select('carrera.*','escuela.nombre as esc')
                         ->get();
         //Cambio de rol
         $usr=Auth::User()->rut;
@@ -122,11 +119,18 @@ class carreraController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'escuela_id' => 'required',
+            'codigo' => 'required|numeric',
+            'nombre' => 'required',
+            'descripcion' => 'required'
+            ]);
+
         $carrera = Carrera::create([
-            'escuela_id' => $request->get('escuelaCarrera'),
-            'codigo' => $request->get('codigoCarrera'),
-            'nombre' => $request->get('nombreCarrera'),
-            'descripcion' => $request->get('desCarrera')
+            'escuela_id' => $request->get('escuela_id'),
+            'codigo' => $request->get('codigo'),
+            'nombre' => $request->get('nombre'),
+            'descripcion' => $request->get('descripcion')
             ]);
 
         $usr=Auth::User()->rut;
@@ -138,7 +142,7 @@ class carreraController extends Controller
                         ->select('sala.id')
                         ->get();
         
-        $carr = Carrera::where('codigo','=',$request->get('codigoCarrera'))
+        $carr = Carrera::where('codigo','=',$request->get('codigo'))
                         ->select('carrera.id')
                         ->get();
                         
@@ -152,7 +156,7 @@ class carreraController extends Controller
             ]);
         }
 
-
+        Session::flash('create','¡Carrera creada correctamente!');
         return redirect()->route('director.carrera.index');
     }
 
@@ -222,6 +226,13 @@ class carreraController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'escuela_id' => 'required',
+            'codigo' => 'required|numeric',
+            'nombre' => 'required',
+            'descripcion' => 'required'
+            ]);
+
         $carrerasala = CarreraSala::where('carrera_id','=',$id)
                                   ->select('id')
                                   ->get();
@@ -242,10 +253,10 @@ class carreraController extends Controller
         $carreras = Carrera::findOrFail($id);     
         //fill (rellenar)
         $carreras->fill([
-            'escuela_id' => $request->get('escuelaCarrera'),
-            'codigo' => $request->get('codigoCarrera'),
-            'nombre' => $request->get('nombreCarrera'),
-            'descripcion' => $request->get('desCarrera')
+            'escuela_id' => $request->get('escuela_id'),
+            'codigo' => $request->get('codigo'),
+            'nombre' => $request->get('nombre'),
+            'descripcion' => $request->get('descripcion')
         ]);
         $carreras->save();
 
@@ -258,7 +269,7 @@ class carreraController extends Controller
                         ->select('sala.id')
                         ->get();
         
-        $carr = Carrera::where('codigo','=',$request->get('codigoCarrera'))
+        $carr = Carrera::where('codigo','=',$request->get('codigo'))
                         ->select('carrera.id')
                         ->get();
                         
@@ -272,6 +283,7 @@ class carreraController extends Controller
             ]);
         }
 
+        Session::flash('edit','¡Carrera editada correctamente!');
         return redirect()->route('director.carrera.index');
     }
 
@@ -301,6 +313,8 @@ class carreraController extends Controller
         
         $carreras = Carrera::findOrFail($id);
         $carreras->delete();
+
+        Session::flash('delete','¡Carrera eliminada correctamente!');
         return redirect()->route('director.carrera.index');
     }
 
@@ -355,7 +369,7 @@ class carreraController extends Controller
                     }   
                 }
             })->get();
-            Session::flash('message', '¡El archivo fue subido exitosamente!');
+            Session::flash('create', '¡El archivo fue subido exitosamente!');
            return redirect()->route('director.carrera.index');
     }
 }

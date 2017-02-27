@@ -83,12 +83,10 @@ hr {
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <!--Controlador.metodo-->
                 <li><a href="{{ route('director.usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
+                <li><a href="{{ route('director.rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
               </ul>
             </li>
-
-
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-desktop"></i> <span>Salas</span>
@@ -124,7 +122,8 @@ hr {
                 <li><a href="{{ url('/director/reportes_asignaturas')}}"><i class="fa  fa-book"></i>Asignaturas</a></li>
                 <li><a href="{{ url('/director/reportes_fallas')}}"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
               </ul>
-            </li>ass="treeview">
+            </li>
+            <li class="treeview">
               <a href="#">
                 <i class="fa fa-globe"></i> <span>Accesos Directos</span>
                 <i class="fa fa-angle-left pull-right"></i>
@@ -142,43 +141,24 @@ hr {
             <li><a href="{{ route('director.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
           </ul>
 @stop
-@section('options')
-<h1>
-    Salas 
-  <small>Reserva</small>
-</h1>
-@stop
 @section('opcion')
-<li class="active">Reserva</li>
+<li><a href="{{ route('director.estacion.index')}}"><i class="fa fa-desktop"></i> Estación</a></li>
+<li class="active">Editar Estación de Trabajo</li>
 @stop
 @section('content')
-<div class="jumbotron">
-  <h1>¡Bienvenido a la reserva de Salas!</h1>
-  </br></br>
-  <center>
-    <form role="form" method="get" action="{{ route('director.horario.index')}}">
-      <button type="submit" class="fa fa-eye btn btn-primary"> Ver horarios Docentes-Ayudantes</button>
-    </form>
-    </br>
-    <form role="form" method="get" action="{{ route('director.horarioAlumno.index')}}">
-      <button type="submit" class="fa fa-eye btn btn-primary"> Ver horarios Alumnos</button>
-    </form>
-  </center>
-  </br></br>
-  <p>En este módulo usted podrá reservar salas a Docentes, Ayudantes y Alumnos.</p>
-  </br></br>
-  <div class="row">
-    <div class="col-sm-8 col-md-8 col-lg-8 col-md-offset-3">
-      <!--div class="form-group"-->
-        <a href="{{URL::to('/director/asignar_docente')}}" class="btn btn-primary btn-lg" role="button">Reserva Docentes</a>
-        <a href="{{URL::to('/director/asignar_ayudante') }}" class="btn btn-primary btn-lg" role="button">Reserva Ayudantes</a>
-        <a href="{{URL::to('/director/asignar_alumno') }}" class="btn btn-primary btn-lg" role="button">Reserva Alumnos</a>
-        <!--div class="btn btn-primary btn-lg" href="#" role="button">Reserva Alumnos</div-->
-      <!--/div-->
-    </div>        
-</div>  
-</div>
+<h1>Editar Estación</h1>
+<!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
+{!! Form::model($est,['route' => ['director.estacion.update',$est], 'method' => 'PUT']) !!}
+  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <div class="box-body">
+      <div class="form-group">
+        <label for="disp">Disponibilidad:</label>
+        <select class="form-control" name="disp" id="disp">
+          <option value="si">Sí</option>
+          <option value="no">No</option>
+        </select>
+      </div>
+      <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
+    </div><!-- /.box-body -->
+{!! Form::close() !!}
 @stop
-
-
-

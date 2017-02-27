@@ -84,7 +84,7 @@ hr {
               </a>
               <ul class="treeview-menu">
                 <!--Controlador.metodo-->
-                <li><a href="pages/usuarios/admin.html"><i class="glyphicon glyphicon-barcode"></i> Autenticación</a></li>
+
                 <li><a href="{{ route('director.usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
               </ul>
             </li>
@@ -105,6 +105,7 @@ hr {
                   </ul>
                 </li>
                 <li><a href="{{ route('director.sala.index')}}"><i class="fa fa-list-alt"></i>Lista de Salas</a></li>
+                <li><a href="{{ route('director.estacion.index')}}"><i class="fa fa-laptop"></i>Estaciones de Trabajo</a></li>
                 <li><a href="{{ route('director.periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
                 <li><a href="{{ route('director.asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
                 <li><a href="{{ route('director.curso.index')}}"><i class="glyphicon glyphicon-education"></i> Cursos</a></li>
@@ -117,13 +118,10 @@ hr {
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="pages/labs/admin.html"><i class="fa fa-users"></i>Usuarios</a></li>
-                <li><a href="pages/labs/admin.html"><i class="fa fa-tv"></i>Salas</a></li>
-                <li><a href="pages/labs/docente.html"><i class="fa fa-hand-pointer-o"></i>Usabilidad</a></li>
-                <li><a href="pages/labs/ayudante.html"><i class="fa  fa-book"></i>Asignaturas</a></li>
-                <!--li><a href="pages/labs/alumno.html"><i class="fa fa-calendar"></i>Fechas</a></li-->
-                <li class="active"><a href="javascript:void(0);" onclick="cargarlistado(4);" ><i class="fa fa-calendar"></i>Fechas</a></li>
-                <li><a href="pages/labs/alumno.html"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
+                <li><a href="{{ url('/director/reportes_usuario')}}"><i class="fa fa-users"></i>Usuarios</a></li>
+                <li><a href="{{ url('/director/reportes_sala')}}"><i class="fa fa-tv"></i>Salas</a></li>
+                <li><a href="{{ url('/director/reportes_asignaturas')}}"><i class="fa  fa-book"></i>Asignaturas</a></li>
+                <li><a href="{{ url('/director/reportes_fallas')}}"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -156,6 +154,16 @@ hr {
 @stop
 @section('content')
 <h1>Perfil Usuario</h1>
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
 <h2>Cambiar imagen de perfil</h2>
 <form  method='post' action='{{url("administrador/usuario_perfilUpdate")}}' enctype='multipart/form-data'>
   {{csrf_field()}}
@@ -163,7 +171,7 @@ hr {
 	  	<div class="col-md-4">
 		    <div class="form-group">
 			  <label for="exampleInputPassword1">Email</label>
-			  <input type="text" class="form-control" value="{{ Auth::user()->email }}" name="emailUsuario" id="email">
+			  <input type="text" class="form-control" value="{{ Auth::user()->email }}" name="email" id="email">
 			</div> 
 		</div>
 	</div>
@@ -188,7 +196,7 @@ hr {
         <div class="row">
       <div class="col-md-4">
         <div class="form-group">
-          <label for="exampleInputPassword1">Contraseña</label>
+          <label for="exampleInputPassword1">Contraseña (Opcional)</label>
           <input type="password" class="form-control" name="passwordUsuario" id="passwordUsuario" placeholder="Ingrese contraseña nueva">
         </div> 
       </div>

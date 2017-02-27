@@ -74,6 +74,10 @@ hr {
               </a>
               <ul class="treeview-menu">
                 <!--Controlador.metodo-->
+                <li><a href="{{ route('director.campus.index')}}"><i class="fa fa-th"></i> Campus</a></li>
+                <li><a href="{{ route('director.facultad.index')}}"><i class="fa fa-th"></i> Facultades</a></li>
+                <li><a href="{{ route('director.departamento.index')}}"><i class="fa fa-th"></i> Departamentos</a></li>
+                <li><a href="{{ route('director.escuela.index')}}"><i class="fa fa-th"></i> Escuelas</a></li>
                 <li><a href="{{ route('director.carrera.index')}}"><i class="fa fa-th"></i> Carreras</a></li>
               </ul>
             </li>
@@ -83,12 +87,10 @@ hr {
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <!--Controlador.metodo-->
                 <li><a href="{{ route('director.usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
+                <li><a href="{{ route('director.rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
               </ul>
             </li>
-
-
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-desktop"></i> <span>Salas</span>
@@ -124,7 +126,8 @@ hr {
                 <li><a href="{{ url('/director/reportes_asignaturas')}}"><i class="fa  fa-book"></i>Asignaturas</a></li>
                 <li><a href="{{ url('/director/reportes_fallas')}}"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
               </ul>
-            </li>ass="treeview">
+            </li>
+            <li class="treeview">
               <a href="#">
                 <i class="fa fa-globe"></i> <span>Accesos Directos</span>
                 <i class="fa fa-angle-left pull-right"></i>
@@ -142,43 +145,38 @@ hr {
             <li><a href="{{ route('director.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
           </ul>
 @stop
-@section('options')
-<h1>
-    Salas 
-  <small>Reserva</small>
-</h1>
-@stop
 @section('opcion')
-<li class="active">Reserva</li>
+<li><a href="{{ route('director.sala.index')}}"><i class="fa fa-desktop"></i> Salas</a></li>
+<li class="active">Agregar Salas</li>
 @stop
 @section('content')
-<div class="jumbotron">
-  <h1>¡Bienvenido a la reserva de Salas!</h1>
-  </br></br>
-  <center>
-    <form role="form" method="get" action="{{ route('director.horario.index')}}">
-      <button type="submit" class="fa fa-eye btn btn-primary"> Ver horarios Docentes-Ayudantes</button>
-    </form>
-    </br>
-    <form role="form" method="get" action="{{ route('director.horarioAlumno.index')}}">
-      <button type="submit" class="fa fa-eye btn btn-primary"> Ver horarios Alumnos</button>
-    </form>
-  </center>
-  </br></br>
-  <p>En este módulo usted podrá reservar salas a Docentes, Ayudantes y Alumnos.</p>
-  </br></br>
-  <div class="row">
-    <div class="col-sm-8 col-md-8 col-lg-8 col-md-offset-3">
-      <!--div class="form-group"-->
-        <a href="{{URL::to('/director/asignar_docente')}}" class="btn btn-primary btn-lg" role="button">Reserva Docentes</a>
-        <a href="{{URL::to('/director/asignar_ayudante') }}" class="btn btn-primary btn-lg" role="button">Reserva Ayudantes</a>
-        <a href="{{URL::to('/director/asignar_alumno') }}" class="btn btn-primary btn-lg" role="button">Reserva Alumnos</a>
-        <!--div class="btn btn-primary btn-lg" href="#" role="button">Reserva Alumnos</div-->
-      <!--/div-->
-    </div>        
-</div>  
-</div>
+<h1>Agregar Sala</h1>
+<form role="form" method="post" action="{{ route('director.sala.store')}}">
+	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+	  <div class="box-body">
+	    <div class="form-group">
+	      <label for="exampleInputEmail1">Nombre Sala</label>
+	      <input type="text" class="form-control" name="nombreSala" id="nombreSala" placeholder="Ingrese nombre">
+	    </div>
+	    <div class="form-group">
+	      <label for="exampleInputPassword1">Capacidad</label>
+	      <input type="text" class="form-control" name="capacidadSala" id="capacidadSala" placeholder="Ingrese cantidad alumnos">
+	    </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-2">
+          <div class="form-group">
+            <label for="sel1">Departamento: </label>
+            <select class="form-control" id="dptoSala" name="dptoSala">
+            @foreach($dptos as $dep)
+                <option value="{{ $dep->id }}" name="dptoSala">{{ $dep->nombre }}</option>
+            @endforeach
+            </select>
+          </div>
+          </div>
+        </div>
+      </div>
+	    <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
+	  </div><!-- /.box-body -->
+</form>
 @stop
-
-
-

@@ -181,7 +181,6 @@ hr {
 	      <label for="exampleInputPassword1">Apellidos</label>
 	      <input type="text" class="form-control" value="{{ $usuario->apellidos}}" name="apellidos" id="capacidadSala" placeholder="Ingrese Apellidos ">
 	    </div>
-      
       <div class="form-group">
             <label for="sel1">Departamento: </label>
             <select class="form-control" id="dpt" name="dpt">
@@ -190,8 +189,7 @@ hr {
             @endforeach
             </select>
       </div>
-
-
+    
 	    <div class="form-group">
 	    	<div class="row" id="roles">
 		   <!-- Aca van los roles que se llenan con jquery-->

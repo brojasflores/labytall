@@ -79,6 +79,14 @@ Route::group(['prefix' => 'director','namespace' => 'Director'], function()
 	Route::get('/asignar_ayudante',['as' => 'director.asignar.ayudante', 'uses' => 'asignarController@ayudante']);
 	Route::resource('/asignar_alumno','asignarAlumController');
 
+
+	Route::resource('/reportes', 'reportesController');
+	Route::get('/reportes_usuario', ['as' => 'director.reportes.repusr', 'uses' => 'reportesController@RepUsr']);
+	Route::get('/reportes_sala', ['as' => 'director.reportes.repsa', 'uses' => 'reportesController@RepSa']);
+	Route::get('/reportes_asignaturas', ['as' => 'director.reportes.repasig', 'uses' => 'reportesController@RepAsig']);
+	Route::get('/reportes_fallas', ['as' => 'director.reportes.repfalla', 'uses' => 'reportesController@RepFall']);
+
+	Route::resource('/estacion','estacionController');
 });
 
 

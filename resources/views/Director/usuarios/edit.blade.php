@@ -66,14 +66,13 @@ hr {
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Administración</li>
+            <li class="header">Dirección</li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-university"></i> <span>Universidad</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <!--Controlador.metodo-->
                 <li><a href="{{ route('director.carrera.index')}}"><i class="fa fa-th"></i> Carreras</a></li>
               </ul>
             </li>
@@ -83,9 +82,8 @@ hr {
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <!--Controlador.metodo-->
-                <li><a href="pages/usuarios/admin.html"><i class="glyphicon glyphicon-barcode"></i> Autenticación</a></li>
                 <li><a href="{{ route('director.usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
+                <li><a href="{{ route('director.rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -105,6 +103,7 @@ hr {
                   </ul>
                 </li>
                 <li><a href="{{ route('director.sala.index')}}"><i class="fa fa-list-alt"></i>Lista de Salas</a></li>
+                <li><a href="{{ route('director.estacion.index')}}"><i class="fa fa-laptop"></i>Estaciones de Trabajo</a></li>
                 <li><a href="{{ route('director.periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
                 <li><a href="{{ route('director.asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
                 <li><a href="{{ route('director.curso.index')}}"><i class="glyphicon glyphicon-education"></i> Cursos</a></li>
@@ -117,13 +116,10 @@ hr {
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="pages/labs/admin.html"><i class="fa fa-users"></i>Usuarios</a></li>
-                <li><a href="pages/labs/admin.html"><i class="fa fa-tv"></i>Salas</a></li>
-                <li><a href="pages/labs/docente.html"><i class="fa fa-hand-pointer-o"></i>Usabilidad</a></li>
-                <li><a href="pages/labs/ayudante.html"><i class="fa  fa-book"></i>Asignaturas</a></li>
-                <!--li><a href="pages/labs/alumno.html"><i class="fa fa-calendar"></i>Fechas</a></li-->
-                <li class="active"><a href="javascript:void(0);" onclick="cargarlistado(4);" ><i class="fa fa-calendar"></i>Fechas</a></li>
-                <li><a href="pages/labs/alumno.html"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
+                <li><a href="{{ url('/director/reportes_usuario')}}"><i class="fa fa-users"></i>Usuarios</a></li>
+                <li><a href="{{ url('/director/reportes_sala')}}"><i class="fa fa-tv"></i>Salas</a></li>
+                <li><a href="{{ url('/director/reportes_asignaturas')}}"><i class="fa  fa-book"></i>Asignaturas</a></li>
+                <li><a href="{{ url('/director/reportes_fallas')}}"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -150,34 +146,44 @@ hr {
 @stop
 @section('content')
 <h1>Editar Usuario</h1>
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
 {!! Form::model($usuario,['route' => ['director.usuario.update',$usuario], 'method' => 'PUT']) !!}
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-	  <div class="box-body">
-	    <div class="form-group">
-	      <label for="exampleInputEmail1">Rut</label>
-	      <input type="text" class="form-control" value="{{ $usuario->rut}}" name="rutUsuario" id="nombreSala" placeholder="Ingrese Rut">
-	    </div>
-	    <div class="form-group">
-	      <label for="exampleInputPassword1">Email</label>
-	      <input type="text" class="form-control" value="{{ $usuario->email}}" name="emailUsuario" id="capacidadSala" placeholder="Ingrese email">
-	    </div>
-	    <div class="form-group">
-	      <label for="exampleInputPassword1">Nombres</label>
-	      <input type="text" class="form-control" value="{{ $usuario->nombres}}" name="nombresUsuario" id="capacidadSala" placeholder="Ingrese Nombres">
-	    </div>
-	    <div class="form-group">
-	      <label for="exampleInputPassword1">Apellidos</label>
-	      <input type="text" class="form-control" value="{{ $usuario->apellidos}}" name="apellidosUsuario" id="capacidadSala" placeholder="Ingrese Apellidos">
-	    </div>
-	    <div class="form-group">
-	    	<div class="row" id="roles">
-		   <!-- Aca van los roles que se llenan con jquery-->
-		    </div>
-	    </div>
-	    <input type="hidden" id="usuario_id" value="{{ $usuario->id }}">
-	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
-	  </div><!-- /.box-body -->
+  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <div class="box-body">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Rut</label>
+        <input type="text" class="form-control" value="{{ $rut}}" name="rut" id="nombreSala" placeholder="Ingrese Rut">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Email</label>
+        <input type="text" class="form-control" value="{{ $usuario->email}}" name="email" id="capacidadSala" placeholder="Ingrese email">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Nombres</label>
+        <input type="text" class="form-control" value="{{ $usuario->nombres}}" name="nombres" id="capacidadSala" placeholder="Ingrese Nombres ">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Apellidos</label>
+        <input type="text" class="form-control" value="{{ $usuario->apellidos}}" name="apellidos" id="capacidadSala" placeholder="Ingrese Apellidos ">
+      </div>
+      <div class="form-group">
+        <div class="row" id="roles">
+       <!-- Aca van los roles que se llenan con jquery-->
+        </div>
+      </div>
+      <input type="hidden" id="usuario_id" value="{{ $usuario->id }}">
+      <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
+    </div><!-- /.box-body -->
 {!! Form::close() !!}
 @stop
 
@@ -185,28 +191,42 @@ hr {
 <script>
 
 $(document).ready(function(){
-	$.ajax({
-		// con .val saco el valor del value
+
+  getRoles();
+  getSelect();
+
+});
+
+
+function getRoles(){
+    $.ajax({
+    // con .val saco el valor del value
         data:  {'id': $("#usuario_id").val()},
         url:   '/~brojas/director/usuario/'+$("#usuario_id")+'/edit',
         type:  'get',
         dataType: 'json',
         success:  function(respuesta) {          
-	       	$.each(respuesta['roles'], function(k,v){
-	       		//el # se refiere a una id
-		       	$("#roles").append("<div class='col-md-2'><div class='checkbox'><label><input id='"+v.id+"' type='checkbox' value='"+v.id+"' name='roles[]'>"+v.nombre+"</label></div></div>");
+          $.each(respuesta['roles'], function(k,v){
+            //el # se refiere a una id
+            $("#roles").append("<div class='col-md-2'><div class='checkbox'><label><input id='"+v.id+"' type='checkbox' value='"+v.id+"' name='roles[]'>"+v.nombre+"</label></div></div>");
 
-	       		$.each(respuesta['roles_usuario'], function(key,value){
-	       			if(value.rol_id == v.id)
-		       			$("#"+v.id).prop("checked",true);
-	       		});
-	       	});
+            $.each(respuesta['roles_usuario'], function(key,value){
+              if(value.rol_id == v.id)
+                $("#"+v.id).prop("checked",true);
+            });
+          });
 
         }
     });
+}
 
-});
-
+function getSelect(){
+  $('#dpt option[id=departamento_'+{{ $depa }}+']').attr('selected', 'selected');
+}
+  
+    
+    
+  
 </script>
 
 @stop

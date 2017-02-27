@@ -216,7 +216,7 @@ hr {
           <div class="col-md-3">
           <div class="form-group">
             <label for="sel1">Rut: </label>
-              <input type="text" class="form-control" value="{{ $horarios->rut }}" name="rutHorario" id="rutHorario" aria-describedby="basic-addon2"> 
+              <input type="text" class="form-control" value="{{ $rut }}" name="rutHorario" id="rutHorario" aria-describedby="basic-addon2"> 
           </div>
           </div>
         </div>

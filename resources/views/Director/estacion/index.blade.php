@@ -83,12 +83,10 @@ hr {
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <!--Controlador.metodo-->
                 <li><a href="{{ route('director.usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
+                <li><a href="{{ route('director.rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
               </ul>
             </li>
-
-
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-desktop"></i> <span>Salas</span>
@@ -124,7 +122,8 @@ hr {
                 <li><a href="{{ url('/director/reportes_asignaturas')}}"><i class="fa  fa-book"></i>Asignaturas</a></li>
                 <li><a href="{{ url('/director/reportes_fallas')}}"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
               </ul>
-            </li>ass="treeview">
+            </li>
+            <li class="treeview">
               <a href="#">
                 <i class="fa fa-globe"></i> <span>Accesos Directos</span>
                 <i class="fa fa-angle-left pull-right"></i>
@@ -144,41 +143,98 @@ hr {
 @stop
 @section('options')
 <h1>
-    Salas 
-  <small>Reserva</small>
+    Estaciones de Trabajo 
+  <small>Estaciones de Trabajo</small>
 </h1>
 @stop
 @section('opcion')
-<li class="active">Reserva</li>
+<li class="active">Estaciones</li>
 @stop
 @section('content')
-<div class="jumbotron">
-  <h1>¡Bienvenido a la reserva de Salas!</h1>
-  </br></br>
-  <center>
-    <form role="form" method="get" action="{{ route('director.horario.index')}}">
-      <button type="submit" class="fa fa-eye btn btn-primary"> Ver horarios Docentes-Ayudantes</button>
-    </form>
-    </br>
-    <form role="form" method="get" action="{{ route('director.horarioAlumno.index')}}">
-      <button type="submit" class="fa fa-eye btn btn-primary"> Ver horarios Alumnos</button>
-    </form>
-  </center>
-  </br></br>
-  <p>En este módulo usted podrá reservar salas a Docentes, Ayudantes y Alumnos.</p>
-  </br></br>
+<h1>Estaciones</h1>
+<section class="content">
   <div class="row">
-    <div class="col-sm-8 col-md-8 col-lg-8 col-md-offset-3">
-      <!--div class="form-group"-->
-        <a href="{{URL::to('/director/asignar_docente')}}" class="btn btn-primary btn-lg" role="button">Reserva Docentes</a>
-        <a href="{{URL::to('/director/asignar_ayudante') }}" class="btn btn-primary btn-lg" role="button">Reserva Ayudantes</a>
-        <a href="{{URL::to('/director/asignar_alumno') }}" class="btn btn-primary btn-lg" role="button">Reserva Alumnos</a>
-        <!--div class="btn btn-primary btn-lg" href="#" role="button">Reserva Alumnos</div-->
-      <!--/div-->
-    </div>        
-</div>  
-</div>
+    <div class="col-xs-12">
+      <!--ACA EMPIEZA LA DATATABLE-->
+        <div class="box">
+          <div class="box-header">
+          </div><!-- /.box-header -->
+          <div class="box-body">
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                <th>#</th>
+                <th>Sala</th>
+                <th>Estación</th>
+                <th>Período</th>
+                <th>Disponible</th>
+                <th>Editar </th>
+              </tr>
+              </thead>
+              <tbody>
+              <!--foreach recorre una coleccion de objetos-->
+               @foreach($estaciones as $sa)
+               <tr data-id="{{ $sa->id }}">
+                <td>{{ $sa->id }}</td>
+                <td>{{ $sa->lab }}</td>
+                <td>{{ $sa->nombre }}</td>
+                <td>{{ $sa->per }}</td>
+                <td>{{ $sa->disponibilidad}}</td>
+
+                <!--Paso ruta y parametro para saber cual modificar-->
+                <td><a href="{{ route('director.estacion.edit',$sa->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>   
+              </tr>
+              @endforeach
+              </tbody>
+              <tfoot>
+                <tr>
+                <th>#</th>
+                <th>Sala</th>
+                <th>Estación</th>
+                <th>Período</th>
+                <th>Disponible</th>
+                <th>Editar </th>
+              </tr>
+              </tfoot>
+            </table>
+          </div><!-- /.box-body -->
+        </div><!-- /.box -->
+        <!--ACA TERMINA LA DATATABLE-->
+  </div><!-- /.row -->
+</section><!-- /.content -->
 @stop
 
+@section('scripts')
+  <!-- DataTables -->
+  <script src="{{ asset('admin-lte/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+  <script src="{{ asset('admin-lte/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+   <script>
+$(document).ready(function() {
+  
+    $('#example1').DataTable({
+        responsive: true,
+        "language": {
+                "decimal":        "",
+                "emptyTable":     "Sin datos disponibles",
+                "info":           "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                "infoEmpty":      "Mostrando 0 a 0 de 0 entradas",
+                "infoFiltered":   "(Filtrado de un total de _MAX_ entradas)",
+                "infoPostFix":    "",
+                "thousands":      ".",
+                "lengthMenu":     "Mostrar _MENU_ entradas",
+                "loadingRecords": "Cargando...",
+                "processing":     "Procesando...",
+                "search":         "Buscar:",
+                "zeroRecords":    "Ningún registro encontrado.",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Ultimo",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                }
+            }
+    });
 
-
+});
+    </script>
+@stop

@@ -84,7 +84,7 @@ hr {
               </a>
               <ul class="treeview-menu">
                 <!--Controlador.metodo-->
-                <li><a href="pages/usuarios/admin.html"><i class="glyphicon glyphicon-barcode"></i> Autenticación</a></li>
+                
                 <li><a href="{{ route('director.usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
               </ul>
             </li>
@@ -105,6 +105,7 @@ hr {
                   </ul>
                 </li>
                 <li><a href="{{ route('director.sala.index')}}"><i class="fa fa-list-alt"></i>Lista de Salas</a></li>
+                <li><a href="{{ route('director.estacion.index')}}"><i class="fa fa-laptop"></i>Estaciones de Trabajo</a></li>
                 <li><a href="{{ route('director.periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
                 <li><a href="{{ route('director.asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
                 <li><a href="{{ route('director.curso.index')}}"><i class="glyphicon glyphicon-education"></i> Cursos</a></li>
@@ -117,13 +118,10 @@ hr {
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="pages/labs/admin.html"><i class="fa fa-users"></i>Usuarios</a></li>
-                <li><a href="pages/labs/admin.html"><i class="fa fa-tv"></i>Salas</a></li>
-                <li><a href="pages/labs/docente.html"><i class="fa fa-hand-pointer-o"></i>Usabilidad</a></li>
-                <li><a href="pages/labs/ayudante.html"><i class="fa  fa-book"></i>Asignaturas</a></li>
-                <!--li><a href="pages/labs/alumno.html"><i class="fa fa-calendar"></i>Fechas</a></li-->
-                <li class="active"><a href="javascript:void(0);" onclick="cargarlistado(4);" ><i class="fa fa-calendar"></i>Fechas</a></li>
-                <li><a href="pages/labs/alumno.html"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
+                <li><a href="{{ url('/director/reportes_usuario')}}"><i class="fa fa-users"></i>Usuarios</a></li>
+                <li><a href="{{ url('/director/reportes_sala')}}"><i class="fa fa-tv"></i>Salas</a></li>
+                <li><a href="{{ url('/director/reportes_asignaturas')}}"><i class="fa  fa-book"></i>Asignaturas</a></li>
+                <li><a href="{{ url('/director/reportes_fallas')}}"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -149,12 +147,28 @@ hr {
 <li class="active">Agregar Usuarios</li>
 @stop
 @section('content')
-<h1>Agregar Usuario</h1>
+@if(Session::has('rut'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('rut') }}</strong>
+    </div>
+@endif
 @if(Session::has('message'))
     <div class="alert alert-info" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <strong class="alert-link">{{ Session::get('message') }}</strong>
     </div>
+@endif
+<h1>Agregar Usuario</h1>
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
 @endif
 <div class="row">
   <div class="col-xs-12">
@@ -197,39 +211,39 @@ hr {
 </div>
 
 <form role="form" method="post" action="{{ route('director.usuario.store')}}">
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-	  <div class="box-body">
-	    <div class="form-group">
-	      <label for="exampleInputEmail1">Rut</label>
-	      <input type="text" class="form-control" name="rutUsuario" id="rutUsuario" placeholder="Ingrese Rut">
-	    </div>
-	    <div class="form-group">
-	      <label for="exampleInputPassword1">Email</label>
-	      <input type="text" class="form-control" name="emailUsuario" id="emailUsuario" placeholder="Ingrese Email">
-	    </div>
-	    <div class="form-group">
-	      <label for="exampleInputPassword1">Nombres</label>
-	      <input type="text" class="form-control" name="nombresUsuario" id="nombresUsuario" placeholder="Ingrese Nombres">
-	    </div>
-	    <div class="form-group">
-	      <label for="exampleInputPassword1">Apellidos</label>
-	      <input type="text" class="form-control" name="apellidosUsuario" id="apellidosUsuario" placeholder="Ingrese Apellidos">
-	    </div>
-	    <div class="form-group">
-	    	<div class="row">
-	    		@foreach($roles as $rol)
-          @if($rol->nombre == 'funcionario' || $rol->nombre == 'ayudante')
-	    		<div class="col-md-2">
-			    	<div class="checkbox">
-				    	<!-- Para imprimir el valor de una variable hay que escribir como está aca-->
-				    	<label><input type="checkbox" value="{!! $rol->id !!}" name="roles[]">{!! $rol->nombre!!}</label>
-			    	</div>
-		    	</div>
+  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <div class="box-body">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Rut</label>
+        <input type="text" class="form-control" name="rut" id="rutUsuario" placeholder="Ingrese Rut con dígito verificador (sin guión ni espacios)">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Email</label>
+        <input type="text" class="form-control" name="email" id="emailUsuario" placeholder="Ingrese Email">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Nombres</label>
+        <input type="text" class="form-control" name="nombres" id="nombresUsuario" placeholder="Ingrese Nombres">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Apellidos</label>
+        <input type="text" class="form-control" name="apellidos" id="apellidosUsuario" placeholder="Ingrese Apellidos">
+      </div>
+      <div class="form-group">
+        <div class="row">
+          @foreach($roles as $rol)
+          @if($rol->nombre == 'funcionario' || $rol->nombre == 'administrador' || $rol->nombre == 'ayudante' || $rol->nombre == 'director')
+          <div class="col-md-2">
+            <div class="checkbox">
+              <!-- Para imprimir el valor de una variable hay que escribir como está aca-->
+              <label><input type="checkbox" value="{!! $rol->id !!}" name="roles[]">{!! $rol->nombre!!}</label>
+            </div>
+          </div>
           @endif
-		    	@endforeach
-		    </div>
-	    </div>
-	    <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
-	  </div><!-- /.box-body -->
+          @endforeach
+        </div>
+      </div>
+      <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
+    </div><!-- /.box-body -->
 </form>
 @stop

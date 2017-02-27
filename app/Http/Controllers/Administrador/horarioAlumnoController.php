@@ -107,7 +107,29 @@ class horarioAlumnoController extends Controller
 
         }
         else{
+                $numero = Horario_Alumno::where('id','=',$id)
+                                  ->select('rut')
+                                  ->get();
+                $numero = $numero->first()->rut;
 
+                $i = 2;
+                $suma = 0;
+                foreach(array_reverse(str_split($numero)) as $v)
+                {
+                    if($i==8)
+                        $i = 2;
+                    $suma += $v * $i;
+                    ++$i;
+                }
+                $dvr = 11 - ($suma % 11);
+                
+                if($dvr == 11)
+                    $dvr = 0;
+                if($dvr == 10)
+                    $dvr = 'K';
+
+                $rut= $numero.$dvr;
+            
             $horarios = Horario_Alumno::findOrFail($id);         
 
             $periodos = Periodo::select('id','bloque')->orderBy('bloque','asc')->get();
@@ -150,11 +172,11 @@ class horarioAlumnoController extends Controller
             
             if($cont>1)
             {
-                return view ('Administrador/horariosAlum/edit',compact('horarios','salas','periodos','est','v2','cont'));
+                return view ('Administrador/horariosAlum/edit',compact('rut','horarios','salas','periodos','est','v2','cont'));
             }
             else
             {
-                return view ('Administrador/horariosAlum/edit',compact('horarios','salas','periodos','est','cont'));
+                return view ('Administrador/horariosAlum/edit',compact('rut','horarios','salas','periodos','est','cont'));
             }
             //return view('Administrador/horariosAlum/edit',compact('horarios','salas','periodos','est'));
         }
