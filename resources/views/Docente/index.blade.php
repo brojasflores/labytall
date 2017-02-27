@@ -33,6 +33,9 @@ hr {
           @if($as == 'administrador')
             <a href="{{ route('administrador..index')}}"><i class="fa fa-mail-forward"></i> Administrador</a>
           @endif
+          @if($as == 'director')
+            <a href="{{ route('director..index')}}"><i class="fa fa-mail-forward"></i> Director</a>
+          @endif
           @if($as == 'funcionario')
             <a href="{{ route('funcionario..index')}}"><i class="fa fa-mail-forward"></i> Funcionario</a>
           @endif

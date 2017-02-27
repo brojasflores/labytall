@@ -66,34 +66,42 @@ hr {
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Ayudante</li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-desktop"></i> <span>Salas</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="{{ route('ayudante.horario.index')}}"><i class="fa fa-eye"></i> Ver horarios</a></li>
-                <li><a href="{{ route('ayudante.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
-              </ul>
-            </li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-globe"></i> <span>Accesos Directos</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="http://www.utem.cl/" target="_blank"><i class="fa fa-external-link"></i> Página Principal</a></li>
-                <li><a href="http://mi.utem.cl/" target="_blank"><i class="fa fa-external-link"></i> Mi UTEM</a></li>
-                <li><a href="http://postulacion.utem.cl/" target="_blank"><i class="fa fa-external-link"></i> DIRDOC</a></li>
-                <li><a href="http://reko.utem.cl/portal/" target="_blank"><i class="fa fa-external-link"></i> REKO</a></li>
-                <li><a href="http://intranet.utem.cl/cb29be8b14c3c70e69672ae008310977/intranet/" target="_blank"><i class="fa fa-external-link"></i> Intranet</a></li>
-                <li><a href="http://biblioteca.utem.cl/" target="_blank"><i class="fa fa-external-link"></i> Catálogo Biblioteca</a></li>
-                <li><a href="http://bienestarestudiantil.blogutem.cl/" target="_blank"><i class="fa fa-external-link"></i> Bienestar Estudiantil</a></li>
-              </ul>
-            </li>
-            <li><a href="{{ route('ayudante.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
+    <li class="header">Docencia</li>
+    <li class="treeview">
+      <a href="#">
+        <i class="fa fa-desktop"></i> <span>Salas</span>
+        <i class="fa fa-angle-left pull-right"></i>
+      </a>
+      <ul class="treeview-menu">
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-eye"></i> <span>Ver Horarios</span>
+            <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{{ route('ayudante.horario.index')}}"><i class="fa fa-clock-o"></i> Ayudante</a></li>
           </ul>
+        </li>
+        <li><a href="{{ route('ayudante.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
+      </ul>
+    </li>
+    <li class="treeview">
+      <a href="#">
+        <i class="fa fa-globe"></i> <span>Accesos Directos</span>
+        <i class="fa fa-angle-left pull-right"></i>
+      </a>
+      <ul class="treeview-menu">
+        <li><a href="http://www.utem.cl/" target="_blank"><i class="fa fa-external-link"></i> Página Principal</a></li>
+        <li><a href="http://mi.utem.cl/" target="_blank"><i class="fa fa-external-link"></i> Mi UTEM</a></li>
+        <li><a href="http://postulacion.utem.cl/" target="_blank"><i class="fa fa-external-link"></i> DIRDOC</a></li>
+        <li><a href="http://reko.utem.cl/portal/" target="_blank"><i class="fa fa-external-link"></i> REKO</a></li>
+        <li><a href="http://intranet.utem.cl/cb29be8b14c3c70e69672ae008310977/intranet/" target="_blank"><i class="fa fa-external-link"></i> Intranet</a></li>
+        <li><a href="http://biblioteca.utem.cl/" target="_blank"><i class="fa fa-external-link"></i> Catálogo Biblioteca</a></li>
+        <li><a href="http://bienestarestudiantil.blogutem.cl/" target="_blank"><i class="fa fa-external-link"></i> Bienestar Estudiantil</a></li>
+      </ul>
+    </li>
+    <li><a href="{{ route('ayudante.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
+  </ul>
 @stop
 @section('opcion')
 <li><a href="{{ route('ayudante.horario.index')}}"><i class="fa fa-clock-o"></i> Horarios</a></li>
@@ -101,6 +109,7 @@ hr {
 @stop
 @section('content')
 <h1>Editar Horario</h1>
+
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
 {!! Form::model($horarios,['route' => ['ayudante.horario.update',$horarios], 'method' => 'PUT']) !!}
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -111,9 +120,9 @@ hr {
 	    		<div class="col-md-3">
 					<div class="form-group">
 					  <label for="sel1">Sala: </label>
-					  <select class="form-control" id="sala_id" name="salaHorario">
+					  <select class="form-control" id="sala_id" name="sala_id">
 					  	@foreach($salas as $sal)
-					    	<option id="{{ $sal->id }}" value="{{ $sal->id }}" name="salaHorario">{{ $sal->nombre }}</option>
+					    	<option id="{{ $sal->id }}" value="{{ $sal->id }}" name="sala_id">{{ $sal->nombre }}</option>
 						@endforeach
 					  </select>
 					</div>
@@ -173,9 +182,9 @@ hr {
 	    		<div class="col-md-3">
 					<div class="form-group">
 					  <label for="sel1">Período: </label>
-					  <select class="form-control" id="periodo_id" name="periodoHorario">
+					  <select class="form-control" id="periodo_id" name="periodo_id">
 					  	@foreach($periodos as $per)
-					    	<option id="{{ $per->id }}" value="{{ $per->id }}" name="periodoHorario">{{ $per->bloque }}</option>
+					    	<option id="{{ $per->id }}" value="{{ $per->id }}" name="periodo_id">{{ $per->bloque }}</option>
 						@endforeach
 					  </select>
 					</div>
@@ -187,9 +196,9 @@ hr {
 	    		<div class="col-md-3">
 					<div class="form-group">
 					  <label for="sel1">Curso - Sección: </label>
-					  <select class="form-control" id="curso_id" name="cursoHorario">
+					  <select class="form-control" id="curso_id" name="curso_id">
 					  	@foreach($cursos as $curso)
-					    	<option id="{{ $curso->id }}" value="{{ $curso->id }}" name="cursoHorario">{{ $curso->nombre }} - {{ $curso->seccion }}</option>
+					    	<option id="{{ $curso->id }}" value="{{ $curso->id }}" name="curso_id">{{ $curso->nombre }} - {{ $curso->seccion }}</option>
 						@endforeach
 					  </select>
 					</div>
@@ -200,8 +209,24 @@ hr {
 	    	<div class="row">
 	    		<div class="col-md-3">
 					<div class="form-group">
-					  <label for="sel1">Rut: </label>
-						  <input type="text" class="form-control" value="{{ $horarios->rut }}" name="rutHorario" id="rutHorario" aria-describedby="basic-addon2"> 
+					  <label for="sel1">Asistencia: </label>
+					  <select class="form-control" id="asistenciaH" name="asistenciaH">
+					  	   	<option id="Pendiente" value="Pendiente" name="asistenciaH">Pendiente</option>
+					  	   	<option id="si" value="si" name="asistenciaH">Sí</option>
+					  	   	<option id="no" value="no" name="asistenciaH">No</option>
+					  </select>
+					</div>
+		    	</div>
+		    </div>
+	    </div>
+	    <div class="form-group">
+	    	<div class="row">
+	    		<div class="col-md-3">
+					<div class="form-group">
+					  <label for="sel1">Tipo de reserva: </label>
+					  <select class="form-control" id="rol" name="rol">
+					  	   	<option id="ayudante" value="ayudante" name="ayudante">Ayudante</option>
+					  </select>
 					</div>
 		    	</div>
 		    </div>
@@ -230,7 +255,7 @@ $(document).ready(function(){
 	$.ajax({
 		// con .val saco el valor del value
         data:  {'id': $("#horario_id").val(),'permanencia': $("#permanencia").val()},
-        url:   '/~brojas/horario/'+$("#horario_id")+'/edit',
+        url:   '/~brojas/ayudante/horario/'+$("#horario_id")+'/edit',
         type:  'get',
         dataType: 'json',
         success:  function(respuesta) {   
@@ -293,6 +318,7 @@ $(document).ready(function(){
 			$("#col-fecha-fin").css('display','none');
 		}
 	});
+	$('#asistenciaH option[id={{ $horarios->asistencia }}]').attr('selected', 'selected');
 });
 
 </script>
