@@ -66,17 +66,7 @@ hr {
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Administración</li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-user"></i> <span>Gestión Usuarios</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <!--Controlador.metodo-->
-                <li><a href="pages/usuarios/admin.html"><i class="glyphicon glyphicon-barcode"></i> Autenticación</a></li>
-              </ul>
-            </li>
+            <li class="header">Funcionarios</li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-desktop"></i> <span>Salas</span>
@@ -94,6 +84,7 @@ hr {
                   </ul>
                 </li>
                 <li><a href="{{ route('funcionario.sala.index')}}"><i class="fa fa-list-alt"></i>Lista de Salas</a></li>
+                <li><a href="{{ route('funcionario.estacion.index')}}"><i class="fa fa-laptop"></i>Estaciones de Trabajo</a></li>
                 <li><a href="{{ route('funcionario.periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
                 <li><a href="{{ route('funcionario.asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
                 <li><a href="{{ route('funcionario.curso.index')}}"><i class="glyphicon glyphicon-education"></i> Cursos</a></li>
@@ -106,13 +97,10 @@ hr {
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="pages/labs/admin.html"><i class="fa fa-users"></i>Usuarios</a></li>
-                <li><a href="pages/labs/admin.html"><i class="fa fa-tv"></i>Salas</a></li>
-                <li><a href="pages/labs/docente.html"><i class="fa fa-hand-pointer-o"></i>Usabilidad</a></li>
-                <li><a href="pages/labs/ayudante.html"><i class="fa  fa-book"></i>Asignaturas</a></li>
-                <!--li><a href="pages/labs/alumno.html"><i class="fa fa-calendar"></i>Fechas</a></li-->
-                <li class="active"><a href="javascript:void(0);" onclick="cargarlistado(4);" ><i class="fa fa-calendar"></i>Fechas</a></li>
-                <li><a href="pages/labs/alumno.html"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
+                <li><a href="{{ url('/funcionario/reportes_usuario')}}"><i class="fa fa-users"></i>Usuarios</a></li>
+                <li><a href="{{ url('/funcionario/reportes_sala')}}"><i class="fa fa-tv"></i>Salas</a></li>
+                <li><a href="{{ url('/funcionario/reportes_asignaturas')}}"><i class="fa  fa-book"></i>Asignaturas</a></li>
+                <li><a href="{{ url('/funcionario/reportes_fallas')}}"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -143,6 +131,12 @@ hr {
 <li class="active">Horarios Alumnos</li>
 @stop
 @section('content')
+@if(Session::has('create'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('create') }}</strong>
+    </div>
+@endif
 <h1>Horarios</h1>
 <form role="form" method="get" action="{{ route('funcionario.asignar.index')}}">
   <button type="submit" class="fa fa-plus-square btn btn-primary"> Realizar una Reserva</button>
@@ -164,6 +158,7 @@ hr {
                 <th>Período</th>
                 <th>Sala</th>
                 <th>Estación Trabajo</th>
+                <th>Asistencia</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
               </tr>
@@ -178,6 +173,7 @@ hr {
                 <td>{{ $hr->bloque}}</td>
                 <td>{{ $hr->sala_nombre}}</td>
                 <td>{{ $hr->est_trabajo}}</td>
+                <td>{{ $hr->asistencia}}</td>
                 <!--Paso ruta y parametro para saber cual modificar-->
                 <td><a href="{{ route('funcionario.horarioAlumno.edit',$hr->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
                 <td>
@@ -196,6 +192,7 @@ hr {
                 <th>Período</th>
                 <th>Sala</th>
                 <th>Estación Trabajo</th>
+                <th>Asistencia</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
               </tr>

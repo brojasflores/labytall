@@ -66,17 +66,7 @@ hr {
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Administración</li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-user"></i> <span>Gestión Usuarios</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <!--Controlador.metodo-->
-                <li><a href="pages/usuarios/admin.html"><i class="glyphicon glyphicon-barcode"></i> Autenticación</a></li>
-              </ul>
-            </li>
+            <li class="header">Funcionarios</li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-desktop"></i> <span>Salas</span>
@@ -94,6 +84,7 @@ hr {
                   </ul>
                 </li>
                 <li><a href="{{ route('funcionario.sala.index')}}"><i class="fa fa-list-alt"></i>Lista de Salas</a></li>
+                <li><a href="{{ route('funcionario.estacion.index')}}"><i class="fa fa-laptop"></i>Estaciones de Trabajo</a></li>
                 <li><a href="{{ route('funcionario.periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
                 <li><a href="{{ route('funcionario.asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
                 <li><a href="{{ route('funcionario.curso.index')}}"><i class="glyphicon glyphicon-education"></i> Cursos</a></li>
@@ -106,13 +97,10 @@ hr {
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="pages/labs/admin.html"><i class="fa fa-users"></i>Usuarios</a></li>
-                <li><a href="pages/labs/admin.html"><i class="fa fa-tv"></i>Salas</a></li>
-                <li><a href="pages/labs/docente.html"><i class="fa fa-hand-pointer-o"></i>Usabilidad</a></li>
-                <li><a href="pages/labs/ayudante.html"><i class="fa  fa-book"></i>Asignaturas</a></li>
-                <!--li><a href="pages/labs/alumno.html"><i class="fa fa-calendar"></i>Fechas</a></li-->
-                <li class="active"><a href="javascript:void(0);" onclick="cargarlistado(4);" ><i class="fa fa-calendar"></i>Fechas</a></li>
-                <li><a href="pages/labs/alumno.html"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
+                <li><a href="{{ url('/funcionario/reportes_usuario')}}"><i class="fa fa-users"></i>Usuarios</a></li>
+                <li><a href="{{ url('/funcionario/reportes_sala')}}"><i class="fa fa-tv"></i>Salas</a></li>
+                <li><a href="{{ url('/funcionario/reportes_asignaturas')}}"><i class="fa  fa-book"></i>Asignaturas</a></li>
+                <li><a href="{{ url('/funcionario/reportes_fallas')}}"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -139,6 +127,7 @@ hr {
 @stop
 @section('content')
 <h1>Editar Horario</h1>
+
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
 {!! Form::model($horarios,['route' => ['funcionario.horario.update',$horarios], 'method' => 'PUT']) !!}
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -149,9 +138,9 @@ hr {
 	    		<div class="col-md-3">
 					<div class="form-group">
 					  <label for="sel1">Sala: </label>
-					  <select class="form-control" id="sala_id" name="salaHorario">
+					  <select class="form-control" id="sala_id" name="sala_id">
 					  	@foreach($salas as $sal)
-					    	<option id="{{ $sal->id }}" value="{{ $sal->id }}" name="salaHorario">{{ $sal->nombre }}</option>
+					    	<option id="{{ $sal->id }}" value="{{ $sal->id }}" name="sala_id">{{ $sal->nombre }}</option>
 						@endforeach
 					  </select>
 					</div>
@@ -211,9 +200,9 @@ hr {
 	    		<div class="col-md-3">
 					<div class="form-group">
 					  <label for="sel1">Período: </label>
-					  <select class="form-control" id="periodo_id" name="periodoHorario">
+					  <select class="form-control" id="periodo_id" name="periodo_id">
 					  	@foreach($periodos as $per)
-					    	<option id="{{ $per->id }}" value="{{ $per->id }}" name="periodoHorario">{{ $per->bloque }}</option>
+					    	<option id="{{ $per->id }}" value="{{ $per->id }}" name="periodo_id">{{ $per->bloque }}</option>
 						@endforeach
 					  </select>
 					</div>
@@ -225,9 +214,9 @@ hr {
 	    		<div class="col-md-3">
 					<div class="form-group">
 					  <label for="sel1">Curso - Sección: </label>
-					  <select class="form-control" id="curso_id" name="cursoHorario">
+					  <select class="form-control" id="curso_id" name="curso_id">
 					  	@foreach($cursos as $curso)
-					    	<option id="{{ $curso->id }}" value="{{ $curso->id }}" name="cursoHorario">{{ $curso->nombre }} - {{ $curso->seccion }}</option>
+					    	<option id="{{ $curso->id }}" value="{{ $curso->id }}" name="curso_id">{{ $curso->nombre }} - {{ $curso->seccion }}</option>
 						@endforeach
 					  </select>
 					</div>
@@ -238,8 +227,35 @@ hr {
 	    	<div class="row">
 	    		<div class="col-md-3">
 					<div class="form-group">
+					  <label for="sel1">Asistencia: </label>
+					  <select class="form-control" id="asistenciaH" name="asistenciaH">
+					  	   	<option id="Pendiente" value="Pendiente" name="asistenciaH">Pendiente</option>
+					  	   	<option id="si" value="si" name="asistenciaH">Sí</option>
+					  	   	<option id="no" value="no" name="asistenciaH">No</option>
+					  </select>
+					</div>
+		    	</div>
+		    </div>
+	    </div>
+	    <div class="form-group">
+	    	<div class="row">
+	    		<div class="col-md-3">
+					<div class="form-group">
+					  <label for="sel1">Tipo de reserva: </label>
+					  <select class="form-control" id="rol" name="rol">
+					  	   	<option id="docente" value="docente" name="docente">Docente</option>
+					  	   	<option id="ayudante" value="ayudante" name="ayudante">Ayudante</option>
+					  </select>
+					</div>
+		    	</div>
+		    </div>
+	    </div>
+	    <div class="form-group">
+	    	<div class="row">
+	    		<div class="col-md-3">
+					<div class="form-group">
 					  <label for="sel1">Rut: </label>
-						  <input type="text" class="form-control" value="{{ $horarios->rut }}" name="rutHorario" id="rutHorario" aria-describedby="basic-addon2"> 
+						  <input type="text" class="form-control" value="{{ $rut }}" name="rut" id="rut" aria-describedby="basic-addon2"> 
 					</div>
 		    	</div>
 		    </div>
@@ -268,7 +284,7 @@ $(document).ready(function(){
 	$.ajax({
 		// con .val saco el valor del value
         data:  {'id': $("#horario_id").val(),'permanencia': $("#permanencia").val()},
-        url:   '/~brojas/administrador/horario/'+$("#horario_id")+'/edit',
+        url:   '/~brojas/funcionario/horario/'+$("#horario_id")+'/edit',
         type:  'get',
         dataType: 'json',
         success:  function(respuesta) {   
@@ -331,6 +347,7 @@ $(document).ready(function(){
 			$("#col-fecha-fin").css('display','none');
 		}
 	});
+	$('#asistenciaH option[id={{ $horarios->asistencia }}]').attr('selected', 'selected');
 });
 
 </script>

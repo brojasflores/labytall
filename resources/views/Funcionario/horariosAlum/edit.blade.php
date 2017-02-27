@@ -66,17 +66,7 @@ hr {
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Administración</li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-user"></i> <span>Gestión Usuarios</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <!--Controlador.metodo-->
-                <li><a href="pages/usuarios/admin.html"><i class="glyphicon glyphicon-barcode"></i> Autenticación</a></li>
-              </ul>funcionario
-            </li>
+            <li class="header">Funcionarios</li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-desktop"></i> <span>Salas</span>
@@ -94,6 +84,7 @@ hr {
                   </ul>
                 </li>
                 <li><a href="{{ route('funcionario.sala.index')}}"><i class="fa fa-list-alt"></i>Lista de Salas</a></li>
+                <li><a href="{{ route('funcionario.estacion.index')}}"><i class="fa fa-laptop"></i>Estaciones de Trabajo</a></li>
                 <li><a href="{{ route('funcionario.periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
                 <li><a href="{{ route('funcionario.asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
                 <li><a href="{{ route('funcionario.curso.index')}}"><i class="glyphicon glyphicon-education"></i> Cursos</a></li>
@@ -106,13 +97,10 @@ hr {
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="pages/labs/admin.html"><i class="fa fa-users"></i>Usuarios</a></li>
-                <li><a href="pages/labs/admin.html"><i class="fa fa-tv"></i>Salas</a></li>
-                <li><a href="pages/labs/docente.html"><i class="fa fa-hand-pointer-o"></i>Usabilidad</a></li>
-                <li><a href="pages/labs/ayudante.html"><i class="fa  fa-book"></i>Asignaturas</a></li>
-                <!--li><a href="pages/labs/alumno.html"><i class="fa fa-calendar"></i>Fechas</a></li-->
-                <li class="active"><a href="javascript:void(0);" onclick="cargarlistado(4);" ><i class="fa fa-calendar"></i>Fechas</a></li>
-                <li><a href="pages/labs/alumno.html"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
+                <li><a href="{{ url('/funcionario/reportes_usuario')}}"><i class="fa fa-users"></i>Usuarios</a></li>
+                <li><a href="{{ url('/funcionario/reportes_sala')}}"><i class="fa fa-tv"></i>Salas</a></li>
+                <li><a href="{{ url('/funcionario/reportes_asignaturas')}}"><i class="fa  fa-book"></i>Asignaturas</a></li>
+                <li><a href="{{ url('/funcionario/reportes_fallas')}}"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -204,11 +192,25 @@ hr {
           <div class="col-md-3">
           <div class="form-group">
             <label for="sel1">Rut: </label>
-              <input type="text" class="form-control" value="{{ $horarios->rut }}" name="rutHorario" id="rutHorario" aria-describedby="basic-addon2"> 
+              <input type="text" class="form-control" value="{{ $rut }}" name="rutHorario" id="rutHorario" aria-describedby="basic-addon2"> 
           </div>
           </div>
         </div>
-      </div>      
+      </div> 
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-3">
+          <div class="form-group">
+            <label for="sel1">Asistencia: </label>
+            <select class="form-control" id="asistenciaH" name="asistenciaH">
+                  <option id="Pendiente" value="Pendiente" name="asistenciaH">Pendiente</option>
+                  <option id="si" value="si" name="asistenciaH">Sí</option>
+                  <option id="no" value="no" name="asistenciaH">No</option>
+            </select>
+          </div>
+          </div>
+        </div>
+      </div>    
       <input type="hidden" id="horario_id" value="{{ $horarios->id }}">
       <input type="hidden" name="rol" value="alumno">
       <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
@@ -227,27 +229,26 @@ $( "#fecha" ).datepicker({
 
 $(document).ready(function(){
     //# es para llamar una id
-    $("#sala_id").change(function(){
+    $("#sala_id,#periodo_id").change(function(){
       var id = $("#sala_id").val();
+      var periodo = $("#periodo_id").val();
       var token = $("#token").val();
       $.ajax({
         url: '/~brojas/funcionario/horarioAlumno/'+id+'/edit',
         headers:{'X-CSRF-TOKEN': token},
         type: 'GET',
         dataType: 'json',
-        data:{id : id,action: 'edit'},
+        data:{id : id,periodo:periodo,action: 'edit'},
         //response es la respuesta que trae desde el controlador
         success: function(response){  
           $("#estacion").empty();
          console.log(response);
           //el k es un índice (posición) y v (valor ocmo tal del elemento)
           $.each(response,function(k,v){
-          $("#estacion").append("<option value='"+v.id+"' name='sala'>"+v.sala+" - Estación N°"+v.nombre+"</option>");
-          });
-          
+          $("#estacion").append("<option value='"+v.id+"' name='sala'>"+v.sala+" - Estación N°"+v.nombre+"- Periodo:"+v.blo+"</option>");
+          }); 
         }
       });
-
     });
 
   $.ajax({
@@ -268,7 +269,7 @@ $(document).ready(function(){
 
         }
     });
-
+    $('#asistenciaH option[id={{ $horarios->asistencia }}]').attr('selected', 'selected');
 });
 
 </script>

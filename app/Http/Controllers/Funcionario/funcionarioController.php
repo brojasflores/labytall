@@ -12,7 +12,7 @@ use Auth;
 use Session;
 use App\User;
 
-class funcionarioController extends Controller
+class FuncionarioController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,7 +22,6 @@ class funcionarioController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('funci');
     }
     
     public function index()
@@ -33,7 +32,7 @@ class funcionarioController extends Controller
                     ->where('users.rut','=',$usr)
                     ->join('rol','rol_users.rol_id','=','rol.id')
                     ->select('nombre')
-                    ->paginate();
+                    ->get();
         // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
         foreach($usr2 as $v)
         {

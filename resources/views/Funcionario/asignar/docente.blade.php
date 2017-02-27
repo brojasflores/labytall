@@ -66,17 +66,7 @@ hr {
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Administración</li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-user"></i> <span>Gestión Usuarios</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <!--Controlador.metodo-->
-                <li><a href="pages/usuarios/admin.html"><i class="glyphicon glyphicon-barcode"></i> Autenticación</a></li>
-              </ul>
-            </li>
+            <li class="header">Funcionarios</li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-desktop"></i> <span>Salas</span>
@@ -94,6 +84,7 @@ hr {
                   </ul>
                 </li>
                 <li><a href="{{ route('funcionario.sala.index')}}"><i class="fa fa-list-alt"></i>Lista de Salas</a></li>
+                <li><a href="{{ route('funcionario.estacion.index')}}"><i class="fa fa-laptop"></i>Estaciones de Trabajo</a></li>
                 <li><a href="{{ route('funcionario.periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
                 <li><a href="{{ route('funcionario.asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
                 <li><a href="{{ route('funcionario.curso.index')}}"><i class="glyphicon glyphicon-education"></i> Cursos</a></li>
@@ -106,13 +97,10 @@ hr {
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="pages/labs/admin.html"><i class="fa fa-users"></i>Usuarios</a></li>
-                <li><a href="pages/labs/admin.html"><i class="fa fa-tv"></i>Salas</a></li>
-                <li><a href="pages/labs/docente.html"><i class="fa fa-hand-pointer-o"></i>Usabilidad</a></li>
-                <li><a href="pages/labs/ayudante.html"><i class="fa  fa-book"></i>Asignaturas</a></li>
-                <!--li><a href="pages/labs/alumno.html"><i class="fa fa-calendar"></i>Fechas</a></li-->
-                <li class="active"><a href="javascript:void(0);" onclick="cargarlistado(4);" ><i class="fa fa-calendar"></i>Fechas</a></li>
-                <li><a href="pages/labs/alumno.html"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
+                <li><a href="{{ url('/funcionario/reportes_usuario')}}"><i class="fa fa-users"></i>Usuarios</a></li>
+                <li><a href="{{ url('/funcionario/reportes_sala')}}"><i class="fa fa-tv"></i>Salas</a></li>
+                <li><a href="{{ url('/funcionario/reportes_asignaturas')}}"><i class="fa  fa-book"></i>Asignaturas</a></li>
+                <li><a href="{{ url('/funcionario/reportes_fallas')}}"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -144,115 +132,121 @@ hr {
 <li class="active">Reserva Docente</li>
 @stop
 @section('content')
+@if(Session::has('create'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('create') }}</strong>
+    </div>
+@endif
 <div class="row" style="margin-left: 0px">
 
 <form role="form" method="post" action="{{ route('funcionario.asignar.store') }}">
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-	  <div class="box-body">
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div class="form-group">
-					  <label for="sel1">Salas: </label>
-					  <select class="form-control" id="sala" name="sala">
-					  	@foreach($salas as $sala)
-					    	<option value="{{ $sala->id }}" name="sala">{{ $sala->nombre }}</option>
-						@endforeach
-					  </select>
-					</div>
-		    	</div>		    	
-		    </div>
-	    </div>	
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div class="form-group">
-					  <label for="sel1">Permanencia: </label>
-					  <select class="form-control" id="permanencia" name="permanencia">
-					  		<option value="0">Seleccione</option>
-					    	<option value="semestral" name="semestral">Semestral</option>
-					    	<option value="dia" name="dia">Día</option>
-					  </select>
-					</div>
-		    	</div>		    	
-		    </div>
-	    </div>	   
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3" id="col-fecha" style="display: none;">
-					<div class="form-group">
-					  <label for="sel1">Fecha: </label>
-						  <input type="text" class="form-control" placeholder="Fecha" name="fecha" id="fecha" aria-describedby="basic-addon2">
-					</div>
-		    	</div>
-	    		<div class="col-md-3" id="col-dia" style="display: none";>
-					<div class="form-group">
-					  <label for="sel1">Día: </label>
-						<select class="form-control" id="dia" name="dia">
-					    	<option value="lunes" name="dia">Lunes</option>
-					    	<option value="martes" name="dia">Martes</option>
-					    	<option value="miercoles" name="dia">Miércoles</option>
-					    	<option value="jueves" name="dia">Jueves</option>
-					    	<option value="viernes" name="dia">Viernes</option>
-					    	<option value="sabado" name="dia">Sábado</option>					    						    	
-					    </select>
-					</div>
-		    	</div>			    	
-	    		<div class="col-md-3" id="col-fecha-ini" style="display: none";>
-					<div class="form-group">
-					  <label for="sel1">Fecha Inicio: </label>
-						  <input type="text" class="form-control" placeholder="Fecha" name="fecha_inicio" id="fecha_inicio" aria-describedby="basic-addon2">
-					</div>
-		    	</div>	
-	    		<div class="col-md-3" id="col-fecha-fin" style="display: none";>
-					<div class="form-group">
-					  <label for="sel1">Fecha Fin: </label>
-						  <input type="text" class="form-control" placeholder="Fecha" name="fecha_fin" id="fecha_fin" aria-describedby="basic-addon2">
-					</div>
-		    	</div>			    			    			    	
-		    </div>
-	    </div> 	
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div class="form-group">
-					  <label for="sel1">Período: </label>
-					  <select class="form-control" id="periodo" name="periodo">
-					  	@foreach($periodos as $periodo)
-					    	<option value="{{ $periodo->id }}" name="periodo">{{ $periodo->bloque }}</option>
-						@endforeach
-					  </select>
-					</div>
-		    	</div>		    	
-		    </div>
-	    </div>	 
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div class="form-group">
-					  <label for="sel1">Curso: </label>
-					  <select class="form-control" id="curso" name="curso">
-					  	@foreach($cursos as $curso)
-					    	<option value="{{ $curso->id }}" name="curso">{{ $curso->nombre }} - {{ $curso->seccion }}</option>
-						@endforeach
-					  </select>
-					</div>
-		    	</div>	    	
-		    </div>
-	    </div>	   
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div class="form-group">
-					  <label for="sel1">Rut Usuario: </label>
-						  <input type="text" name="usuario" class="form-control" placeholder="12234123" aria-describedby="basic-addon2">
-					</div>
-		    	</div>
-		    </div>
-	    </div>	
-	    <input type="hidden" name="rol" value="docente">
-		<button type="submit" class="fa fa-edit btn btn-primary">Reservar</button>
-	</div>
+  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <div class="box-body">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-3">
+          <div class="form-group">
+            <label for="sel1">Salas: </label>
+            <select class="form-control" id="sala_id" name="sala_id">
+              @foreach($salas as $sala)
+                <option value="{{ $sala->id }}" name="sala_id">{{ $sala->nombre }}</option>
+            @endforeach
+            </select>
+          </div>
+          </div>          
+        </div>
+      </div>  
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-3">
+          <div class="form-group">
+            <label for="sel1">Permanencia: </label>
+            <select class="form-control" id="permanencia" name="permanencia">
+                <option value="0">Seleccione</option>
+                <option value="semestral" name="semestral">Semestral</option>
+                <option value="dia" name="dia">Día</option>
+            </select>
+          </div>
+          </div>          
+        </div>
+      </div>     
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-3" id="col-fecha" style="display: none;">
+          <div class="form-group">
+            <label for="sel1">Fecha: </label>
+              <input type="text" class="form-control" placeholder="Fecha" name="fecha" id="fecha" aria-describedby="basic-addon2">
+          </div>
+          </div>
+          <div class="col-md-3" id="col-dia" style="display: none";>
+          <div class="form-group">
+            <label for="sel1">Día: </label>
+            <select class="form-control" id="dia" name="dia">
+                <option value="lunes" name="dia">Lunes</option>
+                <option value="martes" name="dia">Martes</option>
+                <option value="miercoles" name="dia">Miércoles</option>
+                <option value="jueves" name="dia">Jueves</option>
+                <option value="viernes" name="dia">Viernes</option>
+                <option value="sabado" name="dia">Sábado</option>                               
+              </select>
+          </div>
+          </div>            
+          <div class="col-md-3" id="col-fecha-ini" style="display: none";>
+          <div class="form-group">
+            <label for="sel1">Fecha Inicio: </label>
+              <input type="text" class="form-control" placeholder="Fecha" name="fecha_inicio" id="fecha_inicio" aria-describedby="basic-addon2">
+          </div>
+          </div>  
+          <div class="col-md-3" id="col-fecha-fin" style="display: none";>
+          <div class="form-group">
+            <label for="sel1">Fecha Fin: </label>
+              <input type="text" class="form-control" placeholder="Fecha" name="fecha_fin" id="fecha_fin" aria-describedby="basic-addon2">
+          </div>
+          </div>                                
+        </div>
+      </div>  
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-3">
+          <div class="form-group">
+            <label for="sel1">Período: </label>
+            <select class="form-control" id="periodo_id" name="periodo_id">
+              @foreach($periodos as $periodo)
+                <option value="{{ $periodo->id }}" name="periodo_id">{{ $periodo->bloque }}</option>
+            @endforeach
+            </select>
+          </div>
+          </div>          
+        </div>
+      </div>   
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-3">
+          <div class="form-group">
+            <label for="sel1">Curso: </label>
+            <select class="form-control" id="curso_id" name="curso_id">
+              @foreach($cursos as $curso)
+                <option value="{{ $curso->id }}" name="curso_id">{{ $curso->nombre }} - {{ $curso->seccion }}</option>
+            @endforeach
+            </select>
+          </div>
+          </div>        
+        </div>
+      </div>     
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-3">
+          <div class="form-group">
+            <label for="sel1">Rut Usuario: </label>
+              <input type="text" name="rut" class="form-control" placeholder="12234123" aria-describedby="basic-addon2">
+          </div>
+          </div>
+        </div>
+      </div>  
+      <input type="hidden" name="rol" value="docente">
+    <button type="submit" class="fa fa-edit btn btn-primary">Reservar</button>
+  </div>
 </div>
 @stop
 
@@ -271,23 +265,23 @@ hr {
     });
   } );
   $(document).ready(function(){
-	  $("#permanencia").change(function(){
-	  	if($("#permanencia").val() == 'semestral')
-	  	{
-	  		$("#col-fecha").css('display','none');
-	  		$("#col-dia").css('display','block');
-	  		$("#col-fecha-ini").css('display','block');
-	  		$("#col-fecha-fin").css('display','block');
-	  	}
-	  	if($("#permanencia").val() == 'dia')
-	  	{
-	  		$("#col-fecha").css('display','block');
-	  		$("#col-dia").css('display','none');
-	  		$("#col-fecha-ini").css('display','none');
-	  		$("#col-fecha-fin").css('display','none');
-	  	}
-	  });
-	});
+    $("#permanencia").change(function(){
+      if($("#permanencia").val() == 'semestral')
+      {
+        $("#col-fecha").css('display','none');
+        $("#col-dia").css('display','block');
+        $("#col-fecha-ini").css('display','block');
+        $("#col-fecha-fin").css('display','block');
+      }
+      if($("#permanencia").val() == 'dia')
+      {
+        $("#col-fecha").css('display','block');
+        $("#col-dia").css('display','none');
+        $("#col-fecha-ini").css('display','none');
+        $("#col-fecha-fin").css('display','none');
+      }
+    });
+  });
   </script>
 @stop
 

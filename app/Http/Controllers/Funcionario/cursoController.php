@@ -3,18 +3,14 @@
 namespace App\Http\Controllers\Funcionario;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
-
 use App\Curso;
-
 use App\Asignatura;
 use Auth;
 use App\User;
 use App\UsersDpto;
-use App\Carrera;
-use App\Departamento;
-use App\UsersCarrera;
+use Session;
+
 
 class cursoController extends Controller
 {
@@ -35,7 +31,6 @@ class cursoController extends Controller
         $dpto= UsersDpto::where('rut','=',$usr)
                         ->select('departamento_id')
                         ->get();
-
         $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
                        ->join('carrera','carrera.id','=','asignatura.carrera_id')
                        ->join('escuela','escuela.id','=','carrera.escuela_id')
@@ -43,7 +38,7 @@ class cursoController extends Controller
                        ->where('departamento.id',$dpto->first()->departamento_id)
                        ->select('curso.*','asignatura.nombre')
                        ->get();
-
+        
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -68,7 +63,7 @@ class cursoController extends Controller
         {
             return view ('Funcionario/cursos/index', compact('cursos','cont'));
         }
-        //return view ('Administrador/cursos/index', compact('cursos'));
+        //return view ('Funcionario/cursos/index', compact('cursos'));
     }
 
     /**
@@ -82,13 +77,13 @@ class cursoController extends Controller
         $dpto= UsersDpto::where('rut','=',$usr)
                         ->select('departamento_id')
                         ->get();
-
         $asignaturas = Asignatura::join('carrera','asignatura.carrera_id','=','carrera.id')
                         ->join('escuela','escuela.id','=','carrera.escuela_id')
                         ->join('departamento','departamento.id','=','escuela.departamento_id')
                         ->where('departamento.id',$dpto->first()->departamento_id)
-                        ->select('asignatura.*','carrera.nombre as carre')
+                        ->select('asignatura.*','carrera.nombre as carr')
                         ->get();
+
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -113,7 +108,7 @@ class cursoController extends Controller
         {
             return view ('Funcionario/cursos/create',compact('asignaturas','cont'));
         }
-        //return view('Administrador/cursos/create',compact('asignaturas'));
+        //return view('Funcionario/cursos/create',compact('asignaturas'));
     }
 
     /**
@@ -124,16 +119,40 @@ class cursoController extends Controller
      */
     public function store(Request $request)
     {
+        $sem = $request->get('semestre');
+        if($sem == '01'||$sem=='02'||$sem=='1'||$sem=='2')
+        {
+            $sem='ok';
+        }
+        else
+        {
+            $sem='nook';
+        }
 
-        $cursos = Curso::create([
-            'asignatura_id' => $request->get('asigCurso'),
-            'semestre' => $request->get('semestreCurso'),
-            'anio' => $request->get('anioCurso'),
-            'seccion' => $request->get('seccionCurso')
-            ]);
+        if($sem=='ok')
+        {
+            $this->validate($request, [
+                'asignatura_id' => 'required',
+                'semestre' => 'required|numeric|max:2',
+                'anio' => 'required|numeric|digits:4',
+                'seccion' => 'required|numeric'
+                ]);
+            
+            $cursos = Curso::create([
+                'asignatura_id' => $request->get('asignatura_id'),
+                'semestre' => $request->get('semestre'),
+                'anio' => $request->get('anio'),
+                'seccion' => $request->get('seccion')
+                ]);
 
-
-        return redirect()->route('funcionario.curso.index');
+            Session::flash('create','¡Curso creado correctamente!');
+            return redirect()->route('funcionario.curso.index');
+        }
+        else
+        {
+            Session::flash('create','¡Curso no puede ser creado! Ingrese un semestre válido Ej: 1 ó 2');
+            return redirect()->route('funcionario.curso.create');
+        }
     }
 
     /**
@@ -161,13 +180,13 @@ class cursoController extends Controller
         $dpto= UsersDpto::where('rut','=',$usr)
                         ->select('departamento_id')
                         ->get();
-
         $asignaturas = Asignatura::join('carrera','asignatura.carrera_id','=','carrera.id')
                         ->join('escuela','escuela.id','=','carrera.escuela_id')
                         ->join('departamento','departamento.id','=','escuela.departamento_id')
                         ->where('departamento.id',$dpto->first()->departamento_id)
-                        ->select('asignatura.*','carrera.nombre as carre')
+                        ->select('asignatura.*','carrera.nombre as carr')
                         ->get();
+
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -192,7 +211,7 @@ class cursoController extends Controller
         {
             return view ('Funcionario/cursos/edit', compact('cursos','asignaturas','cont'));
         }
-        //return view('Administrador/cursos/edit', compact('cursos','asignaturas'));
+        //return view('Funcionario/cursos/edit', compact('cursos','asignaturas'));
     }
 
     /**
@@ -204,17 +223,43 @@ class cursoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $cursos = Curso::findOrFail($id);     
-        //fill (rellenar)
-        $cursos->fill([
-            'asignatura_id' => $request->get('asigCurso'),
-            'semestre' => $request->get('semestreCurso'),
-            'anio' => $request->get('anioCurso'),
-            'seccion' => $request->get('seccionCurso')
-        ]);
-        $cursos->save();
+        $sem = $request->get('semestre');
+        if($sem == '01'||$sem=='02'||$sem=='1'||$sem=='2')
+        {
+            $sem='ok';
+        }
+        else
+        {
+            $sem='nook';
+        }
 
-        return redirect()->route('funcionario.curso.index');
+        if($sem=='ok')
+        {
+            $this->validate($request, [
+                'asignatura_id' => 'required',
+                'semestre' => 'required|numeric|max:2',
+                'anio' => 'required|numeric|digits:4',
+                'seccion' => 'required|numeric'
+                ]);
+
+            $cursos = Curso::findOrFail($id);     
+
+            $cursos->fill([
+                'asignatura_id' => $request->get('asignatura_id'),
+                'semestre' => $request->get('semestre'),
+                'anio' => $request->get('anio'),
+                'seccion' => $request->get('seccion')
+            ]);
+            $cursos->save();
+
+            Session::flash('edit','¡Curso editado correctamente!');
+            return redirect()->route('funcionario.curso.index');
+        }
+        else
+        {
+            Session::flash('create','¡Curso no puede ser editado! Ingrese un semestre válido Ej: 1 ó 2 e intente nuevamente');
+            return redirect()->route('funcionario.curso.index');
+        }
     
     }
 
@@ -229,6 +274,7 @@ class cursoController extends Controller
         $cursos = Curso::findOrFail($id);
         $cursos->delete();
 
+        Session::flash('delete','¡Curso eliminado correctamente!');
         return redirect()->route('funcionario.curso.index');
     }
 }

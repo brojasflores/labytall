@@ -119,6 +119,16 @@ Route::group(['prefix' => 'funcionario', 'namespace' => 'Funcionario'], function
 	Route::get('/asignar_ayudante',['as' => 'funcionario.asignar.ayudante', 'uses' => 'asignarController@ayudante']);
 	Route::resource('/asignar_alumno','asignarAlumController');
 
+	Route::post('/upload_asignatura', ['as' => 'funcionario.asignatura.upload', 'uses' => 'asignaturaController@uploadAsig']);
+
+	Route::resource('/reportes', 'reportesController');
+	Route::get('/reportes_usuario', ['as' => 'funcionario.reportes.repusr', 'uses' => 'reportesController@RepUsr']);
+	Route::get('/reportes_sala', ['as' => 'funcionario.reportes.repsa', 'uses' => 'reportesController@RepSa']);
+	Route::get('/reportes_asignaturas', ['as' => 'funcionario.reportes.repasig', 'uses' => 'reportesController@RepAsig']);
+	Route::get('/reportes_fallas', ['as' => 'funcionario.reportes.repfalla', 'uses' => 'reportesController@RepFall']);
+
+	Route::resource('/estacion','estacionController');
+
 });
 
 //***********************************RUTAS DOCENTE*******************************************

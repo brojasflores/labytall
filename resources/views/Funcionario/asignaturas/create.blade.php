@@ -66,17 +66,7 @@ hr {
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Administración</li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-user"></i> <span>Gestión Usuarios</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <!--Controlador.metodo-->
-                <li><a href="pages/usuarios/admin.html"><i class="glyphicon glyphicon-barcode"></i> Autenticación</a></li>>
-              </ul>
-            </li>
+            <li class="header">Funcionarios</li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-desktop"></i> <span>Salas</span>
@@ -94,6 +84,7 @@ hr {
                   </ul>
                 </li>
                 <li><a href="{{ route('funcionario.sala.index')}}"><i class="fa fa-list-alt"></i>Lista de Salas</a></li>
+                <li><a href="{{ route('funcionario.estacion.index')}}"><i class="fa fa-laptop"></i>Estaciones de Trabajo</a></li>
                 <li><a href="{{ route('funcionario.periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
                 <li><a href="{{ route('funcionario.asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
                 <li><a href="{{ route('funcionario.curso.index')}}"><i class="glyphicon glyphicon-education"></i> Cursos</a></li>
@@ -106,13 +97,10 @@ hr {
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="pages/labs/admin.html"><i class="fa fa-users"></i>Usuarios</a></li>
-                <li><a href="pages/labs/admin.html"><i class="fa fa-tv"></i>Salas</a></li>
-                <li><a href="pages/labs/docente.html"><i class="fa fa-hand-pointer-o"></i>Usabilidad</a></li>
-                <li><a href="pages/labs/ayudante.html"><i class="fa  fa-book"></i>Asignaturas</a></li>
-                <!--li><a href="pages/labs/alumno.html"><i class="fa fa-calendar"></i>Fechas</a></li-->
-                <li class="active"><a href="javascript:void(0);" onclick="cargarlistado(4);" ><i class="fa fa-calendar"></i>Fechas</a></li>
-                <li><a href="pages/labs/alumno.html"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
+                <li><a href="{{ url('/funcionario/reportes_usuario')}}"><i class="fa fa-users"></i>Usuarios</a></li>
+                <li><a href="{{ url('/funcionario/reportes_sala')}}"><i class="fa fa-tv"></i>Salas</a></li>
+                <li><a href="{{ url('/funcionario/reportes_asignaturas')}}"><i class="fa  fa-book"></i>Asignaturas</a></li>
+                <li><a href="{{ url('/funcionario/reportes_fallas')}}"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -139,39 +127,68 @@ hr {
 @stop
 @section('content')
 <h1>Agregar Asignatura</h1>
-<form role="form" method="post" action="{{ route('funcionario.asignatura.store')}}">
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-	  <div class="box-body">
-	    <div class="form-group">
-	      <label for="exampleInputEmail1">Código</label>
-	      <input type="text" class="form-control" name="codigoAsignatura" id="codigoAsignatura" placeholder="Ingrese código de la asignatura">
-	    </div>
-	    <div class="form-group">
-	      <label for="exampleInputPassword1">Nombre</label>
-	      <input type="text" class="form-control" name="nombreAsignatura" id="nombreAsignatura" placeholder="Ingrese nombre de la asignatura">
-	    </div>
-	    <div class="form-group">
-	      <label for="exampleInputPassword1">Descripción</label>
-	      <input type="text" class="form-control" name="descripcionAsignatura" id="descripcionAsignatura" placeholder="Ingrese descripción de la asignatura">
-	    </div>
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
+<div class="row">
+  <div class="col-xs-12">
+    {!! Form::open(['action' => 'Director\asignaturaController@uploadAsig','files'=>true]) !!}
+      <div class="form-group">
+        <div class="panel-body">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <div class="form-group">
+              <label class="col-md-2 control-label">Seleccione el archivo con las Asignaturas</label>
+              <div class="col-md-4">
+                <input type="file" class="form-control" name="file" >
+              </div>
+              <div class="col-md-4">
+                <div align="center"<th><button type="submit" class="btn btn-success">Subir Asignaturas</button></th></div>
+              </div>
+            </div>
+        </div>
+       </div>
+    {!! Form::close() !!}
+  </div>
+</div>
 
+
+<form role="form" method="post" action="{{ route('funcionario.asignatura.store')}}">
+  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <div class="box-body">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Código</label>
+        <input type="text" class="form-control" name="codigo" id="codigoAsignatura" placeholder="Ingrese código de la asignatura">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Nombre</label>
+        <input type="text" class="form-control" name="nombre" id="nombreAsignatura" placeholder="Ingrese nombre de la asignatura">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Descripción</label>
+        <input type="text" class="form-control" name="descripcion" id="descripcionAsignatura" placeholder="Ingrese descripción de la asignatura">
+      </div>
       <div class="form-group">
         <div class="row">
-        
           <div class="col-md-2">
           <div class="form-group">
             <label for="sel1">Carrera: </label>
-            <select class="form-control" id="asignaturas" name="carreraAsignatura">
+            <select class="form-control" id="carreraAsig" name="carrera_id">
             @foreach($carreras as $car)
-                <option value="{{ $car->id }}" name="carreraAsignatura">{{ $car->nombre }}</option>
+                <option value="{{ $car->id }}" name="carreraAsig">{{ $car->nombre }}</option>
             @endforeach
             </select>
           </div>
           </div>
         </div>
-      </div>   
-
-	    <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
-	  </div><!-- /.box-body -->
+      </div>
+      <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
+    </div><!-- /.box-body -->
 </form>
 @stop

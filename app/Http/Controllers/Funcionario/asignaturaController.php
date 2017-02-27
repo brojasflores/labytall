@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Funcionario;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\UsersDpto;
-use App\UsersCarrera;
-use App\Carrera;
-use App\Curso;
+
 use App\Asignatura;
+use App\Carrera;
 use Auth;
 use App\User;
+use App\UsersDpto;
+use Session;
 
 class asignaturaController extends Controller
 {
@@ -25,22 +25,20 @@ class asignaturaController extends Controller
         $this->middleware('auth');
         $this->middleware('funci');
     }
-    
+
     public function index()
     {
-        //$asignaturas = Asignatura::all();
-
         $usr=Auth::User()->rut;
         $dpto= UsersDpto::where('rut','=',$usr)
                         ->select('departamento_id')
                         ->get();
-
         $asignaturas = Asignatura::join('carrera','asignatura.carrera_id','=','carrera.id')
                         ->join('escuela','escuela.id','=','carrera.escuela_id')
                         ->join('departamento','departamento.id','=','escuela.departamento_id')
                         ->where('departamento.id',$dpto->first()->departamento_id)
-                        ->select('asignatura.*','carrera.nombre as carre')
+                        ->select('asignatura.*','carrera.nombre as carr')
                         ->get();
+
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -66,7 +64,7 @@ class asignaturaController extends Controller
             return view ('Funcionario/asignaturas/index', compact('asignaturas','cont'));
         }
         //se pasa la variable sin el peso con compact
-        //return view ('Administrador/asignaturas/index', compact('asignaturas'));
+        //return view ('Funcionario/asignaturas/index', compact('asignaturas'));
     }
 
     /**
@@ -80,7 +78,6 @@ class asignaturaController extends Controller
         $dpto= UsersDpto::where('rut','=',$usr)
                         ->select('departamento_id')
                         ->get();
-
         $carreras = Carrera::join('escuela','carrera.escuela_id','=','escuela.id')
                            ->join('departamento','departamento.id','=','escuela.departamento_id')
                            ->where('departamento.id',$dpto->first()->departamento_id)
@@ -111,7 +108,7 @@ class asignaturaController extends Controller
         {
             return view ('Funcionario/asignaturas/create', compact('carreras','cont'));
         }
-        //return view('Administrador/asignaturas/create');
+        //return view('Funcionario/asignaturas/create');
     }
 
     /**
@@ -122,13 +119,22 @@ class asignaturaController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+                'codigo' => 'required',
+                'nombre' => 'required',
+                'descripcion' => 'required',
+                'carrera_id' => 'required'
+                ]);
+
         $asignaturas = Asignatura::create([
-            'codigo' => $request->get('codigoAsignatura'),
-            'nombre' => $request->get('nombreAsignatura'),
-            'descripcion' => $request->get('descripcionAsignatura'),
-            'carrera_id' => $request->get('carreraAsignatura')
+            'codigo' => $request->get('codigo'),
+            'nombre' => $request->get('nombre'),
+            'descripcion' => $request->get('descripcion'),
+            'carrera_id' => $request->get('carrera_id')
             ]);
             //$asignaturas = Asignatura::all();        
+        
+        Session::flash('create','¡Asignatura creada correctamente!');
         return redirect()->route('funcionario.asignatura.index');
     }
 
@@ -155,14 +161,13 @@ class asignaturaController extends Controller
         $dpto= UsersDpto::where('rut','=',$usr)
                         ->select('departamento_id')
                         ->get();
-
         $carreras = Carrera::join('escuela','carrera.escuela_id','=','escuela.id')
                            ->join('departamento','departamento.id','=','escuela.departamento_id')
                            ->where('departamento.id',$dpto->first()->departamento_id)
                            ->select('carrera.*')
                            ->get();
-
         $asignaturas = Asignatura::findOrFail($id);
+
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -187,7 +192,7 @@ class asignaturaController extends Controller
         {
             return view ('Funcionario/asignaturas/edit', compact('carreras','asignaturas','cont'));
         }
-        //return view('Administrador/asignaturas/edit', compact('asignaturas'));
+        //return view('Funcionario/asignaturas/edit', compact('asignaturas'));
     }
 
     /**
@@ -199,15 +204,24 @@ class asignaturaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+                'codigo' => 'required',
+                'nombre' => 'required',
+                'descripcion' => 'required',
+                'carrera_id' => 'required'
+                ]);
+
         $asignaturas = Asignatura::findOrFail($id);     
         //fill (rellenar)
         $asignaturas->fill([
-            'codigo' => $request->get('codigoAsignatura'),
-            'nombre' => $request->get('nombreAsignatura'),
-            'descripcion' => $request->get('descripcionAsignatura'),
-            'carrera_id' => $request->get('carreraAsignatura')
+            'codigo' => $request->get('codigo'),
+            'nombre' => $request->get('nombre'),
+            'descripcion' => $request->get('descripcion'),
+            'carrera_id' => $request->get('carrera_id')
         ]);
         $asignaturas->save();
+        
+        Session::flash('edit','¡Asignatura editada correctamente!');
         return redirect()->route('funcionario.asignatura.index');
     }
 
@@ -221,6 +235,38 @@ class asignaturaController extends Controller
     {
         $asignaturas = Asignatura::findOrFail($id);
         $asignaturas->delete();
+
+        Session::flash('destroy','¡Asignatura eliminada correctamente!');
         return redirect()->route('funcionario.asignatura.index');
+    }
+
+    public function uploadAsig(Request $request)
+    {
+        if(is_null($request->file('file')))
+        {
+            Session::flash('message', 'Debes seleccionar un archivo.');
+            return redirect()->back();
+        }
+           $file = $request->file('file');
+     
+           $nombre = $file->getClientOriginalName();
+           \Storage::disk('local')->put($nombre,  \File::get($file));
+            \Excel::load('/storage/app/'.$nombre,function($archivo) 
+            {
+                $result = $archivo->get();
+
+                foreach($result as $key => $value)
+                {
+                    $carrera_id = Carrera::where('codigo','=',$value->carrera)
+                                        ->select('id')
+                                        ->get();
+
+                    $var = new Asignatura();
+                    $var->fill(['codigo' => $value->codigo, 'nombre'=> $value->nombre, 'descripcion'=> $value->descripcion, 'carrera_id'=> $carrera_id->first()->id]);
+                    $var->save();
+                }
+            })->get();
+            Session::flash('message', 'Los Docentes fueron agregados exitosamente!');
+           return redirect()->route('funcionario.asignatura.index');
     }
 }

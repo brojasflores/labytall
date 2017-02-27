@@ -66,7 +66,7 @@ hr {
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Funcionarios</li>          
+            <li class="header">Funcionarios</li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-desktop"></i> <span>Salas</span>
@@ -121,145 +121,24 @@ hr {
             <li><a href="{{ route('funcionario.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
           </ul>
 @stop
-@section('options')
-<h1>
-    Salas 
-  <small>Reserva Alumno</small>
-</h1>
-@stop
 @section('opcion')
-<li><a href="{{ route('funcionario.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reserva</a></li>
-<li class="active">Reserva Alumno</li>
+<li><a href="{{ route('funcionario.estacion.index')}}"><i class="fa fa-desktop"></i> Estación</a></li>
+<li class="active">Editar Estación de Trabajo</li>
 @stop
 @section('content')
-@if(Session::has('create'))
-    <div class="alert alert-info" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <strong class="alert-link">{{ Session::get('create') }}</strong>
-    </div>
-@endif
-<div class="row" style="margin-left: 0px">
-
-<form role="form" method="post" action="{{ route('funcionario.asignar_alumno.store') }}">
-  <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+<h1>Editar Estación</h1>
+<!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
+{!! Form::model($est,['route' => ['funcionario.estacion.update',$est], 'method' => 'PUT']) !!}
+  <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="box-body">
       <div class="form-group">
-        <div class="row">
-          <div class="col-md-3">
-          <div class="form-group">
-            <label for="sel1">Salas: </label>
-            <select class="form-control" id="sala" name="sala">
-              <option value="0" name="sala">Seleccione</option>
-              @foreach($salas as $sala)
-                <option value="{{ $sala->id }}" name="sala">{{ $sala->nombre }}</option>
-            @endforeach
-            </select>
-          </div>
-          </div>          
-        </div>
-      </div>     
-      <div class="form-group">
-        <div class="row">
-          <div class="col-md-3" id="col-fecha">
-          <div class="form-group">
-            <label for="sel1">Fecha: </label>
-              <input type="text" class="form-control" placeholder="Fecha" name="fecha" id="fecha" aria-describedby="basic-addon2">
-          </div>
-          </div>
-          <div class="col-md-3" id="col-dia" style="display: none";>
-          <div class="form-group">
-            <label for="sel1">Día: </label>
-            <select class="form-control" id="dia" name="dia">
-                <option value="lunes" name="dia">Lunes</option>
-                <option value="martes" name="dia">Martes</option>
-                <option value="miercoles" name="dia">Miércoles</option>
-                <option value="jueves" name="dia">Jueves</option>
-                <option value="viernes" name="dia">Viernes</option>
-                <option value="sabado" name="dia">Sábado</option>                               
-              </select>
-          </div>
-          </div>                                            
-        </div>
-      </div>  
-      <div class="form-group">
-        <div class="row">
-          <div class="col-md-3">
-          <div class="form-group">
-            <label for="sel1">Período: </label>
-            <select class="form-control" id="periodo" name="periodo">
-              @foreach($periodos as $periodo)
-                <option value="{{ $periodo->id }}" id="periodo" name="periodo">{{ $periodo->bloque }}</option>
-              @endforeach
-            </select>
-          </div>
-          </div>          
-        </div>
-      </div>  
-      <div class="form-group">
-        <div class="row">
-          <div class="col-md-3">
-          <div class="form-group" id="estaciones" style="display: none;">
-            <label for="sel1">Estaciones de Trabajo: </label>
-              <select class="form-control" id="estacion" name="estacion"> 
-            </select>
-          </div>
-          </div>
-        </div>
-      </div>   
-      <div class="form-group">
-        <div class="row">
-          <div class="col-md-3">
-          <div class="form-group">
-            <label for="sel1">Rut Usuario: </label>
-              <input type="text" name="usuario" class="form-control" placeholder="12234123" aria-describedby="basic-addon2">
-          </div>
-          </div>
-        </div>
+        <label for="disp">Disponibilidad:</label>
+        <select class="form-control" name="disp" id="disp">
+          <option value="si">Sí</option>
+          <option value="no">No</option>
+        </select>
       </div>
-      <input type="hidden" name="rol" value="alumno"> 
-    <button type="submit" class="fa fa-edit btn btn-primary">Reservar</button>
-  </div>
-</div>
-@stop
-
-@section('scripts')
-  <script>
-
-  $( function(){
-    $( "#fecha" ).datepicker({
-      showButtonPanel: true
-    });
-
-  });
-
-  $(document).ready(function(){
-    //# es para llamar una id
-
-      $("#sala, #periodo").change(function(){
-      var id = $("#sala").val();
-      var periodo = $("#periodo").val();
-      var token = $("#token").val();
-      $.ajax({
-        url: '/~brojas/funcionario/asignar_alumno',
-        headers:{'X-CSRF-TOKEN': token},
-        type: 'POST',
-        dataType: 'json',
-        data:{id : id,periodo : periodo},
-        //response es la respuesta que trae desde el controlador
-        success: function(response){  
-          $("#estacion").empty();
-          $("#estaciones").css('display','block');
-          //el k es un índice (posición) y v (valor como tal del elemento)
-          $.each(response,function(k,v){
-          $("#estacion").append("<option value='"+v.id+"' name='sala'>"+v.sala+" - Estación N°"+v.nombre+" - Periodo:"+v.blo+"</option>");
-          });
-          
-        }
-      });
-  });
-      
-
-  });
-
-  </script>
+      <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
+    </div><!-- /.box-body -->
+{!! Form::close() !!}
 @stop

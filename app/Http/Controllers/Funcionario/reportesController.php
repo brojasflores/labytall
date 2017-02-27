@@ -1,0 +1,744 @@
+<?php
+
+namespace App\Http\Controllers\Funcionario;
+
+
+use Illuminate\Http\Request;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+use App\Asignatura;
+use App\Curso;
+use App\Horario;
+use App\Periodo;
+use App\Rol;
+use App\RolUsuario;
+use App\Sala;
+use App\Usuario;
+use App\UsersDpto;
+use Auth;
+use App\User;
+use DB;
+use Session;
+
+class reportesController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        //  
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+
+    public function RepUsr(Request $request)
+    {
+        if($request->ajax())
+        {
+            $usr=Auth::User()->rut;
+            $dpto= UsersDpto::where('rut','=',$usr)
+                            ->select('departamento_id')
+                            ->get();
+            
+            $dpto=$dpto->first()->departamento_id;
+
+            $condicion = "0 = 0"; 
+            $laboratorio = $request->lab;
+
+            if($request->get('fecha_inicio') != '' && $request->get('fecha_termino') != '')
+            {
+                $fecha_ini_separada = explode("/",$request->get('fecha_inicio'));
+                $fecha_ini_formateada = $fecha_ini_separada[2]."-".$fecha_ini_separada[1]."-".$fecha_ini_separada[0]; 
+                $fecha_term_separada = explode("/",$request->get('fecha_termino'));
+                $fecha_term_formateada = $fecha_term_separada[2]."-".$fecha_term_separada[1]."-".$fecha_term_separada[0];
+                $condicion .= " and a.fecha between to_date('".$fecha_ini_formateada."','YYYY-MM-DD') and to_date('".$fecha_term_formateada."','YYYY-MM-DD')";                   
+            }
+
+
+            //Cantidad de doc y ayu en cierto lab por una fecha específica
+            if($request->get('tipo') == 'normal')
+            {
+                $horario = DB::select("select c.nombre, count(a.id) as cantidad
+                                        from horario a
+                                        inner join sala c on a.sala_id = c.id
+                                        where ".$condicion."
+                                        and c.departamento_id = ".$dpto."
+                                        group by c.nombre 
+                                        order by cantidad desc");                
+            }
+
+            //Cantidad de alum en cierto lab por una fecha específica
+            if($request->get('tipo') == 'alumno')
+            {
+                $horario = DB::select("select c.nombre, count(a.id) as cantidad
+                                        from horario_alum a
+                                        inner join sala c on a.sala_id = c.id
+                                        where ".$condicion."
+                                        and c.departamento_id = ".$dpto."
+                                        group by c.nombre 
+                                        order by cantidad desc");
+            }
+
+            //doc y ayu (top 5) que más asisten a los lab
+            if($request->get('tipo') == 'masasistenormal')
+            {
+                $horario = DB::select("select c.nombres nombre, count(a.id) as cantidad
+                                        from horario a
+                                        inner join users c on a.rut = c.rut
+                                        where a.sala_id = ".$laboratorio."
+                                        and a.asistencia = 'si'
+                                        and ".$condicion."
+                                        group by c.nombres
+                                        order by cantidad desc
+                                        limit 5 offset 0");
+            }
+
+            //alum (top 5) que más asisten a los lab
+            if($request->get('tipo') == 'masasistealum')
+            {
+                $horario = DB::select("select c.nombres nombre, count(a.id) as cantidad
+                                        from horario_alum a
+                                        inner join users c on a.rut = c.rut
+                                        where a.sala_id = ".$laboratorio."
+                                        and a.asistencia = 'si'
+                                        and ".$condicion."
+                                        group by c.nombres
+                                        order by cantidad desc
+                                        limit 5 offset 0");
+            }
+
+            //doc y ayu que más faltan
+            if($request->get('tipo') == 'masfaltannormal')
+            {
+                $horario = DB::select("select c.nombres nombre, count(a.id) as cantidad
+                                        from horario a
+                                        inner join users c on a.rut = c.rut
+                                        where a.sala_id = ".$laboratorio."
+                                        and a.asistencia = 'no'
+                                        and ".$condicion."
+                                        group by c.nombres 
+                                        order by cantidad desc
+                                        limit 5 offset 0");
+            }  
+
+            //alum que más faltan
+            if($request->get('tipo') == 'masfaltanalum')
+            {
+                $horario = DB::select("select c.nombres nombre, count(a.id) as cantidad
+                                        from horario_alum a
+                                        inner join users c on a.rut = c.rut
+                                        where a.sala_id = ".$laboratorio."
+                                        and a.asistencia = 'no'
+                                        and ".$condicion."
+                                        group by c.nombres 
+                                        order by cantidad desc
+                                        limit 5 offset 0");
+            }     
+
+            //Cantidad de doc y ayu asistentes en cierto periodo
+            if($request->get('tipo') == 'asistpernor')
+            {
+                $horario = DB::select("select c.bloque nombre, count(a.id) as cantidad
+                                        from horario a
+                                        inner join periodo c on a.periodo_id = c.id
+                                        inner join sala d on a.sala_id = d.id
+                                        inner join departamento e on d.departamento_id = e.id
+                                        where a.asistencia = 'si'
+                                        and ".$condicion."
+                                        and e.id = ".$dpto."
+                                        group by c.bloque 
+                                        order by cantidad desc
+                                        limit 5 offset 0");
+
+                //no segura
+            }  
+
+            //Cantidad de alum asistentes en cierto periodo
+            if($request->get('tipo') == 'asistperayu')
+            {
+                $horario = DB::select("select c.bloque nombre, count(a.id) as cantidad
+                                        from horario_alum a
+                                        inner join periodo c on a.periodo_id = c.id
+                                        inner join sala d on a.sala_id = d.id
+                                        inner join departamento e on d.departamento_id = e.id
+                                        where a.asistencia = 'si'
+                                        and ".$condicion."
+                                        and e.id = ".$dpto."
+                                        group by c.bloque 
+                                        order by cantidad desc
+                                        limit 5 offset 0");
+            } 
+
+            //Cantidad de doc y ayu inasistentes en cierto periodo
+            if($request->get('tipo') == 'inasistpernor')
+            {
+                $horario = DB::select("select c.bloque nombre, count(a.id) as cantidad
+                                        from horario a
+                                        inner join periodo c on a.periodo_id = c.id
+                                        inner join sala d on a.sala_id = d.id
+                                        inner join departamento e on d.departamento_id = e.id
+                                        where a.asistencia = 'no'
+                                        and ".$condicion."
+                                        and e.id = ".$dpto."
+                                        group by c.bloque 
+                                        order by cantidad desc
+                                        limit 5 offset 0");
+            }  
+
+            //Cantidad de alum inasistentes en cierto periodo
+            if($request->get('tipo') == 'inasistperayu')
+            {
+                $horario = DB::select("select c.bloque nombre, count(a.id) as cantidad
+                                        from horario_alum a
+                                        inner join periodo c on a.periodo_id = c.id
+                                        inner join sala d on a.sala_id = d.id
+                                        inner join departamento e on d.departamento_id = e.id
+                                        where a.asistencia = 'no'
+                                        and ".$condicion."
+                                        and e.id = ".$dpto."
+                                        group by c.bloque 
+                                        order by cantidad desc
+                                        limit 5 offset 0");
+            }  
+
+            $arreglo = [];
+
+            foreach ($horario as $key => $value) {
+                $arreglo[] = [$value->nombre,$value->cantidad];
+            }
+
+
+            return response()->json($arreglo);
+        }
+
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                        ->select('departamento_id')
+                        ->get();
+
+        $sala= Sala::where('departamento_id','=',$dpto->first()->departamento_id)
+                        ->select('sala.*')
+                        ->get();
+        //Cambio de rol
+        $usr=Auth::User()->rut;
+        //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+        $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
+                    ->where('users.rut','=',$usr)
+                    ->join('rol','rol_users.rol_id','=','rol.id')
+                    ->select('nombre')
+                    ->get();
+        // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+        foreach($usr2 as $v)
+        {
+            $v2[]= $v->nombre;
+        }
+        //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
+        $cont = count($v2); //cuenta la cantidad de elementos del array
+        if($cont>1)
+        {
+            return view ('Funcionario//graficas/RepUsr',compact('sala','v2','cont'));
+        }
+        else
+        {
+            return view ('Funcionario//graficas/RepUsr',compact('sala','cont'));
+        }
+
+    }
+
+    public function RepSa(Request $request)
+    {
+        if($request->ajax())
+        {
+            $usr=Auth::User()->rut;
+            $dpto= UsersDpto::where('rut','=',$usr)
+                            ->select('departamento_id')
+                            ->get();
+            
+            $dpto=$dpto->first()->departamento_id;
+
+
+            $condicion = "0 = 0"; 
+            $laboratorio = $request->lab;
+
+            if($request->get('fecha_inicio') != '' && $request->get('fecha_termino') != '')
+            {
+                $fecha_ini_separada = explode("/",$request->get('fecha_inicio'));
+                $fecha_ini_formateada = $fecha_ini_separada[2]."-".$fecha_ini_separada[1]."-".$fecha_ini_separada[0]; 
+                $fecha_term_separada = explode("/",$request->get('fecha_termino'));
+                $fecha_term_formateada = $fecha_term_separada[2]."-".$fecha_term_separada[1]."-".$fecha_term_separada[0];
+                $condicion .= " and a.fecha between to_date('".$fecha_ini_formateada."','YYYY-MM-DD') and to_date('".$fecha_term_formateada."','YYYY-MM-DD')";                   
+            }
+
+
+            //Carrera que más usa los lab 
+            if($request->get('tipo') == 'carrera')
+            {
+                $horario = DB::select("select b.nombre, count(a.id) as cantidad
+                                        from horario a
+                                        inner join curso c on a.curso_id = c.id
+                                        inner join asignatura d on c.asignatura_id = d.id
+                                        inner join carrera b on d.carrera_id = b.id
+                                        inner join escuela e on b.escuela_id = e.id
+                                        where a.asistencia = 'si'
+                                        and e.departamento_id = ".$dpto."
+                                        and ".$condicion."
+                                        group by b.nombre
+                                        order by cantidad desc
+                                        limit 5 offset 0");                                     
+            }
+
+            //Periodo en que más se usa un lab doc y ayud
+            if($request->get('tipo') == 'maslabperinor')
+            {
+                $horario = DB::select("select c.bloque nombre, count(a.id) as cantidad
+                                        from horario a
+                                        inner join periodo c on a.periodo_id = c.id
+                                        inner join  sala d on a.sala_id = d.id
+                                        where a.asistencia = 'si'
+                                        and d.departamento_id = ".$dpto."
+                                        and ".$condicion."
+                                        group by c.bloque 
+                                        order by cantidad desc
+                                        limit 5 offset 0");                                     
+            }
+
+            //Periodo en que más se usa un lab alum
+            if($request->get('tipo') == 'maslabperialum')
+            {
+                $horario = DB::select("select c.bloque nombre, count(a.id) as cantidad
+                                        from horario_alum a
+                                        inner join periodo c on a.periodo_id = c.id
+                                        inner join  sala d on a.sala_id = d.id
+                                        where a.asistencia = 'si'
+                                        and d.departamento_id = ".$dpto."
+                                        and ".$condicion."
+                                        group by c.bloque 
+                                        order by cantidad desc
+                                        limit 5 offset 0");                                     
+            }
+
+            //Periodo en que menos se usa un lab doc y ayud
+            if($request->get('tipo') == 'menlabperinor')
+            {
+                $horario = DB::select("select c.bloque nombre, count(a.id) as cantidad
+                                        from horario a
+                                        inner join periodo c on a.periodo_id = c.id
+                                        inner join  sala d on a.sala_id = d.id
+                                        where a.asistencia = 'no'
+                                        and d.departamento_id = ".$dpto."
+                                        and ".$condicion."
+                                        group by c.bloque 
+                                        order by cantidad desc
+                                        limit 5 offset 0");                                     
+            }
+
+            //Periodo en que menos se usa un lab alum
+            if($request->get('tipo') == 'menlabperialum')
+            {
+                $horario = DB::select("select c.bloque nombre, count(a.id) as cantidad
+                                        from horario_alum a
+                                        inner join periodo c on a.periodo_id = c.id
+                                        inner join  sala d on a.sala_id = d.id
+                                        where a.asistencia = 'no'
+                                        and d.departamento_id = ".$dpto."
+                                        and ".$condicion."
+                                        group by c.bloque 
+                                        order by cantidad desc
+                                        limit 5 offset 0");                                     
+            }
+
+            //Usabilidad de lab (sala más usada Doc y ayud)
+            if($request->get('tipo') == 'masusnor')
+            {
+                $horario = DB::select("select c.nombre, count(a.id) as cantidad
+                                        from horario a
+                                        inner join sala c on a.sala_id = c.id
+                                        where a.asistencia = 'si'
+                                        and c.departamento_id = ".$dpto."
+                                        and ".$condicion."
+                                        group by c.nombre
+                                        order by cantidad
+                                        limit 5 offset 0");                                     
+            }
+
+            //Usabilidad de lab (sala menos usada Doc y ayud)
+            if($request->get('tipo') == 'menusnor')
+            {
+                $horario = DB::select("select c.nombre, count(a.id) as cantidad
+                                        from horario a
+                                        inner join sala c on a.sala_id = c.id
+                                        where a.asistencia = 'no'
+                                        and c.departamento_id = ".$dpto."
+                                        and ".$condicion."
+                                        group by c.nombre
+                                        order by cantidad
+                                        limit 5 offset 0");                                     
+            }
+
+            //Usabilidad de lab (sala más usada alum)
+            if($request->get('tipo') == 'masusalum')
+            {
+                $horario = DB::select("select c.nombre, count(a.id) as cantidad
+                                        from horario_alum a
+                                        inner join sala c on a.sala_id = c.id
+                                        where a.asistencia = 'si'
+                                        and c.departamento_id = ".$dpto."
+                                        and ".$condicion."
+                                        group by c.nombre
+                                        order by cantidad
+                                        limit 5 offset 0");                                     
+            }
+
+            //Usabilidad de lab (sala menos usada alum)
+            if($request->get('tipo') == 'menusalum')
+            {
+                $horario = DB::select("select c.nombre, count(a.id) as cantidad
+                                        from horario_alum a
+                                        inner join sala c on a.sala_id = c.id
+                                        where a.asistencia = 'no'
+                                        and c.departamento_id = ".$dpto."
+                                        and ".$condicion."
+                                        group by c.nombre
+                                        order by cantidad
+                                        limit 5 offset 0");                                     
+            }
+
+
+            $arreglo = [];
+
+            foreach ($horario as $key => $value) {
+                $arreglo[] = [$value->nombre,$value->cantidad];
+            }
+
+
+            return response()->json($arreglo);
+        }
+
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                        ->select('departamento_id')
+                        ->get();
+
+        $sala= Sala::where('departamento_id','=',$dpto->first()->departamento_id)
+                        ->select('sala.*')
+                        ->get();
+        //Cambio de rol
+        $usr=Auth::User()->rut;
+        //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+        $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
+                    ->where('users.rut','=',$usr)
+                    ->join('rol','rol_users.rol_id','=','rol.id')
+                    ->select('nombre')
+                    ->get();
+        // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+        foreach($usr2 as $v)
+        {
+            $v2[]= $v->nombre;
+        }
+        //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
+        $cont = count($v2); //cuenta la cantidad de elementos del array
+        if($cont>1)
+        {
+            return view ('Funcionario//graficas/RepSa',compact('sala','v2','cont'));
+        }
+        else
+        {
+            return view ('Funcionario//graficas/RepSa',compact('sala','cont'));
+        }
+
+    }
+
+    public function RepAsig(Request $request)
+    {
+        if($request->ajax())
+        {
+            $usr=Auth::User()->rut;
+            $dpto= UsersDpto::where('rut','=',$usr)
+                            ->select('departamento_id')
+                            ->get();
+            
+            $dpto=$dpto->first()->departamento_id;
+
+
+            $condicion = "0 = 0"; 
+            $asignatura = $request->asig;
+            $ru = $request->rut;
+
+            if($request->get('fecha_inicio') != '' && $request->get('fecha_termino') != '')
+            {
+                $fecha_ini_separada = explode("/",$request->get('fecha_inicio'));
+                $fecha_ini_formateada = $fecha_ini_separada[2]."-".$fecha_ini_separada[1]."-".$fecha_ini_separada[0]; 
+                $fecha_term_separada = explode("/",$request->get('fecha_termino'));
+                $fecha_term_formateada = $fecha_term_separada[2]."-".$fecha_term_separada[1]."-".$fecha_term_separada[0];
+                $condicion .= " and a.fecha between to_date('".$fecha_ini_formateada."','YYYY-MM-DD') and to_date('".$fecha_term_formateada."','YYYY-MM-DD')";                   
+            }
+
+            //Usabilidad de sala por asignatura
+            if($request->get('tipo') == 'asignatura')
+            {
+                $horario = DB::select("select d.nombre, count(a.id) as cantidad
+                                        from horario a
+                                        inner join curso c on a.curso_id = c.id
+                                        inner join asignatura d on c.asignatura_id = d.id
+                                        inner join sala e on a.sala_id = e.id
+                                        where a.asistencia = 'si'
+                                        and e.departamento_id = ".$dpto."
+                                        group by d.nombre
+                                        order by cantidad
+                                        limit 5 offset 0");                                     
+            }
+
+            //Usabilidad de sala por curso (hay que ingresar la asignatura que se quieren saber sus cursos)
+            if($request->get('tipo') == 'asigCur')
+            {
+                $asign = $asignatura = "" ? "" : $asignatura;
+                $horario = DB::select("select c.seccion nombre, count(a.id) as cantidad
+                                        from horario a
+                                        inner join curso c on a.curso_id = c.id
+                                        inner join asignatura d on c.asignatura_id = d.id
+                                        where a.asistencia = 'si'
+                                        and d.id = ".$asign."
+                                        group by c.seccion
+                                        order by cantidad
+                                        limit 5 offset 0");                                     
+            }
+
+            //Usabilidad de salas por alumno
+            if(empty($ru))
+            {
+                $ru = Auth::User()->rut;
+                $ru = (string) $ru;
+            }
+            if($request->get('tipo') == 'salAlum')
+            {
+                $horario = DB::select("select d.nombre, count(a.id) as cantidad
+                                        from horario_alum a
+                                        inner join users c on a.rut = c.rut
+                                        inner join sala d on a.sala_id = d.id
+                                        where a.asistencia = 'si'
+                                        and d.departamento_id = ".$dpto."
+                                        and a.rut = '".$ru."'
+                                        group by d.nombre
+                                        order by cantidad desc");                                     
+            }
+
+            $arreglo = [];
+
+            foreach ($horario as $key => $value) {
+                $arreglo[] = [$value->nombre,$value->cantidad];
+            }
+
+
+            return response()->json($arreglo);
+        }
+
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                        ->select('departamento_id')
+                        ->get();
+
+        $asignatura = Asignatura::join('carrera','asignatura.carrera_id','=','carrera.id')
+                        ->join('escuela','escuela.id','=','carrera.escuela_id')
+                        ->join('departamento','departamento.id','=','escuela.departamento_id')
+                        ->where('departamento.id',$dpto->first()->departamento_id)
+                        ->select('asignatura.*','carrera.nombre as carre')
+                        ->get();
+
+        //Cambio de rol
+        $usr=Auth::User()->rut;
+        //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+        $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
+                    ->where('users.rut','=',$usr)
+                    ->join('rol','rol_users.rol_id','=','rol.id')
+                    ->select('nombre')
+                    ->get();
+        // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+        foreach($usr2 as $v)
+        {
+            $v2[]= $v->nombre;
+        }
+        //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
+        $cont = count($v2); //cuenta la cantidad de elementos del array
+        if($cont>1)
+        {
+            return view ('Funcionario//graficas/RepAsig',compact('asignatura','v2','cont'));
+        }
+        else
+        {
+            return view ('Funcionario//graficas/RepAsig',compact('asignatura','cont'));
+        }
+
+    }
+
+
+    public function RepFall(Request $request)
+    {
+        if($request->ajax())
+        {
+            $usr=Auth::User()->rut;
+            $dpto= UsersDpto::where('rut','=',$usr)
+                            ->select('departamento_id')
+                            ->get();
+            
+            $dpto=$dpto->first()->departamento_id;
+
+
+
+            $condicion = "0 = 0"; 
+            $laboratorio = $request->lab;
+
+            if($request->get('fecha_inicio') != '' && $request->get('fecha_termino') != '')
+            {
+                $fecha_ini_separada = explode("/",$request->get('fecha_inicio'));
+                $fecha_ini_formateada = $fecha_ini_separada[2]."-".$fecha_ini_separada[1]."-".$fecha_ini_separada[0]; 
+                $fecha_term_separada = explode("/",$request->get('fecha_termino'));
+                $fecha_term_formateada = $fecha_term_separada[2]."-".$fecha_term_separada[1]."-".$fecha_term_separada[0];
+                $condicion .= " and a.fecha between to_date('".$fecha_ini_formateada."','YYYY-MM-DD') and to_date('".$fecha_term_formateada."','YYYY-MM-DD')";                   
+            }
+
+            //Cantidad de estaciones de trabajo dañadas por lab
+            if($request->get('tipo') == 'estdaña')
+            {
+                $horario = DB::select("select c.nombre, count(a.id) as cantidad
+                                        from estacion_trabajo a
+                                        inner join sala c on a.sala_id = c.id
+                                        where a.disponibilidad = 'no'
+                                        and c.departamento_id = ".$dpto."
+                                        and a.periodo_id = 1
+                                        group by c.nombre
+                                        order by cantidad desc");    
+
+                $arreglo = [];
+
+                foreach ($horario as $key => $value) {
+                    $arreglo[] = [$value->nombre,$value->cantidad];
+                }                                  
+            }  
+
+             
+
+            //Cantidad de estaciones de trabajo dañadas por lab
+            if($request->get('tipo') == 'dañadas')
+            {
+                //como mandar esto para la vista y hacer una ventanita que me muestre, segun el lab seleccionado, sus estaciones dañadas
+                $dañados = DB::select("select a.nombre estacion
+                                        from estacion_trabajo a
+                                        inner join sala c on a.sala_id = c.id
+                                        where a.disponibilidad = 'no'
+                                        and a.periodo_id = 1
+                                        and c.id = ".$laboratorio."
+                                        order by estacion desc");
+
+                $arreglo = [];
+
+                foreach ($dañados as $key => $value) {
+                    $arreglo[] = [$value->estacion];
+                }                                
+            }  
+           
+
+
+            return response()->json($arreglo);
+        }
+
+        $usr=Auth::User()->rut;
+        $dpto= UsersDpto::where('rut','=',$usr)
+                        ->select('departamento_id')
+                        ->get();
+
+        $sala= Sala::where('departamento_id','=',$dpto->first()->departamento_id)
+                        ->select('sala.*')
+                        ->get();
+        //Cambio de rol
+        $usr=Auth::User()->rut;
+        //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+        $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
+                    ->where('users.rut','=',$usr)
+                    ->join('rol','rol_users.rol_id','=','rol.id')
+                    ->select('nombre')
+                    ->get();
+        // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+        foreach($usr2 as $v)
+        {
+            $v2[]= $v->nombre;
+        }
+        //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
+        $cont = count($v2); //cuenta la cantidad de elementos del array
+        if($cont>1)
+        {
+            return view ('Funcionario//graficas/RepFall',compact('sala','v2','cont'));
+        }
+        else
+        {
+            return view ('Funcionario//graficas/RepFall',compact('sala','cont'));
+        }
+
+    }
+}
