@@ -171,12 +171,22 @@ class asignarAlumController extends Controller
                                         ->where('rol_users.rut','=',$numero)
                                         ->select('rol.nombre')
                                         ->get();
-                }  
+                } 
 
-
+                $al=0;
                 foreach($alumno as $d)
                 {
                     if($d->nombre == 'alumno')
+                    {
+                        $al=$al+1;
+                    }
+                    else
+                    {
+                        $al=$al;
+                    }
+                }
+
+                    if($al==1)
                     {
                         if($v1 == $request->get('sala'))
                         {                
@@ -212,7 +222,7 @@ class asignarAlumController extends Controller
                         Session::flash('create','¡Rut ingresado no corresponde a un alumno!');
                         return redirect()->route('director.horarioAlumno.index');
                     }
-                }
+                
                 //dd($fechita);
                 if($fechita->isEmpty() && $fechita2->isEmpty())
                 {

@@ -172,6 +172,13 @@ hr {
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <div class="row">
+                  <div class="col-md-12">
+                    <div id="ErrorContent" class="alert alert-danger hide">
+                      
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
                     <div class="col-lg-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -501,7 +508,15 @@ hr {
 
     $.getJSON("{{ route('administrador.reportes.repusr') }}",{tipo: tipo,fecha_inicio: fecha_inicio, fecha_termino: fecha_termino, lab:lab}, function(json) {
 
-        console.log(json);
+        if (json.isError){
+
+          $("#ErrorContent").removeClass('hide');
+          $("#ErrorContent").html(json.message);
+          //console.log(json);
+          return;
+        }
+
+        $("#ErrorContent").addClass('hide');
 
         $.each(json,function(k,v){
             options.series[0].data.push(v);

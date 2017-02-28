@@ -1,5 +1,23 @@
 @extends('main')
 @section('cambioRol')
+<style type="text/css">
+.navbar-nav>.user-menu>.dropdown-menu>li.user-header {
+    height: 197px;
+}
+.dropdown-menu>li>a {
+    color: #333;
+}
+.navbar-nav>.user-menu>.dropdown-menu>li.user-header>p {
+   margin-top: 0px;
+}
+p {
+    margin: 0 0 5px;
+}
+hr {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+</style>
   @if($cont>1)
   <li class="dropdown user user-menu">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -9,7 +27,7 @@
     <ul class="dropdown-menu">
       <li class="user-header">
         <p>
-          Eliga el Rol que quiera utilizar
+          Elija el Rol que quiera utilizar
         </p>
         @foreach($v2 as $as)
           @if($as == 'administrador')
@@ -89,14 +107,24 @@
 @stop
 @section('content')
 <h1>Perfil Usuario</h1>
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
 <h2>Cambiar imagen de perfil</h2>
-<form method='post' action='{{url("docente/usuario_perfilUpdate")}}' enctype='multipart/form-data'>
+<form  method='post' action='{{url("docente/usuario_perfilUpdate")}}' enctype='multipart/form-data'>
   {{csrf_field()}}
     <div class="row">
 	  	<div class="col-md-4">
 		    <div class="form-group">
 			  <label for="exampleInputPassword1">Email</label>
-			  <input type="text" class="form-control" value="{{ Auth::user()->email }}" name="emailUsuario" id="email">
+			  <input type="text" class="form-control" value="{{ Auth::user()->email }}" name="email" id="email">
 			</div> 
 		</div>
 	</div>
@@ -116,6 +144,17 @@
 			</div> 
 		</div>
 	</div>
+
+  @if($var2)
+        <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="exampleInputPassword1">Contraseña (Opcional)</label>
+          <input type="password" class="form-control" name="passwordUsuario" id="passwordUsuario" placeholder="Ingrese contraseña nueva">
+        </div> 
+      </div>
+  </div>
+  @endif
 	<div class="row">
 	  	<div class="col-md-4">
 		  <div class='form-group'>

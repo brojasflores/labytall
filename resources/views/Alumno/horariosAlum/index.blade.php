@@ -66,15 +66,23 @@ hr {
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Alumno</li>
+            <li class="header">Alumno</li>        
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-desktop"></i> <span>Salas</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="{{ route('alumno.horarioAlumno.index')}}"><i class="fa fa-clock-o"></i> Ver Horarios</a></li>
-                  <li><a href="{{ route('alumno.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
+                <li class="treeview">
+                  <a href="#">
+                    <i class="fa fa-eye"></i> <span>Ver Horarios</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="{{ route('alumno.horarioAlumno.index')}}"><i class="fa fa-clock-o"></i> Alumno</a></li>
+                  </ul>
+                </li>
+                <li><a href="{{ route('alumno.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -105,6 +113,12 @@ hr {
 <li class="active">Horarios Alumnos</li>
 @stop
 @section('content')
+@if(Session::has('create'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('create') }}</strong>
+    </div>
+@endif
 <h1>Horarios</h1>
 <form role="form" method="get" action="{{ route('alumno.asignar.index')}}">
   <button type="submit" class="fa fa-plus-square btn btn-primary"> Realizar una Reserva</button>

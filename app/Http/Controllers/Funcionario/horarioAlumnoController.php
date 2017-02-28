@@ -274,10 +274,21 @@ class horarioAlumnoController extends Controller
             $alumno = RolUsuario::join('rol','rol.id','=','rol_users.rol_id')
                                 ->where('rol_users.rut','=',$numero)
                                 ->select('rol.nombre')->get();
-        }  
-        foreach($alumno as $d)
-        {
-            if($d->nombre == 'alumno')
+        }
+        $al=0;
+                foreach($alumno as $d)
+                {
+                    if($d->nombre == 'alumno')
+                    {
+                        $al=$al+1;
+                    }
+                    else
+                    {
+                        $al=$al;
+                    }
+                }
+  
+            if($al==1)
             {
                 if($v1 == $request->get('salaHorario'))
                 {                
@@ -338,7 +349,6 @@ class horarioAlumnoController extends Controller
             }
             Session::flash('create','¡Reserva editada correctamente!');
             return redirect()->route('funcionario.horarioAlumno.index');
-        }
     }
 
 

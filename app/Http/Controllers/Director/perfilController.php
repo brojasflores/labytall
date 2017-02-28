@@ -129,7 +129,7 @@ class perfilController extends Controller
             if(!$file)
             {
                 Session::flash('create','¡Sus datos de perfil han sido actualizados!');
-                return redirect('home')->with('status', 'Sus datos de perfil han sido actualizados');
+                return redirect('director')->with('status', 'Sus datos de perfil han sido actualizados');
             }
             else
             {
@@ -139,7 +139,7 @@ class perfilController extends Controller
                 $user->where('rut', '=', Auth::user()->rut)
                      ->update(['perfiles' => 'perfiles/'.$name]);
                 Session::flash('create','¡Sus datos de perfil han sido actualizados!');
-                return redirect('home')->with('status', 'Sus datos de perfil han sido actualizados');
+                return redirect('director')->with('status', 'Sus datos de perfil han sido actualizados');
             }
         }
     }

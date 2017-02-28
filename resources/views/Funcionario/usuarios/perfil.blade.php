@@ -144,7 +144,7 @@ hr {
   </div>
 @endif
 <h2>Cambiar imagen de perfil</h2>
-<form  method='post' action='{{url("administrador/usuario_perfilUpdate")}}' enctype='multipart/form-data'>
+<form  method='post' action='{{url("funcionario/usuario_perfilUpdate")}}' enctype='multipart/form-data'>
   {{csrf_field()}}
     <div class="row">
 	  	<div class="col-md-4">

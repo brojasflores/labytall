@@ -124,7 +124,8 @@ hr {
                 <li><a href="{{ url('/director/reportes_asignaturas')}}"><i class="fa  fa-book"></i>Asignaturas</a></li>
                 <li><a href="{{ url('/director/reportes_fallas')}}"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
               </ul>
-            </li>ass="treeview">
+            </li>
+            <li class="treeview">
               <a href="#">
                 <i class="fa fa-globe"></i> <span>Accesos Directos</span>
                 <i class="fa fa-angle-left pull-right"></i>
