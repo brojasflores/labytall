@@ -483,13 +483,16 @@ class reportesController extends Controller
     {
         if($request->ajax())
         {
+            $arreglo = array('data' => [],'error' => array('isError' => false, 'mensaje' => ''));
+
             //VAIDA RUT
             $largo = strlen($request->get('rut'));
             $alum = "alumno";
 
-            if($largo>9 && $largo<8)
+            if($largo>9 || $largo<8)
             {
-                //debe decir que no es valido el rut
+                $arreglo['error'] = array('isError' => true ,'mensaje' => 'El largo del rut ingresado es inválido');                    
+
             }
             $rut = preg_replace('/[^k0-9]/i', '', $request->get('rut'));
             $dv  = substr($rut, -1);
@@ -517,7 +520,7 @@ class reportesController extends Controller
 
             if($ok=='no')
             {
-                //debe decir que no es valido el rut
+                $arreglo['error'] = array('isError' => true ,'mensaje' => 'El rut ingresado es inválido');
             }
             else
             {
@@ -532,12 +535,8 @@ class reportesController extends Controller
             if($esta->isEmpty())
             {
                 //decir que el rut no corresponde a un alumno
-            }
-            else
-            {
-                //mandarlo a la vista por que es valido
-            }
-
+                $arreglo['error'] = array('isError' => true,'mensaje' => 'El rut no se encuentra en los registros'); 
+            } 
             ////////////////////////////////////////////////////////////////////////////////
 
             $condicion = "0 = 0"; 
@@ -557,9 +556,7 @@ class reportesController extends Controller
 
                 if($inicio>$termino)
                 {
-                    $arrayName = array('isError' => 'true',
-                                        'message' => 'Fecha inicio debe ser menor a la de termino');
-                    return response()->json($arrayName);
+                    $arreglo['error'] = array('isError' => true,'mensaje' => 'La fecha de inicio no puede ser mayor que la fecha fin'); 
                 }                 
             }
 
@@ -590,13 +587,8 @@ class reportesController extends Controller
                                         order by cantidad
                                         limit 5 offset 0");                                     
             }
-
-            //Usabilidad de salas por alumno
-            if(empty($ru))
-            {
-                $ru = Auth::User()->rut;
-                $ru = (string) $ru;
-            }
+            
+             //Usabilidad de salas por alumno
             if($request->get('tipo') == 'salAlum')
             {
                 $horario = DB::select("select d.nombre, count(a.id) as cantidad
@@ -604,15 +596,14 @@ class reportesController extends Controller
                                         inner join users c on a.rut = c.rut
                                         inner join sala d on a.sala_id = d.id
                                         where a.asistencia = 'si'
-                                        and a.rut = '".$ru."'
+                                        and a.rut = '".$numero."'
                                         group by d.nombre
                                         order by cantidad desc");                                     
             }
-
-            $arreglo = [];
+            //$arreglo = [];
 
             foreach ($horario as $key => $value) {
-                $arreglo[] = [$value->nombre,$value->cantidad];
+                $arreglo['data'][0] = [$value->nombre,$value->cantidad];
             }
 
 

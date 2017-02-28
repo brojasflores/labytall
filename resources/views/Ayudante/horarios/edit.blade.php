@@ -66,7 +66,7 @@ hr {
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-    <li class="header">Docencia</li>
+    <li class="header">Ayudantes</li>
     <li class="treeview">
       <a href="#">
         <i class="fa fa-desktop"></i> <span>Salas</span>

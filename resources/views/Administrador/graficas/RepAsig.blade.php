@@ -304,7 +304,7 @@ hr {
 
   function column_chart(tipo,fecha_inicio,fecha_termino,asig,rut){
 
-    console.log(asig);
+    //console.log(asig);
 
     if(tipo == 'asignatura')
     {
@@ -390,17 +390,27 @@ hr {
 
     $.getJSON("{{ route('administrador.reportes.repasig') }}",{tipo: tipo,fecha_inicio: fecha_inicio, fecha_termino: fecha_termino, asig:asig[0],rut:rut}, function(json) {
 
-        if (json.isError){
+        console.log(json);
+
+        if (json.error.isError){
 
           $("#ErrorContent").removeClass('hide');
-          $("#ErrorContent").html(json.message);
+          $("#ErrorContent").html(json.error.mensaje);
           //console.log(json);
-          return;
-        }
+          
+           $.each(json.data,function(k,v){
+                options.series[0].data.push(v);
+            }); 
 
-        $("#ErrorContent").addClass('hide');
+            chart = new Highcharts.Chart(options);
 
-        $.each(json,function(k,v){
+         }else{
+           $("#ErrorContent").addClass('hide');
+         }
+
+        
+
+        $.each(json.data,function(k,v){
             options.series[0].data.push(v);
         }); 
 
