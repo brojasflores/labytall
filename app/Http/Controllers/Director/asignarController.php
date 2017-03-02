@@ -780,7 +780,7 @@ class asignarController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $numero,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => 'Pendiente'
+                                                       'asistencia' => 'Pendiente',
                                                        'tipo_reserva' => $request->get('rol'),
                                                        ]);
                                                 

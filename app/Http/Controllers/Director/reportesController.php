@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Director;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
+//use App\Http\Controllers\Controller;
 use App\Asignatura;
 use App\Curso;
 use App\Horario;
