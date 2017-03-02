@@ -134,7 +134,6 @@ hr {
             <table id="example1" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                <th>#</th>
                 <th>Fecha</th>
                 <th>Sala</th>
                 <th>Período</th>
@@ -142,6 +141,7 @@ hr {
                 <th>Nombre</th>
                 <th>Rut</th>
                 <th>Permanencia</th>
+                <th>Tipo reserva</th>
                 <th>Asistencia</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
@@ -151,7 +151,6 @@ hr {
               <!--foreach recorre una coleccion de objetos-->
               @foreach($horarios as $hr)
               <tr data-id="{{ $hr->id }}">
-                <td>{{ $hr->id }}</td>
                 <td>{{ $hr->fecha }}</td>
                 <td>{{ $hr->sala_nombre}}</td>
                 <td>{{ $hr->bloque}}</td>
@@ -159,6 +158,7 @@ hr {
                 <td>{{ $hr->horario_name}} {{ $hr->horario_apell}}</td>
                 <td>{{ $hr->rut}}</td>  
                 <td>{{ $hr->permanencia}}</td>
+                <td>{{ $hr->tipo_reserva}}</td>
                 <td>{{ $hr->asistencia}}</td>
                 <!--Paso ruta y parametro para saber cual modificar-->
                 <td><a href="{{ route('docente.horario.edit',$hr->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
@@ -172,7 +172,6 @@ hr {
               </tbody>
               <tfoot>
                 <tr>
-                <th>#</th>
                 <th>Fecha</th>
                 <th>Sala</th>
                 <th>Período</th>
@@ -180,6 +179,7 @@ hr {
                 <th>Nombre</th>
                 <th>Rut</th>
                 <th>Permanencia</th>
+                <th>Tipo reserva</th>
                 <th>Asistencia</th>
                 <th>Editar </th>
                 <th>Eliminar</th>

@@ -44,7 +44,7 @@ class horarioController extends Controller
                             ->join('departamento','departamento.id','=','sala.departamento_id')
                             ->join('users','horario.rut','=','users.rut')
                             ->where('departamento.id',$dpto->first()->departamento_id)
-                            ->select('horario.id','horario.fecha','horario.rut','users.nombres as horario_name','users.apellidos as horario_apell','horario.permanencia','asignatura.nombre as asig_nombre','periodo.bloque','sala.nombre as sala_nombre','horario.asistencia')
+                            ->select('horario.id','horario.fecha','horario.rut','users.nombres as horario_name','users.apellidos as horario_apell','horario.permanencia','asignatura.nombre as asig_nombre','periodo.bloque','sala.nombre as sala_nombre','horario.asistencia','horario.tipo_reserva')
                             ->orderBy('periodo.bloque','asc')
                             ->get();
 
@@ -667,6 +667,7 @@ class horarioController extends Controller
                                     'rut' => $rutdoc,
                                     'permanencia' => 'dia',
                                     'asistencia' => $request->get('asistenciaH'),
+                                    'tipo_reserva' => $request->get('rol')
                                     ]);
 
                                 //horario diario creado con exito docente
@@ -707,6 +708,7 @@ class horarioController extends Controller
                                                            'rut' => $rutdoc,
                                                            'permanencia' => 'semestral',
                                                            'asistencia' => $request->get('asistenciaH'),
+                                                           'tipo_reserva' => $request->get('rol')
                                                            ]);
                                             }
                                         }
@@ -724,6 +726,7 @@ class horarioController extends Controller
                                                        'rut' => $rutdoc,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
+                                                       'tipo_reserva' => $request->get('rol')
                                                        ]);
                                             }
                                         }
@@ -742,6 +745,7 @@ class horarioController extends Controller
                                                        'rut' => $rutdoc,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
+                                                       'tipo_reserva' => $request->get('rol')
                                                        ]);
                                             }
                                         }
@@ -758,6 +762,7 @@ class horarioController extends Controller
                                                        'rut' => $rutdoc,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
+                                                       'tipo_reserva' => $request->get('rol')
                                                        ]);
                                             }
                                         }
@@ -775,6 +780,7 @@ class horarioController extends Controller
                                                        'rut' => $rutdoc,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
+                                                       'tipo_reserva' => $request->get('rol')
                                                        ]);
                                             }
                                         }
@@ -792,6 +798,7 @@ class horarioController extends Controller
                                                        'rut' => $rutdoc,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
+                                                       'tipo_reserva' => $request->get('rol')
                                                        ]);
                                             }
                                         }
@@ -830,6 +837,7 @@ class horarioController extends Controller
                                     'rut' => $numero,
                                     'permanencia' => 'dia',
                                     'asistencia' => $request->get('asistenciaH'),
+                                    'tipo_reserva' => $request->get('rol')
                                     ]);
 
                                 Session::flash('create','¡Horario diario Ayudante editado correctamente!');
@@ -867,6 +875,7 @@ class horarioController extends Controller
                                                            'rut' => $numero,
                                                            'permanencia' => 'semestral',
                                                            'asistencia' => $request->get('asistenciaH'),
+                                                           'tipo_reserva' => $request->get('rol')
                                                            ]);
                                             }
                                         }
@@ -883,6 +892,7 @@ class horarioController extends Controller
                                                        'rut' => $numero,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
+                                                       'tipo_reserva' => $request->get('rol')
                                                        ]);
                                             }
                                         }
@@ -899,6 +909,7 @@ class horarioController extends Controller
                                                        'rut' => $numero,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
+                                                       'tipo_reserva' => $request->get('rol')
                                                        ]);
                                             }
                                         }
@@ -915,6 +926,7 @@ class horarioController extends Controller
                                                        'rut' => $numero,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
+                                                       'tipo_reserva' => $request->get('rol')
                                                        ]);
                                             }
                                         }
@@ -931,6 +943,7 @@ class horarioController extends Controller
                                                        'rut' => $numero,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
+                                                       'tipo_reserva' => $request->get('rol')
                                                        ]);
                                             }
                                         }
@@ -947,6 +960,7 @@ class horarioController extends Controller
                                                        'rut' => $numero,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
+                                                       'tipo_reserva' => $request->get('rol')
                                                        ]);
                                             }
                                         }
@@ -993,6 +1007,7 @@ class horarioController extends Controller
                                             'rut' => $rutdoc,
                                             'permanencia' => 'dia',
                                             'asistencia' => $request->get('asistenciaH'),
+                                            'tipo_reserva' => $request->get('rol')
                                             ]);
 
                                         //docente diario creado con exito
@@ -1031,6 +1046,7 @@ class horarioController extends Controller
                                                                'rut' => $rutdoc,
                                                                'permanencia' => 'semestral',
                                                                'asistencia' => $request->get('asistenciaH'),
+                                                               'tipo_reserva' => $request->get('rol')
                                                                ]);
                                                     }
                                                 }
@@ -1047,6 +1063,7 @@ class horarioController extends Controller
                                                                'rut' => $rutdoc,
                                                                'permanencia' => 'semestral',
                                                                'asistencia' => $request->get('asistenciaH'),
+                                                               'tipo_reserva' => $request->get('rol')
                                                                ]);
                                                     }
                                                 }
@@ -1063,6 +1080,7 @@ class horarioController extends Controller
                                                                'rut' => $rutdoc,
                                                                'permanencia' => 'semestral',
                                                                'asistencia' => $request->get('asistenciaH'),
+                                                               'tipo_reserva' => $request->get('rol')
                                                                ]);
                                                     }
                                                 }
@@ -1079,6 +1097,7 @@ class horarioController extends Controller
                                                                'rut' => $rutdoc,
                                                                'permanencia' => 'semestral',
                                                                'asistencia' => $request->get('asistenciaH'),
+                                                               'tipo_reserva' => $request->get('rol')
                                                                ]);
                                                     }
                                                 }
@@ -1095,6 +1114,7 @@ class horarioController extends Controller
                                                                'rut' => $rutdoc,
                                                                'permanencia' => 'semestral',
                                                                'asistencia' => $request->get('asistenciaH'),
+                                                               'tipo_reserva' => $request->get('rol')
                                                                ]);         
                                                     }
                                                 }
@@ -1111,6 +1131,7 @@ class horarioController extends Controller
                                                                    'rut' => $rutdoc,
                                                                    'permanencia' => 'semestral',
                                                                    'asistencia' => $request->get('asistenciaH'),
+                                                                   'tipo_reserva' => $request->get('rol')
                                                                    ]);
                                                     }
                                                 }

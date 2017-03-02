@@ -350,7 +350,9 @@ hr {
 
     $.getJSON("{{ route('administrador.reportes.repfalla') }}",{tipo: tipo, lab:lab}, function(json) {
 
-        $("#dad").html("<strong>Laboratorio seleccionado:</strong>" +" Laboratorio Nº "+ lab +"</br> <strong>Estación o Estaciones dañada(s): </strong> ");
+        //console.log();
+
+        $("#dad").html("<strong>Laboratorio seleccionado: </strong>" + $("#lab option:selected").text() +"</br> <strong>Estación o Estaciones dañada(s): </strong> ");
 
         
         var count = Object.keys(json).length;

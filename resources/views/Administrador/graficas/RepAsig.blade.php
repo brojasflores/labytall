@@ -253,7 +253,7 @@ hr {
                 </select>
           </div> 
           <div class="form-group">
-            <label for="exampleInputEmail1">Rut</label>
+            <label for="exampleInputEmail1">Rut (con DV y sin guión)</label>
             <input type="text" class="form-control" name="rut" id="rut" placeholder="Ingrese Rut">
           </div>
           <div class="col-md-6 col-md-offset-3"> 

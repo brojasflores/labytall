@@ -44,7 +44,7 @@ class horarioController extends Controller
                             ->join('departamento','departamento.id','=','sala.departamento_id')
                             ->join('users','horario.rut','=','users.rut')
                             ->where('departamento.id',$dpto->first()->departamento_id)
-                            ->select('horario.id','horario.fecha','horario.rut','users.nombres as horario_name','users.apellidos as horario_apell','horario.permanencia','asignatura.nombre as asig_nombre','periodo.bloque','sala.nombre as sala_nombre','horario.asistencia')
+                            ->select('horario.id','horario.fecha','horario.rut','users.nombres as horario_name','users.apellidos as horario_apell','horario.permanencia','asignatura.nombre as asig_nombre','periodo.bloque','sala.nombre as sala_nombre','horario.asistencia','horario.tipo_reserva')
                             ->orderBy('periodo.bloque','asc')
                             ->get();
 

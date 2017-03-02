@@ -57,7 +57,7 @@ hr {
 @section('perfil')
 <li class="user-footer">
   <div class="pull-left">
-    <a href="{{route('funcionario.usuario.perfil',['id' => Auth::user()->id])}}" class="btn btn-default btn-flat">Perfil</a>
+    <a href="{{route('alumno.usuario.perfil',['id' => Auth::user()->id])}}" class="btn btn-default btn-flat">Perfil</a>
   </div>
   <div class="pull-right">
     <a href="{{ url('/logout') }}" class="btn btn-default btn-flat">Salir</a>
@@ -66,7 +66,7 @@ hr {
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Funcionarios</li>
+            <li class="header">Alumnos</li>        
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-desktop"></i> <span>Salas</span>
@@ -79,28 +79,10 @@ hr {
                     <i class="fa fa-angle-left pull-right"></i>
                   </a>
                   <ul class="treeview-menu">
-                    <li><a href="{{ route('funcionario.horario.index')}}"><i class="fa fa-clock-o"></i> Docente-Ayudante</a></li>
-                    <li><a href="{{ route('funcionario.horarioAlumno.index')}}"><i class="fa fa-clock-o"></i> Alumno</a></li>
+                    <li><a href="{{ route('alumno.horarioAlumno.index')}}"><i class="fa fa-clock-o"></i> Alumno</a></li>
                   </ul>
                 </li>
-                <li><a href="{{ route('funcionario.sala.index')}}"><i class="fa fa-list-alt"></i>Lista de Salas</a></li>
-                <li><a href="{{ route('funcionario.estacion.index')}}"><i class="fa fa-laptop"></i>Estaciones de Trabajo</a></li>
-                <li><a href="{{ route('funcionario.periodo.index')}}"><i class="fa fa-clock-o"></i> Períodos</a></li>
-                <li><a href="{{ route('funcionario.asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
-                <li><a href="{{ route('funcionario.curso.index')}}"><i class="glyphicon glyphicon-education"></i> Cursos</a></li>
-                <li><a href="{{ route('funcionario.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
-              </ul>
-            </li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-bar-chart"></i> <span>Reportes</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="{{ url('/funcionario/reportes_usuario')}}"><i class="fa fa-users"></i>Usuarios</a></li>
-                <li><a href="{{ url('/funcionario/reportes_sala')}}"><i class="fa fa-tv"></i>Salas</a></li>
-                <li><a href="{{ url('/funcionario/reportes_asignaturas')}}"><i class="fa  fa-book"></i>Asignaturas</a></li>
-                <li><a href="{{ url('/funcionario/reportes_fallas')}}"><i class="fa fa-exclamation-triangle"></i>Instrumentos dañados (Fallas)</a></li>
+                <li><a href="{{ route('alumno.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -118,17 +100,17 @@ hr {
                 <li><a href="http://bienestarestudiantil.blogutem.cl/" target="_blank"><i class="fa fa-external-link"></i> Bienestar Estudiantil</a></li>
               </ul>
             </li>
-            <li><a href="{{ route('funcionario.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
+            <li><a href="{{ route('alumno.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
           </ul>
 @stop
 @section('options')
 <h1>
     Salas 
-  <small>Ver horarios</small>
+  <small>Ver horario Alumnos</small>
 </h1>
 @stop
 @section('opcion')
-<li class="active">Horarios</li>
+<li class="active">Horarios Alumnos</li>
 @stop
 @section('content')
 @if(Session::has('create'))
@@ -138,7 +120,7 @@ hr {
     </div>
 @endif
 <h1>Horarios</h1>
-<form role="form" method="get" action="{{ route('funcionario.asignar.index')}}">
+<form role="form" method="get" action="{{ route('alumno.asignar.index')}}">
   <button type="submit" class="fa fa-plus-square btn btn-primary"> Realizar una Reserva</button>
 </form>
 <section class="content">
@@ -152,14 +134,12 @@ hr {
             <table id="example1" class="table table-bordered table-striped">
               <thead>
                 <tr>
+                <th>#</th>
                 <th>Fecha</th>
-                <th>Sala</th>
-                <th>Período</th>
-                <th>Curso</th>
                 <th>Nombre</th>
-                <th>Rut</th>
-                <th>Permanencia</th>
-                <th>Tipo reserva</th>
+                <th>Período</th>
+                <th>Sala</th>
+                <th>Estación Trabajo</th>
                 <th>Asistencia</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
@@ -169,19 +149,17 @@ hr {
               <!--foreach recorre una coleccion de objetos-->
               @foreach($horarios as $hr)
               <tr data-id="{{ $hr->id }}">
+                <td>{{ $hr->id }}</td>
                 <td>{{ $hr->fecha }}</td>
-                <td>{{ $hr->sala_nombre}}</td>
+                <td>{{ $hr->horario_name}}</td>  
                 <td>{{ $hr->bloque}}</td>
-                <td>{{ $hr->asig_nombre}}</td>
-                <td>{{ $hr->horario_name}} {{ $hr->horario_apell}}</td>
-                <td>{{ $hr->rut}}</td>  
-                <td>{{ $hr->permanencia}}</td>
-                <td>{{ $hr->tipo_reserva}}</td>
+                <td>{{ $hr->sala_nombre}}</td>
+                <td>{{ $hr->est_trabajo}}</td>
                 <td>{{ $hr->asistencia}}</td>
                 <!--Paso ruta y parametro para saber cual modificar-->
-                <td><a href="{{ route('funcionario.horario.edit',$hr->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
+                <td><a href="{{ route('alumno.horarioAlumno.edit',$hr->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
                 <td>
-                {!! Form::open(['route' => ['funcionario.horario.destroy', $hr->id], 'method' => 'DELETE', 'id' => 'form-delete'])!!}
+                {!! Form::open(['route' => ['alumno.horarioAlumno.destroy', $hr->id], 'method' => 'DELETE', 'id' => 'form-delete'])!!}
                   <button type="submit" class="fa fa-trash btn btn-danger"> Eliminar</button>
                 {!! Form::close() !!}
                 </td>    
@@ -190,14 +168,12 @@ hr {
               </tbody>
               <tfoot>
                 <tr>
+                <th>#</th>
                 <th>Fecha</th>
-                <th>Sala</th>
-                <th>Período</th>
-                <th>Curso</th>
                 <th>Nombre</th>
-                <th>Rut</th>
-                <th>Permanencia</th>
-                <th>Tipo reserva</th>
+                <th>Período</th>
+                <th>Sala</th>
+                <th>Estación Trabajo</th>
                 <th>Asistencia</th>
                 <th>Editar </th>
                 <th>Eliminar</th>

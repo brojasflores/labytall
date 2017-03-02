@@ -147,6 +147,12 @@ class usuarioController extends Controller
         else
             $ok='no';
 
+        if($request->get('roles') == null)
+        {
+            Session::flash('create','¡Debe ingresar al menos un rol!');
+            return redirect()->route('administrador.usuario.create');
+        }
+        
         $esta = User::where('rut','=',$numero)
                     ->select('id')
                     ->get();

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Administrador;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
+//use App\Http\Controllers\Controller;
 use App\Asignatura;
 use App\Curso;
 use App\Horario;
@@ -27,6 +27,11 @@ class reportesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('admin');
+    }
     public function index()
     {
         //  

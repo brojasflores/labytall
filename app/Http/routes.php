@@ -198,6 +198,7 @@ Route::group(['prefix' => 'alumno', 'namespace' => 'Alumno'], function()
 	Route::resource('/horarioAlumno','horarioAlumnoController');
 	Route::resource('/asignar','asignarController');
 	Route::resource('/asignar_alumno','asignarAlumController');
+	Route::resource('/MihorarioAlumno','reservaController');
 	
 });
 

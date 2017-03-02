@@ -123,6 +123,8 @@ hr {
 <form role="form" method="get" action="{{ route('alumno.asignar.index')}}">
   <button type="submit" class="fa fa-plus-square btn btn-primary"> Realizar una Reserva</button>
 </form>
+
+
 <section class="content">
   <div class="row">
     <div class="col-xs-12">

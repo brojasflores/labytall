@@ -167,6 +167,13 @@ hr {
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
+            <div class="row">
+                  <div class="col-md-12">
+                    <div id="ErrorContent" class="alert alert-danger hide">
+                      
+                    </div>
+                  </div>
+                </div>
                 <div class="row">
 
                     <div class="col-lg-6">
@@ -241,7 +248,7 @@ hr {
                 </select>
           </div> 
           <div class="form-group">
-            <label for="exampleInputEmail1">Rut</label>
+            <label for="exampleInputEmail1">Rut (con DV y sin guión)</label>
             <input type="text" class="form-control" name="rut" id="rut" placeholder="Ingrese Rut">
           </div>
           <div class="col-md-6 col-md-offset-3"> 
@@ -380,7 +387,25 @@ hr {
 
         console.log(json);
 
-        $.each(json,function(k,v){
+        if (json.error.isError){
+
+          $("#ErrorContent").removeClass('hide');
+          $("#ErrorContent").html(json.error.mensaje);
+          //console.log(json);
+          
+           $.each(json.data,function(k,v){
+                options.series[0].data.push(v);
+            }); 
+
+            chart = new Highcharts.Chart(options);
+
+         }else{
+           $("#ErrorContent").addClass('hide');
+         }
+
+        
+
+        $.each(json.data,function(k,v){
             options.series[0].data.push(v);
         }); 
 

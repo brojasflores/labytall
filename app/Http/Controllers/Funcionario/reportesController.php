@@ -19,6 +19,7 @@ use Auth;
 use App\User;
 use DB;
 use Session;
+use Carbon\Carbon;
 
 class reportesController extends Controller
 {
@@ -27,6 +28,11 @@ class reportesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('funci');
+    }
     public function index()
     {
         //  
@@ -118,7 +124,17 @@ class reportesController extends Controller
                 $fecha_ini_formateada = $fecha_ini_separada[2]."-".$fecha_ini_separada[1]."-".$fecha_ini_separada[0]; 
                 $fecha_term_separada = explode("/",$request->get('fecha_termino'));
                 $fecha_term_formateada = $fecha_term_separada[2]."-".$fecha_term_separada[1]."-".$fecha_term_separada[0];
-                $condicion .= " and a.fecha between to_date('".$fecha_ini_formateada."','YYYY-MM-DD') and to_date('".$fecha_term_formateada."','YYYY-MM-DD')";                   
+                $condicion .= " and a.fecha between to_date('".$fecha_ini_formateada."','YYYY-MM-DD') and to_date('".$fecha_term_formateada."','YYYY-MM-DD')";   
+
+                $inicio = new Carbon($fecha_ini_formateada);
+                $termino = new Carbon($fecha_term_formateada); 
+
+                if($inicio>$termino)
+                {
+                    $arrayName = array('isError' => 'true',
+                                        'message' => 'Fecha inicio debe ser menor a la de termino');
+                    return response()->json($arrayName);
+                }                
             }
 
 
@@ -333,7 +349,17 @@ class reportesController extends Controller
                 $fecha_ini_formateada = $fecha_ini_separada[2]."-".$fecha_ini_separada[1]."-".$fecha_ini_separada[0]; 
                 $fecha_term_separada = explode("/",$request->get('fecha_termino'));
                 $fecha_term_formateada = $fecha_term_separada[2]."-".$fecha_term_separada[1]."-".$fecha_term_separada[0];
-                $condicion .= " and a.fecha between to_date('".$fecha_ini_formateada."','YYYY-MM-DD') and to_date('".$fecha_term_formateada."','YYYY-MM-DD')";                   
+                $condicion .= " and a.fecha between to_date('".$fecha_ini_formateada."','YYYY-MM-DD') and to_date('".$fecha_term_formateada."','YYYY-MM-DD')";  
+
+                $inicio = new Carbon($fecha_ini_formateada);
+                $termino = new Carbon($fecha_term_formateada); 
+
+                if($inicio>$termino)
+                {
+                    $arrayName = array('isError' => 'true',
+                                        'message' => 'Fecha inicio debe ser menor a la de termino');
+                    return response()->json($arrayName);
+                }                 
             }
 
 
@@ -519,6 +545,61 @@ class reportesController extends Controller
     {
         if($request->ajax())
         {
+            $arreglo = array('data' => [],'error' => array('isError' => false, 'mensaje' => ''));
+
+            //VAIDA RUT
+            $largo = strlen($request->get('rut'));
+            $alum = "alumno";
+
+            if($largo>9 || $largo<8)
+            {
+                $arreglo['error'] = array('isError' => true ,'mensaje' => 'El largo del rut ingresado es inválido');                    
+
+            }
+            $rut = preg_replace('/[^k0-9]/i', '', $request->get('rut'));
+            $dv  = substr($rut, -1);
+            $numero = substr($rut, 0, strlen($rut)-1);
+            //dd($numero);
+            $i = 2;
+            $suma = 0;
+            foreach(array_reverse(str_split($numero)) as $v)
+            {
+                if($i==8)
+                    $i = 2;
+                $suma += $v * $i;
+                ++$i;
+            }
+            $dvr = 11 - ($suma % 11);
+            
+            if($dvr == 11)
+                $dvr = 0;
+            if($dvr == 10)
+                $dvr = 'K';
+            if($dvr == strtoupper($dv))
+                $ok='si';
+            else
+                $ok='no';
+
+            if($ok=='no')
+            {
+                $arreglo['error'] = array('isError' => true ,'mensaje' => 'El rut ingresado es inválido');
+            }
+            else
+            {
+                $esta = User::join('rol_users','rol_users.rut','=','users.rut')
+                            ->join('rol','rol_users.rol_id','=','rol.id')
+                            ->where('users.rut','=',$numero)
+                            ->where('rol.nombre','=',$alum)
+                            ->select('users.id')
+                            ->get();
+            }
+
+            if($esta->isEmpty())
+            {
+                //decir que el rut no corresponde a un alumno
+                $arreglo['error'] = array('isError' => true,'mensaje' => 'El rut no se encuentra en los registros'); 
+            } 
+            
             $usr=Auth::User()->rut;
             $dpto= UsersDpto::where('rut','=',$usr)
                             ->select('departamento_id')
@@ -529,7 +610,7 @@ class reportesController extends Controller
 
             $condicion = "0 = 0"; 
             $asignatura = $request->asig;
-            $ru = $request->rut;
+            $ru = $numero;
 
             if($request->get('fecha_inicio') != '' && $request->get('fecha_termino') != '')
             {
@@ -537,7 +618,15 @@ class reportesController extends Controller
                 $fecha_ini_formateada = $fecha_ini_separada[2]."-".$fecha_ini_separada[1]."-".$fecha_ini_separada[0]; 
                 $fecha_term_separada = explode("/",$request->get('fecha_termino'));
                 $fecha_term_formateada = $fecha_term_separada[2]."-".$fecha_term_separada[1]."-".$fecha_term_separada[0];
-                $condicion .= " and a.fecha between to_date('".$fecha_ini_formateada."','YYYY-MM-DD') and to_date('".$fecha_term_formateada."','YYYY-MM-DD')";                   
+                $condicion .= " and a.fecha between to_date('".$fecha_ini_formateada."','YYYY-MM-DD') and to_date('".$fecha_term_formateada."','YYYY-MM-DD')"; 
+
+                $inicio = new Carbon($fecha_ini_formateada);
+                $termino = new Carbon($fecha_term_formateada); 
+
+                if($inicio>$termino)
+                {
+                    $arreglo['error'] = array('isError' => true,'mensaje' => 'La fecha de inicio no puede ser mayor que la fecha fin'); 
+                }                  
             }
 
             //Usabilidad de sala por asignatura
@@ -589,10 +678,8 @@ class reportesController extends Controller
                                         order by cantidad desc");                                     
             }
 
-            $arreglo = [];
-
             foreach ($horario as $key => $value) {
-                $arreglo[] = [$value->nombre,$value->cantidad];
+                $arreglo['data'][0] = [$value->nombre,$value->cantidad];
             }
 
 
@@ -660,7 +747,17 @@ class reportesController extends Controller
                 $fecha_ini_formateada = $fecha_ini_separada[2]."-".$fecha_ini_separada[1]."-".$fecha_ini_separada[0]; 
                 $fecha_term_separada = explode("/",$request->get('fecha_termino'));
                 $fecha_term_formateada = $fecha_term_separada[2]."-".$fecha_term_separada[1]."-".$fecha_term_separada[0];
-                $condicion .= " and a.fecha between to_date('".$fecha_ini_formateada."','YYYY-MM-DD') and to_date('".$fecha_term_formateada."','YYYY-MM-DD')";                   
+                $condicion .= " and a.fecha between to_date('".$fecha_ini_formateada."','YYYY-MM-DD') and to_date('".$fecha_term_formateada."','YYYY-MM-DD')"; 
+
+                $inicio = new Carbon($fecha_ini_formateada);
+                $termino = new Carbon($fecha_term_formateada); 
+
+                if($inicio>$termino)
+                {
+                    $arrayName = array('isError' => 'true',
+                                        'message' => 'Fecha inicio debe ser menor a la de termino');
+                    return response()->json($arrayName);
+                }                  
             }
 
             //Cantidad de estaciones de trabajo dañadas por lab

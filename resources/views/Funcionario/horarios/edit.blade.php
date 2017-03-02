@@ -348,6 +348,7 @@ $(document).ready(function(){
 		}
 	});
 	$('#asistenciaH option[id={{ $horarios->asistencia }}]').attr('selected', 'selected');
+	$('#rol option[id={{ $horarios->tipo_reserva }}]').attr('selected', 'selected');
 });
 
 </script>

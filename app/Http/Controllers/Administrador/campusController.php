@@ -8,7 +8,7 @@ use App\Campus;
 use Auth;
 use App\User;
 use Session;
-use App\Http\Controllers\Controller;
+//use App\Http\Controllers\Controller;
 
 class campusController extends Controller
 {
