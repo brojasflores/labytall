@@ -325,7 +325,7 @@ hr {
 
         console.log(json);
 
-        $("#dad").html("<strong>Laboratorio seleccionado:</strong>" +" Laboratorio Nº "+ lab +"</br> <strong>Estación o Estaciones dañada(s): </strong> ");
+         $("#dad").html("<strong>Laboratorio seleccionado: </strong>" + $("#lab option:selected").text() +"</br> <strong>Estación o Estaciones dañada(s): </strong> ");
 
         
         var count = Object.keys(json).length;

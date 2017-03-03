@@ -134,11 +134,18 @@ hr {
       <div class="form-group">
         <label for="disp">Disponibilidad:</label>
         <select class="form-control" name="disp" id="disp">
-          <option value="si">Sí</option>
-          <option value="no">No</option>
+          <option id="si" value="si" name="disp">Sí</option>
+          <option id="no" value="no" name="disp">No</option>
         </select>
       </div>
       <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
     </div><!-- /.box-body -->
 {!! Form::close() !!}
+@stop
+@section('scripts')
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#disp option[id={{ $est->disponibilidad }}]').attr('selected', 'selected');
+  });
+</script>
 @stop

@@ -109,6 +109,9 @@ hr {
   <small>Inicio</small>
 </h1>
 @stop
+@section('opcion')
+<li class="active">Perfil Usuario</li>
+@stop
 @section('content')
 <h1>Perfil Usuario</h1>
 @if(count($errors)>0)

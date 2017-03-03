@@ -84,7 +84,6 @@ hr {
               </a>
               <ul class="treeview-menu">
                 <li><a href="{{ route('director.usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
-                <li><a href="{{ route('director.rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -166,7 +165,6 @@ hr {
                 <th>#</th>
                 <th>Sala</th>
                 <th>Estación</th>
-                <th>Período</th>
                 <th>Disponible</th>
                 <th>Editar </th>
               </tr>
@@ -178,7 +176,6 @@ hr {
                 <td>{{ $sa->id }}</td>
                 <td>{{ $sa->lab }}</td>
                 <td>{{ $sa->nombre }}</td>
-                <td>{{ $sa->per }}</td>
                 <td>{{ $sa->disponibilidad}}</td>
 
                 <!--Paso ruta y parametro para saber cual modificar-->
@@ -191,7 +188,6 @@ hr {
                 <th>#</th>
                 <th>Sala</th>
                 <th>Estación</th>
-                <th>Período</th>
                 <th>Disponible</th>
                 <th>Editar </th>
               </tr>

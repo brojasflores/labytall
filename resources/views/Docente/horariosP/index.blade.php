@@ -123,10 +123,6 @@ hr {
 <form role="form" method="get" action="{{ route('docente.asignar.index')}}">
   <button type="submit" class="fa fa-plus-square btn btn-primary"> Realizar una Reserva</button>
 </form>
-<br>
-<form role="form" method="get" action="{{ route('docente.MihorarioDocente.index')}}">
-  <button type="submit" class="fa fa-plus-square btn btn-primary"> Ver mis Reservas</button>
-</form>
 <section class="content">
   <div class="row">
     <div class="col-xs-12">
@@ -146,6 +142,8 @@ hr {
                 <th>Rut</th>
                 <th>Permanencia</th>
                 <th>Tipo reserva</th>
+                <th>Editar </th>
+                <th>Eliminar</th>
               </tr>
               </thead>
               <tbody>
@@ -159,7 +157,14 @@ hr {
                 <td>{{ $hr->horario_name}} {{ $hr->horario_apell}}</td>
                 <td>{{ $hr->rut}}</td>  
                 <td>{{ $hr->permanencia}}</td>
-                <td>{{ $hr->tipo_reserva}}</td> 
+                <td>{{ $hr->tipo_reserva}}</td>
+                <!--Paso ruta y parametro para saber cual modificar-->
+                <td><a href="{{ route('docente.MihorarioDocente.edit',$hr->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
+                <td>
+                {!! Form::open(['route' => ['docente.MihorarioDocente.destroy', $hr->id], 'method' => 'DELETE', 'id' => 'form-delete'])!!}
+                  <button type="submit" class="fa fa-trash btn btn-danger"> Eliminar</button>
+                {!! Form::close() !!}
+                </td>    
               </tr>
               @endforeach
               </tbody>
@@ -173,6 +178,8 @@ hr {
                 <th>Rut</th>
                 <th>Permanencia</th>
                 <th>Tipo reserva</th>
+                <th>Editar </th>
+                <th>Eliminar</th>
               </tr>
               </tfoot>
             </table>

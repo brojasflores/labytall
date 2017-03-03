@@ -96,7 +96,7 @@ Route::group(['prefix' => 'funcionario', 'namespace' => 'Funcionario'], function
  	Route::resource('/','funcionarioController@index');
 	
 	Route::resource('/sala','salaController');
- 
+ 	
 	Route::get('/usuario_perfil', ['as' => 'funcionario.usuario.perfil', 'uses' => 'perfilController@perfil']);
 	Route::post('/usuario_perfilUpdate', ['as' => 'funcionario.usuario.updateProfile', 'uses' => 'perfilController@updateProfile']);
 
@@ -129,6 +129,7 @@ Route::group(['prefix' => 'docente', 'namespace' => 'Docente'], function()
 {
 	Route::resource('/','docenteController@index');
 
+	//Route::resource('/usuario','usuarioController'); 
 	Route::get('/usuario_perfil', ['as' => 'docente.usuario.perfil', 'uses' => 'perfilController@perfil']);
 	Route::post('/usuario_perfilUpdate', ['as' => 'docente.usuario.updateProfile', 'uses' => 'perfilController@updateProfile']);
 
@@ -141,6 +142,8 @@ Route::group(['prefix' => 'docente', 'namespace' => 'Docente'], function()
 	Route::get('/asignar_ayudante',['as' => 'docente.asignar.ayudante', 'uses' => 'asignarController@ayudante']);
 	Route::get('/asignar_alumno',['as' => 'docente.asignar.alumno', 'uses' => 'asignarController@alumno']);
 
+	Route::resource('/MihorarioDocente','reservaController');
+
 });
 
 //***********************************RUTAS AYUDANTE*******************************************
@@ -148,7 +151,6 @@ Route::group(['prefix' => 'ayudante', 'namespace' => 'Ayudante'], function()
 {
 	Route::resource('/','ayudanteController@index');
 
- 
 	Route::get('/usuario_perfil', ['as' => 'ayudante.usuario.perfil', 'uses' => 'perfilController@perfil']);
 	Route::post('/usuario_perfilUpdate', ['as' => 'ayudante.usuario.updateProfile', 'uses' => 'perfilController@updateProfile']);
 
@@ -169,7 +171,7 @@ Route::group(['prefix' => 'ayudante', 'namespace' => 'Ayudante'], function()
 Route::group(['prefix' => 'alumno', 'namespace' => 'Alumno'], function()
 {
 	Route::resource('/','alumnoController@index');
-
+ 
 	Route::get('/usuario_perfil', ['as' => 'alumno.usuario.perfil', 'uses' => 'perfilController@perfil']);
 	Route::post('/usuario_perfilUpdate', ['as' => 'alumno.usuario.updateProfile', 'uses' => 'perfilController@updateProfile']);
 	

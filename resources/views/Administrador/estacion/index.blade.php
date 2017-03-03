@@ -170,7 +170,6 @@ hr {
                 <th>#</th>
                 <th>Sala</th>
                 <th>Estación</th>
-                <th>Período</th>
                 <th>Disponible</th>
                 <th>Editar </th>
               </tr>
@@ -182,7 +181,6 @@ hr {
                 <td>{{ $sa->id }}</td>
                 <td>{{ $sa->lab }}</td>
                 <td>{{ $sa->nombre }}</td>
-                <td>{{ $sa->per }}</td>
                 <td>{{ $sa->disponibilidad}}</td>
 
                 <!--Paso ruta y parametro para saber cual modificar-->
@@ -195,7 +193,6 @@ hr {
                 <th>#</th>
                 <th>Sala</th>
                 <th>Estación</th>
-                <th>Período</th>
                 <th>Disponible</th>
                 <th>Editar </th>
               </tr>

@@ -128,7 +128,6 @@ hr {
 </h1>
 @stop
 @section('opcion')
-<li><a href="{{ route('funcionario.usuario.index')}}"><i class="fa fa-user"></i> Usuarios</a></li>
 <li class="active">Perfil Usuario</li>
 @stop
 @section('content')

@@ -22,8 +22,15 @@ class estacionController extends Controller
     
     public function index()
     {
+        $periodos = Periodo::all();
+        foreach($periodos as $v)
+        {
+            $peri[]= $v->id;
+        }
+        $peri = $peri[0];
         $estaciones = Estacion_trabajo::join('sala','estacion_trabajo.sala_id','=','sala.id')
                                       ->join('periodo','estacion_trabajo.periodo_id','=','periodo.id')
+                                      ->where('periodo.id','=',$peri)
                                       ->select('estacion_trabajo.*','sala.nombre as lab','periodo.id as per')
                                       ->get();
 
