@@ -3657,3 +3657,522 @@ Stack trace:
 [2017-03-03 17:21:28] local.DEBUG: Auth: Logeando usuario id "1"  
 [2017-03-03 17:21:31] local.DEBUG: Auth: Logeando usuario id "1"  
 [2017-03-03 17:21:31] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 17:28:15] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 17:28:19] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 17:44:47] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 17:44:54] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 17:44:56] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 17:46:22] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 17:46:25] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 17:46:37] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 17:47:52] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 17:47:56] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 17:48:00] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 17:48:09] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 17:58:29] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:00:03] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:01:20] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:03:14] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:14:24] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:24:49] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:24:52] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:29:24] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:29:26] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:30:16] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:30:46] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:30:47] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:32:43] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:32:44] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:34:52] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:35:54] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:36:31] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:38:52] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:40:10] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:41:22] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:44:17] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:45:30] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:47:15] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:49:06] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:52:57] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:54:18] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:55:03] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:55:22] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:56:58] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 18:58:46] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:00:13] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:01:19] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:01:20] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:02:26] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:02:44] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:02:44] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:03:11] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:03:23] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:06:34] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:06:36] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:06:46] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:06:47] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:11:07] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:11:07] local.ERROR: exception 'PDOException' with message 'SQLSTATE[42712]: Duplicate alias: 7 ERROR:  table name "users" specified more than once' in /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Database/Connection.php:335
+Stack trace:
+#0 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Database/Connection.php(335): PDOStatement->execute(Array)
+#1 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Database/Connection.php(722): Illuminate\Database\Connection->Illuminate\Database\{closure}(Object(Illuminate\Database\PostgresConnection), 'select "curso"....', Array)
+#2 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Database/Connection.php(685): Illuminate\Database\Connection->runQueryCallback('select "curso"....', Array, Object(Closure))
+#3 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Database/Connection.php(349): Illuminate\Database\Connection->run('select "curso"....', Array, Object(Closure))
+#4 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(1610): Illuminate\Database\Connection->select('select "curso"....', Array, true)
+#5 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(1596): Illuminate\Database\Query\Builder->runSelect()
+#6 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(625): Illuminate\Database\Query\Builder->get(Array)
+#7 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(316): Illuminate\Database\Eloquent\Builder->getModels(Array)
+#8 /home/brojas/labytall/app/Http/Controllers/Administrador/cursoController.php(33): Illuminate\Database\Eloquent\Builder->get()
+#9 [internal function]: App\Http\Controllers\Administrador\cursoController->index()
+#10 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(80): call_user_func_array(Array, Array)
+#11 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(146): Illuminate\Routing\Controller->callAction('index', Array)
+#12 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(94): Illuminate\Routing\ControllerDispatcher->call(Object(App\Http\Controllers\Administrador\cursoController), Object(Illuminate\Routing\Route), 'index')
+#13 [internal function]: Illuminate\Routing\ControllerDispatcher->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#14 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(52): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#15 /home/brojas/labytall/app/Http/Middleware/adminMiddleware.php(38): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#16 [internal function]: App\Http\Middleware\adminMiddleware->handle(Object(Illuminate\Http\Request), Object(Closure))
+#17 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#18 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#19 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#20 /home/brojas/labytall/app/Http/Middleware/Authenticate.php(28): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#21 [internal function]: App\Http\Middleware\Authenticate->handle(Object(Illuminate\Http\Request), Object(Closure))
+#22 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#23 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#24 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#25 [internal function]: Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#26 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(103): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#27 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(96): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#28 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(54): Illuminate\Routing\ControllerDispatcher->callWithinStack(Object(App\Http\Controllers\Administrador\cursoController), Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request), 'index')
+#29 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Route.php(174): Illuminate\Routing\ControllerDispatcher->dispatch(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request), 'App\Http\Contro...', 'index')
+#30 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Route.php(140): Illuminate\Routing\Route->runController(Object(Illuminate\Http\Request))
+#31 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(724): Illuminate\Routing\Route->run(Object(Illuminate\Http\Request))
+#32 [internal function]: Illuminate\Routing\Router->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#33 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(52): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#34 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.php(64): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#35 [internal function]: Illuminate\Foundation\Http\Middleware\VerifyCsrfToken->handle(Object(Illuminate\Http\Request), Object(Closure))
+#36 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#37 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#38 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#39 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#40 [internal function]: Illuminate\View\Middleware\ShareErrorsFromSession->handle(Object(Illuminate\Http\Request), Object(Closure))
+#41 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#42 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#43 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#44 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#45 [internal function]: Illuminate\Session\Middleware\StartSession->handle(Object(Illuminate\Http\Request), Object(Closure))
+#46 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#47 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#48 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#49 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#50 [internal function]: Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse->handle(Object(Illuminate\Http\Request), Object(Closure))
+#51 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#52 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#53 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#54 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(59): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#55 [internal function]: Illuminate\Cookie\Middleware\EncryptCookies->handle(Object(Illuminate\Http\Request), Object(Closure))
+#56 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#57 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#58 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#59 [internal function]: Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#60 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(103): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#61 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(726): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#62 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(699): Illuminate\Routing\Router->runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))
+#63 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(675): Illuminate\Routing\Router->dispatchToRoute(Object(Illuminate\Http\Request))
+#64 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(246): Illuminate\Routing\Router->dispatch(Object(Illuminate\Http\Request))
+#65 [internal function]: Illuminate\Foundation\Http\Kernel->Illuminate\Foundation\Http\{closure}(Object(Illuminate\Http\Request))
+#66 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(52): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#67 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/CheckForMaintenanceMode.php(44): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#68 [internal function]: Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode->handle(Object(Illuminate\Http\Request), Object(Closure))
+#69 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#70 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#71 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#72 [internal function]: Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#73 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(103): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#74 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(132): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#75 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(99): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter(Object(Illuminate\Http\Request))
+#76 /home/brojas/public_html/index.php(54): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))
+#77 {main}
+
+Next exception 'Illuminate\Database\QueryException' with message 'SQLSTATE[42712]: Duplicate alias: 7 ERROR:  table name "users" specified more than once (SQL: select "curso".*, "asignatura"."nombre", "users"."nombre" as "nom" from "curso" inner join "asignatura" on "curso"."asignatura_id" = "asignatura"."id" inner join "users" on "curso"."docente" = "users"."rut" inner join "users" on "curso"."ayudante" = "users"."rut")' in /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Database/Connection.php:729
+Stack trace:
+#0 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Database/Connection.php(685): Illuminate\Database\Connection->runQueryCallback('select "curso"....', Array, Object(Closure))
+#1 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Database/Connection.php(349): Illuminate\Database\Connection->run('select "curso"....', Array, Object(Closure))
+#2 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(1610): Illuminate\Database\Connection->select('select "curso"....', Array, true)
+#3 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(1596): Illuminate\Database\Query\Builder->runSelect()
+#4 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(625): Illuminate\Database\Query\Builder->get(Array)
+#5 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(316): Illuminate\Database\Eloquent\Builder->getModels(Array)
+#6 /home/brojas/labytall/app/Http/Controllers/Administrador/cursoController.php(33): Illuminate\Database\Eloquent\Builder->get()
+#7 [internal function]: App\Http\Controllers\Administrador\cursoController->index()
+#8 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(80): call_user_func_array(Array, Array)
+#9 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(146): Illuminate\Routing\Controller->callAction('index', Array)
+#10 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(94): Illuminate\Routing\ControllerDispatcher->call(Object(App\Http\Controllers\Administrador\cursoController), Object(Illuminate\Routing\Route), 'index')
+#11 [internal function]: Illuminate\Routing\ControllerDispatcher->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#12 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(52): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#13 /home/brojas/labytall/app/Http/Middleware/adminMiddleware.php(38): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#14 [internal function]: App\Http\Middleware\adminMiddleware->handle(Object(Illuminate\Http\Request), Object(Closure))
+#15 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#16 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#17 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#18 /home/brojas/labytall/app/Http/Middleware/Authenticate.php(28): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#19 [internal function]: App\Http\Middleware\Authenticate->handle(Object(Illuminate\Http\Request), Object(Closure))
+#20 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#21 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#22 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#23 [internal function]: Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#24 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(103): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#25 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(96): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#26 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(54): Illuminate\Routing\ControllerDispatcher->callWithinStack(Object(App\Http\Controllers\Administrador\cursoController), Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request), 'index')
+#27 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Route.php(174): Illuminate\Routing\ControllerDispatcher->dispatch(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request), 'App\Http\Contro...', 'index')
+#28 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Route.php(140): Illuminate\Routing\Route->runController(Object(Illuminate\Http\Request))
+#29 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(724): Illuminate\Routing\Route->run(Object(Illuminate\Http\Request))
+#30 [internal function]: Illuminate\Routing\Router->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#31 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(52): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#32 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.php(64): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#33 [internal function]: Illuminate\Foundation\Http\Middleware\VerifyCsrfToken->handle(Object(Illuminate\Http\Request), Object(Closure))
+#34 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#35 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#36 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#37 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#38 [internal function]: Illuminate\View\Middleware\ShareErrorsFromSession->handle(Object(Illuminate\Http\Request), Object(Closure))
+#39 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#40 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#41 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#42 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#43 [internal function]: Illuminate\Session\Middleware\StartSession->handle(Object(Illuminate\Http\Request), Object(Closure))
+#44 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#45 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#46 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#47 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#48 [internal function]: Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse->handle(Object(Illuminate\Http\Request), Object(Closure))
+#49 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#50 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#51 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#52 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(59): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#53 [internal function]: Illuminate\Cookie\Middleware\EncryptCookies->handle(Object(Illuminate\Http\Request), Object(Closure))
+#54 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#55 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#56 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#57 [internal function]: Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#58 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(103): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#59 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(726): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#60 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(699): Illuminate\Routing\Router->runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))
+#61 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(675): Illuminate\Routing\Router->dispatchToRoute(Object(Illuminate\Http\Request))
+#62 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(246): Illuminate\Routing\Router->dispatch(Object(Illuminate\Http\Request))
+#63 [internal function]: Illuminate\Foundation\Http\Kernel->Illuminate\Foundation\Http\{closure}(Object(Illuminate\Http\Request))
+#64 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(52): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#65 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/CheckForMaintenanceMode.php(44): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#66 [internal function]: Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode->handle(Object(Illuminate\Http\Request), Object(Closure))
+#67 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#68 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#69 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#70 [internal function]: Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#71 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(103): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#72 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(132): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#73 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(99): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter(Object(Illuminate\Http\Request))
+#74 /home/brojas/public_html/index.php(54): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))
+#75 {main}  
+[2017-03-03 19:11:46] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:11:58] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:12:22] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:12:35] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:12:41] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:13:16] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:13:26] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:14:16] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:15:12] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:15:29] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:15:37] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:15:37] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:15:58] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:15:58] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:16:48] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:17:37] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:19:32] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:19:42] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:20:02] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:21:09] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:22:42] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected '{'' in /home/brojas/labytall/app/Http/Controllers/Administrador/cursoController.php:143
+Stack trace:
+#0 {main}  
+[2017-03-03 19:23:07] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:23:07] local.ERROR: exception 'ErrorException' with message 'Trying to get property of non-object' in /home/brojas/labytall/app/Http/Controllers/Administrador/cursoController.php:142
+Stack trace:
+#0 /home/brojas/labytall/app/Http/Controllers/Administrador/cursoController.php(142): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Trying to get p...', '/home/brojas/la...', 142, Array)
+#1 [internal function]: App\Http\Controllers\Administrador\cursoController->store(Object(Illuminate\Http\Request))
+#2 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(80): call_user_func_array(Array, Array)
+#3 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(146): Illuminate\Routing\Controller->callAction('store', Array)
+#4 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(94): Illuminate\Routing\ControllerDispatcher->call(Object(App\Http\Controllers\Administrador\cursoController), Object(Illuminate\Routing\Route), 'store')
+#5 [internal function]: Illuminate\Routing\ControllerDispatcher->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#6 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(52): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#7 /home/brojas/labytall/app/Http/Middleware/adminMiddleware.php(38): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#8 [internal function]: App\Http\Middleware\adminMiddleware->handle(Object(Illuminate\Http\Request), Object(Closure))
+#9 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#10 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#11 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#12 /home/brojas/labytall/app/Http/Middleware/Authenticate.php(28): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#13 [internal function]: App\Http\Middleware\Authenticate->handle(Object(Illuminate\Http\Request), Object(Closure))
+#14 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#15 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#16 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#17 [internal function]: Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#18 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(103): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#19 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(96): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#20 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(54): Illuminate\Routing\ControllerDispatcher->callWithinStack(Object(App\Http\Controllers\Administrador\cursoController), Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request), 'store')
+#21 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Route.php(174): Illuminate\Routing\ControllerDispatcher->dispatch(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request), 'App\Http\Contro...', 'store')
+#22 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Route.php(140): Illuminate\Routing\Route->runController(Object(Illuminate\Http\Request))
+#23 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(724): Illuminate\Routing\Route->run(Object(Illuminate\Http\Request))
+#24 [internal function]: Illuminate\Routing\Router->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#25 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(52): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#26 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.php(64): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#27 [internal function]: Illuminate\Foundation\Http\Middleware\VerifyCsrfToken->handle(Object(Illuminate\Http\Request), Object(Closure))
+#28 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#29 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#30 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#31 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#32 [internal function]: Illuminate\View\Middleware\ShareErrorsFromSession->handle(Object(Illuminate\Http\Request), Object(Closure))
+#33 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#34 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#35 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#36 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#37 [internal function]: Illuminate\Session\Middleware\StartSession->handle(Object(Illuminate\Http\Request), Object(Closure))
+#38 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#39 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#40 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#41 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#42 [internal function]: Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse->handle(Object(Illuminate\Http\Request), Object(Closure))
+#43 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#44 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#45 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#46 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(59): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#47 [internal function]: Illuminate\Cookie\Middleware\EncryptCookies->handle(Object(Illuminate\Http\Request), Object(Closure))
+#48 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#49 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#50 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#51 [internal function]: Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#52 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(103): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#53 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(726): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#54 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(699): Illuminate\Routing\Router->runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))
+#55 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(675): Illuminate\Routing\Router->dispatchToRoute(Object(Illuminate\Http\Request))
+#56 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(246): Illuminate\Routing\Router->dispatch(Object(Illuminate\Http\Request))
+#57 [internal function]: Illuminate\Foundation\Http\Kernel->Illuminate\Foundation\Http\{closure}(Object(Illuminate\Http\Request))
+#58 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(52): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#59 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/CheckForMaintenanceMode.php(44): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#60 [internal function]: Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode->handle(Object(Illuminate\Http\Request), Object(Closure))
+#61 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#62 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#63 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#64 [internal function]: Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#65 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(103): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#66 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(132): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#67 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(99): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter(Object(Illuminate\Http\Request))
+#68 /home/brojas/public_html/index.php(54): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))
+#69 {main}  
+[2017-03-03 19:23:21] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:23:21] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Call to a member function isEmpty() on a non-object' in /home/brojas/labytall/app/Http/Controllers/Administrador/cursoController.php:142
+Stack trace:
+#0 {main}  
+[2017-03-03 19:23:58] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:24:04] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:32:24] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:32:49] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:32:49] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:45:54] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected ';', expecting ']'' in /home/brojas/labytall/app/Http/Controllers/Administrador/cursoController.php:278
+Stack trace:
+#0 {main}  
+[2017-03-03 19:46:42] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected ';', expecting ']'' in /home/brojas/labytall/app/Http/Controllers/Administrador/cursoController.php:278
+Stack trace:
+#0 {main}  
+[2017-03-03 19:47:01] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected ';', expecting ']'' in /home/brojas/labytall/app/Http/Controllers/Administrador/cursoController.php:278
+Stack trace:
+#0 {main}  
+[2017-03-03 19:47:03] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected ';', expecting ']'' in /home/brojas/labytall/app/Http/Controllers/Administrador/cursoController.php:278
+Stack trace:
+#0 {main}  
+[2017-03-03 19:47:04] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected ';', expecting ']'' in /home/brojas/labytall/app/Http/Controllers/Administrador/cursoController.php:278
+Stack trace:
+#0 {main}  
+[2017-03-03 19:47:04] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected ';', expecting ']'' in /home/brojas/labytall/app/Http/Controllers/Administrador/cursoController.php:278
+Stack trace:
+#0 {main}  
+[2017-03-03 19:47:05] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected ';', expecting ']'' in /home/brojas/labytall/app/Http/Controllers/Administrador/cursoController.php:278
+Stack trace:
+#0 {main}  
+[2017-03-03 19:47:32] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:47:41] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:47:41] local.ERROR: exception 'ErrorException' with message 'Undefined variable: docentes' in /home/brojas/labytall/storage/framework/views/c7232cbdc4ac847d5a4353320618fca832bd1dd6.php:203
+Stack trace:
+#0 /home/brojas/labytall/storage/framework/views/c7232cbdc4ac847d5a4353320618fca832bd1dd6.php(203): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Undefined varia...', '/home/brojas/la...', 203, Array)
+#1 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(42): include('/home/brojas/la...')
+#2 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php(59): Illuminate\View\Engines\PhpEngine->evaluatePath('/home/brojas/la...', Array)
+#3 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/View/View.php(149): Illuminate\View\Engines\CompilerEngine->get('/home/brojas/la...', Array)
+#4 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/View/View.php(120): Illuminate\View\View->getContents()
+#5 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/View/View.php(85): Illuminate\View\View->renderContents()
+#6 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Http/Response.php(53): Illuminate\View\View->render()
+#7 /home/brojas/labytall/vendor/symfony/http-foundation/Response.php(201): Illuminate\Http\Response->setContent(Object(Illuminate\View\View))
+#8 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(1085): Symfony\Component\HttpFoundation\Response->__construct(Object(Illuminate\View\View))
+#9 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(95): Illuminate\Routing\Router->prepareResponse(Object(Illuminate\Http\Request), Object(Illuminate\View\View))
+#10 [internal function]: Illuminate\Routing\ControllerDispatcher->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#11 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(52): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#12 /home/brojas/labytall/app/Http/Middleware/adminMiddleware.php(38): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#13 [internal function]: App\Http\Middleware\adminMiddleware->handle(Object(Illuminate\Http\Request), Object(Closure))
+#14 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#15 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#16 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#17 /home/brojas/labytall/app/Http/Middleware/Authenticate.php(28): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#18 [internal function]: App\Http\Middleware\Authenticate->handle(Object(Illuminate\Http\Request), Object(Closure))
+#19 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#20 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#21 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#22 [internal function]: Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#23 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(103): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#24 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(96): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#25 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(54): Illuminate\Routing\ControllerDispatcher->callWithinStack(Object(App\Http\Controllers\Administrador\cursoController), Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request), 'edit')
+#26 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Route.php(174): Illuminate\Routing\ControllerDispatcher->dispatch(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request), 'App\Http\Contro...', 'edit')
+#27 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Route.php(140): Illuminate\Routing\Route->runController(Object(Illuminate\Http\Request))
+#28 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(724): Illuminate\Routing\Route->run(Object(Illuminate\Http\Request))
+#29 [internal function]: Illuminate\Routing\Router->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#30 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(52): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#31 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.php(64): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#32 [internal function]: Illuminate\Foundation\Http\Middleware\VerifyCsrfToken->handle(Object(Illuminate\Http\Request), Object(Closure))
+#33 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#34 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#35 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#36 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#37 [internal function]: Illuminate\View\Middleware\ShareErrorsFromSession->handle(Object(Illuminate\Http\Request), Object(Closure))
+#38 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#39 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#40 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#41 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#42 [internal function]: Illuminate\Session\Middleware\StartSession->handle(Object(Illuminate\Http\Request), Object(Closure))
+#43 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#44 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#45 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#46 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#47 [internal function]: Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse->handle(Object(Illuminate\Http\Request), Object(Closure))
+#48 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#49 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#50 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#51 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(59): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#52 [internal function]: Illuminate\Cookie\Middleware\EncryptCookies->handle(Object(Illuminate\Http\Request), Object(Closure))
+#53 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#54 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#55 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#56 [internal function]: Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#57 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(103): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#58 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(726): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#59 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(699): Illuminate\Routing\Router->runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))
+#60 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(675): Illuminate\Routing\Router->dispatchToRoute(Object(Illuminate\Http\Request))
+#61 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(246): Illuminate\Routing\Router->dispatch(Object(Illuminate\Http\Request))
+#62 [internal function]: Illuminate\Foundation\Http\Kernel->Illuminate\Foundation\Http\{closure}(Object(Illuminate\Http\Request))
+#63 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(52): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#64 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/CheckForMaintenanceMode.php(44): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#65 [internal function]: Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode->handle(Object(Illuminate\Http\Request), Object(Closure))
+#66 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#67 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#68 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#69 [internal function]: Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#70 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(103): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#71 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(132): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#72 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(99): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter(Object(Illuminate\Http\Request))
+#73 /home/brojas/public_html/index.php(54): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))
+#74 {main}
+
+Next exception 'ErrorException' with message 'Undefined variable: docentes (View: /home/brojas/labytall/resources/views/Administrador/cursos/edit.blade.php)' in /home/brojas/labytall/storage/framework/views/c7232cbdc4ac847d5a4353320618fca832bd1dd6.php:203
+Stack trace:
+#0 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(44): Illuminate\View\Engines\CompilerEngine->handleViewException(Object(ErrorException), 1)
+#1 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php(59): Illuminate\View\Engines\PhpEngine->evaluatePath('/home/brojas/la...', Array)
+#2 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/View/View.php(149): Illuminate\View\Engines\CompilerEngine->get('/home/brojas/la...', Array)
+#3 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/View/View.php(120): Illuminate\View\View->getContents()
+#4 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/View/View.php(85): Illuminate\View\View->renderContents()
+#5 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Http/Response.php(53): Illuminate\View\View->render()
+#6 /home/brojas/labytall/vendor/symfony/http-foundation/Response.php(201): Illuminate\Http\Response->setContent(Object(Illuminate\View\View))
+#7 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(1085): Symfony\Component\HttpFoundation\Response->__construct(Object(Illuminate\View\View))
+#8 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(95): Illuminate\Routing\Router->prepareResponse(Object(Illuminate\Http\Request), Object(Illuminate\View\View))
+#9 [internal function]: Illuminate\Routing\ControllerDispatcher->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#10 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(52): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#11 /home/brojas/labytall/app/Http/Middleware/adminMiddleware.php(38): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#12 [internal function]: App\Http\Middleware\adminMiddleware->handle(Object(Illuminate\Http\Request), Object(Closure))
+#13 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#14 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#15 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#16 /home/brojas/labytall/app/Http/Middleware/Authenticate.php(28): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#17 [internal function]: App\Http\Middleware\Authenticate->handle(Object(Illuminate\Http\Request), Object(Closure))
+#18 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#19 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#20 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#21 [internal function]: Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#22 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(103): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#23 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(96): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#24 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(54): Illuminate\Routing\ControllerDispatcher->callWithinStack(Object(App\Http\Controllers\Administrador\cursoController), Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request), 'edit')
+#25 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Route.php(174): Illuminate\Routing\ControllerDispatcher->dispatch(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request), 'App\Http\Contro...', 'edit')
+#26 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Route.php(140): Illuminate\Routing\Route->runController(Object(Illuminate\Http\Request))
+#27 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(724): Illuminate\Routing\Route->run(Object(Illuminate\Http\Request))
+#28 [internal function]: Illuminate\Routing\Router->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#29 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(52): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#30 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.php(64): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#31 [internal function]: Illuminate\Foundation\Http\Middleware\VerifyCsrfToken->handle(Object(Illuminate\Http\Request), Object(Closure))
+#32 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#33 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#34 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#35 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#36 [internal function]: Illuminate\View\Middleware\ShareErrorsFromSession->handle(Object(Illuminate\Http\Request), Object(Closure))
+#37 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#38 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#39 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#40 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#41 [internal function]: Illuminate\Session\Middleware\StartSession->handle(Object(Illuminate\Http\Request), Object(Closure))
+#42 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#43 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#44 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#45 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#46 [internal function]: Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse->handle(Object(Illuminate\Http\Request), Object(Closure))
+#47 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#48 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#49 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#50 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(59): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#51 [internal function]: Illuminate\Cookie\Middleware\EncryptCookies->handle(Object(Illuminate\Http\Request), Object(Closure))
+#52 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#53 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#54 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#55 [internal function]: Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#56 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(103): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#57 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(726): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#58 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(699): Illuminate\Routing\Router->runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))
+#59 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Router.php(675): Illuminate\Routing\Router->dispatchToRoute(Object(Illuminate\Http\Request))
+#60 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(246): Illuminate\Routing\Router->dispatch(Object(Illuminate\Http\Request))
+#61 [internal function]: Illuminate\Foundation\Http\Kernel->Illuminate\Foundation\Http\{closure}(Object(Illuminate\Http\Request))
+#62 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(52): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#63 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/CheckForMaintenanceMode.php(44): Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#64 [internal function]: Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode->handle(Object(Illuminate\Http\Request), Object(Closure))
+#65 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(136): call_user_func_array(Array, Array)
+#66 [internal function]: Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#67 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(32): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#68 [internal function]: Illuminate\Routing\Pipeline->Illuminate\Routing\{closure}(Object(Illuminate\Http\Request))
+#69 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(103): call_user_func(Object(Closure), Object(Illuminate\Http\Request))
+#70 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(132): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#71 /home/brojas/labytall/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(99): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter(Object(Illuminate\Http\Request))
+#72 /home/brojas/public_html/index.php(54): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))
+#73 {main}  
+[2017-03-03 19:48:47] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:48:48] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:49:42] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:49:47] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:50:07] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:50:15] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:53:48] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:53:57] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:54:37] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 19:58:12] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 20:00:37] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 20:01:22] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 20:03:51] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 20:03:51] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected '$cursos' (T_VARIABLE)' in /home/brojas/labytall/storage/framework/views/c7232cbdc4ac847d5a4353320618fca832bd1dd6.php:253
+Stack trace:
+#0 {main}  
+[2017-03-03 20:04:01] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 20:05:11] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 20:05:26] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 20:06:15] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 20:07:08] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 20:07:43] local.DEBUG: Auth: Logeando usuario id "1"  
+[2017-03-03 20:07:47] local.DEBUG: Auth: Logeando usuario id "1"  

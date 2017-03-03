@@ -27,6 +27,7 @@ class cursoController extends Controller
     public function index()
     {
         $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
+                            ->join('users','curso.docente','=','users.rut')
                             ->select('curso.*','asignatura.nombre')
                             ->get();
         
@@ -65,9 +66,25 @@ class cursoController extends Controller
     public function create()
     {
         //$asignaturas = Asignatura::all();
+        $doc = 'docente';
+        $ayu = 'ayudante';
+
         $asignaturas = Asignatura::join('carrera','asignatura.carrera_id','=','carrera.id')
                                  ->select('asignatura.*','carrera.nombre as carr')
                                  ->get();
+
+        $docentes = User::join('rol_users','users.rut','=','rol_users.rut')
+                        ->join('rol','rol_users.rol_id','=','rol.id')
+                        ->where('rol.nombre','=',$doc)
+                        ->select('users.*')
+                        ->get();
+
+        $ayudantes = User::join('rol_users','users.rut','=','rol_users.rut')
+                        ->join('rol','rol_users.rol_id','=','rol.id')
+                        ->where('rol.nombre','=',$ayu)
+                        ->select('users.*')
+                        ->get();
+
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -86,11 +103,11 @@ class cursoController extends Controller
         
         if($cont>1)
         {
-            return view ('Administrador/cursos/create',compact('asignaturas','v2','cont'));
+            return view ('Administrador/cursos/create',compact('ayudantes','docentes','asignaturas','v2','cont'));
         }
         else
         {
-            return view ('Administrador/cursos/create',compact('asignaturas','cont'));
+            return view ('Administrador/cursos/create',compact('ayudantes','docentes','asignaturas','cont'));
         }
         //return view('Administrador/cursos/create',compact('asignaturas'));
     }
@@ -122,12 +139,28 @@ class cursoController extends Controller
                 'seccion' => 'required|numeric'
                 ]);
             
-            $cursos = Curso::create([
-                'asignatura_id' => $request->get('asignatura_id'),
-                'semestre' => $request->get('semestre'),
-                'anio' => $request->get('anio'),
-                'seccion' => $request->get('seccion')
-                ]);
+            if(empty($request->get('ayudantes')))
+            {
+                $cursos = Curso::create([
+                    'asignatura_id' => $request->get('asignatura_id'),
+                    'semestre' => $request->get('semestre'),
+                    'anio' => $request->get('anio'),
+                    'seccion' => $request->get('seccion'),
+                    'docente' => $request->get('docentes'),
+                    'ayudante' => 'no',
+                    ]);
+            }
+            else
+            {
+                $cursos = Curso::create([
+                    'asignatura_id' => $request->get('asignatura_id'),
+                    'semestre' => $request->get('semestre'),
+                    'anio' => $request->get('anio'),
+                    'seccion' => $request->get('seccion'),
+                    'docente' => $request->get('docentes'),
+                    'ayudante' => $request->get('ayudantes'),
+                    ]);
+            }
 
             Session::flash('create','¡Curso creado correctamente!');
             return redirect()->route('administrador.curso.index');
@@ -158,6 +191,21 @@ class cursoController extends Controller
      */
     public function edit($id)
     {
+        $doc = 'docente';
+        $ayu = 'ayudante';
+
+        $docentes = User::join('rol_users','users.rut','=','rol_users.rut')
+                                ->join('rol','rol_users.rol_id','=','rol.id')
+                                ->where('rol.nombre','=',$doc)
+                                ->select('users.*')
+                                ->get();
+
+        $ayudantes = User::join('rol_users','users.rut','=','rol_users.rut')
+                        ->join('rol','rol_users.rol_id','=','rol.id')
+                        ->where('rol.nombre','=',$ayu)
+                        ->select('users.*')
+                        ->get();
+
         $cursos = Curso::findOrFail($id);
         //en el compact se pasa la variable como string
         $asignaturas = Asignatura::join('carrera','asignatura.carrera_id','=','carrera.id')
@@ -181,11 +229,11 @@ class cursoController extends Controller
         
         if($cont>1)
         {
-            return view ('Administrador/cursos/edit', compact('cursos','asignaturas','v2','cont'));
+            return view ('Administrador/cursos/edit', compact('docentes','ayudantes','cursos','asignaturas','v2','cont'));
         }
         else
         {
-            return view ('Administrador/cursos/edit', compact('cursos','asignaturas','cont'));
+            return view ('Administrador/cursos/edit', compact('docentes','ayudantes','cursos','asignaturas','cont'));
         }
         //return view('Administrador/cursos/edit', compact('cursos','asignaturas'));
     }
@@ -220,13 +268,30 @@ class cursoController extends Controller
 
             $cursos = Curso::findOrFail($id);     
 
-            $cursos->fill([
-                'asignatura_id' => $request->get('asignatura_id'),
-                'semestre' => $request->get('semestre'),
-                'anio' => $request->get('anio'),
-                'seccion' => $request->get('seccion')
-            ]);
-            $cursos->save();
+            if(empty($request->get('ayudantes')))
+            {
+                $cursos->fill([
+                    'asignatura_id' => $request->get('asignatura_id'),
+                    'semestre' => $request->get('semestre'),
+                    'anio' => $request->get('anio'),
+                    'seccion' => $request->get('seccion'),
+                    'docente' => $request->get('docentes'),
+                    'ayudante' => 'no',
+                ]);
+                $cursos->save();
+            }
+            else
+            {
+                $cursos->fill([
+                    'asignatura_id' => $request->get('asignatura_id'),
+                    'semestre' => $request->get('semestre'),
+                    'anio' => $request->get('anio'),
+                    'seccion' => $request->get('seccion'),
+                    'docente' => $request->get('docentes'),
+                    'ayudante' => $request->get('ayudantes'),
+                ]);
+                $cursos->save();
+            }
 
             Session::flash('edit','¡Curso editado correctamente!');
             return redirect()->route('administrador.curso.index');
