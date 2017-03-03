@@ -161,6 +161,8 @@ Route::group(['prefix' => 'ayudante', 'namespace' => 'Ayudante'], function()
 	Route::get('/asignar_ayudante',['as' => 'ayudante.asignar.ayudante', 'uses' => 'asignarController@ayudante']);
 	Route::get('/asignar_alumno',['as' => 'ayudante.asignar.alumno', 'uses' => 'asignarController@alumno']);
 
+	Route::resource('/MihorarioAyudante','reservaController');
+
 });
 
 //***********************************RUTAS ALUMNO*******************************************

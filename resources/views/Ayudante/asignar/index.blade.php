@@ -79,7 +79,7 @@ hr {
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{{ route('ayudante.horario.index')}}"><i class="fa fa-clock-o"></i> Ayudante</a></li>
+            <li><a href="{{ route('ayudante.horario.index')}}"><i class="fa fa-clock-o"></i>Ayudante</a></li>
           </ul>
         </li>
         <li><a href="{{ route('ayudante.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
@@ -105,12 +105,9 @@ hr {
 @stop
 @section('options')
 <h1>
-    Salas 
-  <small>Reserva</small>
+    Panel de Control 
+  <small>Inicio</small>
 </h1>
-@stop
-@section('opcion')
-<li class="active">Reserva</li>
 @stop
 @section('content')
 <div class="jumbotron">

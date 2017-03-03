@@ -22,13 +22,9 @@ use Carbon\Carbon;
 use Session;
 
 
-class asignarController extends Controller
+class reservaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -37,52 +33,21 @@ class asignarController extends Controller
     
     public function index()
     {
-        //Cambio de rol
-        $usr=Auth::User()->rut;
-        //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
-        $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
-                    ->where('users.rut','=',$usr)
-                    ->join('rol','rol_users.rol_id','=','rol.id')
-                    ->select('nombre')
-                    ->get();
-        // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
-        foreach($usr2 as $v)
-        {
-            $v2[]= $v->nombre;
-        }
-        //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
-        $cont = count($v2); //cuenta la cantidad de elementos del array
-        
-        if($cont>1)
-        {
-            return view ('Ayudante/asignar/index',compact('v2','cont'));
-        }
-        else
-        {
-            return view ('Ayudante/asignar/index',compact('cont'));
-        }
-
-        //return view ('Ayudante/asignar/index');
-    }
-
-    public function ayudante()
-    {
         $usr=Auth::User()->rut;
         $dpto= UsersDpto::where('rut','=',$usr)
-                        ->select('departamento_id')
-                        ->get();
-
-        $salas= Sala::where('departamento_id','=',$dpto->first()->departamento_id)
-                        ->select('id','nombre')->orderBy('nombre','asc')->get();
-
-        //$salas = Sala::select('id','nombre')->orderBy('nombre','asc')->get();
-        $periodos = Periodo::select('id','bloque')
-                            ->orderBy('id','asc')->get();
-
-        $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
-                        ->select('curso.id','curso.seccion','asignatura.nombre')
-                        ->orderBy('asignatura.nombre','asc')
-                        ->get();
+                            ->select('departamento_id')
+                            ->get();
+        $horarios = Horario::join('curso','horario.curso_id','=','curso.id')
+                            ->join('asignatura','curso.asignatura_id','=','asignatura.id')
+                            ->join('periodo','horario.periodo_id','=','periodo.id')
+                            ->join('sala','horario.sala_id','=','sala.id')
+                            ->join('departamento','departamento.id','=','sala.departamento_id')
+                            ->join('users','horario.rut','=','users.rut')
+                            ->where('departamento.id',$dpto->first()->departamento_id)
+                            ->where('horario.rut','=',$usr)
+                            ->select('horario.id','horario.fecha','horario.rut','users.nombres as horario_name','users.apellidos as horario_apell','horario.permanencia','asignatura.nombre as asig_nombre','periodo.bloque','sala.nombre as sala_nombre','horario.asistencia')
+                            ->orderBy('periodo.bloque','asc')
+                            ->get();
 
         //Cambio de rol
         $usr=Auth::User()->rut;
@@ -102,33 +67,141 @@ class asignarController extends Controller
         
         if($cont>1)
         {
-            return view ('Ayudante/asignar/ayudante',compact('salas','periodos','cursos','v2','cont'));
+            return view ('Ayudante/horariosP/index', compact('horarios','v2','cont'));
         }
         else
         {
-            return view ('Ayudante/asignar/ayudante',compact('salas','periodos','cursos','cont'));
+            return view ('Ayudante/horariosP/index', compact('horarios','cont'));
         }
-        //return view ('Ayudante/asignar/ayudante',compact('salas','periodos','cursos'));
+        //return view ('Ayudante/horarios/index', compact('horarios')); 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
+    {
+
+    }
+
+    public function store(Request $request)
+    {
+        
+    }
+
+
+    public function show($id)
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function edit($id,Request $request)
     {
+        if($request->ajax()){
+         
+            $horario = Horario::where('id',$request->get('id'))
+                               ->select('curso_id','periodo_id','sala_id','permanencia','fecha')
+                               ->orderBy('periodo_id','asc')
+                               ->get();
+        
+            $fecha_inicio = Horario::where('curso_id',$horario[0]->curso_id)->min('fecha');
+
+            $fecha_fin = Horario::where('curso_id',$horario[0]->curso_id)->max('fecha');
+
+            $dia = date('w',strtotime($fecha_inicio));
+
+            if($dia == 1){$dia = 'lunes';}
+            if($dia == 2){$dia = 'martes';}   
+            if($dia == 3){$dia = 'miercoles';}
+            if($dia == 4){$dia = 'jueves';}
+            if($dia == 5){$dia = 'viernes';}  
+            if($dia == 6){$dia = 'sabado';}
+
+            $datos = ['horario' => $horario,'dia' => $dia,'fecha_inicio' => $fecha_inicio, 'fecha_fin' => $fecha_fin];
+
+            if($request->get('permanencia') == 'semestral'){
+                return response()->json($datos);
+            }
+            if($request->get('permanencia') == 'dia'){
+                return response()->json($dia);
+            }
+          
+        }
+        else{
+                $numero = Horario::where('id','=',$id)
+                              ->select('rut')
+                              ->get();
+
+                $numero = $numero->first()->rut;
+
+                $i = 2;
+                $suma = 0;
+                foreach(array_reverse(str_split($numero)) as $v)
+                {
+                    if($i==8)
+                        $i = 2;
+                    $suma += $v * $i;
+                    ++$i;
+                }
+                $dvr = 11 - ($suma % 11);
+                
+                if($dvr == 11)
+                    $dvr = 0;
+                if($dvr == 10)
+                    $dvr = 'K';
+
+                $rut= $numero.$dvr;
+
+            $horarios = Horario::findOrFail($id);
+
+            //$salas = Sala::all();
+            $usr=Auth::User()->rut;
+            $dpto= UsersDpto::where('rut','=',$usr)
+                            ->select('departamento_id')
+                            ->get();
+
+            $salas= Sala::where('departamento_id','=',$dpto->first()->departamento_id)
+                            ->select('id','nombre')->orderBy('nombre','asc')->get();
+
+            $periodos = Periodo::all();
+
+            Periodo::orderBy('id','asc')->get();
+
+            $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
+                            ->select('curso.id','curso.seccion','asignatura.nombre')
+                            ->get();
+            
+            //Cambio de rol
+            $usr=Auth::User()->rut;
+            //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+            $usr2 = User::join('rol_users','users.rut','=','rol_users.rut')
+                        ->where('users.rut','=',$usr)
+                        ->join('rol','rol_users.rol_id','=','rol.id')
+                        ->select('nombre')
+                        ->get();
+            // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+            foreach($usr2 as $v)
+            {
+                $v2[]= $v->nombre;
+            }
+            //el foreach recorre la colección y guarda en un array solo los nombres de los roles del usuario 
+            $cont = count($v2); //cuenta la cantidad de elementos del array
+            
+            if($cont>1)
+            {
+                return view ('Ayudante/horariosP/edit',compact('rut','horarios','salas','periodos','cursos','v2','cont'));
+            }
+            else
+            {
+                return view ('Ayudante/horariosP/edit',compact('rut','horarios','salas','periodos','cursos','cont'));
+            }
+
+            //return view('Ayudante/horarios/edit',compact('horarios','salas','periodos','cursos'));
+        }
+
+    }
+
+
+    public function update(Request $request, $id)
+    {   
         if($request->get('rol')=='ayudante')
         {
             if($request->get('permanencia') == 'dia')
@@ -159,7 +232,70 @@ class asignarController extends Controller
             }
             
         }
-        //           
+
+        if($request->get('permanencia') === 'semestral')
+        {
+            $fecha_separada1 = explode('/',$request->get('fecha_inicio'));
+            $fecha_con_guion1 = [$fecha_separada1[2],$fecha_separada1[0],$fecha_separada1[1]];
+            $fecha_formateada = implode('-',$fecha_con_guion1);
+
+            $fecha_separada2 = explode('/',$request->get('fecha_fin'));
+            $fecha_con_guion2 = [$fecha_separada2[2],$fecha_separada2[0],$fecha_separada2[1]];
+            $fecha_formateada2 = implode('-',$fecha_con_guion2);
+
+            $inicio = new Carbon($fecha_formateada);
+            $termino = new Carbon($fecha_formateada2); 
+
+            if($inicio>$termino)
+            {
+                Session::flash('create','¡La fecha final debe ser mayor a la fecha inicial, intente nuevamente!');
+                return redirect()->route('ayudante.MihorarioAyudante.index');
+            }
+        }
+
+        // 
+
+        $var = Horario::where('id','=',$id)
+               ->select('sala_id','permanencia')
+               ->get();
+        
+        foreach($var as $v)
+        {
+            $v2= $v->sala_id;
+            $per=$v->permanencia;
+        }
+
+        $esT = Estacion_trabajo::where('sala_id','=',$v2)
+               ->select('id')
+               ->get();
+
+        foreach($esT as $v)
+        {
+            $v3[]= $v->id;
+        }
+
+        $cont= count($v3); 
+        for($i=0;$i<$cont;$i++)
+        {
+            $est = Estacion_trabajo::findOrFail($v3[$i]);
+            $est->fill([
+            'disponibilidad' => "si",
+            ]); 
+            $est->save();
+        }
+        $est->save();
+
+        $horarios = Horario::findOrFail($id);
+        $curso = $horarios->curso_id;
+        $periodo = $horarios->periodo_id;
+        
+        Horario::where('curso_id',$curso)
+                ->where('periodo_id',$periodo)
+                ->where('permanencia',$per)
+                ->delete();
+
+        //
+
 
         if($request->get('permanencia') === 'dia')
         {
@@ -172,12 +308,14 @@ class asignarController extends Controller
             $con = Horario::where('fecha','=',$fecha_formateada)
                       ->where('periodo_id','=',$request->get('periodo_id'))
                       ->where('sala_id','=',$request->get('sala_id'))
+                      ->where('id','!=',$id)
                       ->select('id')
                       ->get();
 
             $con2 = Horario_Alumno::where('fecha','=',$fecha_formateada)
                           ->where('periodo_id','=',$request->get('periodo_id'))
                           ->where('sala_id','=',$request->get('sala_id'))
+                          ->where('id','!=',$id)
                           ->select('id')
                           ->get();
             
@@ -208,7 +346,7 @@ class asignarController extends Controller
             if($inicio>$termino)
             {
                 Session::flash('create','¡La fecha final debe ser mayor a la fecha inicial, intente nuevamente!');
-                return redirect()->route('ayudante.horario.index');
+                return redirect()->route('ayudante.MihorarioAyudante.index');
             }
 
             $i=0;
@@ -411,14 +549,13 @@ class asignarController extends Controller
         if($si==0)
         {
             $rutdoc =Auth::User()->rut;
-
+            
             $curso = Horario::where('curso_id','=',$request->get('curso_id'))
                             ->where('fecha','=',$fecha_formateada)
                             ->get(); 
 
             if($curso->count() == 0)
             {
-
                 if($request->get('rol') == 'ayudante')
                 {
                     $docente = RolUsuario::join('rol','rol.id','=','rol_users.rol_id')
@@ -442,31 +579,12 @@ class asignarController extends Controller
                                     'curso_id' => $request->get('curso_id'),
                                     'rut' => $rutdoc,
                                     'permanencia' => 'dia',
-                                    'asistencia' => 'Pendiente', 
+                                    'asistencia' => 'Pendiente',
                                     'tipo_reserva' => $request->get('rol'),
                                     ]);
-                                //pone disponibilidad en no para un lab completo
-                                $id = $request->get('sala_id');
-                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                   ->select('id')
-                                   ->get();
-                                foreach($esT as $v)
-                                {
-                                    $v2[]= $v->id;
-                                }
-                                $cont= count($v2); 
-                                for($i=0;$i<$cont;$i++)
-                                {
-                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                    $est->fill([
-                                    'disponibilidad' => "si",
-                                    ]); 
-                                    $est->save();
-                                }
-                                $est->save();
 
-                                Session::flash('create','¡Horario diario Ayudante reservado correctamente!');
-                                return redirect()->route('ayudante.horario.index');
+                                Session::flash('create','¡Horario diario Ayudante editado correctamente!');
+                                return redirect()->route('ayudante.MihorarioAyudante.index');
                             }
                             else
                             {
@@ -502,25 +620,6 @@ class asignarController extends Controller
                                                            'asistencia' => 'Pendiente', 
                                                            'tipo_reserva' => $request->get('rol'),
                                                            ]);
-                                                
-                                                $id = $request->get('sala_id');
-                                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                   ->select('id')
-                                                   ->get();
-                                                foreach($esT as $v)
-                                                {
-                                                    $v2[]= $v->id;
-                                                }
-                                                $cont= count($v2); 
-                                                for($i=0;$i<$cont;$i++)
-                                                {
-                                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                    $est->fill([
-                                                    'disponibilidad' => "si",
-                                                    ]); 
-                                                    $est->save();
-                                                }
-                                                $est->save();
                                             }
                                         }
                                         if($request->get('dia') === 'martes')
@@ -538,25 +637,6 @@ class asignarController extends Controller
                                                        'asistencia' => 'Pendiente', 
                                                        'tipo_reserva' => $request->get('rol'),
                                                        ]);
-
-                                                $id = $request->get('sala_id');
-                                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                   ->select('id')
-                                                   ->get();
-                                                foreach($esT as $v)
-                                                {
-                                                    $v2[]= $v->id;
-                                                }
-                                                $cont= count($v2); 
-                                                for($i=0;$i<$cont;$i++)
-                                                {
-                                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                    $est->fill([
-                                                    'disponibilidad' => "si",
-                                                    ]); 
-                                                    $est->save();
-                                                }
-                                                $est->save();
                                             }
                                         }
                                         if($request->get('dia') === 'miercoles')
@@ -574,25 +654,6 @@ class asignarController extends Controller
                                                        'asistencia' => 'Pendiente', 
                                                        'tipo_reserva' => $request->get('rol'),
                                                        ]);
-                                                
-                                                $id = $request->get('sala_id');
-                                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                   ->select('id')
-                                                   ->get();
-                                                foreach($esT as $v)
-                                                {
-                                                    $v2[]= $v->id;
-                                                }
-                                                $cont= count($v2); 
-                                                for($i=0;$i<$cont;$i++)
-                                                {
-                                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                    $est->fill([
-                                                    'disponibilidad' => "si",
-                                                    ]); 
-                                                    $est->save();
-                                                }
-                                                $est->save();
                                             }
                                         }
                                         if($request->get('dia') === 'jueves')
@@ -610,25 +671,6 @@ class asignarController extends Controller
                                                        'asistencia' => 'Pendiente', 
                                                        'tipo_reserva' => $request->get('rol'),
                                                        ]);
-                                                
-                                                $id = $request->get('sala_id');
-                                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                   ->select('id')
-                                                   ->get();
-                                                foreach($esT as $v)
-                                                {
-                                                    $v2[]= $v->id;
-                                                }
-                                                $cont= count($v2); 
-                                                for($i=0;$i<$cont;$i++)
-                                                {
-                                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                    $est->fill([
-                                                    'disponibilidad' => "si",
-                                                    ]); 
-                                                    $est->save();
-                                                }
-                                                $est->save();
                                             }
                                         }
                                         if($request->get('dia') === 'viernes')
@@ -646,26 +688,6 @@ class asignarController extends Controller
                                                        'asistencia' => 'Pendiente', 
                                                        'tipo_reserva' => $request->get('rol'),
                                                        ]);
-                                                
-
-                                                $id = $request->get('sala_id');
-                                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                   ->select('id')
-                                                   ->get();
-                                                foreach($esT as $v)
-                                                {
-                                                    $v2[]= $v->id;
-                                                }
-                                                $cont= count($v2); 
-                                                for($i=0;$i<$cont;$i++)
-                                                {
-                                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                    $est->fill([
-                                                    'disponibilidad' => "si",
-                                                    ]); 
-                                                    $est->save();
-                                                }
-                                                $est->save();
                                             }
                                         }
                                         if($request->get('dia') === 'sabado')
@@ -683,34 +705,14 @@ class asignarController extends Controller
                                                        'asistencia' => 'Pendiente', 
                                                        'tipo_reserva' => $request->get('rol'),
                                                        ]);
-                                                
-
-                                                $id = $request->get('sala_id');
-                                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                   ->select('id')
-                                                   ->get();
-                                                foreach($esT as $v)
-                                                {
-                                                    $v2[]= $v->id;
-                                                }
-                                                $cont= count($v2); 
-                                                for($i=0;$i<$cont;$i++)
-                                                {
-                                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                    $est->fill([
-                                                    'disponibilidad' => "si",
-                                                    ]); 
-                                                    $est->save();
-                                                }
-                                                $est->save();
                                             }
                                         }
                                         $inicio->addWeek(1);
                                     }
                                 }
                                 //Horario creado con exito de ayudante semestral
-                                Session::flash('create','¡Horario semestral ayudante reservado correctamente!');
-                                return redirect()->route('ayudante.horario.index');
+                                Session::flash('create','¡Horario semestral ayudante editado correctamente!');
+                                return redirect()->route('ayudante.MihorarioAyudante.index');
                             }
                         }
                     }
@@ -727,70 +729,65 @@ class asignarController extends Controller
                         {
                             //devolver mensaje de periodo por ayudante(max 1)
                             Session::flash('create','¡Los Ayudantes pueden reservar sólamente un período por curso-sección!');
-                            return redirect()->route('ayudante.horario.index');
+                            return redirect()->route('ayudante.MihorarioAyudante.index');
                         }
                     }
                     else
                     {
                         //devolver mensaje de periodo que son iguales
                         Session::flash('create','¡Período ya reservado!');
-                        return redirect()->route('ayudante.horario.index');
+                        return redirect()->route('ayudante.MihorarioAyudante.index');
                     }
                 }
             }
         }
         else
         {
-            Session::flash('create','¡Horario ya reservado con anteroridad!');
-            return redirect()->route('ayudante.horario.index');
+            Session::flash('create','¡Horario ya reservado con anteroridad. El horario que deseaba modificar fue eliminado, reserve nuevamente!');
+            return redirect()->route('ayudante.MihorarioAyudante.index');
         }
-
-    //Validación de la asignación        
-        
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $var = Horario::where('id','=',$id)
+               ->select('sala_id','permanencia')
+               ->get();
+        
+        foreach($var as $v)
+        {
+            $v2= $v->sala_id;
+            $per=$v->permanencia;
+        }
+
+        $esT = Estacion_trabajo::where('sala_id','=',$v2)
+               ->select('id')
+               ->get();
+
+        foreach($esT as $v)
+        {
+            $v3[]= $v->id;
+        }
+
+        $cont= count($v3); 
+        for($i=0;$i<$cont;$i++)
+        {
+            $est = Estacion_trabajo::findOrFail($v3[$i]);
+            $est->fill([
+            'disponibilidad' => "si",
+            ]); 
+            $est->save();
+        }
+        $est->save();
+
+        $horarios = Horario::findOrFail($id);
+        $curso = $horarios->curso_id;
+        $periodo = $horarios->periodo_id;
+        
+        Horario::where('curso_id',$curso)
+                ->where('periodo_id',$periodo)
+                ->where('permanencia',$per)
+                ->delete();
+        return redirect()->route('ayudante.MihorarioAyudante.index');
     }
 }

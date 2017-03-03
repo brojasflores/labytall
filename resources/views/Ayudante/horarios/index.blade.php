@@ -105,12 +105,9 @@ hr {
 @stop
 @section('options')
 <h1>
-    Salas 
-  <small>Ver horarios</small>
+    Panel de Control 
+  <small>Inicio</small>
 </h1>
-@stop
-@section('opcion')
-<li class="active">Horarios</li>
 @stop
 @section('content')
 @if(Session::has('create'))
@@ -123,6 +120,10 @@ hr {
 <form role="form" method="get" action="{{ route('ayudante.asignar.index')}}">
   <button type="submit" class="fa fa-plus-square btn btn-primary"> Realizar una Reserva</button>
 </form>
+<br>
+<form role="form" method="get" action="{{ route('ayudante.MihorarioAyudante.index')}}">
+  <button type="submit" class="fa fa-plus-square btn btn-primary"> Ver mis Reservas</button>
+</form>
 <section class="content">
   <div class="row">
     <div class="col-xs-12">
@@ -134,7 +135,6 @@ hr {
             <table id="example1" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                <th>#</th>
                 <th>Fecha</th>
                 <th>Sala</th>
                 <th>Período</th>
@@ -142,16 +142,12 @@ hr {
                 <th>Nombre</th>
                 <th>Rut</th>
                 <th>Permanencia</th>
-                <th>Asistencia</th>
-                <th>Editar </th>
-                <th>Eliminar</th>
               </tr>
               </thead>
               <tbody>
               <!--foreach recorre una coleccion de objetos-->
               @foreach($horarios as $hr)
               <tr data-id="{{ $hr->id }}">
-                <td>{{ $hr->id }}</td>
                 <td>{{ $hr->fecha }}</td>
                 <td>{{ $hr->sala_nombre}}</td>
                 <td>{{ $hr->bloque}}</td>
@@ -159,30 +155,19 @@ hr {
                 <td>{{ $hr->horario_name}} {{ $hr->horario_apell}}</td>
                 <td>{{ $hr->rut}}</td>  
                 <td>{{ $hr->permanencia}}</td>
-                <td>{{ $hr->asistencia}}</td>
-                <!--Paso ruta y parametro para saber cual modificar-->
-                <td><a href="{{ route('ayudante.horario.edit',$hr->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
-                <td>
-                {!! Form::open(['route' => ['ayudante.horario.destroy', $hr->id], 'method' => 'DELETE', 'id' => 'form-delete'])!!}
-                  <button type="submit" class="fa fa-trash btn btn-danger"> Eliminar</button>
-                {!! Form::close() !!}
-                </td>    
+                <!--Paso ruta y parametro para saber cual modificar-->   
               </tr>
               @endforeach
               </tbody>
               <tfoot>
                 <tr>
-                <th>#</th>
                 <th>Fecha</th>
                 <th>Sala</th>
                 <th>Período</th>
                 <th>Curso</th>
                 <th>Nombre</th>
                 <th>Rut</th>
-                <th>Permanencia</th>
-                <th>Asistencia</th>
-                <th>Editar </th>
-                <th>Eliminar</th>
+                <th>Permanencia</th> 
               </tr>
               </tfoot>
             </table>

@@ -33,7 +33,7 @@ hr {
           @if($as == 'administrador')
             <a href="{{ route('administrador..index')}}"><i class="fa fa-mail-forward"></i> Administrador</a>
           @endif
-           @if($as == 'director')
+          @if($as == 'director')
             <a href="{{ route('director..index')}}"><i class="fa fa-mail-forward"></i> Director</a>
           @endif
           @if($as == 'funcionario')
@@ -79,7 +79,7 @@ hr {
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{{ route('ayudante.horario.index')}}"><i class="fa fa-clock-o"></i> Ayudante</a></li>
+            <li><a href="{{ route('ayudante.horario.index')}}"><i class="fa fa-clock-o"></i>Ayudante</a></li>
           </ul>
         </li>
         <li><a href="{{ route('ayudante.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
@@ -105,13 +105,9 @@ hr {
 @stop
 @section('options')
 <h1>
-    Salas 
-  <small>Reserva Ayudante</small>
+    Panel de Control 
+  <small>Inicio</small>
 </h1>
-@stop
-@section('opcion')
-<li><a href="{{ route('ayudante.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reserva</a></li>
-<li class="active">Reserva Ayudante</li>
 @stop
 @section('content')
 @if(Session::has('create'))

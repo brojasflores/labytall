@@ -140,7 +140,6 @@ hr {
                 <th>Período</th>
                 <th>Sala</th>
                 <th>Estación Trabajo</th>
-                <th>Asistencia</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
               </tr>
@@ -155,11 +154,10 @@ hr {
                 <td>{{ $hr->bloque}}</td>
                 <td>{{ $hr->sala_nombre}}</td>
                 <td>{{ $hr->est_trabajo}}</td>
-                <td>{{ $hr->asistencia}}</td>
                 <!--Paso ruta y parametro para saber cual modificar-->
-                <td><a href="{{ route('alumno.horarioAlumno.edit',$hr->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
+                <td><a href="{{ route('alumno.MihorarioAlumno.edit',$hr->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
                 <td>
-                {!! Form::open(['route' => ['alumno.horarioAlumno.destroy', $hr->id], 'method' => 'DELETE', 'id' => 'form-delete'])!!}
+                {!! Form::open(['route' => ['alumno.MihorarioAlumno.destroy', $hr->id], 'method' => 'DELETE', 'id' => 'form-delete'])!!}
                   <button type="submit" class="fa fa-trash btn btn-danger"> Eliminar</button>
                 {!! Form::close() !!}
                 </td>    
@@ -174,7 +172,6 @@ hr {
                 <th>Período</th>
                 <th>Sala</th>
                 <th>Estación Trabajo</th>
-                <th>Asistencia</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
               </tr>

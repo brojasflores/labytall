@@ -113,7 +113,7 @@ hr {
 <h1>Editar Horario</h1>
 
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
-{!! Form::model($horarios,['route' => ['ayudante.horario.update',$horarios], 'method' => 'PUT']) !!}
+{!! Form::model($horarios,['route' => ['ayudante.MihorarioAyudante.update',$horarios], 'method' => 'PUT']) !!}
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
 	   
@@ -211,20 +211,6 @@ hr {
 	    	<div class="row">
 	    		<div class="col-md-3">
 					<div class="form-group">
-					  <label for="sel1">Asistencia: </label>
-					  <select class="form-control" id="asistenciaH" name="asistenciaH">
-					  	   	<option id="Pendiente" value="Pendiente" name="asistenciaH">Pendiente</option>
-					  	   	<option id="si" value="si" name="asistenciaH">Sí</option>
-					  	   	<option id="no" value="no" name="asistenciaH">No</option>
-					  </select>
-					</div>
-		    	</div>
-		    </div>
-	    </div>
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div class="form-group">
 					  <label for="sel1">Tipo de reserva: </label>
 					  <select class="form-control" id="rol" name="rol">
 					  	   	<option id="ayudante" value="ayudante" name="ayudante">Ayudante</option>
@@ -257,7 +243,7 @@ $(document).ready(function(){
 	$.ajax({
 		// con .val saco el valor del value
         data:  {'id': $("#horario_id").val(),'permanencia': $("#permanencia").val()},
-        url:   '/~brojas/ayudante/horario/'+$("#horario_id")+'/edit',
+        url:   '/~brojas/ayudante/MihorarioAyudante/'+$("#horario_id")+'/edit',
         type:  'get',
         dataType: 'json',
         success:  function(respuesta) {   
@@ -320,7 +306,6 @@ $(document).ready(function(){
 			$("#col-fecha-fin").css('display','none');
 		}
 	});
-	$('#asistenciaH option[id={{ $horarios->asistencia }}]').attr('selected', 'selected');
 });
 
 </script>
