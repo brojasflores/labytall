@@ -188,7 +188,7 @@ class horarioController extends Controller
     {   
         //dd($request);
         //VAIDA RUT
-        $rut = preg_replace('/[^k0-9]/i', '', $request->rut);
+        /*$rut = preg_replace('/[^k0-9]/i', '', $request->rut);
         $dv  = substr($rut, -1);
         $numero = substr($rut, 0, strlen($rut)-1);
         //dd($numero);
@@ -237,7 +237,7 @@ class horarioController extends Controller
             Session::flash('create','¡El rut ingresado es inválido, ingrese rut con dígito verificador y sin guión!');
             return redirect()->route('administrador.horario.index');
         }
-
+*/
 //
         if($request->get('rol')=='docente')
         {
@@ -625,13 +625,22 @@ class horarioController extends Controller
                 //insertar max 2 registros
                 if($request->get('rol') == 'docente')
                 {
+                    $res = Curso::where('id','=',$request->get('curso_id'))
+                                        ->select('docente')
+                                        ->get();
+                    $res = $res->first()->docente;
+
                     $docente = RolUsuario::join('rol','rol.id','=','rol_users.rol_id')
-                                        ->where('rol_users.rut','=',$numero)->select('rol.nombre')->get();              
+                                        ->where('rol_users.rut','=',$res)->select('rol.nombre')->get();              
                 
                     foreach($docente as $d){
 
                         if($d->nombre == 'docente')
                         {
+                            $res = Curso::where('id','=',$request->get('curso_id'))
+                                        ->select('docente')
+                                        ->get();
+                            $res = $res->first()->docente;
 
                             if($request->get('permanencia') === 'dia')
                             {
@@ -645,7 +654,7 @@ class horarioController extends Controller
                                     'sala_id' => $request->get('sala_id'),
                                     'periodo_id' => $request->get('periodo_id'),
                                     'curso_id' => $request->get('curso_id'),
-                                    'rut' => $numero,
+                                    'rut' => $res,
                                     'permanencia' => 'dia',
                                     'asistencia' => $request->get('asistenciaH'),
                                     'tipo_reserva' => $request->get('rol'),
@@ -686,7 +695,7 @@ class horarioController extends Controller
                                                            'sala_id' => $request->get('sala_id'),
                                                            'periodo_id' => $request->get('periodo_id'),
                                                            'curso_id' => $request->get('curso_id'),
-                                                           'rut' => $numero,
+                                                           'rut' => $res,
                                                            'permanencia' => 'semestral',
                                                            'asistencia' => $request->get('asistenciaH'),
                                                            'tipo_reserva' => $request->get('rol'),
@@ -704,7 +713,7 @@ class horarioController extends Controller
                                                        'sala_id' => $request->get('sala_id'),
                                                        'periodo_id' => $request->get('periodo_id'),
                                                        'curso_id' => $request->get('curso_id'),
-                                                       'rut' => $numero,
+                                                       'rut' => $res,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
@@ -723,7 +732,7 @@ class horarioController extends Controller
                                                        'sala_id' => $request->get('sala_id'),
                                                        'periodo_id' => $request->get('periodo_id'),
                                                        'curso_id' => $request->get('curso_id'),
-                                                       'rut' => $numero,
+                                                       'rut' => $res,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
@@ -740,7 +749,7 @@ class horarioController extends Controller
                                                        'sala_id' => $request->get('sala_id'),
                                                        'periodo_id' => $request->get('periodo_id'),
                                                        'curso_id' => $request->get('curso_id'),
-                                                       'rut' => $numero,
+                                                       'rut' => $res,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
@@ -758,7 +767,7 @@ class horarioController extends Controller
                                                        'sala_id' => $request->get('sala_id'),
                                                        'periodo_id' => $request->get('periodo_id'),
                                                        'curso_id' => $request->get('curso_id'),
-                                                       'rut' => $numero,
+                                                       'rut' => $res,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
@@ -776,7 +785,7 @@ class horarioController extends Controller
                                                        'sala_id' => $request->get('sala_id'),
                                                        'periodo_id' => $request->get('periodo_id'),
                                                        'curso_id' => $request->get('curso_id'),
-                                                       'rut' => $numero,
+                                                       'rut' => $res,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
@@ -796,13 +805,31 @@ class horarioController extends Controller
 
                 if($request->get('rol') == 'ayudante')
                 {
+                    $res = Curso::where('id','=',$request->get('curso_id'))
+                                        ->select('ayudante')
+                                        ->get();
+                    
+                    $res = $res->first()->ayudante;
+
                     $docente = RolUsuario::join('rol','rol.id','=','rol_users.rol_id')
-                                        ->where('rol_users.rut','=',$numero)->select('rol.nombre')->get();
+                                        ->where('rol_users.rut','=',$res)->select('rol.nombre')->get();
 
                     foreach($docente as $d){
 
                         if($d->nombre == 'ayudante')
                         {
+                            $res = Curso::where('id','=',$request->get('curso_id'))
+                                        ->select('ayudante')
+                                        ->get();
+                    
+                            $res = $res->first()->ayudante;
+
+                            if($res == 'no')
+                            {
+                                Session::flash('create','¡Este curso no presenta ayudantía!');
+                                return redirect()->route('administrador.horario.index');
+                            }
+
                             if($request->get('permanencia') === 'dia')
                             {
                                 //Formatear la fecha de mm/dd/aaaa => aaaa-mm-dd
@@ -815,7 +842,7 @@ class horarioController extends Controller
                                     'sala_id' => $request->get('sala_id'),
                                     'periodo_id' => $request->get('periodo_id'),
                                     'curso_id' => $request->get('curso_id'),
-                                    'rut' => $numero,
+                                    'rut' => $res,
                                     'permanencia' => 'dia',
                                     'asistencia' => $request->get('asistenciaH'),
                                     'tipo_reserva' => $request->get('rol'),
@@ -853,7 +880,7 @@ class horarioController extends Controller
                                                            'sala_id' => $request->get('sala_id'),
                                                            'periodo_id' => $request->get('periodo_id'),
                                                            'curso_id' => $request->get('curso_id'),
-                                                           'rut' => $numero,
+                                                           'rut' => $res,
                                                            'permanencia' => 'semestral',
                                                            'asistencia' => $request->get('asistenciaH'),
                                                            'tipo_reserva' => $request->get('rol'),
@@ -870,7 +897,7 @@ class horarioController extends Controller
                                                        'sala_id' => $request->get('sala_id'),
                                                        'periodo_id' => $request->get('periodo_id'),
                                                        'curso_id' => $request->get('curso_id'),
-                                                       'rut' => $numero,
+                                                       'rut' => $res,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
@@ -887,7 +914,7 @@ class horarioController extends Controller
                                                        'sala_id' => $request->get('sala_id'),
                                                        'periodo_id' => $request->get('periodo_id'),
                                                        'curso_id' => $request->get('curso_id'),
-                                                       'rut' => $numero,
+                                                       'rut' => $res,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
@@ -904,7 +931,7 @@ class horarioController extends Controller
                                                        'sala_id' => $request->get('sala_id'),
                                                        'periodo_id' => $request->get('periodo_id'),
                                                        'curso_id' => $request->get('curso_id'),
-                                                       'rut' => $numero,
+                                                       'rut' => $res,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
@@ -921,7 +948,7 @@ class horarioController extends Controller
                                                        'sala_id' => $request->get('sala_id'),
                                                        'periodo_id' => $request->get('periodo_id'),
                                                        'curso_id' => $request->get('curso_id'),
-                                                       'rut' => $numero,
+                                                       'rut' => $res,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
@@ -938,7 +965,7 @@ class horarioController extends Controller
                                                        'sala_id' => $request->get('sala_id'),
                                                        'periodo_id' => $request->get('periodo_id'),
                                                        'curso_id' => $request->get('curso_id'),
-                                                       'rut' => $numero,
+                                                       'rut' => $res,
                                                        'permanencia' => 'semestral',
                                                        'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
@@ -966,13 +993,24 @@ class horarioController extends Controller
                         //insertar
                         if($request->get('rol') == 'docente')
                         {
+                            $res = Curso::where('id','=',$request->get('curso_id'))
+                                        ->select('docente')
+                                        ->get();
+                            $res = $res->first()->docente;
+
                             $docente = RolUsuario::join('rol','rol.id','=','rol_users.rol_id')
-                                                ->where('rol_users.rut','=',$numero)->select('rol.nombre')->get();
+                                                ->where('rol_users.rut','=',$res)->select('rol.nombre')->get();
 
                             foreach($docente as $d){
 
                                 if($d->nombre == 'docente')
                                 {
+                                    $res = Curso::where('id','=',$request->get('curso_id'))
+                                        ->select('docente')
+                                        ->get();
+                                    
+                                    $res = $res->first()->docente;
+
                                     if($request->get('permanencia') === 'dia')
                                     {
                                         //Formatear la fecha de mm/dd/aaaa => aaaa-mm-dd
@@ -985,7 +1023,7 @@ class horarioController extends Controller
                                             'sala_id' => $request->get('sala_id'),
                                             'periodo_id' => $request->get('periodo_id'),
                                             'curso_id' => $request->get('curso_id'),
-                                            'rut' => $numero,
+                                            'rut' => $res,
                                             'permanencia' => 'dia',
                                             'asistencia' => $request->get('asistenciaH'),
                                             'tipo_reserva' => $request->get('rol'),
@@ -1024,7 +1062,7 @@ class horarioController extends Controller
                                                                'sala_id' => $request->get('sala_id'),
                                                                'periodo_id' => $request->get('periodo_id'),
                                                                'curso_id' => $request->get('curso_id'),
-                                                               'rut' => $numero,
+                                                               'rut' => $res,
                                                                'permanencia' => 'semestral',
                                                                'asistencia' => $request->get('asistenciaH'),
                                                                'tipo_reserva' => $request->get('rol'),
@@ -1041,7 +1079,7 @@ class horarioController extends Controller
                                                                'sala_id' => $request->get('sala_id'),
                                                                'periodo_id' => $request->get('periodo_id'),
                                                                'curso_id' => $request->get('curso_id'),
-                                                               'rut' => $numero,
+                                                               'rut' => $res,
                                                                'permanencia' => 'semestral',
                                                                'asistencia' => $request->get('asistenciaH'),
                                                                'tipo_reserva' => $request->get('rol'),
@@ -1058,7 +1096,7 @@ class horarioController extends Controller
                                                                'sala_id' => $request->get('sala_id'),
                                                                'periodo_id' => $request->get('periodo_id'),
                                                                'curso_id' => $request->get('curso_id'),
-                                                               'rut' => $numero,
+                                                               'rut' => $res,
                                                                'permanencia' => 'semestral',
                                                                'asistencia' => $request->get('asistenciaH'),
                                                                'tipo_reserva' => $request->get('rol'),
@@ -1075,7 +1113,7 @@ class horarioController extends Controller
                                                                'sala_id' => $request->get('sala_id'),
                                                                'periodo_id' => $request->get('periodo_id'),
                                                                'curso_id' => $request->get('curso_id'),
-                                                               'rut' => $numero,
+                                                               'rut' => $res,
                                                                'permanencia' => 'semestral',
                                                                'asistencia' => $request->get('asistenciaH'),
                                                                'tipo_reserva' => $request->get('rol'),
@@ -1092,7 +1130,7 @@ class horarioController extends Controller
                                                                'sala_id' => $request->get('sala_id'),
                                                                'periodo_id' => $request->get('periodo_id'),
                                                                'curso_id' => $request->get('curso_id'),
-                                                               'rut' => $numero,
+                                                               'rut' => $res,
                                                                'permanencia' => 'semestral',
                                                                'asistencia' => $request->get('asistenciaH'),
                                                                'tipo_reserva' => $request->get('rol'),
@@ -1109,7 +1147,7 @@ class horarioController extends Controller
                                                                    'sala_id' => $request->get('sala_id'),
                                                                    'periodo_id' => $request->get('periodo_id'),
                                                                    'curso_id' => $request->get('curso_id'),
-                                                                   'rut' => $numero,
+                                                                   'rut' => $res,
                                                                    'permanencia' => 'semestral',
                                                                    'asistencia' => $request->get('asistenciaH'),
                                                                    'tipo_reserva' => $request->get('rol'),
@@ -1193,11 +1231,18 @@ class horarioController extends Controller
         $horarios = Horario::findOrFail($id);
         $curso = $horarios->curso_id;
         $periodo = $horarios->periodo_id;
+        $sa = $horarios->sala_id;
+        $tr = $horarios->tipo_reserva;
+        $r = $horarios->rut;
         
         Horario::where('curso_id',$curso)
                 ->where('periodo_id',$periodo)
                 ->where('permanencia',$per)
+                ->where('sala_id',$sa)
+                ->where('tipo_reserva',$tr)
+                ->where('rut',$r)
                 ->delete();
+
         return redirect()->route('administrador.horario.index');
     }
 }

@@ -68,6 +68,7 @@ class asignarController extends Controller
     public function docente()
     {
         $usr=Auth::User()->rut;
+
         $dpto= UsersDpto::where('rut','=',$usr)
                         ->select('departamento_id')
                         ->get();
@@ -79,10 +80,21 @@ class asignarController extends Controller
         $periodos = Periodo::select('id','bloque')
                             ->orderBy('id','asc')->get();
 
-        $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
+        /*$cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
                         ->select('curso.id','curso.seccion','asignatura.nombre')
                         ->orderBy('asignatura.nombre','asc')
-                        ->get();
+                        ->get();*/
+
+        $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
+                           ->join('carrera','asignatura.carrera_id','=','carrera.id')
+                           ->join('escuela','carrera.escuela_id','=','escuela.id')
+                           ->join('departamento','escuela.departamento_id','=','departamento.id')
+                           ->where('departamento.id','=',$dpto->first()->departamento_id)
+                           ->where('curso.docente','=',$usr)
+                           ->select('curso.id','curso.seccion','asignatura.nombre')
+                           ->orderBy('asignatura.nombre','asc')
+                           ->get();
+
 
         //Cambio de rol
         $usr=Auth::User()->rut;
@@ -126,10 +138,20 @@ class asignarController extends Controller
         $periodos = Periodo::select('id','bloque')
                             ->orderBy('id','asc')->get();
 
-        $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
+        /*$cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
                         ->select('curso.id','curso.seccion','asignatura.nombre')
                         ->orderBy('asignatura.nombre','asc')
-                        ->get();
+                        ->get();*/
+
+        $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
+                           ->join('carrera','asignatura.carrera_id','=','carrera.id')
+                           ->join('escuela','carrera.escuela_id','=','escuela.id')
+                           ->join('departamento','escuela.departamento_id','=','departamento.id')
+                           ->where('departamento.id','=',$dpto->first()->departamento_id)
+                           ->where('curso.docente','=',$usr)
+                           ->select('curso.id','curso.seccion','asignatura.nombre')
+                           ->orderBy('asignatura.nombre','asc')
+                           ->get();
 
         //Cambio de rol
         $usr=Auth::User()->rut;
@@ -178,6 +200,14 @@ class asignarController extends Controller
     {
         //dd($request);
         if($request->get('rol')=='ayudante')
+        {
+            $numero = Curso::where('id','=',$request->get('curso_id'))
+                           ->select('ayudante')
+                           ->get();
+
+            $numero = $numero->first()->ayudante;
+        }
+        /*if($request->get('rol')=='ayudante')
         {
             //VAIDA RUT
             $rut = preg_replace('/[^k0-9]/i', '', $request->rut);
@@ -229,7 +259,7 @@ class asignarController extends Controller
                 Session::flash('create','¡El rut ingresado en inválido, ingrese rut con dígito verificador y sin guión!');
                 return redirect()->route('docente.horario.index');
             }
-        }
+        }*/
 
 //
         if($request->get('rol')=='docente')

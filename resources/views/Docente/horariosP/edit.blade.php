@@ -218,29 +218,6 @@ hr {
 		    	</div>
 		    </div>
 	    </div>
-	    @if($horarios->tipo_reserva == 'ayudante')
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div id="RutContent" class="form-group">
-					  <label for="sel1">Rut: </label>
-						  <input type="text" class="form-control" value="{{ $rut }}" name="rut" id="rut" aria-describedby="basic-addon2"> 
-					</div>
-		    	</div>
-		    </div>
-	    </div>
-	    @else
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div id="RutContent" class="form-group hide">
-					  <label for="sel1">Rut: </label>
-						  <input type="text" class="form-control" value="" name="rut" id="rut" aria-describedby="basic-addon2" placeholder="Ingrese Rut"> 
-					</div>
-		    	</div>
-		    </div>
-	    </div>	
-	    @endif
 
 	    <input type="hidden" id="horario_id" value="{{ $horarios->id }}">
 	    <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>

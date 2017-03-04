@@ -126,29 +126,6 @@ class reservaController extends Controller
           
         }
         else{
-                $numero = Horario::where('id','=',$id)
-                              ->select('rut')
-                              ->get();
-
-                $numero = $numero->first()->rut;
-
-                $i = 2;
-                $suma = 0;
-                foreach(array_reverse(str_split($numero)) as $v)
-                {
-                    if($i==8)
-                        $i = 2;
-                    $suma += $v * $i;
-                    ++$i;
-                }
-                $dvr = 11 - ($suma % 11);
-                
-                if($dvr == 11)
-                    $dvr = 0;
-                if($dvr == 10)
-                    $dvr = 'K';
-
-                $rut= $numero.$dvr;
 
             $horarios = Horario::findOrFail($id);
 
@@ -165,9 +142,19 @@ class reservaController extends Controller
 
             Periodo::orderBy('id','asc')->get();
 
-            $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
+            /*$cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
                             ->select('curso.id','curso.seccion','asignatura.nombre')
-                            ->get();
+                            ->get();*/
+
+            $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
+                           ->join('carrera','asignatura.carrera_id','=','carrera.id')
+                           ->join('escuela','carrera.escuela_id','=','escuela.id')
+                           ->join('departamento','escuela.departamento_id','=','departamento.id')
+                           ->where('departamento.id','=',$dpto->first()->departamento_id)
+                           ->where('curso.ayudante','=',$usr)
+                           ->select('curso.id','curso.seccion','asignatura.nombre')
+                           ->orderBy('asignatura.nombre','asc')
+                           ->get();
             
             //Cambio de rol
             $usr=Auth::User()->rut;
@@ -187,11 +174,11 @@ class reservaController extends Controller
             
             if($cont>1)
             {
-                return view ('Ayudante/horariosP/edit',compact('rut','horarios','salas','periodos','cursos','v2','cont'));
+                return view ('Ayudante/horariosP/edit',compact('horarios','salas','periodos','cursos','v2','cont'));
             }
             else
             {
-                return view ('Ayudante/horariosP/edit',compact('rut','horarios','salas','periodos','cursos','cont'));
+                return view ('Ayudante/horariosP/edit',compact('horarios','salas','periodos','cursos','cont'));
             }
 
             //return view('Ayudante/horarios/edit',compact('horarios','salas','periodos','cursos'));

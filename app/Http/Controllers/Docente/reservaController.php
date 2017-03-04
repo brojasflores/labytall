@@ -37,6 +37,7 @@ class reservaController extends Controller
         $dpto= UsersDpto::where('rut','=',$usr)
                             ->select('departamento_id')
                             ->get();
+
         $horarios = Horario::join('curso','horario.curso_id','=','curso.id')
                             ->join('asignatura','curso.asignatura_id','=','asignatura.id')
                             ->join('periodo','horario.periodo_id','=','periodo.id')
@@ -44,7 +45,7 @@ class reservaController extends Controller
                             ->join('departamento','departamento.id','=','sala.departamento_id')
                             ->join('users','horario.rut','=','users.rut')
                             ->where('departamento.id',$dpto->first()->departamento_id)
-                            ->where('horario.rut','=',$usr)
+                            ->where('curso.docente','=',$usr)
                             ->select('horario.id','horario.fecha','horario.rut','users.nombres as horario_name','users.apellidos as horario_apell','horario.permanencia','asignatura.nombre as asig_nombre','periodo.bloque','sala.nombre as sala_nombre','horario.asistencia','horario.tipo_reserva')
                             ->orderBy('periodo.bloque','asc')
                             ->get();
@@ -126,29 +127,6 @@ class reservaController extends Controller
           
         }
         else{
-                $numero = Horario::where('id','=',$id)
-                              ->select('rut')
-                              ->get();
-
-                $numero = $numero->first()->rut;
-
-                $i = 2;
-                $suma = 0;
-                foreach(array_reverse(str_split($numero)) as $v)
-                {
-                    if($i==8)
-                        $i = 2;
-                    $suma += $v * $i;
-                    ++$i;
-                }
-                $dvr = 11 - ($suma % 11);
-                
-                if($dvr == 11)
-                    $dvr = 0;
-                if($dvr == 10)
-                    $dvr = 'K';
-
-                $rut= $numero.$dvr;
 
             $horarios = Horario::findOrFail($id);
 
@@ -187,11 +165,11 @@ class reservaController extends Controller
             
             if($cont>1)
             {
-                return view ('Docente/horariosP/edit',compact('rut','horarios','salas','periodos','cursos','v2','cont'));
+                return view ('Docente/horariosP/edit',compact('horarios','salas','periodos','cursos','v2','cont'));
             }
             else
             {
-                return view ('Docente/horariosP/edit',compact('rut','horarios','salas','periodos','cursos','cont'));
+                return view ('Docente/horariosP/edit',compact('horarios','salas','periodos','cursos','cont'));
             }
 
             //return view('Docente/horarios/edit',compact('horarios','salas','periodos','cursos'));
@@ -204,6 +182,15 @@ class reservaController extends Controller
     {   
         //dd($request);
         if($request->get('rol')=='ayudante')
+        {
+            $numero = Curso::where('id','=',$request->get('curso_id'))
+                           ->select('ayudante')
+                           ->get();
+
+            $numero = $numero->first()->ayudante;
+        }
+
+        /*if($request->get('rol')=='ayudante')
         {
             //VAIDA RUT
             $rut = preg_replace('/[^k0-9]/i', '', $request->rut);
@@ -255,7 +242,7 @@ class reservaController extends Controller
                 Session::flash('create','¡El rut ingresado en inválido, ingrese rut con dígito verificador y sin guión!');
                 return redirect()->route('docente.MihorarioDocente.index');
             }
-        }
+        }*/
 //
         if($request->get('rol')=='docente')
         {
@@ -1213,11 +1200,18 @@ class reservaController extends Controller
         $horarios = Horario::findOrFail($id);
         $curso = $horarios->curso_id;
         $periodo = $horarios->periodo_id;
+        $sa = $horarios->sala_id;
+        $tr = $horarios->tipo_reserva;
+        $r = $horarios->rut;
         
         Horario::where('curso_id',$curso)
                 ->where('periodo_id',$periodo)
                 ->where('permanencia',$per)
+                ->where('sala_id',$sa)
+                ->where('tipo_reserva',$tr)
+                ->where('rut',$r)
                 ->delete();
+
         return redirect()->route('docente.MihorarioDocente.index');
     }
 }

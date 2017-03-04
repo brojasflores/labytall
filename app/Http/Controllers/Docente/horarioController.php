@@ -202,10 +202,16 @@ class horarioController extends Controller
     public function update(Request $request, $id)
     {   
         //dd($request);
-        if($request->get('rol')=='ayudante')
-        {
+            if($request->get('rol')=='ayudante')
+            {
+                $numero = Curso::where('id','=',$request->get('curso_id'))
+                               ->select('ayudante')
+                               ->get();
+
+                $numero = $numero->first()->ayudante;
+            }
             //VAIDA RUT
-            $rut = preg_replace('/[^k0-9]/i', '', $request->rut);
+            /*$rut = preg_replace('/[^k0-9]/i', '', $request->rut);
             $dv  = substr($rut, -1);
             $numero = substr($rut, 0, strlen($rut)-1);
             //dd($numero);
@@ -253,8 +259,8 @@ class horarioController extends Controller
             {
                 Session::flash('create','¡El rut ingresado en inválido, ingrese rut con dígito verificador y sin guión!');
                 return redirect()->route('docente.horario.index');
-            }
-        }
+            }*/
+        
 //
         if($request->get('rol')=='docente')
         {

@@ -159,6 +159,25 @@ class asignarController extends Controller
      */
     public function store(Request $request)
     {
+        /*if($request->ajax()){
+            $dpto = Sala::where('id','=',$request->get('sala_id'))
+                            ->select('departamento_id')
+                            ->get();
+
+            $dpto = $dpto->first()->departamento_id;
+
+            $curso = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
+                           ->join('carrera','asignatura.carrera_id','=','carrera.id')
+                           ->join('escuela','carrera.escuela_id','=','escuela.id')
+                           ->join('departamento','escuela.departamento_id','=','departamento.id')
+                           ->where('departamento.id','=',$dpto)
+                           ->select('curso.*')
+                           ->get();
+
+            return response()->json($curso);
+
+            
+        }*/
         //dd($request);
         //VAIDA RUT
         /*$rut = preg_replace('/[^k0-9]/i', '', $request->rut);
@@ -854,7 +873,8 @@ class asignarController extends Controller
                     $res = Curso::where('id','=',$request->get('curso_id'))
                                         ->select('ayudante')
                                         ->get();
-                            $res = $res->first()->ayudante;
+                    
+                    $res = $res->first()->ayudante;
 
                     $docente = RolUsuario::join('rol','rol.id','=','rol_users.rol_id')
                                         ->where('rol_users.rut','=',$res)->select('rol.nombre')->get();
@@ -871,7 +891,7 @@ class asignarController extends Controller
 
                             if($res == 'no')
                             {
-                                Session::flash('create','¡Usted no es ayudante de este curso!');
+                                Session::flash('create','¡Este curso no presenta ayudantía!');
                                 return redirect()->route('administrador.horario.index');
                             }
                             //dd($res);
@@ -1175,16 +1195,6 @@ class asignarController extends Controller
                     }
                 }
             }
-
-
-
-
-
-//ARREGLAR ACA!!!
-
-
-
-
 
             if($curso->count() == 1)
             {

@@ -79,10 +79,20 @@ class asignarController extends Controller
         $periodos = Periodo::select('id','bloque')
                             ->orderBy('id','asc')->get();
 
-        $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
+        /*$cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
                         ->select('curso.id','curso.seccion','asignatura.nombre')
                         ->orderBy('asignatura.nombre','asc')
-                        ->get();
+                        ->get();*/
+
+        $cursos = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
+                           ->join('carrera','asignatura.carrera_id','=','carrera.id')
+                           ->join('escuela','carrera.escuela_id','=','escuela.id')
+                           ->join('departamento','escuela.departamento_id','=','departamento.id')
+                           ->where('departamento.id','=',$dpto->first()->departamento_id)
+                           ->where('curso.ayudante','=',$usr)
+                           ->select('curso.id','curso.seccion','asignatura.nombre')
+                           ->orderBy('asignatura.nombre','asc')
+                           ->get();
 
         //Cambio de rol
         $usr=Auth::User()->rut;

@@ -167,12 +167,13 @@ hr {
 <form role="form" method="post" action="{{ route('administrador.asignar.store') }}">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
-	    <div class="form-group">
+      <div class="form-group">
 	    	<div class="row">
 	    		<div class="col-md-3">
 					<div class="form-group">
 					  <label for="sel1">Salas: </label>
 					  <select class="form-control" id="sala_id" name="sala_id">
+              <option value="0" name="sala_id">Seleccione</option>
 					  	@foreach($salas as $sala)
 					    	<option value="{{ $sala->id }}" name="sala_id">{{ $sala->nombre }}</option>
 						@endforeach
@@ -181,7 +182,7 @@ hr {
 		    	</div>		    	
 		    </div>
 	    </div>	
-	    <div class="form-group">
+       <div class="form-group">
 	    	<div class="row">
 	    		<div class="col-md-3">
 					<div class="form-group">
@@ -244,20 +245,25 @@ hr {
 		    	</div>		    	
 		    </div>
 	    </div>	 
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div class="form-group">
-					  <label for="sel1">Curso: </label>
-					  <select class="form-control" id="curso_id" name="curso_id">
-					  	@foreach($cursos as $curso)
-					    	<option value="{{ $curso->id }}" name="curso_id">{{ $curso->nombre }} - {{ $curso->seccion }}</option>
-						@endforeach
-					  </select>
-					</div>
-		    	</div>	    	
-		    </div>
-	    </div>	   
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-3">
+          <div class="form-group">
+            <label for="sel1">Curso: </label>
+            <select class="form-control" id="curso_id" name="curso_id">
+              @foreach($cursos as $curso)
+                <option value="{{ $curso->id }}" id="curso" name="curso_id">{{ $curso->nombre }} - {{ $curso->seccion }}</option>
+            @endforeach
+            </select>
+          </div>
+          </div>        
+        </div>
+      </div>  
+
+
+
+	      
 
       	
 	    <input type="hidden" name="rol" value="docente">
@@ -296,9 +302,36 @@ hr {
 	  		$("#col-fecha-ini").css('display','none');
 	  		$("#col-fecha-fin").css('display','none');
 	  	}
-	  });
+	  
+
+      /*$("#sala_id").change(function(){
+      var id = $("#sala_id").val();
+      var token = $("#token").val();
+      $.ajax({
+        url: '/~brojas/administrador/asignar_docente',
+        headers:{'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',
+        data:{id : id},
+        //response es la respuesta que trae desde el controlador
+        success: function(response){  
+          $("#curso").empty();
+          $("#cursos").css('display','block');
+          //el k es un índice (posición) y v (valor como tal del elemento)
+          $.each(response,function(k,v){
+          $("#curso").append("<option value='"+v.id+"' name='sala_id'>"+v.sala_id+"</option>");
+          });
+          
+        }
+      });
+  });*/
+
+
+
+    });
 	});
   </script>
 @stop
+
 
 
