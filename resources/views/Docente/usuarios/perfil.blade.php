@@ -84,6 +84,9 @@ hr {
         </li>
         <li><a href="{{ route('docente.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
       </ul>
+      <ul class="treeview-menu">
+        <li><a href="{{ route('docente.curso.index')}}"><i class="glyphicon glyphicon-education"></i> Ayudantía</a></li>
+      </ul>
     </li>
     <li class="treeview">
       <a href="#">

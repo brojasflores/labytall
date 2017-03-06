@@ -1,5 +1,23 @@
 @extends('main')
 @section('cambioRol')
+<style type="text/css">
+.navbar-nav>.user-menu>.dropdown-menu>li.user-header {
+    height: 197px;
+}
+.dropdown-menu>li>a {
+    color: #333;
+}
+.navbar-nav>.user-menu>.dropdown-menu>li.user-header>p {
+   margin-top: 0px;
+}
+p {
+    margin: 0 0 5px;
+}
+hr {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+</style>
   @if($cont>1)
   <li class="dropdown user user-menu">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -9,13 +27,13 @@
     <ul class="dropdown-menu">
       <li class="user-header">
         <p>
-          Eliga el Rol que quiera utilizar
+          Elija el Rol que quiera utilizar
         </p>
         @foreach($v2 as $as)
           @if($as == 'administrador')
             <a href="{{ route('administrador..index')}}"><i class="fa fa-mail-forward"></i> Administrador</a>
           @endif
-          @if($as == 'director')
+           @if($as == 'director')
             <a href="{{ route('director..index')}}"><i class="fa fa-mail-forward"></i> Director</a>
           @endif
           @if($as == 'funcionario')
@@ -48,34 +66,45 @@
 @stop
 @section('menu')
 <ul class="sidebar-menu">
-            <li class="header">Docente</li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-desktop"></i> <span>Salas</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="{{ route('docente.horario.index')}}"><i class="fa fa-eye"></i> Ver horarios</a></li>
-                <li><a href="{{ route('docente.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
-              </ul>
-            </li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-globe"></i> <span>Accesos Directos</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="http://www.utem.cl/" target="_blank"><i class="fa fa-external-link"></i> Página Principal</a></li>
-                <li><a href="http://mi.utem.cl/" target="_blank"><i class="fa fa-external-link"></i> Mi UTEM</a></li>
-                <li><a href="http://postulacion.utem.cl/" target="_blank"><i class="fa fa-external-link"></i> DIRDOC</a></li>
-                <li><a href="http://reko.utem.cl/portal/" target="_blank"><i class="fa fa-external-link"></i> REKO</a></li>
-                <li><a href="http://intranet.utem.cl/cb29be8b14c3c70e69672ae008310977/intranet/" target="_blank"><i class="fa fa-external-link"></i> Intranet</a></li>
-                <li><a href="http://biblioteca.utem.cl/" target="_blank"><i class="fa fa-external-link"></i> Catálogo Biblioteca</a></li>
-                <li><a href="http://bienestarestudiantil.blogutem.cl/" target="_blank"><i class="fa fa-external-link"></i> Bienestar Estudiantil</a></li>
-              </ul>
-            </li>
-            <li><a href="{{ route('docente.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
+    <li class="header">Docencia</li>
+    <li class="treeview">
+      <a href="#">
+        <i class="fa fa-desktop"></i> <span>Salas</span>
+        <i class="fa fa-angle-left pull-right"></i>
+      </a>
+      <ul class="treeview-menu">
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-eye"></i> <span>Ver Horarios</span>
+            <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{{ route('docente.horario.index')}}"><i class="fa fa-clock-o"></i> Docente-Ayudante</a></li>
           </ul>
+        </li>
+        <li><a href="{{ route('docente.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
+      </ul>
+      <ul class="treeview-menu">
+        <li><a href="{{ route('docente.curso.index')}}"><i class="glyphicon glyphicon-education"></i> Ayudantía</a></li>
+      </ul>
+    </li>
+    <li class="treeview">
+      <a href="#">
+        <i class="fa fa-globe"></i> <span>Accesos Directos</span>
+        <i class="fa fa-angle-left pull-right"></i>
+      </a>
+      <ul class="treeview-menu">
+        <li><a href="http://www.utem.cl/" target="_blank"><i class="fa fa-external-link"></i> Página Principal</a></li>
+        <li><a href="http://mi.utem.cl/" target="_blank"><i class="fa fa-external-link"></i> Mi UTEM</a></li>
+        <li><a href="http://postulacion.utem.cl/" target="_blank"><i class="fa fa-external-link"></i> DIRDOC</a></li>
+        <li><a href="http://reko.utem.cl/portal/" target="_blank"><i class="fa fa-external-link"></i> REKO</a></li>
+        <li><a href="http://intranet.utem.cl/cb29be8b14c3c70e69672ae008310977/intranet/" target="_blank"><i class="fa fa-external-link"></i> Intranet</a></li>
+        <li><a href="http://biblioteca.utem.cl/" target="_blank"><i class="fa fa-external-link"></i> Catálogo Biblioteca</a></li>
+        <li><a href="http://bienestarestudiantil.blogutem.cl/" target="_blank"><i class="fa fa-external-link"></i> Bienestar Estudiantil</a></li>
+      </ul>
+    </li>
+    <li><a href="{{ route('docente.contacto.index')}}" target="_blank"><i class="fa fa-envelope"></i> <span>Contáctenos</span></a></li>
+  </ul>
 @stop
 @section('options')
 <h1>
@@ -87,29 +116,46 @@
 <li class="active">Cursos</li>
 @stop
 @section('content')
+@if(Session::has('create'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('create') }}</strong>
+    </div>
+@endif
+@if(Session::has('edit'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('edit') }}</strong>
+    </div>
+@endif
+@if(Session::has('delete'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('delete') }}</strong>
+    </div>
+@endif
 <h1>Cursos</h1>
-<form role="form" method="get" action="{{ route('docente.curso.create')}}">
-  <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
-</form>
 <section class="content">
   <div class="row">
     <div class="col-xs-12">
-      <div class="box">
-        <div class="box-body">
-          <table id="example1" class="table table-bordered table-striped">
-            <thead>
-              <tr>
+       <!--ACA EMPIEZA LA DATATABLE-->
+        <div class="box">
+          <div class="box-header">
+          </div><!-- /.box-header -->
+          <div class="box-body">
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+                <tr>
                 <th>#</th>
                 <th>Asignatura</th>
                 <th>Semestre</th>
                 <th>Año</th>
                 <th>Sección</th>
+                <th>Ayudante</th>
                 <th>Editar </th>
-                <th>Eliminar</th>
               </tr>
-            </thead>
-            <tbody>
-          <!--foreach recorre una coleccion de objetos-->
+              <tbody>
+              <!--foreach recorre una coleccion de objetos-->
               @foreach($cursos as $cur)
               <tr data-id="{{ $cur->id }}">
                 <td>{{ $cur->id }}</td>
@@ -117,32 +163,62 @@
                 <td>{{ $cur->semestre}}</td>
                 <td>{{ $cur->anio}}</td>
                 <td>{{ $cur->seccion}}</td>
-
+                <td>{{ $cur->ayudante}}</td>
                 <!--Paso ruta y parametro para saber cual modificar-->
-                <td><a href="{{ route('docente.curso.edit',$cur->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
-                <td>
-                {!! Form::open(['route' => ['docente.curso.destroy', $cur->id], 'method' => 'DELETE', 'id' => 'form-delete'])!!}
-                  <button type="submit" class="fa fa-trash btn btn-danger"> Eliminar</button>
-                {!! Form::close() !!}
-                </td>    
+                <td><a href="{{ route('docente.curso.edit',$cur->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>   
               </tr>
               @endforeach
-            </tbody>
-            <tfoot>
-              <tr>
+              </tbody>
+              <tfoot>
+                <tr>
                 <th>#</th>
                 <th>Asignatura</th>
                 <th>Semestre</th>
                 <th>Año</th>
                 <th>Sección</th>
+                <th>Ayudante</th>
                 <th>Editar </th>
-                <th>Eliminar</th>
               </tr>
-            </tfoot>
-          </table>
-        </div><!-- /.box-body -->
-      </div><!-- /.box -->
-    </div><!-- /.col -->
+              </tfoot>
+            </table>
+          </div><!-- /.box-body -->
+        </div><!-- /.box -->
+        <!--ACA TERMINA LA DATATABLE-->
   </div><!-- /.row -->
 </section><!-- /.content -->
+@stop
+
+@section('scripts')
+  <!-- DataTables -->
+  <script src="{{ asset('admin-lte/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+  <script src="{{ asset('admin-lte/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+   <script>
+$(document).ready(function() {
+  
+    $('#example1').DataTable({
+        responsive: true,
+        "language": {
+                "decimal":        "",
+                "emptyTable":     "Sin datos disponibles",
+                "info":           "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                "infoEmpty":      "Mostrando 0 a 0 de 0 entradas",
+                "infoFiltered":   "(Filtrado de un total de _MAX_ entradas)",
+                "infoPostFix":    "",
+                "thousands":      ".",
+                "lengthMenu":     "Mostrar _MENU_ entradas",
+                "loadingRecords": "Cargando...",
+                "processing":     "Procesando...",
+                "search":         "Buscar:",
+                "zeroRecords":    "Ningún registro encontrado.",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Ultimo",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                }
+            }
+    });
+
+});
+    </script>
 @stop

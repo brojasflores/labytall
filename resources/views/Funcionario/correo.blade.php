@@ -42,29 +42,38 @@
       </div>
 
       <div class="main-contact">
-        <p class="login-box-msg">Contáctenos</p>
-        {!! Form::model(['route' => ['director.contacto.store'], 'method' => 'PUT']) !!}
-          <div class="form-group has-feedback">
-            <input type="text" class="form-control" name="nombreContacto" placeholder="Nombre">
-            <span class="glyphicon glyphicon-user form-control-feedback"></span>
-          </div>
-          <div class="form-group has-feedback">
-            <input type="email" class="form-control" name="emailContacto" placeholder="Email">
-            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-          </div>
-          <div class="form-group has-feedback">
-            <textarea type="text" class="form-control" name="mensajeContacto" placeholder="Mensaje"></textarea>
-            <span class="glyphicon glyphicon-comment form-control-feedback"></span>
-          </div>
-          <input type="hidden" name="tipo" value="contactenos">
-          <div class="row">
-            <div class="col-xs-4">
-              <button type="submit" class="btn btn-primary btn-block btn-flat">Enviar</button>
-            </div><!-- /.col -->
-          </div>
-        <!--/form-->
+        <p class="login-box-msg">Gestión de Laboratorios</p>
+        <form role="form" method="post" action="{{ route('funcionario.contacto.store')}}">
+          <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <div class="box-body">
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="sel1">Email destino: </label>
+                    <select class="form-control" id="usuario" name="usuario">
+                    <option value="">Seleccione</option>
+                    @foreach($usuario as $usr)
+                        <option value="{{ $usr->email }}" name="usuario">{{ $usr->nombres }}</option>
+                    @endforeach
+                    </select>
+                  </div>
+                  </div>
+                </div>
+              </div>
 
-        {!! Form::close() !!}
+                  <div class="form-group has-feedback">
+                    <textarea type="text" class="form-control" name="mensajeContacto" placeholder="Mensaje"></textarea>
+                    <span class="glyphicon glyphicon-comment form-control-feedback"></span>
+                  </div>
+                  <input type="hidden" name="tipo" value="correo">
+                  <div class="row">
+                    <div class="col-xs-4">
+                      <button type="submit" class="btn btn-primary btn-block btn-flat">Enviar</button>
+                    </div><!-- /.col -->
+                  </div>
+            </div><!-- /.box-body -->
+        </form>
       </div><!-- /.form-box -->
 
     </div><!-- /.register-box -->

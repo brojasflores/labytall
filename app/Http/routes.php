@@ -48,7 +48,7 @@ Route::group(['prefix' => 'administrador','namespace' => 'Administrador'], funct
 	Route::get('/reportes_fallas', ['as' => 'administrador.reportes.repfalla', 'uses' => 'reportesController@RepFall']);
 
 	Route::resource('/estacion','estacionController');
-	
+
 });
 
 //**********************************RUTAS Director*******************************************
@@ -101,9 +101,8 @@ Route::group(['prefix' => 'funcionario', 'namespace' => 'Funcionario'], function
 	Route::post('/usuario_perfilUpdate', ['as' => 'funcionario.usuario.updateProfile', 'uses' => 'perfilController@updateProfile']);
 
 	Route::resource('/contacto','contactoController');
-	Route::resource('/periodo','periodoController');
-	Route::resource('/asignatura','asignaturaController');
-	Route::resource('/curso','cursoController');
+
+
 	Route::resource('/horario','horarioController');
 	Route::resource('/horarioAlumno','horarioAlumnoController');
 
@@ -112,7 +111,6 @@ Route::group(['prefix' => 'funcionario', 'namespace' => 'Funcionario'], function
 	Route::get('/asignar_ayudante',['as' => 'funcionario.asignar.ayudante', 'uses' => 'asignarController@ayudante']);
 	Route::resource('/asignar_alumno','asignarAlumController');
 
-	Route::post('/upload_asignatura', ['as' => 'funcionario.asignatura.upload', 'uses' => 'asignaturaController@uploadAsig']);
 
 	Route::resource('/reportes', 'reportesController');
 	Route::get('/reportes_usuario', ['as' => 'funcionario.reportes.repusr', 'uses' => 'reportesController@RepUsr']);
@@ -143,6 +141,8 @@ Route::group(['prefix' => 'docente', 'namespace' => 'Docente'], function()
 	Route::get('/asignar_alumno',['as' => 'docente.asignar.alumno', 'uses' => 'asignarController@alumno']);
 
 	Route::resource('/MihorarioDocente','reservaController');
+
+	Route::resource('/curso','cursoController');
 
 });
 

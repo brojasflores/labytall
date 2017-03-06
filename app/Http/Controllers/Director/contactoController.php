@@ -9,6 +9,7 @@ use App\Http\Requests;
 use Mail;
 use Session;
 use Redirect;
+use App\User;
 
 class contactoController extends Controller
 {
@@ -35,7 +36,8 @@ class contactoController extends Controller
      */
     public function create()
     {
-        //
+        $usuario = User::all();
+        return view ('Director/correo', compact('usuario'));
     }
 
     /**
@@ -46,14 +48,27 @@ class contactoController extends Controller
      */
     public function store(Request $request)
     {
-        Mail::send('emails.contact', $request->all(), function($msj){
-            $msj->subject('Correo de Contacto');
-            $msj->to('gestion.salas.utem@gmail.com');
-        });
-        //esto no me lo muestra!!
-        Session::flash('message','¡Mensaje enviado correctamente!');
-        //no segura!
-        return Redirect::to('director/contacto');
+        $mail = $request->get('usuario');
+        if($request->get('tipo')=='contactenos')
+        {
+            Mail::send('emails.contact', $request->all(), function($msj){
+                $msj->subject('Correo de Contacto');
+                $msj->to('gestion.salas.utem@gmail.com');
+            });
+            Session::flash('message','¡Mensaje enviado correctamente!');
+
+            return Redirect::to('director/contacto');
+        }
+        else
+        {
+            Mail::send('emails.correo', $request->all(), function($msj) use ($mail){
+                $msj->subject('Correo de Contacto');
+                $msj->to($mail);
+            });
+            Session::flash('message','¡Mensaje enviado correctamente!');
+
+            return redirect()->route('director.contacto.create');
+        }
     }
 
     /**

@@ -35,11 +35,7 @@
   </head>
   <body class="hold-transition register-page">
     <div class="register-box">
-      
-
-
-
-      <div class="register-logo">
+   <div class="register-logo">
         <span class="logo-mini"><img src="{{ asset('admin-lte/dist/img/utem.png') }}" class="user-image" alt="User Image" border="0" width="80" height="80"></span>
         <br>
         <a href="{{ asset('admin-lte/index2.html')}}"><b>Gestión Salas</b></a>
@@ -60,6 +56,7 @@
             <textarea type="text" class="form-control" name="mensajeContacto" placeholder="Mensaje"></textarea>
             <span class="glyphicon glyphicon-comment form-control-feedback"></span>
           </div>
+          <input type="hidden" name="tipo" value="contactenos">
           <div class="row">
             <div class="col-xs-4">
               <button type="submit" class="btn btn-primary btn-block btn-flat">Enviar</button>
