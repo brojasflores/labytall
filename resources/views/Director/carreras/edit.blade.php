@@ -144,7 +144,7 @@ hr {
           </ul>
 @stop
 @section('opcion')
-<li><a href="{{ route('director.carrera.index')}}"><i class="fa fa-clock-o"></i> Carreras</a></li>
+<li><a href="{{ route('director.carrera.index')}}"><i class="fa fa-th"></i> Carreras</a></li>
 <li class="active">Editar Carreras</li>
 @stop
 @section('content')

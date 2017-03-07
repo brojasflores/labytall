@@ -104,7 +104,7 @@ hr {
           </ul>
 @stop
 @section('opcion')
-<li><a href="{{ route('alumno.horarioAlumno.index')}}"><i class="fa fa-clock-o"></i> Horarios Alumnos</a></li>
+<li><a href="{{ route('alumno.MihorarioAlumno.index')}}"><i class="fa fa-clock-o"></i> Horarios Alumnos</a></li>
 <li class="active">Editar Horarios</li>
 @stop
 @section('content')

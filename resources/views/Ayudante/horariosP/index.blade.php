@@ -109,6 +109,9 @@ hr {
   <small>Inicio</small>
 </h1>
 @stop
+@section('opcion')
+<li class="active">Horarios</li>
+@stop
 @section('content')
 @if(Session::has('create'))
     <div class="alert alert-info" role="alert">

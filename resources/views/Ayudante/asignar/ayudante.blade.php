@@ -109,6 +109,10 @@ hr {
   <small>Inicio</small>
 </h1>
 @stop
+@section('opcion')
+<li><a href="{{ route('ayudante.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reserva</a></li>
+<li class="active">Reserva Ayudante</li>
+@stop
 @section('content')
 @if(Session::has('create'))
     <div class="alert alert-info" role="alert">

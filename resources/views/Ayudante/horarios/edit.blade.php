@@ -109,6 +109,10 @@ hr {
 	<small>Inicio</small>
 </h1>
 @stop
+@section('opcion')
+<li><a href="{{ route('ayudante.horario.index')}}"><i class="fa fa-clock-o"></i> Horarios</a></li>
+<li class="active">Editar Horarios</li>
+@stop
 @section('content')
 <h1>Editar Horario</h1>
 

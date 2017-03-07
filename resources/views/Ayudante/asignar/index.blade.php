@@ -109,6 +109,9 @@ hr {
   <small>Inicio</small>
 </h1>
 @stop
+@section('opcion')
+<li class="active">Reserva</li>
+@stop
 @section('content')
 <div class="jumbotron">
   <h1>¡Bienvenido a la reserva de Salas!</h1>
