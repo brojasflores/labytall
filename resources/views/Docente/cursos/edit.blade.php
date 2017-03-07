@@ -132,7 +132,7 @@ hr {
           <div class="col-md-2">
           <div class="form-group">
             <label for="sel1">Asignatura: </label>
-            <select class="form-control" id="asignatura_id" name="asignatura_id">
+            <select class="form-control" id="asignatura_id" name="asignatura_id" disabled="disabled">
               @foreach($asignaturas as $asig)
                 <option value="{{ $asig->id }}" id= "asignatura_{{ $asig->id }}" name="asignatura_id">{{ $asig->nombre }} - {{ $asig->carr}}</option>
               @endforeach
@@ -144,15 +144,15 @@ hr {
 
       <div class="form-group">
         <label for="exampleInputPassword1">Semestre</label>
-        <input type="text" class="form-control" value="{{ $cursos->semestre}}" name="semestre" id="semestreCurso">
+        <input type="text" class="form-control" value="{{ $cursos->semestre}}" name="semestre" id="semestreCurso"  disabled="disabled">
       </div>
       <div class="form-group">
         <label for="exampleInputPassword1">Año</label>
-        <input type="text" class="form-control" value="{{ $cursos->anio}}" name="anio" id="anioCurso">
+        <input type="text" class="form-control" value="{{ $cursos->anio}}" name="anio" id="anioCurso"  disabled="disabled">
       </div>
       <div class="form-group">
         <label for="exampleInputPassword1">Sección</label>
-        <input type="text" class="form-control" value="{{ $cursos->seccion}}" name="seccion" id="seccionCurso">
+        <input type="text" class="form-control" value="{{ $cursos->seccion}}" name="seccion" id="seccionCurso"  disabled="disabled">
       </div>
 
       <div class="form-group">
@@ -160,8 +160,8 @@ hr {
           <div class="col-md-2">
           <div class="form-group">
             <label for="sel1">Docente: </label>
-            <input type="text" id="docenteFilter" class="form-control" name="docenteFilter" value="" placeholder="Buscar Docente" />
-            <select class="form-control" id="docentes" name="docentes">
+            <input type="text" id="docenteFilter" class="form-control hide" name="docenteFilter" value="" placeholder="Buscar Docente" />
+            <select class="form-control" id="docentes" name="docentes"  disabled="disabled">
               @foreach($docentes as $doc)
                 <option value="{{ $doc->rut }}" name="docentes">{{ $doc->nombres}} - {{ $doc->apellidos}}</option>
               @endforeach
@@ -171,15 +171,29 @@ hr {
         </div>
       </div>
 
-      <div class="form-group">
-            <label for="optradio">Ayudantía: </label>
-            <div class="radio">
-              <label><input type="radio" name="optradio" value="si">Sí</label>
-            </div>
-            <div class="radio">
-              <label><input type="radio" name="optradio" value="no">No</label>
-            </div>
-      </div>
+      @if($cursos->ayudante == 'no')
+        <div class="form-group">
+              <label for="optradio">Ayudantía: </label>
+              <div class="radio">
+                <label><input type="radio" name="optradio" value="si">Sí</label>
+              </div>
+              <div class="radio">
+                <label><input type="radio" name="optradio" value="no" checked="checked">No</label>
+              </div>
+        </div>
+      @else
+        <div class="form-group">
+              <label for="optradio">Ayudantía: </label>
+              <div class="radio">
+                <label><input type="radio" name="optradio" value="si" checked="checked">Sí</label>
+              </div>
+              <div class="radio">
+                <label><input type="radio" name="optradio" value="no">No</label>
+              </div>
+        </div>
+      @endif
+
+      
 
       <div class="form-group">
         <div class="row">

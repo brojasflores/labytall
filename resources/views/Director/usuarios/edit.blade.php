@@ -83,7 +83,6 @@ hr {
               </a>
               <ul class="treeview-menu">
                 <li><a href="{{ route('director.usuario.index')}}"><i class="fa fa-users"></i> Usuarios</a></li>
-                <li><a href="{{ route('director.rol.index')}}"><i class="fa fa-wrench"></i> Roles</a></li>
               </ul>
             </li>
             <li class="treeview">

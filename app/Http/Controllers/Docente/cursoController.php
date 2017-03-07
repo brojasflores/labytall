@@ -244,15 +244,20 @@ class cursoController extends Controller
     {
         $cursos = Curso::findOrFail($id);     
 
-        $cursos->fill([
-            'asignatura_id' => $request->get('asignatura_id'),
-            'semestre' => $request->get('semestre'),
-            'anio' => $request->get('anio'),
-            'seccion' => $request->get('seccion'),
-            'docente' => $request->get('docentes'),
-            'ayudante' => $request->get('ayudantes')
-        ]);
-        $cursos->save();
+        if($request->get('optradio')=='no')
+            {
+                $cursos->fill([
+                    'ayudante' => 'no',
+                ]);
+                $cursos->save();
+            }
+            else
+            {
+                $cursos->fill([
+                    'ayudante' => $request->get('ayudantes'),
+                ]);
+                $cursos->save();
+            }
 
         Session::flash('edit','¡Curso editado correctamente!');
         return redirect()->route('docente.curso.index');

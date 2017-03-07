@@ -120,6 +120,41 @@ class cursoController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->ajax()){
+            //dd($request);
+            $doc = 'docente';
+            $ayu = 'ayudante';
+
+            $dpto = Asignatura::join('carrera','asignatura.carrera_id','=','carrera.id')
+                            ->join('escuela','carrera.escuela_id','=','escuela.id')
+                            ->join('departamento','escuela.departamento_id','=','departamento.id')
+                            ->where('asignatura.id','=',$request->get('asignatura_id'))
+                            ->select('departamento.id')
+                            ->get();
+
+            $dpto = $dpto->first()->id;
+
+            $docentes = User::join('rol_users','users.rut','=','rol_users.rut')
+                        ->join('rol','rol_users.rol_id','=','rol.id')
+                        ->join('users_dpto','users.rut','=','users_dpto.rut')
+                        ->where('rol.nombre','=',$doc)
+                        ->where('users_dpto.departamento_id','=',$dpto)
+                        ->select('users.*')
+                        ->get();
+
+            $ayudantes = User::join('rol_users','users.rut','=','rol_users.rut')
+                            ->join('rol','rol_users.rol_id','=','rol.id')
+                            ->join('users_dpto','users.rut','=','users_dpto.rut')
+                            ->where('rol.nombre','=',$ayu)
+                            ->where('users_dpto.departamento_id','=',$dpto)
+                            ->select('users.*')
+                            ->get();
+
+            $result = array('docentes' => $docentes,'ayudantes' => $ayudantes );
+
+            return response()->json($result);
+        }
+
         $sem = $request->get('semestre');
         if($sem == '01'||$sem=='02'||$sem=='1'||$sem=='2')
         {
@@ -190,7 +225,7 @@ class cursoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
+    {       
         $doc = 'docente';
         $ayu = 'ayudante';
 
@@ -247,6 +282,41 @@ class cursoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if($request->ajax()){
+            //dd($request);
+            $doc = 'docente';
+            $ayu = 'ayudante';
+
+            $dpto = Asignatura::join('carrera','asignatura.carrera_id','=','carrera.id')
+                            ->join('escuela','carrera.escuela_id','=','escuela.id')
+                            ->join('departamento','escuela.departamento_id','=','departamento.id')
+                            ->where('asignatura.id','=',$request->get('asignatura_id'))
+                            ->select('departamento.id')
+                            ->get();
+
+            $dpto = $dpto->first()->id;
+
+            $docentes = User::join('rol_users','users.rut','=','rol_users.rut')
+                        ->join('rol','rol_users.rol_id','=','rol.id')
+                        ->join('users_dpto','users.rut','=','users_dpto.rut')
+                        ->where('rol.nombre','=',$doc)
+                        ->where('users_dpto.departamento_id','=',$dpto)
+                        ->select('users.*')
+                        ->get();
+
+            $ayudantes = User::join('rol_users','users.rut','=','rol_users.rut')
+                            ->join('rol','rol_users.rol_id','=','rol.id')
+                            ->join('users_dpto','users.rut','=','users_dpto.rut')
+                            ->where('rol.nombre','=',$ayu)
+                            ->where('users_dpto.departamento_id','=',$dpto)
+                            ->select('users.*')
+                            ->get();
+
+            $result = array('docentes' => $docentes,'ayudantes' => $ayudantes );
+
+            return response()->json($result);
+        }
+        //dd($request);
         $sem = $request->get('semestre');
         if($sem == '01'||$sem=='02'||$sem=='1'||$sem=='2')
         {
@@ -268,7 +338,7 @@ class cursoController extends Controller
 
             $cursos = Curso::findOrFail($id);     
 
-            if(empty($request->get('ayudantes')))
+            if($request->get('optradio')=='no')
             {
                 $cursos->fill([
                     'asignatura_id' => $request->get('asignatura_id'),

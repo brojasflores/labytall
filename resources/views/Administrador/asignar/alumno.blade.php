@@ -263,27 +263,27 @@ hr {
   	//# es para llamar una id
 
     	$("#sala, #periodo").change(function(){
-  		var id = $("#sala").val();
-      var periodo = $("#periodo").val();
-  		var token = $("#token").val();
-  		$.ajax({
-  			url: '/~brojas/administrador/asignar_alumno',
-  			headers:{'X-CSRF-TOKEN': token},
-  			type: 'POST',
-  			dataType: 'json',
-  			data:{id : id,periodo : periodo},
-  			//response es la respuesta que trae desde el controlador
-  			success: function(response){	
-  				$("#estacion").empty();
-  				$("#estaciones").css('display','block');
-  				//el k es un índice (posición) y v (valor como tal del elemento)
-  				$.each(response,function(k,v){
-					$("#estacion").append("<option value='"+v.id+"' name='sala'>"+v.sala+" - Estación N°"+v.nombre+" - Periodo:"+v.blo+"</option>");
-  				});
-  				
-  			}
-  		});
-  });
+    		var id = $("#sala").val();
+        var periodo = $("#periodo").val();
+    		var token = $("#token").val();
+    		$.ajax({
+    			url: '/~brojas/administrador/asignar_alumno',
+    			headers:{'X-CSRF-TOKEN': token},
+    			type: 'POST',
+    			dataType: 'json',
+    			data:{id : id,periodo : periodo},
+    			//response es la respuesta que trae desde el controlador
+    			success: function(response){	
+    				$("#estacion").empty();
+    				$("#estaciones").css('display','block');
+    				//el k es un índice (posición) y v (valor como tal del elemento)
+    				$.each(response,function(k,v){
+  					$("#estacion").append("<option value='"+v.id+"' name='sala'>"+v.sala+" - Estación N°"+v.nombre+" - Periodo:"+v.blo+"</option>");
+    				});
+    				
+    			}
+    		});
+    });
       
 
   });

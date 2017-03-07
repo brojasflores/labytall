@@ -191,6 +191,8 @@ hr {
                 <th>Semestre</th>
                 <th>Año</th>
                 <th>Sección</th>
+                <th>Docente a cargo</th>
+                <th>Ayudante a cargo</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
               </tr>
@@ -203,7 +205,8 @@ hr {
                 <td>{{ $cur->semestre}}</td>
                 <td>{{ $cur->anio}}</td>
                 <td>{{ $cur->seccion}}</td>
-
+                <td>{{ $cur->docente}}</td>
+                <td>{{ $cur->ayudante}}</td>
                 <!--Paso ruta y parametro para saber cual modificar-->
                 <td><a href="{{ route('director.curso.edit',$cur->id)}}"><button type="submit" class="fa fa-edit btn btn-edit"> Editar</button></a></td>
                 <td>
@@ -221,6 +224,8 @@ hr {
                 <th>Semestre</th>
                 <th>Año</th>
                 <th>Sección</th>
+                <th>Docente a cargo</th>
+                <th>Ayudante a cargo</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
               </tr>

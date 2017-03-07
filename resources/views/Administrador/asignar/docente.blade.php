@@ -166,7 +166,8 @@ hr {
 <div class="row" style="margin-left: 0px">
 
 <form role="form" method="post" action="{{ route('administrador.asignar.store') }}">
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+	<input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
+
 	  <div class="box-body">
       <div class="form-group">
 	    	<div class="row">
@@ -287,6 +288,7 @@ hr {
       showButtonPanel: true
     });
   } );
+
   $(document).ready(function(){
 	  $("#permanencia").change(function(){
 	  	if($("#permanencia").val() == 'semestral')
@@ -303,34 +305,43 @@ hr {
 	  		$("#col-fecha-ini").css('display','none');
 	  		$("#col-fecha-fin").css('display','none');
 	  	}
-	  
-
-      /*$("#sala_id").change(function(){
-      var id = $("#sala_id").val();
-      var token = $("#token").val();
-      $.ajax({
-        url: '/~brojas/administrador/asignar_docente',
-        headers:{'X-CSRF-TOKEN': token},
-        type: 'POST',
-        dataType: 'json',
-        data:{id : id},
-        //response es la respuesta que trae desde el controlador
-        success: function(response){  
-          $("#curso").empty();
-          $("#cursos").css('display','block');
-          //el k es un índice (posición) y v (valor como tal del elemento)
-          $.each(response,function(k,v){
-          $("#curso").append("<option value='"+v.id+"' name='sala_id'>"+v.sala_id+"</option>");
-          });
-          
-        }
-      });
-  });*/
-
-
-
     });
+
+    $("#sala_id").change(function(){
+            //alert($("#sala_id").val());
+            var id = $("#sala_id").val();
+            var token = $("#token").val();
+
+            $.ajax({
+              //url: '/~brojas/administrador/asignar_docente',
+              url: '/~brojas/administrador/asignar',
+              headers:{'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:{sala_id : id},
+              //response es la respuesta que trae desde el controlador
+              success: function(response){ 
+
+                //console.log(response);
+                //return;
+
+                $("#curso_id").empty();
+                $("#curso_id").css('display','block');
+                //el k es un índice (posición) y v (valor como tal del elemento)
+                $.each(response,function(k,v){
+                $("#curso_id").append("<option value='"+v.id+"' name='curso_id'>"+v.nombre+" - Sección: "+v.seccion+"</option>");
+                });
+                
+              }
+            });
+
+        });
+
+
 	});
+
+
+
   </script>
 @stop
 

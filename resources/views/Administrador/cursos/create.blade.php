@@ -170,7 +170,7 @@ hr {
   </div>
 @endif
 <form role="form" method="post" action="{{ route('administrador.curso.store')}}">
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+	<input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
 	    <div class="form-group">
 	    	<div class="row">
@@ -178,7 +178,7 @@ hr {
 	    		<div class="col-md-2">
 					<div class="form-group">
 					  <label for="sel1">Asignatura: </label>
-					  <select class="form-control" id="asignaturas" name="asignatura_id">
+					  <select class="form-control" id="asignatura_id" name="asignatura_id">
 					  	@foreach($asignaturas as $asig)
 					    	<option value="{{ $asig->id }}" name="asignatura_id">{{ $asig->nombre}} - {{ $asig->carr}}</option>
 						@endforeach
@@ -257,6 +257,46 @@ hr {
     //ayudantesFilter
     $('#ayudantes').filterByText($('#ayudantesFilter'));
     $('#docentes').filterByText($('#docenteFilter'));
+
+
+/////
+    $("#asignatura_id").change(function(){
+            //alert($("#sala_id").val());
+            var id = $("#asignatura_id").val();
+            var token = $("#token").val();
+
+            $.ajax({
+              //url: '/~brojas/administrador/asignar_docente',
+              url: '/~brojas/administrador/curso',
+              headers:{'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:{asignatura_id : id},
+              //response es la respuesta que trae desde el controlador
+              success: function(response){ 
+
+
+
+                $("#docentes").empty();
+                $("#docentes").css('display','block');
+                //el k es un índice (posición) y v (valor como tal del elemento)
+                $.each(response.docentes,function(k,v){
+                $("#docentes").append("<option value='"+v.rut+"' name='docentes'>"+v.nombres+" - "+v.apellidos+"</option>");
+                });
+
+                $("#ayudantes").empty();
+                $("#ayudantes").css('display','block');
+                //el k es un índice (posición) y v (valor como tal del elemento)
+                $.each(response.ayudantes,function(k,v){
+                $("#ayudantes").append("<option value='"+v.rut+"' name='ayudantes'>"+v.nombres+" - "+v.apellidos+"</option>");
+                });
+                
+              }
+            });
+
+        });
+//////
+
     
   });
 

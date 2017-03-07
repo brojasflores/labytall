@@ -164,7 +164,7 @@ hr {
 @endif
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
 {!! Form::model($cursos,['route' => ['administrador.curso.update',$cursos], 'method' => 'PUT']) !!}
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+	<input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
 	    <div class="form-group">
 	    	<div class="row">
@@ -210,15 +210,27 @@ hr {
         </div>
       </div>
 
-      <div class="form-group">
-            <label for="optradio">Ayudantía: </label>
-            <div class="radio">
-              <label><input type="radio" name="optradio" value="si">Sí</label>
-            </div>
-            <div class="radio">
-              <label><input type="radio" name="optradio" value="no">No</label>
-            </div>
-      </div>
+      @if($cursos->ayudante == 'no')
+        <div class="form-group">
+              <label for="optradio">Ayudantía: </label>
+              <div class="radio">
+                <label><input type="radio" name="optradio" value="si">Sí</label>
+              </div>
+              <div class="radio">
+                <label><input type="radio" name="optradio" value="no" checked="checked">No</label>
+              </div>
+        </div>
+      @else
+        <div class="form-group">
+              <label for="optradio">Ayudantía: </label>
+              <div class="radio">
+                <label><input type="radio" name="optradio" value="si" checked="checked">Sí</label>
+              </div>
+              <div class="radio">
+                <label><input type="radio" name="optradio" value="no">No</label>
+              </div>
+        </div>
+      @endif
 
       <div class="form-group">
         <div class="row">
@@ -262,6 +274,47 @@ hr {
 
     $('#ayudantes').filterByText($('#ayudantesFilter'));
     $('#docentes').filterByText($('#docenteFilter'));
+
+
+    ////
+    $("#asignatura_id").change(function(){
+            //alert($("#sala_id").val());
+            var id = $("#asignatura_id").val();
+            var token = $("#token").val();
+
+            $.ajax({
+              //url: '/~brojas/administrador/asignar_docente',
+              url: '/~brojas/administrador/curso',
+              headers:{'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:{asignatura_id : id},
+              //response es la respuesta que trae desde el controlador
+              success: function(response){ 
+
+
+
+                $("#docentes").empty();
+                $("#docentes").css('display','block');
+                //el k es un índice (posición) y v (valor como tal del elemento)
+                $.each(response.docentes,function(k,v){
+                $("#docentes").append("<option value='"+v.rut+"' name='docentes'>"+v.nombres+" - "+v.apellidos+"</option>");
+                });
+
+                $("#ayudantes").empty();
+                $("#ayudantes").css('display','block');
+                //el k es un índice (posición) y v (valor como tal del elemento)
+                $.each(response.ayudantes,function(k,v){
+                $("#ayudantes").append("<option value='"+v.rut+"' name='ayudantes'>"+v.nombres+" - "+v.apellidos+"</option>");
+                });
+                
+              }
+            });
+
+        });
+    ////
+
+
   });
 
   $('input[type=radio][name=optradio]').change(function() {

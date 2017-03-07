@@ -197,7 +197,102 @@ hr {
         <label for="exampleInputPassword1">Sección</label>
         <input type="text" class="form-control" name="seccion" id="seccionCurso" placeholder="Ingrese sección (Ej. 1, 2, 3)">
       </div>
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-2">
+          <div class="form-group">
+            <label for="sel1">Docente: </label>
+            <input type="text" id="docenteFilter" class="form-control" name="docenteFilter" value="" placeholder="Buscar Docente" />
+            <select class="form-control" id="docentes" name="docentes">
+              @foreach($docentes as $doc)
+                <option value="{{ $doc->rut }}" name="docentes">{{ $doc->nombres}} - {{ $doc->apellidos}}</option>
+              @endforeach
+            </select>
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+            <label for="optradio">Ayudantía: </label>
+            <div class="radio">
+              <label><input type="radio" name="optradio" value="si">Sí</label>
+            </div>
+            <div class="radio">
+              <label><input type="radio" name="optradio" value="no">No</label>
+            </div>
+      </div>
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-2">
+          <div id="ayudantiacontent" class="form-group hide">
+            <label for="sel1">Ayudante: </label>
+
+            <input type="text" id="ayudantesFilter" class="form-control" name="ayudantesFilter" value="" placeholder="Buscar Ayudante" />
+            <select class="form-control" id="ayudantes" name="ayudantes">
+            <option value="" name="ayudantes">Seleccione</option>
+              @foreach($ayudantes as $ayu)
+                <option value="{{ $ayu->rut }}" name="ayudantes">{{ $ayu->nombres}} - {{ $ayu->apellidos}}</option>
+              @endforeach
+            </select>            
+          </div>
+          </div>
+        </div>
+      </div>
+
+
       <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
     </div><!-- /.box-body -->
 </form>
+@stop
+
+@section('scripts')
+<script type="text/javascript">
+  $(document).ready(function(){
+    //ayudantesFilter
+    $('#ayudantes').filterByText($('#ayudantesFilter'));
+    $('#docentes').filterByText($('#docenteFilter'));
+    
+  });
+
+
+
+   $('input[type=radio][name=optradio]').change(function() {
+        if (this.value == 'si') {
+            $("#ayudantiacontent").removeClass("hide");
+        }
+        else if (this.value == 'no') {
+            $("#ayudantiacontent").addClass("hide");
+        }
+    });
+
+
+      jQuery.fn.filterByText = function(textbox) {
+          return this.each(function() {
+              var select = this;
+              var options = [];
+              $(select).find('option').each(function() {
+                  options.push({value: $(this).val(), text: $(this).text()});
+              });
+              $(select).data('options', options);
+
+              $(textbox).bind('change keyup', function() {
+                  var options = $(select).empty().data('options');
+                  var search = $.trim($(this).val());
+                  var regex = new RegExp(search,"gi");
+
+                  $.each(options, function(i) {
+                      var option = options[i];
+                      if(option.text.match(regex) !== null) {
+                          $(select).append(
+                              $('<option>').text(option.text).val(option.value)
+                          );
+                      }
+                  });
+              });
+          });
+      };
+</script>
 @stop

@@ -190,6 +190,63 @@ hr {
         <label for="exampleInputPassword1">Sección</label>
         <input type="text" class="form-control" value="{{ $cursos->seccion}}" name="seccion" id="seccionCurso">
       </div>
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-2">
+          <div class="form-group">
+            <label for="sel1">Docente: </label>
+            <input type="text" id="docenteFilter" class="form-control" name="docenteFilter" value="" placeholder="Buscar Docente" />
+            <select class="form-control" id="docentes" name="docentes">
+              @foreach($docentes as $doc)
+                <option value="{{ $doc->rut }}" name="docentes">{{ $doc->nombres}} - {{ $doc->apellidos}}</option>
+              @endforeach
+            </select>
+          </div>
+          </div>
+        </div>
+      </div>
+
+      @if($cursos->ayudante == 'no')
+        <div class="form-group">
+              <label for="optradio">Ayudantía: </label>
+              <div class="radio">
+                <label><input type="radio" name="optradio" value="si">Sí</label>
+              </div>
+              <div class="radio">
+                <label><input type="radio" name="optradio" value="no" checked="checked">No</label>
+              </div>
+        </div>
+      @else
+        <div class="form-group">
+              <label for="optradio">Ayudantía: </label>
+              <div class="radio">
+                <label><input type="radio" name="optradio" value="si" checked="checked">Sí</label>
+              </div>
+              <div class="radio">
+                <label><input type="radio" name="optradio" value="no">No</label>
+              </div>
+        </div>
+      @endif
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-2">
+          <div id="ayudantiacontent" class="form-group hide">
+            <label for="sel1">Ayudante: </label>
+
+            <input type="text" id="ayudantesFilter" class="form-control" name="ayudantesFilter" value="" placeholder="Buscar Ayudante" />
+            <select class="form-control" id="ayudantes" name="ayudantes">
+            <option value="" name="ayudantes">Seleccione</option>
+              @foreach($ayudantes as $ayu)
+                <option value="{{ $ayu->rut }}" name="ayudantes">{{ $ayu->nombres}} - {{ $ayu->apellidos}}</option>
+              @endforeach
+            </select>            
+          </div>
+          </div>
+        </div>
+      </div>
+
       <button type="submit" class="fa fa-edit btn btn-primary"> Editar</button>
     </div><!-- /.box-body -->
 {!! Form::close() !!}
@@ -198,6 +255,59 @@ hr {
 <script type="text/javascript">
   $(document).ready(function(){
     $('#asignatura_id option[id=asignatura_'+{{ $cursos->asignatura_id }}+']').attr('selected', 'selected');
+
+    $('#docentes option[value='+{{ $cursos->docente }}+']').attr('selected', 'selected');
+
+    
+    var bol = '{{ $cursos->ayudante }}';
+    console.log(bol);
+
+    if (bol == 'no') {
+        $("#ayudantiacontent").addClass("hide");
+    }else{
+      $('#ayudantes option[value='+{{ $cursos->ayudante }}+']').attr('selected', 'selected'); 
+      $("#ayudantiacontent").removeClass("hide"); 
+    }
+
+    $('#ayudantes').filterByText($('#ayudantesFilter'));
+    $('#docentes').filterByText($('#docenteFilter'));
   });
+
+  $('input[type=radio][name=optradio]').change(function() {
+        if (this.value == 'si') {
+            $("#ayudantiacontent").removeClass("hide");
+        }
+        else if (this.value == 'no') {
+            $("#ayudantiacontent").addClass("hide");
+            //vaciar el ayudante
+        }
+    });
+
+
+      jQuery.fn.filterByText = function(textbox) {
+          return this.each(function() {
+              var select = this;
+              var options = [];
+              $(select).find('option').each(function() {
+                  options.push({value: $(this).val(), text: $(this).text()});
+              });
+              $(select).data('options', options);
+
+              $(textbox).bind('change keyup', function() {
+                  var options = $(select).empty().data('options');
+                  var search = $.trim($(this).val());
+                  var regex = new RegExp(search,"gi");
+
+                  $.each(options, function(i) {
+                      var option = options[i];
+                      if(option.text.match(regex) !== null) {
+                          $(select).append(
+                              $('<option>').text(option.text).val(option.value)
+                          );
+                      }
+                  });
+              });
+          });
+      };
 </script>
 @stop

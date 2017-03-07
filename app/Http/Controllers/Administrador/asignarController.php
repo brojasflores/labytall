@@ -159,7 +159,9 @@ class asignarController extends Controller
      */
     public function store(Request $request)
     {
-        /*if($request->ajax()){
+
+        if($request->ajax()){
+            //dd($request);
             $dpto = Sala::where('id','=',$request->get('sala_id'))
                             ->select('departamento_id')
                             ->get();
@@ -171,13 +173,13 @@ class asignarController extends Controller
                            ->join('escuela','carrera.escuela_id','=','escuela.id')
                            ->join('departamento','escuela.departamento_id','=','departamento.id')
                            ->where('departamento.id','=',$dpto)
-                           ->select('curso.*')
+                           ->select('curso.*','asignatura.nombre as nombre')
                            ->get();
 
-            return response()->json($curso);
 
-            
-        }*/
+            return response()->json($curso);
+        }
+
         //dd($request);
         //VAIDA RUT
         /*$rut = preg_replace('/[^k0-9]/i', '', $request->rut);

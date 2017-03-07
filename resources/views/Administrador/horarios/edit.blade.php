@@ -155,7 +155,7 @@ hr {
 
 <!--variable del controlador, ruta donde lo quiero mandar y la variable y luego el metodo-->
 {!! Form::model($horarios,['route' => ['administrador.horario.update',$horarios], 'method' => 'PUT']) !!}
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+	<input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">
 	   
 	    <div class="form-group">
@@ -365,6 +365,36 @@ $(document).ready(function(){
 
 	$('#asistenciaH option[id={{ $horarios->asistencia }}]').attr('selected', 'selected');
 	$('#rol option[id={{ $horarios->tipo_reserva }}]').attr('selected', 'selected');
+
+	$("#sala_id").change(function(){
+            //alert($("#sala_id").val());
+            var id = $("#sala_id").val();
+            var token = $("#token").val();
+
+            $.ajax({
+              //url: '/~brojas/administrador/asignar_docente',
+              url: '/~brojas/administrador/asignar',
+              headers:{'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:{sala_id : id},
+              //response es la respuesta que trae desde el controlador
+              success: function(response){ 
+
+                //console.log(response);
+                //return;
+
+                $("#curso_id").empty();
+                $("#curso_id").css('display','block');
+                //el k es un índice (posición) y v (valor como tal del elemento)
+                $.each(response,function(k,v){
+                $("#curso_id").append("<option value='"+v.id+"' name='curso_id'>"+v.nombre+" - Sección: "+v.seccion+"</option>");
+                });
+                
+              }
+            });
+
+        });
 });
 
 </script>

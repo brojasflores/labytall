@@ -307,6 +307,7 @@ class usuarioController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //dd($request);
         $rut = preg_replace('/[^k0-9]/i', '', $request->rut);
         $dv  = substr($rut, -1);
         $numero = substr($rut, 0, strlen($rut)-1);
@@ -363,15 +364,36 @@ class usuarioController extends Controller
         $roles_usuario = RolUsuario::where('rut',$numero)->get();
         foreach($roles_usuario as $ru)
         {
-            $ru->delete();
+            //dd($ru->rol_id);
+            $var = Rol::join('rol_users','rol.id','=','rol_users.rol_id')
+                      ->where('rol.id','=',$ru->rol_id)
+                      ->select('rol.nombre')
+                      ->get();
+            //dd($var->first()->nombre);
+            if($var->first()->nombre != 'docente' && $var->first()->nombre != 'alumno')
+            {
+                $ru->delete();
+            }
         }
-
-        foreach($request->get('roles') as $rol)
+        if($request->get('roles')==null)
         {
-            RolUsuario::create([
-                'rut' =>$numero,
-                'rol_id' => $rol
-                ]);
+            $cont = RolUsuario::where('rut',$numero)->get();
+            $cont = count($cont);
+            if($cont == 0 )
+            {
+                Session::flash('create','¡Debe ingresar al menos un rol!');
+                return redirect()->route('administrador.usuario.index');
+            }
+        }
+        else
+        {
+            foreach($request->get('roles') as $rol)
+            {
+                RolUsuario::create([
+                    'rut' =>$numero,
+                    'rol_id' => $rol
+                    ]);
+            }
         }
         
         $dpto_usr = UsersDpto::where('rut',$numero)->get();
