@@ -98,6 +98,47 @@ class rolController extends Controller
      */
     public function store(Request $request)
     {
+        $nombres = Rol::select('nombre')
+                         ->get();
+
+        foreach($nombres as $v)
+        {
+            $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ
+ßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
+    $modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuy
+bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+    $cadena = utf8_decode($v->nombre);
+    $cadena = strtr($cadena, utf8_decode($originales), $modificadas);
+    $cadena = strtolower($cadena);
+
+            $v2[] = strtolower(utf8_encode($cadena));
+        }
+
+        $original = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ
+ßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
+    $modificada = 'aaaaaaaceeeeiiiidnoooooouuuuy
+bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+    $cad = utf8_decode($request->get('nombre'));
+    $cad = strtr($cad, utf8_decode($original), $modificada);
+    $cad = strtolower($cad);
+    $nom = strtolower(utf8_encode($cad));
+
+        $cont = count($v2);
+        $co = 0;
+
+        for($i=0; $i<$cont; $i++)
+        {
+            if($v2[$i]==$nom)
+            {
+                $co = $co+1;
+            }
+        }
+        if($co > 0)
+        {
+            Session::flash('create','¡Rol ya creado anteriormente!');
+            return redirect()->route('administrador.rol.index');
+        }
+
         $this->validate($request, [
             'nombre' => 'required',
             'descripcion' => 'required'
@@ -168,6 +209,48 @@ class rolController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $nombres = Rol::where('id','!=',$id)
+                         ->select('nombre')
+                         ->get();
+
+        foreach($nombres as $v)
+        {
+            $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ
+ßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
+    $modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuy
+bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+    $cadena = utf8_decode($v->nombre);
+    $cadena = strtr($cadena, utf8_decode($originales), $modificadas);
+    $cadena = strtolower($cadena);
+
+            $v2[] = strtolower(utf8_encode($cadena));
+        }
+
+        $original = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ
+ßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
+    $modificada = 'aaaaaaaceeeeiiiidnoooooouuuuy
+bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+    $cad = utf8_decode($request->get('nombre'));
+    $cad = strtr($cad, utf8_decode($original), $modificada);
+    $cad = strtolower($cad);
+    $nom = strtolower(utf8_encode($cad));
+
+        $cont = count($v2);
+        $co = 0;
+
+        for($i=0; $i<$cont; $i++)
+        {
+            if($v2[$i]==$nom)
+            {
+                $co = $co+1;
+            }
+        }
+        if($co > 0)
+        {
+            Session::flash('create','¡Rol ya creado anteriormente!');
+            return redirect()->route('administrador.rol.index');
+        }
+
         $this->validate($request, [
             'nombre' => 'required',
             'descripcion' => 'required'

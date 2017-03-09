@@ -151,6 +151,13 @@ hr {
 <li class="active">Agregar Asignaturas</li>
 @stop
 @section('content')
+<br>
+@if(Session::has('message'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('message') }}</strong>
+    </div>
+@endif
 <h1>Agregar Asignatura</h1>
 @if(count($errors)>0)
   <div class="alert alert-danger">

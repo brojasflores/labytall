@@ -119,6 +119,16 @@ class asignaturaController extends Controller
      */
     public function store(Request $request)
     {
+        $codigo = Asignatura::where('codigo','=',$request->get('codigo'))
+                         ->select('id')
+                         ->get();
+
+        if(!$codigo->isEmpty())
+        {
+            Session::flash('create','¡Asignatura ya creada anteriormente!');
+            return redirect()->route('director.asignatura.index');
+        }
+
         $this->validate($request, [
                 'codigo' => 'required',
                 'nombre' => 'required',
@@ -204,6 +214,17 @@ class asignaturaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $codigo = Asignatura::where('codigo','=',$request->get('codigo'))
+                         ->where('id','!=',$id)
+                         ->select('id')
+                         ->get();
+
+        if(!$codigo->isEmpty())
+        {
+            Session::flash('create','¡Asignatura ya creada anteriormente!');
+            return redirect()->route('director.asignatura.index');
+        }
+
         $this->validate($request, [
                 'codigo' => 'required',
                 'nombre' => 'required',
@@ -257,6 +278,16 @@ class asignaturaController extends Controller
 
                 foreach($result as $key => $value)
                 {
+                    $codigo = Asignatura::where('codigo','=',$value->codigo)
+                         ->select('id')
+                         ->get();
+
+                    if(!$codigo->isEmpty())
+                    {
+                        Session::flash('message','¡Asignatura ya creada anteriormente!');
+                        return redirect()->route('director.asignatura.index');
+                    }
+
                     $carrera_id = Carrera::where('codigo','=',$value->carrera)
                                         ->select('id')
                                         ->get();
@@ -265,8 +296,9 @@ class asignaturaController extends Controller
                     $var->fill(['codigo' => $value->codigo, 'nombre'=> $value->nombre, 'descripcion'=> $value->descripcion, 'carrera_id'=> $carrera_id->first()->id]);
                     $var->save();
                 }
+                Session::flash('create', 'Asignatura creada exitosamente!');
+           
             })->get();
-            Session::flash('message', 'Los Docentes fueron agregados exitosamente!');
-           return redirect()->route('director.asignatura.index');
+            return redirect()->route('director.asignatura.index');
     }
 }

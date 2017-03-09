@@ -98,6 +98,25 @@ class periodoController extends Controller
     public function store(Request $request)
     {
         //dd($request);
+        $esta1 = Periodo::where('bloque','=',$request->get('bloque')) 
+                        ->select('id')
+                        ->get();
+
+        $esta2 = Periodo::where('inicio','=',$request->get('inicio')) 
+                        ->select('id')
+                        ->get();
+
+        $esta3 = Periodo::where('fin','=',$request->get('fin')) 
+                        ->select('id')
+                        ->get();
+
+        if(!$esta1->isEmpty() || !$esta2->isEmpty() || !$esta2->isEmpty())
+        {
+            Session::flash('create','¡Período ya se encuentra creado!');
+            return redirect()->route('director.periodo.index');
+        }
+
+
         $inicio = $request->get('inicio');
         
         $fin = $request->get('fin');
@@ -268,6 +287,27 @@ class periodoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $esta1 = Periodo::where('bloque','=',$request->get('bloque')) 
+                        ->where('id','!=',$id)
+                        ->select('id')
+                        ->get();
+
+        $esta2 = Periodo::where('inicio','=',$request->get('inicio')) 
+                        ->where('id','!=',$id)
+                        ->select('id')
+                        ->get();
+
+        $esta3 = Periodo::where('fin','=',$request->get('fin')) 
+                        ->where('id','!=',$id)
+                        ->select('id')
+                        ->get();
+
+        if(!$esta1->isEmpty() || !$esta2->isEmpty() || !$esta2->isEmpty())
+        {
+            Session::flash('create','¡Período ya se encuentra creado!');
+            return redirect()->route('director.periodo.index');
+        }
+
         $inicio = $request->get('inicio');
         
         $fin = $request->get('fin');

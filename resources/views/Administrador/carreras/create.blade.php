@@ -151,6 +151,19 @@ hr {
 <li class="active">Agregar Carreras</li>
 @stop
 @section('content')
+<br>
+@if(Session::has('message'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('message') }}</strong>
+    </div>
+@endif
+@if(Session::has('create'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('create') }}</strong>
+    </div>
+@endif
 <h1>Agregar Carreras</h1>
 @if(count($errors)>0)
   <div class="alert alert-danger">

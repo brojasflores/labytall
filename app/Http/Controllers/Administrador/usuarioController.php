@@ -427,6 +427,7 @@ class usuarioController extends Controller
         Session::flash('destroy','¡Usuario eliminado correctamente!');
         return redirect()->route('administrador.usuario.index');
     }
+
     public function uploadAlum(Request $request)
     {
         if(is_null($request->file('file')))
@@ -442,9 +443,52 @@ class usuarioController extends Controller
             {
                 $result = $archivo->get();
                 foreach($result as $key => $value)
-                {
+                {   
+                    $rut = preg_replace('/[^k0-9]/i', '', $value->rut);
+                    $dv  = substr($rut, -1);
+                    $numero = substr($rut, 0, strlen($rut)-1);
+                    //dd($numero);
+                    $i = 2;
+                    $suma = 0;
+                    foreach(array_reverse(str_split($numero)) as $v)
+                    {
+                        if($i==8)
+                            $i = 2;
+                        $suma += $v * $i;
+                        ++$i;
+                    }
+                    $dvr = 11 - ($suma % 11);
+                    
+                    if($dvr == 11)
+                        $dvr = 0;
+                    if($dvr == 10)
+                        $dvr = 'K';
+                    if($dvr == strtoupper($dv))
+                        $ok='si';
+                    else
+                        $ok='no';
+
+                    if($ok == 'no')
+                    {
+                        Session::flash('create', 'Hay rut ingresados que son inválidos');
+                        return redirect()->route('administrador.usuario.index');
+                    }
+                    else
+                    {
+                        $esta = User::where('rut','=',$numero)
+                                    ->select('id')
+                                    ->get();
+
+                        if(!$esta->isEmpty())
+                        {
+                            Session::flash('create', 'En la lista hay usuarios ya ingresados');
+                            return redirect()->route('administrador.usuario.index');
+                        }
+
+                    
+                    
                     $var = new User();
-                    $var->fill(['rut' => $value->rut]);
+                    $var->fill(['rut' => $numero]);
                     $var->save();
 
                     $carrera_id = Carrera::where('codigo','=',$value->carrera)
@@ -452,7 +496,7 @@ class usuarioController extends Controller
                                         ->get();
 
                     $var2 = new UsersCarrera();
-                    $var2->fill(['rut' => $value->rut, 'carrera_id' => $carrera_id->first()->id]);
+                    $var2->fill(['rut' => $numero, 'carrera_id' => $carrera_id->first()->id]);
                     $var2->save();
 
                     //obtener el dpto correspondiente a la carrera
@@ -463,11 +507,13 @@ class usuarioController extends Controller
                                         ->get();
 
                     $var3 = new UsersDpto();
-                    $var3->fill(['rut' => $value->rut, 'departamento_id' => $dpto->first()->id]);
+                    $var3->fill(['rut' => $numero, 'departamento_id' => $dpto->first()->id]);
                     $var3->save();
                 }
-            })->get();
+            }
             Session::flash('message', 'Los Alumnos fueron agregados exitosamente!');
+            })->get();
+            
            return redirect()->route('administrador.usuario.index');
     }
 
@@ -488,16 +534,58 @@ class usuarioController extends Controller
 
                 foreach($result as $key => $value)
                 {
+                    $rut = preg_replace('/[^k0-9]/i', '', $value->rut);
+                    $dv  = substr($rut, -1);
+                    $numero = substr($rut, 0, strlen($rut)-1);
+                    //dd($numero);
+                    $i = 2;
+                    $suma = 0;
+                    foreach(array_reverse(str_split($numero)) as $v)
+                    {
+                        if($i==8)
+                            $i = 2;
+                        $suma += $v * $i;
+                        ++$i;
+                    }
+                    $dvr = 11 - ($suma % 11);
+                    
+                    if($dvr == 11)
+                        $dvr = 0;
+                    if($dvr == 10)
+                        $dvr = 'K';
+                    if($dvr == strtoupper($dv))
+                        $ok='si';
+                    else
+                        $ok='no';
+
+                    if($ok == 'no')
+                    {
+                        Session::flash('create', 'Hay rut ingresados que son inválidos');
+                        return redirect()->route('administrador.usuario.index');
+                    }
+                    else
+                    {
+                        $esta = User::where('rut','=',$numero)
+                                    ->select('id')
+                                    ->get();
+
+                        if(!$esta->isEmpty())
+                        {
+                            Session::flash('create', 'En la lista hay usuarios ya ingresados');
+                            return redirect()->route('administrador.usuario.index');
+                        }
                     $var = new User();
-                    $var->fill(['rut' => $value->rut]);
+                    $var->fill(['rut' => $numero]);
                     $var->save();
 
                     $var2 = new UsersDpto();
-                    $var2->fill(['rut' => $value->rut, 'departamento_id' => $value->departamento]);
+                    $var2->fill(['rut' => $numero, 'departamento_id' => $value->departamento]);
                     $var2->save();
                 }
-            })->get();
+            }
             Session::flash('message', 'Los Docentes fueron agregados exitosamente!');
+            })->get();
+            
            return redirect()->route('administrador.usuario.index');
     }
 

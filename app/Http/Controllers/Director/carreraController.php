@@ -119,6 +119,57 @@ class carreraController extends Controller
      */
     public function store(Request $request)
     {
+        $codigo = Carrera::where('codigo','=',$request->get('codigo'))
+                         ->select('id')
+                         ->get();
+
+        if(!$codigo->isEmpty())
+        {
+            Session::flash('create','¡Carrera ya creada anteriormente!');
+            return redirect()->route('administrador.carrera.index');
+        }
+
+        $nombres = Carrera::select('nombre')
+                         ->get();
+
+        foreach($nombres as $v)
+        {
+            $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ
+ßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
+    $modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuy
+bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+    $cadena = utf8_decode($v->nombre);
+    $cadena = strtr($cadena, utf8_decode($originales), $modificadas);
+    $cadena = strtolower($cadena);
+
+            $v2[] = strtolower(utf8_encode($cadena));
+        }
+
+        $original = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ
+ßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
+    $modificada = 'aaaaaaaceeeeiiiidnoooooouuuuy
+bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+    $cad = utf8_decode($request->get('nombre'));
+    $cad = strtr($cad, utf8_decode($original), $modificada);
+    $cad = strtolower($cad);
+    $nom = strtolower(utf8_encode($cad));
+
+        $cont = count($v2);
+        $co = 0;
+
+        for($i=0; $i<$cont; $i++)
+        {
+            if($v2[$i]==$nom)
+            {
+                $co = $co+1;
+            }
+        }
+        if($co > 0)
+        {
+            Session::flash('create','¡Carrera ya creada anteriormente!');
+            return redirect()->route('administrador.carrera.index');
+        }
+
         $this->validate($request, [
             'escuela_id' => 'required',
             'codigo' => 'required|numeric',
@@ -226,6 +277,59 @@ class carreraController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $codigo = Carrera::where('codigo','=',$request->get('codigo'))
+                         ->where('id','!=',$id)
+                         ->select('id')
+                         ->get();
+
+        if(!$codigo->isEmpty())
+        {
+            Session::flash('create','¡Carrera ya creada anteriormente!');
+            return redirect()->route('administrador.carrera.index');
+        }
+
+        $nombres = Carrera::where('id','!=',$id)
+                         ->select('nombre')
+                         ->get();
+
+        foreach($nombres as $v)
+        {
+            $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ
+ßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
+    $modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuy
+bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+    $cadena = utf8_decode($v->nombre);
+    $cadena = strtr($cadena, utf8_decode($originales), $modificadas);
+    $cadena = strtolower($cadena);
+
+            $v1[] = strtolower(utf8_encode($cadena));
+        }
+
+        $original = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ
+ßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
+    $modificada = 'aaaaaaaceeeeiiiidnoooooouuuuy
+bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+    $cad = utf8_decode($request->get('nombre'));
+    $cad = strtr($cad, utf8_decode($original), $modificada);
+    $cad = strtolower($cad);
+    $nom = strtolower(utf8_encode($cad));
+
+        $cont = count($v1);
+        $co = 0;
+
+        for($i=0; $i<$cont; $i++)
+        {
+            if($v1[$i]==$nom)
+            {
+                $co = $co+1;
+            }
+        }
+
+        if($co > 0)
+        {
+            Session::flash('create','¡Carrera ya creada anteriormente!');
+            return redirect()->route('administrador.carrera.index');
+        }
         $this->validate($request, [
             'escuela_id' => 'required',
             'codigo' => 'required|numeric',
@@ -319,7 +423,7 @@ class carreraController extends Controller
     }
 
     public function uploadCar(Request $request)
-    {
+    {       
         if(is_null($request->file('file')))
         {
             Session::flash('message', 'Debes seleccionar un archivo.');
@@ -335,29 +439,73 @@ class carreraController extends Controller
                 $result = $archivo->get();
                 foreach($result as $key => $value)
                 {
-                    //No agregar escuela con la id en el excel
-                    $usr=Auth::User()->rut;
-                    $dpto= UsersDpto::where('rut','=',$usr)
-                                    ->select('departamento_id')
-                                    ->get();
+                    //agregar escuela con la id en el excel
+                    $codigo = Carrera::where('codigo','=',$value->codigo)
+                         ->select('id')
+                         ->get();
 
-                    $escuela=Escuela::join('departamento','escuela.departamento_id','=','departamento.id')
-                                    ->select('escuela.id')
-                                    ->get();
+        if(!$codigo->isEmpty())
+        {
+            Session::flash('create','¡Carrera ya creada anteriormente!');
+            return redirect()->route('director.carrera.index');
+        }
 
+        $nombres = Carrera::select('nombre')
+                         ->get();
+
+        foreach($nombres as $v)
+        {
+            $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ
+ßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
+    $modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuy
+bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+    $cadena = utf8_decode($v->nombre);
+    $cadena = strtr($cadena, utf8_decode($originales), $modificadas);
+    $cadena = strtolower($cadena);
+
+            $v2[] = strtolower(utf8_encode($cadena));
+        }
+
+        $original = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ
+ßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
+    $modificada = 'aaaaaaaceeeeiiiidnoooooouuuuy
+bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+    $cad = utf8_decode($value->nombre);
+    $cad = strtr($cad, utf8_decode($original), $modificada);
+    $cad = strtolower($cad);
+    $nom = strtolower(utf8_encode($cad));
+
+        $cont = count($v2);
+        $co = 0;
+
+        for($i=0; $i<$cont; $i++)
+        {
+            if($v2[$i]==$nom)
+            {
+                $co = $co+1;
+            }
+        }
+        if($co > 0)
+        {
+            Session::flash('create','¡Carrera ya creada anteriormente!');
+            return redirect()->route('director.carrera.index');
+        }
                     $var = new Carrera();
-                    $var->fill(['escuela_id' => $escuela->first()->id, 'codigo' => $value->codigo, 'nombre' => $value->nombre, 'descripcion' => $value->descripcion]);
+                    $var->fill(['escuela_id' => $value->escuela, 'codigo' => $value->codigo, 'nombre' => $value->nombre, 'descripcion' => $value->descripcion]);
                     $var->save();
-                    
+
+                    $dpto= Escuela::where('id','=',$value->escuela)
+                                     ->select('escuela.departamento_id')
+                                     ->get();
 
                     $salas= Sala::where('departamento_id','=',$dpto->first()->departamento_id)
                                     ->select('sala.id')
                                     ->get();
-                    
+
                     $carr = Carrera::where('codigo','=',$value->codigo)
                                     ->select('carrera.id')
                                     ->get();
-                                    
+
                     $carr2 = $carr->first()->id;
               
                     foreach($salas as $v)
@@ -366,10 +514,12 @@ class carreraController extends Controller
                         'carrera_id' => $carr2,
                         'sala_id' => $v->id,
                         ]);
-                    }   
+                    }
                 }
+                Session::flash('message', '¡El archivo fue subido exitosamente!');
             })->get();
-            Session::flash('create', '¡El archivo fue subido exitosamente!');
+            
            return redirect()->route('director.carrera.index');
     }
 }
+

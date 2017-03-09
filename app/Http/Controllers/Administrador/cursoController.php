@@ -155,6 +155,19 @@ class cursoController extends Controller
             return response()->json($result);
         }
 
+        $esta = Curso::where('asignatura_id','=',$request->get('asignatura_id'))
+                     ->where('semestre','=',$request->get('semestre'))
+                     ->where('anio','=',$request->get('anio'))
+                     ->where('seccion','=',$request->get('seccion'))
+                     ->select('id')
+                     ->get();
+
+        if(!$esta->isEmpty())
+        {
+            Session::flash('create','¡Curso creado con anterioridad!');
+            return redirect()->route('administrador.curso.index');
+        }
+
         $sem = $request->get('semestre');
         if($sem == '01'||$sem=='02'||$sem=='1'||$sem=='2')
         {
@@ -315,6 +328,20 @@ class cursoController extends Controller
             $result = array('docentes' => $docentes,'ayudantes' => $ayudantes );
 
             return response()->json($result);
+        }
+
+        $esta = Curso::where('asignatura_id','=',$request->get('asignatura_id'))
+                     ->where('semestre','=',$request->get('semestre'))
+                     ->where('anio','=',$request->get('anio'))
+                     ->where('seccion','=',$request->get('seccion'))
+                     ->where('id','!=',$id)
+                     ->select('id')
+                     ->get();
+
+        if(!$esta->isEmpty())
+        {
+            Session::flash('create','¡Curso creado con anterioridad!');
+            return redirect()->route('administrador.curso.index');
         }
         //dd($request);
         $sem = $request->get('semestre');
