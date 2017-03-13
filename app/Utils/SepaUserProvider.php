@@ -61,6 +61,9 @@ class SepaUserProvider implements UserProviderInterface
      */
     public function retrieveByCredentials(array $credentials)
     {
+        $credentials= str_replace('.', '', $credentials); 
+        $credentials= str_replace('-', '', $credentials); 
+
         if (!RutUtils::isRut($credentials['rut'])) {
             return null; // Si el rut es invalido nos negamos a autenticar
         }
@@ -78,6 +81,9 @@ class SepaUserProvider implements UserProviderInterface
      */
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
+        $credentials= str_replace('.', '', $credentials); 
+        $credentials= str_replace('-', '', $credentials); 
+
         $loginOk = false;
         $si='no';
         $si2='no';
