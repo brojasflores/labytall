@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Be right back.</title>
+        <title>No Autorizado</title>
 
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
 
@@ -14,7 +14,7 @@
                 margin: 0;
                 padding: 0;
                 width: 100%;
-                color: #B0BEC5;
+                color: #0040FF;
                 display: table;
                 font-weight: 100;
                 font-family: 'Lato';
@@ -35,12 +35,20 @@
                 font-size: 72px;
                 margin-bottom: 40px;
             }
+            .title2 {
+                font-size: 30px;
+                margin-bottom: 10px;
+
+            }
         </style>
     </head>
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Be right back.</div>
+                <div class="title">¡Esta página no existe!</div>
+                    <div class="title2">
+                        <a href="{{URL::to('/')}}" class="btn btn-primary btn-lg" role="button">REGRESAR</a>
+                    </div>        
             </div>
         </div>
     </body>

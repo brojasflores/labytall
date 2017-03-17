@@ -3,7 +3,9 @@
 Route::resource('/','HomeController@index');
 Route::get('/home', 'HomeController@index');
 Route::resource('/perfil','HomeController@index');
-
+Route::any('{catchall}',  function () {                
+      return view('errors.503');  
+});
 
 //**********************************RUTAS ADMINISTRADOR*******************************************
 Route::group(['prefix' => 'administrador','namespace' => 'Administrador'], function()
@@ -51,6 +53,11 @@ Route::group(['prefix' => 'administrador','namespace' => 'Administrador'], funct
 
 	Route::resource('/actualiza','actualizaController');
 
+	Route::any('{catchall}',  function () {                
+      return view('errors.503');  
+});
+
+
 });
 
 //**********************************RUTAS Director*******************************************
@@ -89,6 +96,9 @@ Route::group(['prefix' => 'director','namespace' => 'Director'], function()
 	Route::get('/reportes_fallas', ['as' => 'director.reportes.repfalla', 'uses' => 'reportesController@RepFall']);
 
 	Route::resource('/estacion','estacionController');
+	Route::any('{catchall}',  function () {                
+      return view('errors.503');  
+});
 });
 
 
@@ -122,6 +132,10 @@ Route::group(['prefix' => 'funcionario', 'namespace' => 'Funcionario'], function
 
 	Route::resource('/estacion','estacionController');
 
+	Route::any('{catchall}',  function () {                
+      return view('errors.503');  
+});
+
 });
 
 //***********************************RUTAS DOCENTE*******************************************
@@ -146,6 +160,10 @@ Route::group(['prefix' => 'docente', 'namespace' => 'Docente'], function()
 
 	Route::resource('/curso','cursoController');
 
+	Route::any('{catchall}',  function () {                
+      return view('errors.503');  
+});
+
 });
 
 //***********************************RUTAS AYUDANTE*******************************************
@@ -167,6 +185,10 @@ Route::group(['prefix' => 'ayudante', 'namespace' => 'Ayudante'], function()
 
 	Route::resource('/MihorarioAyudante','reservaController');
 
+	Route::any('{catchall}',  function () {                
+      return view('errors.503');  
+});
+
 });
 
 //***********************************RUTAS ALUMNO*******************************************
@@ -183,6 +205,10 @@ Route::group(['prefix' => 'alumno', 'namespace' => 'Alumno'], function()
 	Route::resource('/asignar','asignarController');
 	Route::resource('/asignar_alumno','asignarAlumController');
 	Route::resource('/MihorarioAlumno','reservaController');
+
+	Route::any('{catchall}',  function () {                
+      return view('errors.503');  
+});
 	
 });
 

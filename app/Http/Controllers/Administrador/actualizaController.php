@@ -28,6 +28,8 @@ class actualizaController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth');
+        $this->middleware('admin');
         $this->rest_base_uri = env('SEPA_REST_BASE_URI', 'https://sepa.utem.cl/rest/api/v1');
         $this->rest_credentials = array(
             env('SEPA_REST_USERNAME', '1111-1'),
