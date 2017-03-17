@@ -49,6 +49,8 @@ Route::group(['prefix' => 'administrador','namespace' => 'Administrador'], funct
 
 	Route::resource('/estacion','estacionController');
 
+	Route::resource('/actualiza','actualizaController');
+
 });
 
 //**********************************RUTAS Director*******************************************

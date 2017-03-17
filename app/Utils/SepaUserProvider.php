@@ -9,8 +9,13 @@ use GuzzleHttp;
 use Illuminate\Auth\GenericUser;
 use App\Utils\RutUtils;
 use App\User;
+use App\Departamento;
+use App\UsersCarrera;
+use App\UsersDpto;
 use App\Rol;
 use App\RolUsuario;
+use App\Carrera;
+use Session;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -209,6 +214,23 @@ class SepaUserProvider implements UserProviderInterface
             }
             if($estudianteOk == 'ok')
             {
+                ////////////////////
+                try {
+                $requ = $client->get(sprintf('%s/utem/cohorte/estudiante/%s', $this->rest_base_uri, $rut)); // Hacemos la peticion al WS
+                } catch (GuzzleHttp\Exception\ClientException $est) { // Si los errores son del nivel 400, se lanza esta excepcion
+                    $sms = 'Error al consultar el servicio: %d(%s)';
+                    \Log::error(sprintf($sms, $est->getResponse()->getStatusCode(), $est->getResponse()->getReasonPhrase()));
+                }
+
+                $datos = json_decode($requ->getBody(), true);
+                $carrera = $datos["codigoCarrera"];
+                //dd($carrera);
+                //dd($carrera);
+                ////////////////////////////
+
+
+                //DATOS TRAIDOS ESTUDIANTES
+                //dd($data2);
                 $rut_sdv = substr($credentials['rut'],0,-1);//quita digto verificador
                 //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
                 $usr2 = RolUsuario::where('rut','=',$rut_sdv)
@@ -223,7 +245,7 @@ class SepaUserProvider implements UserProviderInterface
                     ]);
                 }
 
-                //cargamdo datos desde el servico REST
+                //cargando datos desde el servico REST
                 $usr = User::where('rut','=',$rut_sdv)
                             ->select('id','email')
                             ->paginate();
@@ -248,6 +270,40 @@ class SepaUserProvider implements UserProviderInterface
                     }
                     $usuarios->save();
                 }
+
+                $idcar = Carrera::where('codigo','=',$carrera)
+                                ->select('id')
+                                ->get();
+
+                if($idcar->isEmpty())
+                {
+                    $loginOk = false;
+                    Session::flash('create','¡Su carrera no esta en el sistema!');
+                    return (bool) $loginOk;
+
+                }
+                else
+                {
+                    $idcarr = $idcar->first()->id;
+                }
+                
+                UsersCarrera::create([
+                    'rut' => $rut_sdv,
+                    'carrera_id' => $idcarr,
+                    ]);
+
+                $dpto = Departamento::join('escuela', 'departamento.id','=','escuela.departamento_id')
+                                    ->join('carrera', 'escuela.id','=','carrera.escuela_id')
+                                    ->where('carrera.id','=',$idcarr)
+                                    ->select('departamento.id')
+                                    ->get();
+                $dpto = $dpto->first()->id;
+                
+                UsersDpto::create([
+                    'rut' => $rut_sdv,
+                    'departamento_id' => $dpto,
+                    ]);
+
                 return (bool) $loginOk;
             }
             
@@ -270,6 +326,8 @@ class SepaUserProvider implements UserProviderInterface
                     //dd($data3); //Si quiero saber que trae el REST de docentes
                     if($docenteOk == 'ok')
                     {
+                        //DATOS TRAIDOS DOCENTES
+                        dd($data3);
                         $rut_sdv = substr($credentials['rut'],0,-1);//quita digto verificador
                         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
                         $usr2 = RolUsuario::where('rut','=',$rut_sdv)

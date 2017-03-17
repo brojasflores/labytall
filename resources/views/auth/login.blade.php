@@ -25,13 +25,22 @@
         <br>
         <a href="{{ asset('admin-lte/index2.html')}}"><b>Gestión Salas</b></a>
       </div><!-- /.login-logo -->
+
+      @if(Session::has('create'))
+        <div class="alert alert-info" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <strong class="alert-link">{{ Session::get('create') }}</strong>
+        </div>
+      @endif
+
+
       <div class="login-box-body">
         <p class="login-box-msg">Registrate para iniciar sesión</p>
         <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('rut') ? ' has-error' : '' }}">
-                            <label for="rut" class="col-md-4 control-label">Rut</label>
+                            <label for="rut" class="col-md-4 control-label">Rut con DV</label>
 
                             <div class="col-md-6">
                                 <input id="rut" type="text" class="form-control" name="rut" value="{{ old('rut') }}">
