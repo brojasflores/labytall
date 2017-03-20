@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Curso;
 use App\Asignatura;
+use App\Carrera;
 use Auth;
 use App\User;
 use Session;
@@ -84,7 +85,8 @@ class cursoController extends Controller
                         ->where('rol.nombre','=',$ayu)
                         ->select('users.*')
                         ->get();
-
+        //dd($ayudantes);
+        
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -151,7 +153,7 @@ class cursoController extends Controller
                             ->get();
 
             $result = array('docentes' => $docentes,'ayudantes' => $ayudantes );
-
+  
             return response()->json($result);
         }
 
@@ -414,5 +416,129 @@ class cursoController extends Controller
 
         Session::flash('delete','¡Curso eliminado correctamente!');
         return redirect()->route('administrador.curso.index');
+    }
+
+    public function uploadCur(Request $request)
+    {
+        if(is_null($request->file('file')))
+        {
+            Session::flash('message', 'Debes seleccionar un archivo.');
+            return redirect()->back();
+        }
+           $file = $request->file('file');
+     
+           $nombre = $file->getClientOriginalName();
+           \Storage::disk('local')->put($nombre,  \File::get($file));
+            \Excel::load('/storage/app/'.$nombre,function($archivo) 
+            {
+                $result = $archivo->get();
+
+                foreach($result as $key => $value)
+                {
+                    
+                    $rutD = preg_replace('/[^k0-9]/i', '', $value->docente);
+                    $dv  = substr($rutD, -1);
+                    $numero = substr($rutD, 0, strlen($rutD)-1);
+                    //dd($numero);
+                    $i = 2;
+                    $suma = 0;
+                    foreach(array_reverse(str_split($numero)) as $v)
+                    {
+                        if($i==8)
+                            $i = 2;
+                        $suma += $v * $i;
+                        ++$i;
+                    }
+                    $dvr = 11 - ($suma % 11);
+                    
+                    if($dvr == 11)
+                        $dvr = 0;
+                    if($dvr == 10)
+                        $dvr = 'K';
+                    if($dvr == strtoupper($dv))
+                        $ok='si';
+                    else
+                        $ok='no';
+
+                    if($ok == 'no')
+                    {
+                        Session::flash('message','¡Existen rut de docentes inválidos!');
+                        return redirect()->route('administrador.curso.index');
+                    }
+                    else
+                    {
+                        if($value->ayudante != 'no')
+                        {
+                            $rutA = preg_replace('/[^k0-9]/i', '', $value->ayudante);
+                            $dv  = substr($rutA, -1);
+                            $numero2 = substr($rutA, 0, strlen($rutA)-1);
+                            //dd($numero);
+                            $i = 2;
+                            $suma = 0;
+                            foreach(array_reverse(str_split($numero2)) as $v)
+                            {
+                                if($i==8)
+                                    $i = 2;
+                                $suma += $v * $i;
+                                ++$i;
+                            }
+                            $dvr = 11 - ($suma % 11);
+                            
+                            if($dvr == 11)
+                                $dvr = 0;
+                            if($dvr == 10)
+                                $dvr = 'K';
+                            if($dvr == strtoupper($dv))
+                                $ok='si';
+                            else
+                                $ok='no';
+                        }
+                        else
+                        {
+                            $numero2 = $value->ayudante;
+                        }
+                    }
+                    if($ok == 'no')
+                    {
+                        Session::flash('message','¡Existen rut de ayudantes inválidos!');
+                        return redirect()->route('administrador.curso.index');
+                    }
+
+                    $carr = Carrera::where('codigo','=',$value->carrera)
+                                                    ->select('id')
+                                                    ->get();
+
+                    $carr = $carr->first()->id;
+
+                    $asig = Asignatura::where('codigo','=',$value->asignatura)
+                                        ->where('carrera_id','=',$carr)
+                                        ->select('id')
+                                        ->get();
+
+                    $asig = $asig->first()->id;
+
+                    $curso = Curso::where('asignatura_id','=',$asig)
+                         ->where('semestre','=',$value->semestre)
+                         ->where('anio','=',$value->anio)
+                         ->where('seccion','=',$value->seccion)
+                         ->where('docente','=',$numero)
+                         ->where('ayudante','=',$numero2)
+                         ->select('id')
+                         ->get();
+
+                    if(!$curso->isEmpty())
+                    {
+                        Session::flash('message','¡Curso ya creado anteriormente!');
+                        return redirect()->route('administrador.curso.index');
+                    }
+
+                    $var = new Curso();
+                    $var->fill(['asignatura_id' => $asig, 'semestre'=> $value->semestre, 'anio'=> $value->anio, 'seccion'=> $value->seccion, 'docente'=> $numero, 'ayudante' => $numero2]);
+                    $var->save();
+                }
+                Session::flash('create', 'Cursos creados exitosamente!');
+           
+            })->get();
+            return redirect()->route('administrador.curso.index');
     }
 }

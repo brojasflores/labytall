@@ -12,6 +12,7 @@ use App\User;
 use App\Departamento;
 use App\Escuela;
 use App\UsersCarrera;
+use App\Asignatura;
 use App\UsersDpto;
 use App\Rol;
 use App\RolUsuario;
@@ -299,6 +300,30 @@ class actualizaController extends Controller
                 ]);  
             }
         }
+
+        //*****************************ASIGNATURAS*******************************************//
+        /*try {
+            $req5 = $client->get(sprintf('%s/docencia/asignaturas', $this->rest_base_uri)); // Hacemos la peticion al WS
+        } catch (GuzzleHttp\Exception\ClientException $e5) { // Si los errores son del nivel 400, se lanza esta excepcion
+            $msg5 = 'Error al consultar el servicio: %d(%s)';
+            \Log::error(sprintf($msg5, $e5->getResponse()->getStatusCode(), $e5->getResponse()->getReasonPhrase()));
+        }
+
+        $asignaturas = json_decode($req5->getBody(), true);
+        
+        $cont = count($asignaturas);
+        //dd($cont);
+
+        for($i=0; $i<$cont; $i++)
+        {
+            Asignatura::create([
+            'codigo' => $asignaturas[$i]["codigo"],
+            'nombre' => $asignaturas[$i]["nombre"],
+            'descripcion' => $asignaturas[$i]["nombre"],
+            'carrera_id' => 53,
+            ]);
+        }*/
+
         Session::flash('create','¡Base de datos actualizada!');
         return redirect()->route('administrador.actualiza.index');
     }

@@ -213,6 +213,7 @@ hr {
                 <th>#</th>
                 <th>Código</th>
                 <th>Nombre</th>
+                <th>Carrera</th>
                 <th>Descripción</th>
                 <th>Editar </th>
                 <th>Eliminar</th>
@@ -225,6 +226,7 @@ hr {
                 <td>{{ $as->id }}</td>
                 <td>{{ $as->codigo }}</td>
                 <td>{{ $as->nombre}}</td>
+                <td>{{ $as->carrera}}</td>
                 <td>{{ $as->descripcion}}</td>
 
                 <!--Paso ruta y parametro para saber cual modificar-->
@@ -242,6 +244,7 @@ hr {
                 <th>#</th>
                 <th>Código</th>
                 <th>Nombre</th>
+                <th>Carrera</th>
                 <th>Descripción</th>
                 <th>Editar </th>
                 <th>Eliminar</th>

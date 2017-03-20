@@ -278,7 +278,7 @@ class SepaUserProvider implements UserProviderInterface
                 if($idcar->isEmpty())
                 {
                     $loginOk = false;
-                    Session::flash('create','¡Su carrera no esta en el sistema!');
+                    Session::flash('create','¡Su carrera no esta en el sistema, no puede ingresar!');
                     return (bool) $loginOk;
 
                 }
@@ -327,7 +327,7 @@ class SepaUserProvider implements UserProviderInterface
                     if($docenteOk == 'ok')
                     {
                         //DATOS TRAIDOS DOCENTES
-                        dd($data3);
+                        //dd($data3);
                         $rut_sdv = substr($credentials['rut'],0,-1);//quita digto verificador
                         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
                         $usr2 = RolUsuario::where('rut','=',$rut_sdv)

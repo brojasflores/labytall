@@ -183,6 +183,27 @@ hr {
       </ul>
   </div>
 @endif
+<div class="row">
+  <div class="col-xs-12">
+    {!! Form::open(['action' => 'Administrador\cursoController@uploadCur','files'=>true]) !!}
+      <div class="form-group">
+        <div class="panel-body">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <div class="form-group">
+              <label class="col-md-2 control-label">Seleccione el archivo con los Crusos</label>
+              <div class="col-md-4">
+                <input type="file" class="form-control" name="file" >
+              </div>
+              <div class="col-md-4">
+                <div align="center"<th><button type="submit" class="btn btn-success">Subir Cursos</button></th></div>
+              </div>
+            </div>
+        </div>
+       </div>
+    {!! Form::close() !!}
+  </div>
+</div>
+
 <form role="form" method="post" action="{{ route('administrador.curso.store')}}">
 	<input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
 	  <div class="box-body">

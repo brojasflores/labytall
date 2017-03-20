@@ -3,9 +3,7 @@
 Route::resource('/','HomeController@index');
 Route::get('/home', 'HomeController@index');
 Route::resource('/perfil','HomeController@index');
-Route::any('{catchall}',  function () {                
-      return view('errors.503');  
-});
+
 
 //**********************************RUTAS ADMINISTRADOR*******************************************
 Route::group(['prefix' => 'administrador','namespace' => 'Administrador'], function()
@@ -26,6 +24,8 @@ Route::group(['prefix' => 'administrador','namespace' => 'Administrador'], funct
 	Route::resource('/periodo','periodoController');
 	Route::resource('/asignatura','asignaturaController');
 	Route::resource('/curso','cursoController');
+	Route::post('/upload_curso', ['as' => 'administrador.curso.upload', 'uses' => 'cursoController@uploadCur']);
+
 	Route::resource('/horario','horarioController');
 	Route::resource('/carrera','carreraController');
 	Route::post('/upload_carrera', ['as' => 'administrador.carrera.upload', 'uses' => 'carreraController@uploadCar']);

@@ -36,7 +36,7 @@ class asignaturaController extends Controller
                         ->join('escuela','escuela.id','=','carrera.escuela_id')
                         ->join('departamento','departamento.id','=','escuela.departamento_id')
                         ->where('departamento.id',$dpto->first()->departamento_id)
-                        ->select('asignatura.*','carrera.nombre as carr')
+                        ->select('asignatura.*','carrera.codigo as carr')
                         ->get();
 
         //Cambio de rol
@@ -278,7 +278,14 @@ class asignaturaController extends Controller
 
                 foreach($result as $key => $value)
                 {
+                    $car = Carrera::where('codigo','=',$value->carrera)
+                                        ->select('id')
+                                        ->get();
+
+                    $car = $car->first()->id;
+
                     $codigo = Asignatura::where('codigo','=',$value->codigo)
+                         ->where('carrera_id','=',$car)
                          ->select('id')
                          ->get();
 

@@ -27,7 +27,10 @@ class asignaturaController extends Controller
 
     public function index()
     {
-        $asignaturas = Asignatura::all();
+        //$asignaturas = Asignatura::all();
+        $asignaturas = Asignatura::join('carrera','asignatura.carrera_id','=','carrera.id')
+                                 ->select('asignatura.*','carrera.codigo as carrera')
+                                 ->get();
 
         //Cambio de rol
         $usr=Auth::User()->rut;
@@ -250,7 +253,14 @@ class asignaturaController extends Controller
 
                 foreach($result as $key => $value)
                 {
+                    $car = Carrera::where('codigo','=',$value->carrera)
+                                        ->select('id')
+                                        ->get();
+
+                    $car = $car->first()->id;
+
                     $codigo = Asignatura::where('codigo','=',$value->codigo)
+                         ->where('carrera_id','=',$car)
                          ->select('id')
                          ->get();
 
