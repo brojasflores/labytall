@@ -53,10 +53,15 @@ Route::group(['prefix' => 'administrador','namespace' => 'Administrador'], funct
 
 	Route::resource('/actualiza','actualizaController');
 
+	Route::get('/asignatura_download',['uses' => 'asignaturaController@excel_download','as' => 'administrador.asignatura.download']);
+
+	Route::resource('/download','descargaController');
+
+	Route::get('/download_bdd',['uses' => 'descargaController@excel_download','as' => 'administrador.descarga.download']);
+
 	Route::any('{catchall}',  function () {                
       return view('errors.503');  
 });
-
 
 });
 
@@ -77,6 +82,8 @@ Route::group(['prefix' => 'director','namespace' => 'Director'], function()
 	Route::resource('/periodo','periodoController');
 	Route::resource('/asignatura','asignaturaController');
 	Route::resource('/curso','cursoController');
+	Route::post('/upload_curso', ['as' => 'director.curso.upload', 'uses' => 'cursoController@uploadCur']);
+
 	Route::resource('/horario','horarioController');
 	Route::resource('/carrera','carreraController');
 	Route::post('/upload_carrera', ['as' => 'director.carrera.upload', 'uses' => 'carreraController@uploadCar']);
@@ -98,7 +105,7 @@ Route::group(['prefix' => 'director','namespace' => 'Director'], function()
 	Route::resource('/estacion','estacionController');
 	Route::any('{catchall}',  function () {                
       return view('errors.503');  
-});
+	});
 });
 
 

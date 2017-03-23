@@ -155,6 +155,12 @@ hr {
         <strong class="alert-link">{{ Session::get('create') }}</strong>
     </div>
 @endif
+@if(Session::has('message'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('message') }}</strong>
+    </div>
+@endif
 <h1>Agregar Curso</h1>
 @if(count($errors)>0)
   <div class="alert alert-danger">
@@ -166,6 +172,27 @@ hr {
       </ul>
   </div>
 @endif
+<div class="row">
+  <div class="col-xs-12">
+    {!! Form::open(['action' => 'Director\cursoController@uploadCur','files'=>true]) !!}
+      <div class="form-group">
+        <div class="panel-body">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <div class="form-group">
+              <label class="col-md-2 control-label">Seleccione el archivo con los Crusos</label>
+              <div class="col-md-4">
+                <input type="file" class="form-control" name="file" >
+              </div>
+              <div class="col-md-4">
+                <div align="center"<th><button type="submit" class="btn btn-success">Subir Cursos</button></th></div>
+              </div>
+            </div>
+        </div>
+       </div>
+    {!! Form::close() !!}
+  </div>
+</div>
+
 <form role="form" method="post" action="{{ route('director.curso.store')}}">
   <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="box-body">

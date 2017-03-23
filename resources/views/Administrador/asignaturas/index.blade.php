@@ -32,6 +32,20 @@ hr {
     </form>
     </a>  
   </li>
+  <li class="dropdown user user-menu">
+    <a>
+    <form role="form" method="get" action="{{ route('administrador.descarga.download') }}">     
+        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+        <img src="{{asset('admin-lte/dist/img/download.png')}}" class="user-image" alt="User Image">        
+        <input class="btn-default hidden-xs" type="submit" value="Base de Datos" style="
+            background: transparent;
+            border: none;
+            color: #fff;
+            outline: none;
+        ">            
+    </form>
+    </a>  
+  </li>
   @if($cont>1)
   <li class="dropdown user user-menu">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -196,6 +210,14 @@ hr {
     </div>
 @endif
 <h1>Asignaturas</h1>
+<div class="row">
+  <div class="col-xs-12">
+    {!! Form::open(['route' => 'administrador.asignatura.download', 'method' => 'GET']) !!}
+        <button type="submit" class="btn btn-primary">Descargar Asignaturas <i class="fa fa-download"></i></button>
+    {!! Form::close() !!}
+</div>
+</div>
+<br>
 <form role="form" method="get" action="{{ route('administrador.asignatura.create')}}">
   <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
 </form>

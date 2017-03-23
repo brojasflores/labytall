@@ -32,6 +32,20 @@ hr {
     </form>
     </a>  
   </li>
+  <li class="dropdown user user-menu">
+    <a>
+    <form role="form" method="get" action="{{ route('administrador.descarga.download') }}">     
+        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+        <img src="{{asset('admin-lte/dist/img/download.png')}}" class="user-image" alt="User Image">        
+        <input class="btn-default hidden-xs" type="submit" value="Base de Datos" style="
+            background: transparent;
+            border: none;
+            color: #fff;
+            outline: none;
+        ">            
+    </form>
+    </a>  
+  </li>
   @if($cont>1)
   <li class="dropdown user user-menu">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -170,6 +184,12 @@ hr {
 <li class="active">Cursos</li>
 @stop
 @section('content')
+@if(Session::has('message'))
+    <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong class="alert-link">{{ Session::get('message') }}</strong>
+    </div>
+@endif
 @if(Session::has('create'))
     <div class="alert alert-info" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>

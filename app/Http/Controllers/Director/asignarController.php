@@ -557,12 +557,13 @@ class asignarController extends Controller
             //termina la validación de si estan las fechas;
         }
 
+        //dd($si);
         if($si==0)
         {
             $curso = Horario::where('curso_id','=',$request->get('curso_id'))
                             ->where('fecha','=',$fecha_formateada)
                             ->get(); 
-
+            //dd($curso);
             if($curso->count() == 0)
             {
                 //insertar max 2 registros
@@ -571,11 +572,11 @@ class asignarController extends Controller
                     $res = Curso::where('id','=',$request->get('curso_id'))
                                         ->select('docente')
                                         ->get();
-                            $res = $res->first()->docente;
+                    
+                    $res = $res->first()->docente;
 
                     $docente = RolUsuario::join('rol','rol.id','=','rol_users.rol_id')
                                         ->where('rol_users.rut','=',$res)->select('rol.nombre')->get();              
-                
                     foreach($docente as $d){
 
                         if($d->nombre == 'docente')

@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Utils;
-
 use Illuminate\Contracts\Auth\User as UserContract;
 use Illuminate\Contracts\Auth\UserProvider as UserProviderInterface;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -17,33 +15,26 @@ use App\RolUsuario;
 use App\Carrera;
 use Session;
 use Illuminate\Support\Facades\Hash;
-
-
 class SepaUserProvider implements UserProviderInterface
 {
-
     /**
      * El modelo Eloquent
      *
      * @var string
      */
     protected $model;
-
-
     /**
      * La uri base del servicio REST
      *
      * @var string
      */
     protected $rest_base_uri;
-
     /**
      * Las credenciales del servicio REST
      *
      * @var array
      */
     protected $rest_credentials;
-
     /**
      * Crea el proveedor de usuario
      *
@@ -68,7 +59,6 @@ class SepaUserProvider implements UserProviderInterface
     {
         $credentials= str_replace('.', '', $credentials); 
         $credentials= str_replace('-', '', $credentials); 
-
         if (!RutUtils::isRut($credentials['rut'])) {
             return null; // Si el rut es invalido nos negamos a autenticar
         }
@@ -76,7 +66,6 @@ class SepaUserProvider implements UserProviderInterface
     
         return $this->createModel()->firstOrCreate(['rut' => $rut]);
     }
-
     /**
      * Checkea la validez de las credenciales del usuario
      *
@@ -88,7 +77,6 @@ class SepaUserProvider implements UserProviderInterface
     {
         $credentials= str_replace('.', '', $credentials); 
         $credentials= str_replace('-', '', $credentials); 
-
         $loginOk = false;
         $si='no';
         $si2='no';
@@ -104,7 +92,6 @@ class SepaUserProvider implements UserProviderInterface
                 'apellidos' => 'apellidosUsuario',
                 'password' => $pass1
             ]);*/
-
             //Funcion para autenticar el usr creado arriba si el servicio rest se cae
             /*$rut = $credentials['rut']; // TODO: Una mejor forma de obtener los identificadores?
             $pass = $credentials['password'];
@@ -136,15 +123,12 @@ class SepaUserProvider implements UserProviderInterface
                 }
             }   */
         //**********************************************************************************************
-
            
         $client = new GuzzleHttp\Client(['auth' => $this->rest_credentials]);
-
         // Obtenemos las credenciales del usuario
         $rut = $credentials['rut']; // TODO: Una mejor forma de obtener los identificadores?
         $password = hash('sha256', strtoupper($credentials['password'])); // TODO: Para esto tambien ...
         $pass = $credentials['password'];
-
         try {
             $req = $client->get(sprintf('%s/sepa/autenticar/%s/%s', $this->rest_base_uri, $rut, $password)); // Hacemos la peticion al WS
         } catch (GuzzleHttp\Exception\ClientException $e) { // Si los errores son del nivel 400, se lanza esta excepcion
@@ -152,7 +136,6 @@ class SepaUserProvider implements UserProviderInterface
             \Log::error(sprintf($msg, $e->getResponse()->getStatusCode(), $e->getResponse()->getReasonPhrase()));
             return false;
         }
-
         $data = json_decode($req->getBody(), true);
         $loginOk = $data['ok'];
         //si se autenticó en el servicio rest entra al if y logue
@@ -172,7 +155,6 @@ class SepaUserProvider implements UserProviderInterface
             $rut_sdv = substr($credentials['rut'],0,-1);//quita digto verificador
             $var=User::where('rut','=',$rut_sdv)->get();//trae el usr completo 
             $var2=User::where('rut','=',$rut_sdv)->select('password')->get();//ve si el urs tiene una contraseña en la db
-
             foreach($var as $v){
                 $v2= $v->password;
                 //si usr no tiene contraseña en la db no loguea
@@ -195,7 +177,6 @@ class SepaUserProvider implements UserProviderInterface
                 }
             }      
         }
-
         if($loginOk == 'true')
         {
             try {
@@ -221,14 +202,11 @@ class SepaUserProvider implements UserProviderInterface
                     $sms = 'Error al consultar el servicio: %d(%s)';
                     \Log::error(sprintf($sms, $est->getResponse()->getStatusCode(), $est->getResponse()->getReasonPhrase()));
                 }
-
                 $datos = json_decode($requ->getBody(), true);
                 $carrera = $datos["codigoCarrera"];
                 //dd($carrera);
                 //dd($carrera);
                 ////////////////////////////
-
-
                 //DATOS TRAIDOS ESTUDIANTES
                 //dd($data2);
                 $rut_sdv = substr($credentials['rut'],0,-1);//quita digto verificador
@@ -244,7 +222,6 @@ class SepaUserProvider implements UserProviderInterface
                     'rol_id' => '5'
                     ]);
                 }
-
                 //cargando datos desde el servico REST
                 $usr = User::where('rut','=',$rut_sdv)
                             ->select('id','email')
@@ -270,17 +247,14 @@ class SepaUserProvider implements UserProviderInterface
                     }
                     $usuarios->save();
                 }
-
                 $idcar = Carrera::where('codigo','=',$carrera)
                                 ->select('id')
                                 ->get();
-
                 if($idcar->isEmpty())
                 {
                     $loginOk = false;
                     Session::flash('create','¡Su carrera no esta en el sistema, no puede ingresar!');
                     return (bool) $loginOk;
-
                 }
                 else
                 {
@@ -291,7 +265,6 @@ class SepaUserProvider implements UserProviderInterface
                     'rut' => $rut_sdv,
                     'carrera_id' => $idcarr,
                     ]);
-
                 $dpto = Departamento::join('escuela', 'departamento.id','=','escuela.departamento_id')
                                     ->join('carrera', 'escuela.id','=','carrera.escuela_id')
                                     ->where('carrera.id','=',$idcarr)
@@ -303,7 +276,6 @@ class SepaUserProvider implements UserProviderInterface
                     'rut' => $rut_sdv,
                     'departamento_id' => $dpto,
                     ]);
-
                 return (bool) $loginOk;
             }
             
@@ -346,7 +318,6 @@ class SepaUserProvider implements UserProviderInterface
                                     ->select('id','email')
                                     ->paginate();
                         
-
                         foreach($usr as $v)
                         {
                             $v2= $v->id;
@@ -366,7 +337,6 @@ class SepaUserProvider implements UserProviderInterface
                             }
                             $usuarios->save();
                         }
-
                         return (bool) $loginOk;
                     }
                     else
@@ -377,7 +347,6 @@ class SepaUserProvider implements UserProviderInterface
         }
         return (bool) $loginOk;
     }
-
     /**
      * Trae un usuario por id (rut)
      *
@@ -389,11 +358,9 @@ class SepaUserProvider implements UserProviderInterface
         $rut = $identifier;
         $user = $this->createModel()->newQuery()->find($identifier);
         \Log::debug(sprintf('Auth: Logeando usuario id "%s"', $rut));
-
         if (!$user) $user = $this->getGenericUser(['id' => $rut]);
         return $user;
     }
-
     /**
      * Trae a un usuario usando su token de "remember me" e identificador
      *
@@ -407,7 +374,6 @@ class SepaUserProvider implements UserProviderInterface
         //\Log::info(sprintf('Auth: Intentando login por token (%s: %s)', $rut, $token));
         return null;
     }
-
     /**
      * Actualiza el token "remember me"
      *
@@ -420,7 +386,6 @@ class SepaUserProvider implements UserProviderInterface
         //$user->setRememberToken($token);
         //$user->save();
     }
-
     /**
     * Get the generic user.
     *
@@ -434,7 +399,6 @@ class SepaUserProvider implements UserProviderInterface
             return new GenericUser((array) $user);
         }
     }
-
     /**
      * Crea una nueva instancia del modelo
      *

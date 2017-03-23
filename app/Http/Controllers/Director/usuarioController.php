@@ -608,6 +608,19 @@ class usuarioController extends Controller
                     $var2 = new UsersDpto();
                     $var2->fill(['rut' => $numero, 'departamento_id' => $value->departamento]);
                     $var2->save();
+
+                    
+                    $doc = "docente";
+                    $rol = Rol::where('nombre','=',$doc)
+                              ->select('id')
+                              ->get();
+
+                    $rol = $rol->first()->id;
+
+                    RolUsuario::create([
+                    'rut' => $numero,
+                    'rol_id' => $rol
+                    ]);
                 }
             }
             Session::flash('message', 'Los Docentes fueron agregados exitosamente!');

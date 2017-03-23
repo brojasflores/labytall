@@ -27,10 +27,7 @@ class asignaturaController extends Controller
 
     public function index()
     {
-        //$asignaturas = Asignatura::all();
-        $asignaturas = Asignatura::join('carrera','asignatura.carrera_id','=','carrera.id')
-                                 ->select('asignatura.*','carrera.codigo as carrera')
-                                 ->get();
+        $asignaturas = Asignatura::all();
 
         //Cambio de rol
         $usr=Auth::User()->rut;
@@ -103,16 +100,6 @@ class asignaturaController extends Controller
      */
     public function store(Request $request)
     {
-        $codigo = Asignatura::where('codigo','=',$request->get('codigo'))
-                         ->select('id')
-                         ->get();
-
-        if(!$codigo->isEmpty())
-        {
-            Session::flash('create','¡Asignatura ya creada anteriormente!');
-            return redirect()->route('administrador.asignatura.index');
-        }
-
         $this->validate($request, [
                 'codigo' => 'required',
                 'nombre' => 'required',
@@ -189,17 +176,6 @@ class asignaturaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $codigo = Asignatura::where('codigo','=',$request->get('codigo'))
-                         ->where('id','!=',$id)
-                         ->select('id')
-                         ->get();
-
-        if(!$codigo->isEmpty())
-        {
-            Session::flash('create','¡Asignatura ya creada anteriormente!');
-            return redirect()->route('administrador.asignatura.index');
-        }
-
         $this->validate($request, [
                 'codigo' => 'required',
                 'nombre' => 'required',
@@ -253,23 +229,6 @@ class asignaturaController extends Controller
 
                 foreach($result as $key => $value)
                 {
-                    $car = Carrera::where('codigo','=',$value->carrera)
-                                        ->select('id')
-                                        ->get();
-
-                    $car = $car->first()->id;
-
-                    $codigo = Asignatura::where('codigo','=',$value->codigo)
-                         ->where('carrera_id','=',$car)
-                         ->select('id')
-                         ->get();
-
-                    if(!$codigo->isEmpty())
-                    {
-                        Session::flash('message','¡Asignatura ya creada anteriormente!');
-                        return redirect()->route('administrador.asignatura.index');
-                    }
-
                     $carrera_id = Carrera::where('codigo','=',$value->carrera)
                                         ->select('id')
                                         ->get();
@@ -278,9 +237,31 @@ class asignaturaController extends Controller
                     $var->fill(['codigo' => $value->codigo, 'nombre'=> $value->nombre, 'descripcion'=> $value->descripcion, 'carrera_id'=> $carrera_id->first()->id]);
                     $var->save();
                 }
-                Session::flash('create', 'Asignatura creada exitosamente!');
-           
             })->get();
-            return redirect()->route('administrador.asignatura.index');
+            Session::flash('message', 'Los Docentes fueron agregados exitosamente!');
+           return redirect()->route('administrador.asignatura.index');
+    }
+
+    public function excel_download()
+    {
+        $var = Asignatura::all();
+        \Excel::create('Asignaturas',function($excel) use ($var)
+        {
+            $excel->sheet('Sheetname',function($sheet) use ($var)
+            {
+                $data=[];
+                array_push($data, array('ID','CODIGO','NOMBRE','DESCRIPCION','CARRERA_ID'));
+                foreach($var as $key => $v)
+                {
+                    
+                    array_push($data, array($v->id,$v->codigo,$v->nombre,$v->descripcion, $v->carrera_id));
+                }       
+                $sheet->fromArray($data,null, 'A1', false,false);
+            
+            });
+            
+        })->download('xlsx');
+
+        return redirect()->route('administrador.asignatura.index');
     }
 }
