@@ -102,6 +102,10 @@ Route::group(['prefix' => 'director','namespace' => 'Director'], function()
 	Route::get('/reportes_asignaturas', ['as' => 'director.reportes.repasig', 'uses' => 'reportesController@RepAsig']);
 	Route::get('/reportes_fallas', ['as' => 'director.reportes.repfalla', 'uses' => 'reportesController@RepFall']);
 
+	Route::resource('/download','descargaController');
+
+	Route::get('/download_bdd',['uses' => 'descargaController@excel_download','as' => 'director.descarga.download']);
+
 	Route::resource('/estacion','estacionController');
 	Route::any('{catchall}',  function () {                
       return view('errors.503');  
@@ -136,6 +140,10 @@ Route::group(['prefix' => 'funcionario', 'namespace' => 'Funcionario'], function
 	Route::get('/reportes_sala', ['as' => 'funcionario.reportes.repsa', 'uses' => 'reportesController@RepSa']);
 	Route::get('/reportes_asignaturas', ['as' => 'funcionario.reportes.repasig', 'uses' => 'reportesController@RepAsig']);
 	Route::get('/reportes_fallas', ['as' => 'funcionario.reportes.repfalla', 'uses' => 'reportesController@RepFall']);
+
+	Route::resource('/download','descargaController');
+
+	Route::get('/download_bdd',['uses' => 'descargaController@excel_download','as' => 'funcionario.descarga.download']);
 
 	Route::resource('/estacion','estacionController');
 
