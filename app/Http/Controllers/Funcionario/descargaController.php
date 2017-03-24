@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Director;
+namespace App\Http\Controllers\Funcionario;
 
 use Illuminate\Contracts\Auth\User as UserContract;
 use Illuminate\Contracts\Auth\UserProvider as UserProviderInterface;
@@ -65,11 +65,11 @@ class descargaController extends Controller
         
         if($cont>1)
         {
-            return view('Director/index', compact('v2','cont'));
+            return view('Funcionario/index', compact('v2','cont'));
         }
         else
         {
-            return view('Director/index', compact('cont'));
+            return view('Funcionario/index', compact('cont'));
         }
     }
 
@@ -79,27 +79,6 @@ class descargaController extends Controller
         $dpto = UsersDpto::where('rut','=',$usr)
                         ->select('departamento_id')
                         ->get();
-
-        $var = Asignatura::join('carrera','asignatura.carrera_id','=','carrera.id')
-                        ->join('escuela','escuela.id','=','carrera.escuela_id')
-                        ->join('departamento','departamento.id','=','escuela.departamento_id')
-                        ->where('departamento.id',$dpto->first()->departamento_id)
-                        ->select('asignatura.*','carrera.nombre as nom')
-                        ->get();
-
-        $carreras = Carrera::join('escuela','carrera.escuela_id','=','escuela.id')
-                        ->join('departamento','departamento.id','=','escuela.departamento_id')
-                        ->where('departamento_id','=',$dpto->first()->departamento_id)
-                        ->select('carrera.*','escuela.nombre as nom')
-                        ->get();
-
-        $curso = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
-                       ->join('carrera','carrera.id','=','asignatura.carrera_id')
-                       ->join('escuela','escuela.id','=','carrera.escuela_id')
-                       ->join('departamento','departamento.id','=','escuela.departamento_id')
-                       ->where('departamento.id',$dpto->first()->departamento_id)
-                       ->select('curso.*','asignatura.nombre as nom')
-                       ->get();
 
         $estacion = Estacion_trabajo::join('sala','estacion_trabajo.sala_id','=','sala.id')
                                       ->join('periodo','estacion_trabajo.periodo_id','=','periodo.id')
@@ -140,98 +119,15 @@ class descargaController extends Controller
                             ->select('horario_alum.*','sala.nombre as sala','periodo.bloque as periodo','estacion_trabajo.nombre as estacion')
                             ->get();
 
-        $periodo = Periodo::all()->sortBy("id");
-
         
         $salas = Sala::join('departamento','sala.departamento_id','=','departamento.id')
                      ->where('sala.departamento_id','=',$dpto->first()->departamento_id)
                      ->select('sala.*','departamento.nombre as nom')
                      ->get();
 
-        $usuarios1 = User::join('users_dpto','users.rut','=','users_dpto.rut')
-                        ->where('users_dpto.departamento_id',$dpto->first()->departamento_id)
-                        ->select('users.*');
-                        
-       
-        $usuarios2 = User::join('users_carrera','users.rut','=','users_carrera.rut')
-                        ->join('carrera','carrera.id','=','users_carrera.carrera_id')
-                        ->join('escuela','escuela.id','=','carrera.escuela_id')
-                        ->join('departamento','departamento.id','=','escuela.departamento_id')
-                        ->where('departamento.id',$dpto->first()->departamento_id)
-                        ->select('users.*');
-                        
-        $usuario = $usuarios1->union($usuarios2)->get();
 
-        \Excel::create('Base de Datos (Director)',function($excel) use ($var, $carreras, $curso, $estacion, $horarioD, $horarioA, $horalum, $periodo, $salas, $usuario)
+        \Excel::create('Base de Datos (Funcionario)',function($excel) use ($estacion, $horarioD, $horarioA, $horalum, $salas)
         {
-            /*********************ASIGNATURAS************************/
-            $excel->sheet('Asignaturas',function($sheet) use ($var)
-            {
-                $data=[];
-                array_push($data, array('ID','CODIGO','NOMBRE','DESCRIPCION','CARRERA'));
-                foreach($var as $key => $v)
-                {
-                    
-                    array_push($data, array($v->id,$v->codigo,$v->nombre,$v->descripcion, $v->nom));
-                }       
-                $sheet->fromArray($data,null, 'A1', false,false);
-
-                $sheet->cells('A1:E1', function($cells)
-                {
-                 $cells->setBackground('#000000');
-                 $cells->setFontColor('#FFFFFF');
-                 $cells->setAlignment('center');
-                 $cells->setValignment('center');
-                }); 
-            
-            });
-            
-            
-            /*********************CARRERAS************************/
-            $excel->sheet('Carreras',function($sheet) use ($carreras)
-            {
-                $data=[];
-                array_push($data, array('ID','ESCUELA','CODIGO','NOMBRE','DESCRIPCION'));
-                foreach($carreras as $key => $v)
-                {
-                    
-                    array_push($data, array($v->id,$v->nom,$v->codigo,$v->nombre,$v->descripcion));
-                }       
-                $sheet->fromArray($data,null, 'A1', false,false);
-
-                $sheet->cells('A1:E1', function($cells)
-                {
-                 $cells->setBackground('#000000');
-                 $cells->setFontColor('#FFFFFF');
-                 $cells->setAlignment('center');
-                 $cells->setValignment('center');
-                }); 
-            
-            });
-
-            /*********************CURSOS************************/
-            $excel->sheet('Cursos',function($sheet) use ($curso)
-            {
-                $data=[];
-                array_push($data, array('ID','ASIGNATURA','SEMESTRE','AÑO','SECCION', 'DOCENTE','AYUDANTE'));
-                foreach($curso as $key => $v)
-                {
-                    
-                    array_push($data, array($v->id,$v->nom,$v->semestre,$v->anio,$v->seccion,$v->docente,$v->ayudante));
-                }       
-                $sheet->fromArray($data,null, 'A1', false,false);
-
-                $sheet->cells('A1:G1', function($cells)
-                {
-                 $cells->setBackground('#000000');
-                 $cells->setFontColor('#FFFFFF');
-                 $cells->setAlignment('center');
-                 $cells->setValignment('center');
-                });
-            
-            });
-
-            
             /*********************ESTACIONES DE TRABAJO************************/
             $excel->sheet('Estaciones',function($sheet) use ($estacion)
             {
@@ -272,7 +168,7 @@ class descargaController extends Controller
                  $cells->setFontColor('#FFFFFF');
                  $cells->setAlignment('center');
                  $cells->setValignment('center');
-                }); 
+                });
             
             });
 
@@ -294,7 +190,7 @@ class descargaController extends Controller
                  $cells->setFontColor('#FFFFFF');
                  $cells->setAlignment('center');
                  $cells->setValignment('center');
-                }); 
+                });
             
             });
 
@@ -320,28 +216,6 @@ class descargaController extends Controller
             
             });
 
-            /*********************PERÌODOS************************/
-            $excel->sheet('Periodos',function($sheet) use ($periodo)
-            {
-                $data=[];
-                array_push($data, array('ID','BLOQUE','INICIO','FIN'));
-                foreach($periodo as $key => $v)
-                {
-                    
-                    array_push($data, array($v->id,$v->bloque,$v->inicio,$v->fin));
-                }       
-                $sheet->fromArray($data,null, 'A1', false,false);
-
-                $sheet->cells('A1:D1', function($cells)
-                {
-                 $cells->setBackground('#000000');
-                 $cells->setFontColor('#FFFFFF');
-                 $cells->setAlignment('center');
-                 $cells->setValignment('center');
-                }); 
-            
-            });
-
             /*********************SALAS************************/
             $excel->sheet('Salas',function($sheet) use ($salas)
             {
@@ -364,32 +238,9 @@ class descargaController extends Controller
             
             });
 
-            /*********************USUARIOS************************/
-            $excel->sheet('Usuarios',function($sheet) use ($usuario)
-            {
-                $data=[];
-                array_push($data, array('ID','RUT','EMAIL','NOMBRES','APELLIDOS'));
-                foreach($usuario as $key => $v)
-                {
-                    
-                    array_push($data, array($v->id,$v->rut,$v->email,$v->nombres,$v->apellidos));
-                }       
-                $sheet->fromArray($data,null, 'A1', false,false);
-
-                $sheet->cells('A1:E1', function($cells)
-                {
-                 $cells->setBackground('#000000');
-                 $cells->setFontColor('#FFFFFF');
-                 $cells->setAlignment('center');
-                 $cells->setValignment('center');
-                }); 
-            
-            });
-
-
         })->download('xlsx');
 
-        return redirect()->route('director.descarga.index');
+        return redirect()->route('funcionario.descarga.index');
     }
 
 }

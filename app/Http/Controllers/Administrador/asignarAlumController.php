@@ -100,6 +100,9 @@ class asignarAlumController extends Controller
      */
     public function store(Request $request)
     {
+        $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado');
+        $diasemana = $dsem[date('N', strtotime($request->get('fecha')))];
+
         if($request->ajax()){
             $estacion = Estacion_trabajo::join('sala','estacion_trabajo.sala_id','=','sala.id')
                                         ->join('periodo','estacion_trabajo.periodo_id','=','periodo.id')
@@ -229,7 +232,8 @@ class asignarAlumController extends Controller
                         'sala_id' => $request->get('sala'),
                         'estacion_trabajo_id' => $request->get('estacion'),
                         'permanencia' => 'dia',
-                        'asistencia' => 'Pendiente'
+                        'asistencia' => 'Pendiente',
+                        'dia' => $diasemana,
                         ]);
 
                     $id = $request->get('estacion');

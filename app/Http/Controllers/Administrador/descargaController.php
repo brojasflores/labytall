@@ -138,7 +138,7 @@ class descargaController extends Controller
                      
         $usuario = User::all();
 
-        \Excel::create('Base de Datos',function($excel) use ($var, $campus, $carreras, $curso, $dpto, $escuela, $estacion, $facultad, $horarioD, $horarioA, $horalum, $periodo, $rol, $salas, $usuario)
+        \Excel::create('Base de Datos (Administrador)',function($excel) use ($var, $campus, $carreras, $curso, $dpto, $escuela, $estacion, $facultad, $horarioD, $horarioA, $horalum, $periodo, $rol, $salas, $usuario)
         {
             /*********************ASIGNATURAS************************/
             $excel->sheet('Asignaturas',function($sheet) use ($var)
@@ -146,12 +146,18 @@ class descargaController extends Controller
                 $data=[];
                 array_push($data, array('ID','CODIGO','NOMBRE','DESCRIPCION','CARRERA'));
                 foreach($var as $key => $v)
-                {
-                    
+                {    
                     array_push($data, array($v->id,$v->codigo,$v->nombre,$v->descripcion, $v->nom));
                 }       
                 $sheet->fromArray($data,null, 'A1', false,false);
-            
+
+                $sheet->cells('A1:E1', function($cells)
+                {
+                 $cells->setBackground('#000000');
+                 $cells->setFontColor('#FFFFFF');
+                 $cells->setAlignment('center');
+                 $cells->setValignment('center');
+                });           
             });
             
             /*********************CAMPUS************************/
@@ -165,6 +171,14 @@ class descargaController extends Controller
                     array_push($data, array($v->id,$v->nombre,$v->direccion,$v->descripcion));
                 }       
                 $sheet->fromArray($data,null, 'A1', false,false);
+
+                $sheet->cells('A1:D1', function($cells)
+                {
+                 $cells->setBackground('#000000');
+                 $cells->setFontColor('#FFFFFF');
+                 $cells->setAlignment('center');
+                 $cells->setValignment('center');
+                }); 
             
             });
 
@@ -179,6 +193,14 @@ class descargaController extends Controller
                     array_push($data, array($v->id,$v->nom,$v->codigo,$v->nombre,$v->descripcion));
                 }       
                 $sheet->fromArray($data,null, 'A1', false,false);
+
+                $sheet->cells('A1:E1', function($cells)
+                {
+                 $cells->setBackground('#000000');
+                 $cells->setFontColor('#FFFFFF');
+                 $cells->setAlignment('center');
+                 $cells->setValignment('center');
+                }); 
             
             });
 
@@ -193,6 +215,14 @@ class descargaController extends Controller
                     array_push($data, array($v->id,$v->nom,$v->semestre,$v->anio,$v->seccion,$v->docente,$v->ayudante));
                 }       
                 $sheet->fromArray($data,null, 'A1', false,false);
+
+                $sheet->cells('A1:G1', function($cells)
+                {
+                 $cells->setBackground('#000000');
+                 $cells->setFontColor('#FFFFFF');
+                 $cells->setAlignment('center');
+                 $cells->setValignment('center');
+                }); 
             
             });
 
@@ -207,6 +237,14 @@ class descargaController extends Controller
                     array_push($data, array($v->id,$v->nombre,$v->nom,$v->descripcion));
                 }       
                 $sheet->fromArray($data,null, 'A1', false,false);
+
+                $sheet->cells('A1:D1', function($cells)
+                {
+                 $cells->setBackground('#000000');
+                 $cells->setFontColor('#FFFFFF');
+                 $cells->setAlignment('center');
+                 $cells->setValignment('center');
+                }); 
             
             });
 
@@ -221,7 +259,14 @@ class descargaController extends Controller
                     array_push($data, array($v->id,$v->nombre,$v->nom,$v->descripcion));
                 }       
                 $sheet->fromArray($data,null, 'A1', false,false);
-            
+
+                $sheet->cells('A1:D1', function($cells)
+                {
+                 $cells->setBackground('#000000');
+                 $cells->setFontColor('#FFFFFF');
+                 $cells->setAlignment('center');
+                 $cells->setValignment('center');
+                });
             });
 
             /*********************ESTACIONES DE TRABAJO************************/
@@ -235,6 +280,14 @@ class descargaController extends Controller
                     array_push($data, array($v->id,$v->nombre,$v->disponibilidad,$v->sala,$v->periodo));
                 }       
                 $sheet->fromArray($data,null, 'A1', false,false);
+
+                $sheet->cells('A1:E1', function($cells)
+                {
+                 $cells->setBackground('#000000');
+                 $cells->setFontColor('#FFFFFF');
+                 $cells->setAlignment('center');
+                 $cells->setValignment('center');
+                }); 
             
             });
 
@@ -249,6 +302,14 @@ class descargaController extends Controller
                     array_push($data, array($v->id,$v->nombre,$v->nom,$v->descripcion));
                 }       
                 $sheet->fromArray($data,null, 'A1', false,false);
+
+                $sheet->cells('A1:D1', function($cells)
+                {
+                 $cells->setBackground('#000000');
+                 $cells->setFontColor('#FFFFFF');
+                 $cells->setAlignment('center');
+                 $cells->setValignment('center');
+                }); 
             
             });
 
@@ -263,6 +324,14 @@ class descargaController extends Controller
                     array_push($data, array($v->id,$v->fecha,$v->sala,$v->periodo,$v->curso,$v->rut,$v->permanencia,$v->asistencia,$v->tipo_reserva));
                 }       
                 $sheet->fromArray($data,null, 'A1', false,false);
+
+                $sheet->cells('A1:I1', function($cells)
+                {
+                 $cells->setBackground('#000000');
+                 $cells->setFontColor('#FFFFFF');
+                 $cells->setAlignment('center');
+                 $cells->setValignment('center');
+                }); 
             
             });
 
@@ -277,6 +346,14 @@ class descargaController extends Controller
                     array_push($data, array($v->id,$v->fecha,$v->sala,$v->periodo,$v->curso,$v->rut,$v->permanencia,$v->asistencia,$v->tipo_reserva));
                 }       
                 $sheet->fromArray($data,null, 'A1', false,false);
+
+                $sheet->cells('A1:I1', function($cells)
+                {
+                 $cells->setBackground('#000000');
+                 $cells->setFontColor('#FFFFFF');
+                 $cells->setAlignment('center');
+                 $cells->setValignment('center');
+                }); 
             
             });
 
@@ -291,6 +368,14 @@ class descargaController extends Controller
                     array_push($data, array($v->id,$v->fecha,$v->rut,$v->periodo,$v->sala,$v->estacion,$v->permanencia,$v->asistencia));
                 }       
                 $sheet->fromArray($data,null, 'A1', false,false);
+
+                $sheet->cells('A1:H1', function($cells)
+                {
+                 $cells->setBackground('#000000');
+                 $cells->setFontColor('#FFFFFF');
+                 $cells->setAlignment('center');
+                 $cells->setValignment('center');
+                }); 
             
             });
 
@@ -305,6 +390,14 @@ class descargaController extends Controller
                     array_push($data, array($v->id,$v->bloque,$v->inicio,$v->fin));
                 }       
                 $sheet->fromArray($data,null, 'A1', false,false);
+
+                $sheet->cells('A1:D1', function($cells)
+                {
+                 $cells->setBackground('#000000');
+                 $cells->setFontColor('#FFFFFF');
+                 $cells->setAlignment('center');
+                 $cells->setValignment('center');
+                }); 
             
             });
 
@@ -319,6 +412,14 @@ class descargaController extends Controller
                     array_push($data, array($v->id,$v->nombre,$v->descripcion));
                 }       
                 $sheet->fromArray($data,null, 'A1', false,false);
+
+                $sheet->cells('A1:C1', function($cells)
+                {
+                 $cells->setBackground('#000000');
+                 $cells->setFontColor('#FFFFFF');
+                 $cells->setAlignment('center');
+                 $cells->setValignment('center');
+                }); 
             
             });
 
@@ -333,6 +434,14 @@ class descargaController extends Controller
                     array_push($data, array($v->id,$v->nombre,$v->capacidad,$v->nom));
                 }       
                 $sheet->fromArray($data,null, 'A1', false,false);
+
+                $sheet->cells('A1:D1', function($cells)
+                {
+                 $cells->setBackground('#000000');
+                 $cells->setFontColor('#FFFFFF');
+                 $cells->setAlignment('center');
+                 $cells->setValignment('center');
+                }); 
             
             });
 
@@ -347,7 +456,14 @@ class descargaController extends Controller
                     array_push($data, array($v->id,$v->rut,$v->email,$v->nombres,$v->apellidos));
                 }       
                 $sheet->fromArray($data,null, 'A1', false,false);
-            
+
+                $sheet->cells('A1:E1', function($cells)
+                {
+                 $cells->setBackground('#000000');
+                 $cells->setFontColor('#FFFFFF');
+                 $cells->setAlignment('center');
+                 $cells->setValignment('center');
+                });             
             });
 
 

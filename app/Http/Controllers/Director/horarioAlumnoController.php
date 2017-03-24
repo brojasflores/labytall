@@ -200,6 +200,9 @@ class horarioAlumnoController extends Controller
     public function update(Request $request, $id)
     {   
         //dd($request);
+        $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado');
+        $diasemana = $dsem[date('N', strtotime($request->get('fecha')))];
+        
         //VAIDA RUT
         $rut = preg_replace('/[^k0-9]/i', '', $request->get('rutHorario'));
         $dv  = substr($rut, -1);
@@ -319,7 +322,8 @@ class horarioAlumnoController extends Controller
                         'sala_id' => $request->get('salaHorario'),
                         'estacion_trabajo_id' => $request->get('estacion'),
                         'permanencia' => 'dia',
-                        'asistencia' => $request->get('asistenciaH')
+                        'asistencia' => $request->get('asistenciaH'),
+                        'dia' => $diasemana,
                         ]); 
                         $h->save();
 
