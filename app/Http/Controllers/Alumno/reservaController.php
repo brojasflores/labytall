@@ -178,6 +178,14 @@ class reservaController extends Controller
 
     public function update(Request $request, $id)
     {          
+        $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado','domingo');
+        $diasemana = $dsem[date('N', strtotime($request->get('fecha')))];
+        if($diasemana=='domingo')
+        {
+            Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
+            return redirect()->route('administrador.horarioAlumno.index');
+        }
+
         $numero=Auth::User()->rut;
 
         if($request->get('fecha')==null)
@@ -265,6 +273,7 @@ class reservaController extends Controller
                         'estacion_trabajo_id' => $request->get('estacion'),
                         'permanencia' => 'dia',
                         'asistencia' => 'Pendiente',
+                        'dia' => $diasemana,
                         ]); 
                         $h->save();
 

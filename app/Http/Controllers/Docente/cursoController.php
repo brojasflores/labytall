@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Docente;
-
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Curso;
@@ -10,8 +8,6 @@ use Auth;
 use App\User;
 use App\UsersDpto;
 use Session;
-
-
 class cursoController extends Controller
 {
     /**
@@ -66,7 +62,6 @@ class cursoController extends Controller
         }
         //return view ('Docente/cursos/index', compact('cursos'));
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -84,7 +79,6 @@ class cursoController extends Controller
                         ->where('departamento.id',$dpto->first()->departamento_id)
                         ->select('asignatura.*','carrera.nombre as carr')
                         ->get();
-
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -111,7 +105,6 @@ class cursoController extends Controller
         }
         //return view('Docente/cursos/create',compact('asignaturas'));
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -129,7 +122,6 @@ class cursoController extends Controller
         {
             $sem='nook';
         }
-
         if($sem=='ok')
         {
             $this->validate($request, [
@@ -145,7 +137,6 @@ class cursoController extends Controller
                 'anio' => $request->get('anio'),
                 'seccion' => $request->get('seccion')
                 ]);
-
             Session::flash('create','¡Curso creado correctamente!');
             return redirect()->route('docente.curso.index');
         }
@@ -155,7 +146,6 @@ class cursoController extends Controller
             return redirect()->route('docente.curso.create');
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -166,7 +156,6 @@ class cursoController extends Controller
     {
         //
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -180,14 +169,11 @@ class cursoController extends Controller
         $dpto= UsersDpto::where('rut','=',$usr)
                         ->select('departamento_id')
                         ->get();
-
         $doc = 'docente';
         $ayu = 'ayudante';
-
         $docentes = User::where('rut','=',$usr)
                         ->select('users.*')
                         ->get();
-
         $ayudantes = User::join('rol_users','users.rut','=','rol_users.rut')
                         ->join('rol','rol_users.rol_id','=','rol.id')
                         ->join('users_dpto','users.rut','=','users_dpto.rut')
@@ -195,17 +181,14 @@ class cursoController extends Controller
                         ->where('users_dpto.departamento_id','=',$dpto->first()->departamento_id)
                         ->select('users.*')
                         ->get();
-
         $cursos = Curso::findOrFail($id);
         
-
         $asignaturas = Asignatura::join('carrera','asignatura.carrera_id','=','carrera.id')
                         ->join('escuela','escuela.id','=','carrera.escuela_id')
                         ->join('departamento','departamento.id','=','escuela.departamento_id')
                         ->where('departamento.id',$dpto->first()->departamento_id)
                         ->select('asignatura.*','carrera.nombre as carr')
                         ->get();
-
         //Cambio de rol
         $usr=Auth::User()->rut;
         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
@@ -232,7 +215,6 @@ class cursoController extends Controller
         }
         //return view('Docente/cursos/edit', compact('cursos','asignaturas'));
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -243,7 +225,6 @@ class cursoController extends Controller
     public function update(Request $request, $id)
     {
         $cursos = Curso::findOrFail($id);     
-
         if($request->get('optradio')=='no')
             {
                 $cursos->fill([
@@ -258,11 +239,9 @@ class cursoController extends Controller
                 ]);
                 $cursos->save();
             }
-
         Session::flash('edit','¡Curso editado correctamente!');
         return redirect()->route('docente.curso.index');
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -273,7 +252,6 @@ class cursoController extends Controller
     {
         $cursos = Curso::findOrFail($id);
         $cursos->delete();
-
         Session::flash('delete','¡Curso eliminado correctamente!');
         return redirect()->route('docente.curso.index');
     }

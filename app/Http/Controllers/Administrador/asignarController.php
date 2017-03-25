@@ -159,12 +159,40 @@ class asignarController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->get('permanencia') == 'dia')
+        if($request->get('sala_id') == 0)
         {
-            $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado');
-            $diasemana = $dsem[date('N', strtotime($request->get('fecha')))];
+            if($request->get('rol')=='docente')
+            {
+                Session::flash('create','¡Ingrese una sala!');
+                return redirect()->route('administrador.asignar.docente');
+            }
+            else
+            {
+                Session::flash('create','¡Ingrese una sala!');
+                return redirect()->route('administrador.asignar.ayudante');
+            }
         }
 
+        if($request->get('permanencia') == 'dia')
+        {
+            $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado','domingo');
+            $diasemana = $dsem[date('N', strtotime($request->get('fecha')))];
+            
+            if($diasemana=='domingo')
+            {
+                if($request->get('rol')=='docente')
+                {
+                    Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
+                    return redirect()->route('administrador.asignar.docente');
+                }
+                else
+                {
+                    Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
+                    return redirect()->route('administrador.asignar.ayudante');
+                }
+            }
+        }
+        
         if($request->ajax()){
             //dd($request);
             $dpto = Sala::where('id','=',$request->get('sala_id'))

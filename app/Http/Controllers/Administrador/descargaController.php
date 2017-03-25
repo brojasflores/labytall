@@ -157,7 +157,7 @@ class descargaController extends Controller
                  $cells->setFontColor('#FFFFFF');
                  $cells->setAlignment('center');
                  $cells->setValignment('center');
-                });           
+                });          
             });
             
             /*********************CAMPUS************************/

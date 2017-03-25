@@ -210,14 +210,6 @@ hr {
     </div>
 @endif
 <h1>Asignaturas</h1>
-<div class="row">
-  <div class="col-xs-12">
-    {!! Form::open(['route' => 'administrador.asignatura.download', 'method' => 'GET']) !!}
-        <button type="submit" class="btn btn-primary">Descargar Asignaturas <i class="fa fa-download"></i></button>
-    {!! Form::close() !!}
-</div>
-</div>
-<br>
 <form role="form" method="get" action="{{ route('administrador.asignatura.create')}}">
   <button type="submit" class="fa fa-plus-square btn btn-primary"> Agregar</button>
 </form>

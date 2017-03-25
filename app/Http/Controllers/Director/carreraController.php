@@ -63,7 +63,6 @@ class carreraController extends Controller
         {
             return view ('Director/carreras/index', compact('carreras','cont'));
         }
-        //return view ('Administrador/periodos/index', compact('periodos'));
     }
 
     /**
@@ -108,7 +107,6 @@ class carreraController extends Controller
         {
             return view ('Director/carreras/create', compact('escuelas','cont'));
         }
-        //return view('Administrador/periodos/create');
     }
 
     /**
@@ -119,6 +117,13 @@ class carreraController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'escuela_id' => 'required',
+            'codigo' => 'required|numeric',
+            'nombre' => 'required',
+            'descripcion' => 'required'
+            ]);
+
         $codigo = Carrera::where('codigo','=',$request->get('codigo'))
                          ->select('id')
                          ->get();
@@ -126,7 +131,7 @@ class carreraController extends Controller
         if(!$codigo->isEmpty())
         {
             Session::flash('create','¡Carrera ya creada anteriormente!');
-            return redirect()->route('administrador.carrera.index');
+            return redirect()->route('director.carrera.index');
         }
 
         $nombres = Carrera::select('nombre')
@@ -167,7 +172,7 @@ bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
         if($co > 0)
         {
             Session::flash('create','¡Carrera ya creada anteriormente!');
-            return redirect()->route('administrador.carrera.index');
+            return redirect()->route('director.carrera.index');
         }
 
         $this->validate($request, [
@@ -265,7 +270,6 @@ bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
         {
             return view ('Director/carreras/edit', compact('escuelas','carreras','cont'));
         }
-        //return view('Administrador/periodos/edit', compact('periodos'));
     }
 
     /**
@@ -277,6 +281,13 @@ bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'escuela_id' => 'required',
+            'codigo' => 'required|numeric',
+            'nombre' => 'required',
+            'descripcion' => 'required'
+            ]);
+        
         $codigo = Carrera::where('codigo','=',$request->get('codigo'))
                          ->where('id','!=',$id)
                          ->select('id')
@@ -285,7 +296,7 @@ bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
         if(!$codigo->isEmpty())
         {
             Session::flash('create','¡Carrera ya creada anteriormente!');
-            return redirect()->route('administrador.carrera.index');
+            return redirect()->route('director.carrera.index');
         }
 
         $nombres = Carrera::where('id','!=',$id)
@@ -328,7 +339,7 @@ bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
         if($co > 0)
         {
             Session::flash('create','¡Carrera ya creada anteriormente!');
-            return redirect()->route('administrador.carrera.index');
+            return redirect()->route('director.carrera.index');
         }
         $this->validate($request, [
             'escuela_id' => 'required',

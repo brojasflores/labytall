@@ -100,9 +100,7 @@ class asignarAlumController extends Controller
      */
     public function store(Request $request)
     {
-        $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado');
-        $diasemana = $dsem[date('N', strtotime($request->get('fecha')))];
-
+        //dd($request);
         if($request->ajax()){
             $estacion = Estacion_trabajo::join('sala','estacion_trabajo.sala_id','=','sala.id')
                                         ->join('periodo','estacion_trabajo.periodo_id','=','periodo.id')
@@ -114,6 +112,27 @@ class asignarAlumController extends Controller
                                         ->get();
 
             return response()->json($estacion);
+        }
+
+        if($request->get('sala')==0)
+        {
+          Session::flash('create','¡Ingrese una sala!');
+          return redirect()->route('administrador.asignar_alumno.index');
+        }
+
+        if($request->get('fecha')==null)
+        {
+            Session::flash('create','¡Ingrese una fecha!');
+            return redirect()->route('administrador.asignar_alumno.index');
+        }
+
+        $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado','domingo');
+        $diasemana = $dsem[date('N', strtotime($request->get('fecha')))];
+
+        if($diasemana=='domingo')
+        {
+            Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
+            return redirect()->route('administrador.asignar_alumno.index');
         }
 
         //dd($request);
@@ -212,13 +231,13 @@ class asignarAlumController extends Controller
                         {
                             //no corresponde el lab con la estacion
                             Session::flash('create','¡No corresponde el Laboratorio con la Estación de Trabajo!');
-                            return redirect()->route('administrador.horarioAlumno.index');
+                            return redirect()->route('administrador.asignar_alumno.index');
                         }
                     }
                     else
                     {
                         Session::flash('create','¡Rut ingresado no corresponde a un alumno!');
-                        return redirect()->route('administrador.horarioAlumno.index');
+                        return redirect()->route('administrador.asignar_alumno.index');
                     }
                 
                 //dd($fechita);
@@ -248,19 +267,19 @@ class asignarAlumController extends Controller
                 else
                 {
                     Session::flash('create','¡Estación ya reservada!');
-                    return redirect()->route('administrador.horarioAlumno.index');
+                    return redirect()->route('administrador.asignar_alumno.index');
                 }
             }
             else
             {
                 Session::flash('create','¡Debe seleccionar una sala y/o una fecha en el calendario!');
-                return redirect()->route('administrador.horarioAlumno.index');
+                return redirect()->route('administrador.asignar_alumno.index');
             }
         }
         else
         {
-            Session::flash('create','¡El rut ingresado en inválido, ingrese rut con dígito verificador y sin guión!');
-            return redirect()->route('administrador.horarioAlumno.index');
+            Session::flash('create','¡El rut ingresado es inválido, ingrese rut con dígito verificador y sin guión!');
+            return redirect()->route('administrador.asignar_alumno.index');
         }
 
         

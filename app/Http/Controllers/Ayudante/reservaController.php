@@ -97,14 +97,14 @@ class reservaController extends Controller
     {
         if($request->ajax()){
          
-            $horario = Horario::where('id',$request->get('id'))
-                               ->select('curso_id','periodo_id','sala_id','permanencia','fecha')
+           $horario = Horario::where('id',$request->get('id'))
+                               ->select('curso_id','periodo_id','sala_id','permanencia','fecha','dia')
                                ->orderBy('periodo_id','asc')
                                ->get();
-        
-            $fecha_inicio = Horario::where('curso_id',$horario[0]->curso_id)->min('fecha');
 
-            $fecha_fin = Horario::where('curso_id',$horario[0]->curso_id)->max('fecha');
+            $fecha_inicio = Horario::where('curso_id',$horario[0]->curso_id)->where('dia',$horario[0]->dia)->min('fecha');
+
+            $fecha_fin = Horario::where('curso_id',$horario[0]->curso_id)->where('dia',$horario[0]->dia)->max('fecha');
 
             $dia = date('w',strtotime($fecha_inicio));
 
@@ -240,7 +240,18 @@ class reservaController extends Controller
             }
         }
 
-        // 
+        //
+        if($request->get('permanencia') == 'dia')
+        {
+            $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado','domingo');
+            $diasemana = $dsem[date('N', strtotime($request->get('fecha')))];
+            
+            if($diasemana=='domingo')
+            {
+                Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
+                return redirect()->route('ayudante.asignar.ayudante');
+            }
+        }
 
         $var = Horario::where('id','=',$id)
                ->select('sala_id','permanencia')
@@ -275,10 +286,12 @@ class reservaController extends Controller
         $horarios = Horario::findOrFail($id);
         $curso = $horarios->curso_id;
         $periodo = $horarios->periodo_id;
+        $diaS = $horarios->dia;
         
         Horario::where('curso_id',$curso)
                 ->where('periodo_id',$periodo)
                 ->where('permanencia',$per)
+                ->where('dia',$diaS)
                 ->delete();
 
         //
@@ -566,8 +579,9 @@ class reservaController extends Controller
                                     'curso_id' => $request->get('curso_id'),
                                     'rut' => $rutdoc,
                                     'permanencia' => 'dia',
-                                    'asistencia' => 'Pendiente',
+                                    'asistencia' => $request->get('asistenciaH'),
                                     'tipo_reserva' => $request->get('rol'),
+                                    'dia' => $diasemana,
                                     ]);
 
                                 Session::flash('create','¡Horario diario Ayudante editado correctamente!');
@@ -604,8 +618,9 @@ class reservaController extends Controller
                                                            'curso_id' => $request->get('curso_id'),
                                                            'rut' => $rutdoc,
                                                            'permanencia' => 'semestral',
-                                                           'asistencia' => 'Pendiente', 
+                                                           'asistencia' => $request->get('asistenciaH'),
                                                            'tipo_reserva' => $request->get('rol'),
+                                                           'dia' => $request->get('dia'),
                                                            ]);
                                             }
                                         }
@@ -621,8 +636,9 @@ class reservaController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $rutdoc,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => 'Pendiente', 
+                                                       'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
+                                                       'dia' => $request->get('dia'),
                                                        ]);
                                             }
                                         }
@@ -638,8 +654,9 @@ class reservaController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $rutdoc,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => 'Pendiente', 
+                                                       'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
+                                                       'dia' => $request->get('dia'),
                                                        ]);
                                             }
                                         }
@@ -655,8 +672,9 @@ class reservaController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $rutdoc,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => 'Pendiente', 
+                                                       'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
+                                                       'dia' => $request->get('dia'),
                                                        ]);
                                             }
                                         }
@@ -672,8 +690,9 @@ class reservaController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $rutdoc,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => 'Pendiente', 
+                                                       'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
+                                                       'dia' => $request->get('dia'),
                                                        ]);
                                             }
                                         }
@@ -689,8 +708,9 @@ class reservaController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $rutdoc,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => 'Pendiente', 
+                                                       'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
+                                                       'dia' => $request->get('dia'),
                                                        ]);
                                             }
                                         }
@@ -770,11 +790,20 @@ class reservaController extends Controller
         $horarios = Horario::findOrFail($id);
         $curso = $horarios->curso_id;
         $periodo = $horarios->periodo_id;
+        $sa = $horarios->sala_id;
+        $tr = $horarios->tipo_reserva;
+        $r = $horarios->rut;
+        $d = $horarios->dia;
         
         Horario::where('curso_id',$curso)
                 ->where('periodo_id',$periodo)
                 ->where('permanencia',$per)
+                ->where('sala_id',$sa)
+                ->where('tipo_reserva',$tr)
+                ->where('rut',$r)
+                ->where('dia',$d)
                 ->delete();
+
         return redirect()->route('ayudante.MihorarioAyudante.index');
     }
 }

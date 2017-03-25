@@ -244,7 +244,7 @@ class usuarioController extends Controller
 
             $usuario = User::findOrFail($request->get('id'));
             $roles = RolUsuario::where('rut',$usuario->rut)->select('rut','rol_id')->get();
-            $rolesTotales = Rol::where('nombre','!=','docente')->where('nombre','!=','alumno')->select('id','nombre')->get();
+            $rolesTotales = Rol::where('nombre','!=','docente')->where('nombre','!=','alumno')->where('nombre','!=','administrador')->select('id','nombre')->get();
 
             $respuesta = ['roles' => $rolesTotales, 'roles_usuario' => $roles];
      

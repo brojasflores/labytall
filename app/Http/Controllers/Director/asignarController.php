@@ -196,8 +196,14 @@ class asignarController extends Controller
     {
         if($request->get('permanencia') == 'dia')
         {
-            $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado');
+            $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado','domingo');
             $diasemana = $dsem[date('N', strtotime($request->get('fecha')))];
+            
+            if($diasemana=='domingo')
+            {
+                Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
+                return redirect()->route('administrador.asignar.docente');
+            }
         }
 
         if($request->get('rol')=='docente')

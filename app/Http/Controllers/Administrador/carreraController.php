@@ -106,6 +106,14 @@ class carreraController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+
+            'escuela_id' => 'required',
+            'codigo' => 'required|numeric',
+            'nombre' => 'required',
+            'descripcion' => 'required'
+            ]);
+
         $codigo = Carrera::where('codigo','=',$request->get('codigo'))
                          ->select('id')
                          ->get();
@@ -262,6 +270,14 @@ bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+
+            'escuela_id' => 'required',
+            'codigo' => 'required|numeric',
+            'nombre' => 'required',
+            'descripcion' => 'required'
+            ]);
+        
         $codigo = Carrera::where('codigo','=',$request->get('codigo'))
                          ->where('id','!=',$id)
                          ->select('id')

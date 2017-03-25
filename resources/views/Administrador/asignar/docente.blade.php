@@ -191,6 +191,16 @@ hr {
         <strong class="alert-link">{{ Session::get('create') }}</strong>
     </div>
 @endif
+@if(count($errors)>0)
+  <div class="alert alert-danger">
+      <p><strong>¡Alerta! </strong> Por favor corrija el(los) siguiente(s) errore(s):</p>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+  </div>
+@endif
 <div class="row" style="margin-left: 0px">
 
 <form role="form" method="post" action="{{ route('administrador.asignar.store') }}">

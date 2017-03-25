@@ -107,8 +107,13 @@ class asignarAlumController extends Controller
      */
     public function store(Request $request)
     {
-        $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado');
+        $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado','domingo');
         $diasemana = $dsem[date('N', strtotime($request->get('fecha')))];
+        if($diasemana=='domingo')
+        {
+            Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
+            return redirect()->route('funcionario.asignar_alumno.index');
+        }
 
         if($request->ajax()){
             $estacion = Estacion_trabajo::join('sala','estacion_trabajo.sala_id','=','sala.id')

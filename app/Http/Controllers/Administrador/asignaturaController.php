@@ -27,7 +27,9 @@ class asignaturaController extends Controller
 
     public function index()
     {
-        $asignaturas = Asignatura::all();
+        $asignaturas = Asignatura::join('carrera','asignatura.carrera_id','=','carrera.id')
+                                 ->select('asignatura.*','carrera.nombre as carrera')
+                                 ->get();
 
         //Cambio de rol
         $usr=Auth::User()->rut;
@@ -242,26 +244,4 @@ class asignaturaController extends Controller
            return redirect()->route('administrador.asignatura.index');
     }
 
-    public function excel_download()
-    {
-        $var = Asignatura::all();
-        \Excel::create('Asignaturas',function($excel) use ($var)
-        {
-            $excel->sheet('Sheetname',function($sheet) use ($var)
-            {
-                $data=[];
-                array_push($data, array('ID','CODIGO','NOMBRE','DESCRIPCION','CARRERA_ID'));
-                foreach($var as $key => $v)
-                {
-                    
-                    array_push($data, array($v->id,$v->codigo,$v->nombre,$v->descripcion, $v->carrera_id));
-                }       
-                $sheet->fromArray($data,null, 'A1', false,false);
-            
-            });
-            
-        })->download('xlsx');
-
-        return redirect()->route('administrador.asignatura.index');
-    }
 }

@@ -186,8 +186,21 @@ class horarioAlumnoController extends Controller
     public function update(Request $request, $id)
     {   
         //dd($request);
-        $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado');
+
+        if($request->get('fecha')==null)
+        {
+            Session::flash('create','¡Ingrese una fecha!');
+            return redirect()->route('administrador.horarioAlumno.index');
+        }
+
+        $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado','domingo');
         $diasemana = $dsem[date('N', strtotime($request->get('fecha')))];
+
+        if($diasemana=='domingo')
+        {
+            Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
+            return redirect()->route('administrador.horarioAlumno.index');
+        }
 
         //VAIDA RUT
         $rut = preg_replace('/[^k0-9]/i', '', $request->get('rutHorario'));
@@ -290,14 +303,15 @@ class horarioAlumnoController extends Controller
                     $fechita = Horario_Alumno::select('id')
                                              ->where('fecha','=',$fecha_formateada)
                                              ->where('periodo_id','=',$request->get('periodoHorario'))
-                                             ->where('sala_id','=',$request->get('sala'))
+                                             ->where('sala_id','=',$request->get('salaHorario'))
                                              ->get();
 
                     $fechita2 = Horario::select('id')
                                        ->where('fecha','=',$fecha_formateada)
                                        ->where('periodo_id','=',$request->get('periodoHorario'))
-                                       ->where('sala_id','=',$request->get('sala'))
+                                       ->where('sala_id','=',$request->get('salaHorario'))
                                        ->get();
+                    //dd($fechita);
 
                     if($fechita->isEmpty() && $fechita2->isEmpty())
                     {

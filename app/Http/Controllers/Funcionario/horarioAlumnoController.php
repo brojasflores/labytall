@@ -200,8 +200,13 @@ class horarioAlumnoController extends Controller
     public function update(Request $request, $id)
     {   
         //dd($request);
-        $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado');
+        $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado','domingo');
         $diasemana = $dsem[date('N', strtotime($request->get('fecha')))];
+        if($diasemana=='domingo')
+        {
+            Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
+            return redirect()->route('funcionario.horarioAlumno.index');
+        }
 
         //VAIDA RUT
         $rut = preg_replace('/[^k0-9]/i', '', $request->get('rutHorario'));

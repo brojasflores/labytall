@@ -306,7 +306,7 @@ bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
         $per = count($periodos);
 
         $capacidad= $request->get('capacidad');
-        $sala = Sala::findOrFail($id);     
+        $sala = Sala::findOrFail($id);  
 
         $sala->fill([
             'nombre' => $request->get('nombre'),
@@ -315,7 +315,6 @@ bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
         ]);
         $sala->save();
 
-        $salas = Sala::all();
 
         $esT = Estacion_trabajo::where('sala_id','=',$id)
                ->select('id')
@@ -323,12 +322,14 @@ bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
 
         foreach($esT as $v)
         {
-            $v2[]= $v->id;
+            $vv[]= $v->id;
         }
-        $cont= count($v2); 
+        
+        $cont= count($vv);
+
         for($i=0;$i<$cont;$i++)
         {
-            $est = Estacion_trabajo::findOrFail($v2[$i]);
+            $est = Estacion_trabajo::findOrFail($vv[$i]);
             $est->delete();
         }
 

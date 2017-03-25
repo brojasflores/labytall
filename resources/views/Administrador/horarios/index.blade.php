@@ -210,7 +210,6 @@ hr {
                 <th>Período</th>
                 <th>Curso</th>
                 <th>Nombre</th>
-                <th>Rut</th>
                 <th>Permanencia</th>
                 <th>Tipo reserva</th>
                 <th>Asistencia</th>
@@ -227,7 +226,6 @@ hr {
                 <td>{{ $hr->bloque}}</td>
                 <td>{{ $hr->asig_nombre}}</td>
                 <td>{{ $hr->horario_name}} {{ $hr->horario_apell}}</td>
-                <td>{{ $hr->rut}}</td>  
                 <td>{{ $hr->permanencia}}</td>
                 <td>{{ $hr->tipo_reserva}}</td>
                 <td>{{ $hr->asistencia}}</td>
@@ -248,7 +246,6 @@ hr {
                 <th>Período</th>
                 <th>Curso</th>
                 <th>Nombre</th>
-                <th>Rut</th>
                 <th>Permanencia</th>
                 <th>Tipo reserva</th>
                 <th>Asistencia</th>
