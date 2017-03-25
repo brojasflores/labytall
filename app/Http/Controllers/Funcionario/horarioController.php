@@ -210,7 +210,20 @@ class horarioController extends Controller
     public function update(Request $request, $id)
     {   
         //dd($request);
-
+        if($request->get('sala_id') == 0)
+        {
+            if($request->get('rol')=='docente')
+            {
+                Session::flash('create','¡Ingrese una sala!');
+                return redirect()->route('administrador.asignar.docente');
+            }
+            else
+            {
+                Session::flash('create','¡Ingrese una sala!');
+                return redirect()->route('administrador.asignar.ayudante');
+            }
+        }
+        
         if($request->get('rol')=='docente')
         {
             if($request->get('permanencia') == 'dia')

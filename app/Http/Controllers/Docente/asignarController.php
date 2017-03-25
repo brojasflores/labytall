@@ -198,7 +198,26 @@ class asignarController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request);
+        if($request->get('curso_id') == null)
+        {
+            Session::flash('create','¡No tiene curso asociado!');
+            return redirect()->route('docente.asignar.docente');
+        }
+
+        if($request->get('sala_id') == 0)
+        {
+            if($request->get('rol')=='docente')
+            {
+                Session::flash('create','¡Ingrese una sala!');
+                return redirect()->route('docente.asignar.docente');
+            }
+            else
+            {
+                Session::flash('create','¡Ingrese una sala!');
+                return redirect()->route('docente.asignar.ayudante');
+            }
+        }
+
         if($request->get('permanencia') == 'dia')
         {
             $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado','domingo');
@@ -206,8 +225,16 @@ class asignarController extends Controller
             
             if($diasemana=='domingo')
             {
-                Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
-                return redirect()->route('administrador.asignar.docente');
+                if($request->get('rol')=='docente')
+                {
+                    Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
+                    return redirect()->route('docente.asignar.docente');
+                }
+                else
+                {
+                    Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
+                    return redirect()->route('docente.asignar.ayudante');
+                }
             }
         }
 
@@ -218,6 +245,11 @@ class asignarController extends Controller
                            ->get();
 
             $numero = $numero->first()->ayudante;
+            if($numero == 'no')
+            {
+                Session::flash('create','¡Este curso no presenta ayudantía!');
+                return redirect()->route('docente.asignar.ayudante');
+            }
         }
         
         if($request->get('rol')=='docente')

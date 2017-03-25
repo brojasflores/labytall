@@ -191,6 +191,20 @@ class reservaController extends Controller
             }
         
 //
+        if($request->get('sala_id') == 0)
+        {
+            if($request->get('rol')=='docente')
+            {
+                Session::flash('create','¡Ingrese una sala!');
+                return redirect()->route('docente.asignar.docente');
+            }
+            else
+            {
+                Session::flash('create','¡Ingrese una sala!');
+                return redirect()->route('docente.asignar.ayudante');
+            }
+        }
+
         if($request->get('rol')=='docente')
         {
             if($request->get('permanencia') == 'dia')
@@ -284,6 +298,24 @@ class reservaController extends Controller
             {
                 Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
                 return redirect()->route('docente.asignar.docente');
+            }
+        }
+
+        if($request->get('permanencia') == 'dia')
+        {
+            $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado','domingo');
+            $diasemana = $dsem[date('N', strtotime($request->get('fecha')))];
+            
+            if($diasemana=='domingo' && $request->get('rol')=='docente')
+            {
+                Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
+                return redirect()->route('docente.asignar.docente');
+            }
+
+            if($diasemana=='domingo' && $request->get('rol')=='ayudante')
+            {
+                Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
+                return redirect()->route('docente.asignar.ayudante');
             }
         }
 

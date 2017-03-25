@@ -161,6 +161,7 @@ hr {
           <div class="form-group">
             <label for="sel1">Salas: </label>
             <select class="form-control" id="sala_id" name="sala_id">
+              <option value="0" name="sala">Seleccione</option>
               @foreach($salas as $sala)
                 <option value="{{ $sala->id }}" name="sala_id">{{ $sala->nombre }}</option>
             @endforeach

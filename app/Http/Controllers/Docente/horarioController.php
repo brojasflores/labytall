@@ -209,6 +209,12 @@ class horarioController extends Controller
                                ->get();
 
                 $numero = $numero->first()->ayudante;
+
+                if($numero == 'no')
+                {
+                    Session::flash('create','¡Este curso no presenta ayudantía!');
+                    return redirect()->route('docente.asignar.ayudante');
+                }
             }
         
 //

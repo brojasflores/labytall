@@ -139,15 +139,23 @@ class asignarController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->get('permanencia') == 'dia')
+        if($request->get('curso_id') == null)
         {
-            $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado','domingo');
-            $diasemana = $dsem[date('N', strtotime($request->get('fecha')))];
-            
-            if($diasemana=='domingo')
+            Session::flash('create','¡No tiene curso asociado!');
+            return redirect()->route('ayudante.asignar.ayudante');
+        }
+
+        if($request->get('sala_id') == 0)
+        {
+            if($request->get('rol')=='docente')
             {
-                Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
+                Session::flash('create','¡Ingrese una sala!');
                 return redirect()->route('ayudante.asignar.docente');
+            }
+            else
+            {
+                Session::flash('create','¡Ingrese una sala!');
+                return redirect()->route('ayudante.asignar.ayudante');
             }
         }
 

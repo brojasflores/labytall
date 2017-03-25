@@ -331,12 +331,12 @@ bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
 
         foreach($esT as $v)
         {
-            $v2[]= $v->id;
+            $vv[]= $v->id;
         }
-        $cont= count($v2); 
+        $cont= count($vv); 
         for($i=0;$i<$cont;$i++)
         {
-            $est = Estacion_trabajo::findOrFail($v2[$i]);
+            $est = Estacion_trabajo::findOrFail($vv[$i]);
             $est->delete();
         }
 

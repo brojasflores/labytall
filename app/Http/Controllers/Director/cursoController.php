@@ -138,6 +138,7 @@ class cursoController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request);
         $this->validate($request, [
                 'asignatura_id' => 'required',
                 'semestre' => 'required|numeric|max:2',
@@ -179,7 +180,9 @@ class cursoController extends Controller
             
             if(empty($request->get('ayudantes')))
             {
-                $cursos = Curso::create([
+                if($request->get('optradio')=='no')
+                {
+                    $cursos = Curso::create([
                     'asignatura_id' => $request->get('asignatura_id'),
                     'semestre' => $request->get('semestre'),
                     'anio' => $request->get('anio'),
@@ -187,17 +190,43 @@ class cursoController extends Controller
                     'docente' => $request->get('docentes'),
                     'ayudante' => 'no',
                     ]);
-            }
-            else
-            {
-                $cursos = Curso::create([
+                }
+                else
+                {
+                    $cursos = Curso::create([
                     'asignatura_id' => $request->get('asignatura_id'),
                     'semestre' => $request->get('semestre'),
                     'anio' => $request->get('anio'),
                     'seccion' => $request->get('seccion'),
                     'docente' => $request->get('docentes'),
-                    'ayudante' => $request->get('ayudantes'),
+                    'ayudante' => $request->get('ayudantes')
                     ]);
+                }
+            }
+            else
+            {
+                if($request->get('optradio')=='no')
+                {
+                    $cursos = Curso::create([
+                    'asignatura_id' => $request->get('asignatura_id'),
+                    'semestre' => $request->get('semestre'),
+                    'anio' => $request->get('anio'),
+                    'seccion' => $request->get('seccion'),
+                    'docente' => $request->get('docentes'),
+                    'ayudante' => 'no',
+                    ]);
+                }
+                else
+                {
+                    $cursos = Curso::create([
+                    'asignatura_id' => $request->get('asignatura_id'),
+                    'semestre' => $request->get('semestre'),
+                    'anio' => $request->get('anio'),
+                    'seccion' => $request->get('seccion'),
+                    'docente' => $request->get('docentes'),
+                    'ayudante' => $request->get('ayudantes')
+                    ]);
+                }
             }
 
             Session::flash('create','¡Curso creado correctamente!');
