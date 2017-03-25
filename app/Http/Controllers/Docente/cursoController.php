@@ -18,7 +18,7 @@ class cursoController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('dir');
+        $this->middleware('doc');
     }
     
     public function index()

@@ -180,7 +180,7 @@ class SepaUserProvider implements UserProviderInterface
         if($loginOk == 'true')
         {
             try {
-                $req2 = $client->get(sprintf('%s/utem/estudiante/%s', $this->rest_base_uri, $rut)); // Hacemos la peticion al WS
+                $req2 = $client->get(sprintf('%s/utem/estudiantes/%s', $this->rest_base_uri, $rut)); // Hacemos la peticion al WS
             } catch (GuzzleHttp\Exception\ClientException $e2) { // Si los errores son del nivel 400, se lanza esta excepcion
                 $msg2 = 'Error al consultar el servicio: %d(%s)';
                 \Log::error(sprintf($msg2, $e2->getResponse()->getStatusCode(), $e2->getResponse()->getReasonPhrase()));
@@ -197,7 +197,7 @@ class SepaUserProvider implements UserProviderInterface
             {
                 ////////////////////
                 try {
-                $requ = $client->get(sprintf('%s/utem/cohorte/estudiante/%s', $this->rest_base_uri, $rut)); // Hacemos la peticion al WS
+                $requ = $client->get(sprintf('%s/utem/estudiantes/%s/cohortes/ultimo', $this->rest_base_uri, $rut)); // Hacemos la peticion al WS
                 } catch (GuzzleHttp\Exception\ClientException $est) { // Si los errores son del nivel 400, se lanza esta excepcion
                     $sms = 'Error al consultar el servicio: %d(%s)';
                     \Log::error(sprintf($sms, $est->getResponse()->getStatusCode(), $est->getResponse()->getReasonPhrase()));
@@ -282,19 +282,19 @@ class SepaUserProvider implements UserProviderInterface
             else
             {
                 try {
-                        $req3 = $client->get(sprintf('%s/academia/docente/%s', $this->rest_base_uri, $rut)); // Hacemos la peticion al WS
+                        $req3 = $client->get(sprintf('%s/academia/docentes/%s', $this->rest_base_uri, $rut)); // Hacemos la peticion al WS
                     } catch (GuzzleHttp\Exception\ClientException $e3) { // Si los errores son del nivel 400, se lanza esta excepcion
                         $msg3 = 'Error al consultar el servicio: %d(%s)';
                         \Log::error(sprintf($msg3, $e3->getResponse()->getStatusCode(), $e3->getResponse()->getReasonPhrase()));
                         //return false;
                         $si2 = "si";
                     }
-                    
                     if($si2 == 'no')
                     {
                         $data3 = json_decode($req3->getBody(), true);
                         $docenteOk = 'ok';
                     }
+                    //dd($docenteOk);
                     //dd($data3); //Si quiero saber que trae el REST de docentes
                     if($docenteOk == 'ok')
                     {
@@ -302,6 +302,18 @@ class SepaUserProvider implements UserProviderInterface
                         //dd($data3);
                         $rut_sdv = substr($credentials['rut'],0,-1);//quita digto verificador
                         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
+                        
+                        $depDoc = UsersDpto::where('rut','=',$rut_sdv)
+                                           ->select('id')
+                                           ->get();
+
+                        if($depDoc->isEmpty())
+                        {
+                            $loginOk = false;
+                            Session::flash('create','¡Usted no se encuentra asociado a un Departamento, no puede ingresar!');
+                            return (bool) $loginOk;
+                        }
+
                         $usr2 = RolUsuario::where('rut','=',$rut_sdv)
                                     ->select('rol_id')
                                     ->paginate();
