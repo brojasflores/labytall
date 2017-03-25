@@ -107,14 +107,6 @@ class asignarAlumController extends Controller
      */
     public function store(Request $request)
     {
-        $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado','domingo');
-        $diasemana = $dsem[date('N', strtotime($request->get('fecha')))];
-        if($diasemana=='domingo')
-        {
-            Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
-            return redirect()->route('director.asignar_alumno.index');
-        }
-
         if($request->ajax()){
             $estacion = Estacion_trabajo::join('sala','estacion_trabajo.sala_id','=','sala.id')
                                         ->join('periodo','estacion_trabajo.periodo_id','=','periodo.id')
@@ -126,6 +118,26 @@ class asignarAlumController extends Controller
                                         ->get();
 
             return response()->json($estacion);
+        }
+        if($request->get('sala')==0)
+        {
+          Session::flash('create','¡Ingrese una sala!');
+          return redirect()->route('director.asignar_alumno.index');
+        }
+
+        if($request->get('fecha')==null)
+        {
+            Session::flash('create','¡Ingrese una fecha!');
+            return redirect()->route('director.asignar_alumno.index');
+        }
+
+        $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado','domingo');
+        $diasemana = $dsem[date('N', strtotime($request->get('fecha')))];
+
+        if($diasemana=='domingo')
+        {
+            Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
+            return redirect()->route('director.asignar_alumno.index');
         }
 
         //dd($request);

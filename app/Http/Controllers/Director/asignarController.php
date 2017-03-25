@@ -202,7 +202,41 @@ class asignarController extends Controller
             if($diasemana=='domingo')
             {
                 Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
-                return redirect()->route('administrador.asignar.docente');
+                return redirect()->route('director.asignar.docente');
+            }
+        }
+
+        if($request->get('sala_id') == 0)
+        {
+            if($request->get('rol')=='docente')
+            {
+                Session::flash('create','¡Ingrese una sala!');
+                return redirect()->route('director.asignar.docente');
+            }
+            else
+            {
+                Session::flash('create','¡Ingrese una sala!');
+                return redirect()->route('director.asignar.ayudante');
+            }
+        }
+
+        if($request->get('permanencia') == 'dia')
+        {
+            $dsem = array('domingo','lunes','martes','miercoles','jueves','viernes','sabado','domingo');
+            $diasemana = $dsem[date('N', strtotime($request->get('fecha')))];
+            
+            if($diasemana=='domingo')
+            {
+                if($request->get('rol')=='docente')
+                {
+                    Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
+                    return redirect()->route('director.asignar.docente');
+                }
+                else
+                {
+                    Session::flash('create','¡No se pueden realizar reservas los días Domingo!');
+                    return redirect()->route('director.asignar.ayudante');
+                }
             }
         }
 
@@ -879,7 +913,7 @@ class asignarController extends Controller
                             if($res == 'no')
                             {
                                 Session::flash('create','¡Este curso no presenta ayudantía!');
-                                return redirect()->route('administrador.horario.index');
+                                return redirect()->route('director.horario.index');
                             }
 
                             if($request->get('permanencia') === 'dia')

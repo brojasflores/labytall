@@ -158,7 +158,27 @@ class asignarController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {        
+        if($request->ajax()){
+            //dd($request);
+            $dpto = Sala::where('id','=',$request->get('sala_id'))
+                            ->select('departamento_id')
+                            ->get();
+
+            $dpto = $dpto->first()->departamento_id;
+
+            $curso = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
+                           ->join('carrera','asignatura.carrera_id','=','carrera.id')
+                           ->join('escuela','carrera.escuela_id','=','escuela.id')
+                           ->join('departamento','escuela.departamento_id','=','departamento.id')
+                           ->where('departamento.id','=',$dpto)
+                           ->select('curso.*','asignatura.nombre as nombre')
+                           ->get();
+
+
+            return response()->json($curso);
+        }
+
         if($request->get('sala_id') == 0)
         {
             if($request->get('rol')=='docente')
@@ -191,26 +211,6 @@ class asignarController extends Controller
                     return redirect()->route('administrador.asignar.ayudante');
                 }
             }
-        }
-        
-        if($request->ajax()){
-            //dd($request);
-            $dpto = Sala::where('id','=',$request->get('sala_id'))
-                            ->select('departamento_id')
-                            ->get();
-
-            $dpto = $dpto->first()->departamento_id;
-
-            $curso = Curso::join('asignatura','curso.asignatura_id','=','asignatura.id')
-                           ->join('carrera','asignatura.carrera_id','=','carrera.id')
-                           ->join('escuela','carrera.escuela_id','=','escuela.id')
-                           ->join('departamento','escuela.departamento_id','=','departamento.id')
-                           ->where('departamento.id','=',$dpto)
-                           ->select('curso.*','asignatura.nombre as nombre')
-                           ->get();
-
-
-            return response()->json($curso);
         }
 
         if($request->get('rol')=='docente')

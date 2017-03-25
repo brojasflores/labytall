@@ -138,6 +138,13 @@ class cursoController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+                'asignatura_id' => 'required',
+                'semestre' => 'required|numeric|max:2',
+                'anio' => 'required|numeric|digits:4',
+                'seccion' => 'required|numeric'
+                ]);
+
         $esta = Curso::where('asignatura_id','=',$request->get('asignatura_id'))
                      ->where('semestre','=',$request->get('semestre'))
                      ->where('anio','=',$request->get('anio'))
@@ -294,6 +301,13 @@ class cursoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+                'asignatura_id' => 'required',
+                'semestre' => 'required|numeric|max:2',
+                'anio' => 'required|numeric|digits:4',
+                'seccion' => 'required|numeric'
+                ]);
+        
         $esta = Curso::where('asignatura_id','=',$request->get('asignatura_id'))
                      ->where('semestre','=',$request->get('semestre'))
                      ->where('anio','=',$request->get('anio'))

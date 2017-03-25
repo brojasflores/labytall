@@ -98,6 +98,13 @@ class periodoController extends Controller
     public function store(Request $request)
     {
         //dd($request);
+        $this->validate($request, [
+                'bloque' => 'required',
+                'inicio' => 'required|date_format:H:m',
+                'fin' => 'required|date_format:H:m|after:inicio'
+                ]);
+
+
         $esta1 = Periodo::where('bloque','=',$request->get('bloque')) 
                         ->select('id')
                         ->get();
@@ -287,6 +294,12 @@ class periodoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+                'bloque' => 'required',
+                'inicio' => 'required|date_format:H:m',
+                'fin' => 'required|date_format:H:m|after:inicio'
+                ]);
+
         $esta1 = Periodo::where('bloque','=',$request->get('bloque')) 
                         ->where('id','!=',$id)
                         ->select('id')
