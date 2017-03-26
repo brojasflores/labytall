@@ -135,7 +135,7 @@ class actualizaController extends Controller
         //dd($departamentos);
         
         $con = count($departamentos);
-        //dd($departamentos[1]["nombre"]);
+        //dd($departamentos[1]["facultad"]["nombre"]);
         //dd($con);
         for($i=0; $i<$con; $i++)
         {
@@ -153,7 +153,7 @@ class actualizaController extends Controller
                 if($si->isEmpty())
                 {
                     $v3[$i]=$departamentos[$i]["nombre"];
-                    $si2 = Facultad::where('nombre','=',$departamentos[$i]["facultad"])
+                    $si2 = Facultad::where('nombre','=',$departamentos[$i]["facultad"]["nombre"])
                                    ->select('id')
                                    ->get();
 
@@ -250,7 +250,7 @@ class actualizaController extends Controller
         //dd($carreras);
         
         $con = count($carreras);
-        //dd($carreras[1]["nombre"]);
+        //dd($carreras[1]["escuela"]);
         //dd($con);
         for($i=0; $i<$con; $i++)
         {

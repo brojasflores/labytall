@@ -224,7 +224,6 @@ hr {
   </div>
 </div>
 
-
 <form role="form" method="post" action="{{ route('administrador.carrera.store')}}">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
       <div class="form-group">

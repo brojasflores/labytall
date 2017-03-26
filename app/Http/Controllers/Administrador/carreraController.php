@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Carrera;
+use App\Departamento;
 use App\CarreraSala;
 use App\Sala;
 use App\UsersDpto;
@@ -527,3 +528,5 @@ bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
            return redirect()->route('administrador.carrera.index');
     }
 }
+
+
