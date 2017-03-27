@@ -303,15 +303,61 @@ class SepaUserProvider implements UserProviderInterface
                         $rut_sdv = substr($credentials['rut'],0,-1);//quita digto verificador
                         //modelo:: otra tabla que consulto, lo que quiero de la tabla propia = lo de la otra tabla
                         
-                        $depDoc = UsersDpto::where('rut','=',$rut_sdv)
+                        $dptoD = $data3["departamento"]["nombre"];
+                        //dd($dptoD);
+
+                        if($dptoD == 'Sin Departamento')
+                        {
+                            $depDoc = UsersDpto::where('rut','=',$rut_sdv)
                                            ->select('id')
                                            ->get();
 
-                        if($depDoc->isEmpty())
-                        {
-                            $loginOk = false;
-                            Session::flash('create','¡Usted no se encuentra asociado a un Departamento, no puede ingresar!');
-                            return (bool) $loginOk;
+                            if($depDoc->isEmpty())
+                            {
+                                $loginOk = false;
+                                Session::flash('create','¡Usted no se encuentra asociado a un Departamento, no puede ingresar!');
+                                return (bool) $loginOk;
+                            }
+                            else
+                            {
+                                $usr2 = RolUsuario::where('rut','=',$rut_sdv)
+                                    ->select('rol_id')
+                                    ->paginate();
+                                // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+                                if(($usr2->first())==null)
+                                {
+                                    RolUsuario::create([
+                                    'rut' => $rut_sdv,
+                                    'rol_id' => '3'
+                                    ]);
+                                }
+
+                                 //cargando datos desde el servico REST
+                                $usr = User::where('rut','=',$rut_sdv)
+                                            ->select('id','email')
+                                            ->paginate();
+                                
+                                foreach($usr as $v)
+                                {
+                                    $v2= $v->id;
+                                }
+                                if(($usr["email"])==null)
+                                {
+                                    $usuarios = User::findOrFail($v2);
+                                    //fill (rellenar)
+                                    $usuarios->fill([
+                                        'email' => $data3["email"],
+                                        'nombres' => $data3["nombres"],
+                                        'apellidos' => $data3["apellidos"]
+                                    ]);
+                                    if(empty($usuarios->perfiles))
+                                    {
+                                        $usuarios->perfiles = "perfiles/h1m7G86a6OR1tLguLSNjj20czNunkW-XjSiKjE0nySu06OWdp3dutyuujpnJc-user2-160x160.png";
+                                    }
+                                    $usuarios->save();
+                                }
+                                return (bool) $loginOk;   
+                            }
                         }
 
                         $usr2 = RolUsuario::where('rut','=',$rut_sdv)
@@ -325,6 +371,18 @@ class SepaUserProvider implements UserProviderInterface
                             'rol_id' => '3'
                             ]);
                         }
+
+                        $idDpto = Departamento::where('nombre','=',$dptoD)
+                                              ->select('id')
+                                              ->get();
+
+                        $idDpto = $idDpto->first()->id;
+
+                        UsersDpto::create([
+                                'rut' => $rut_sdv,
+                                'departamento_id' => $idDpto,
+                            ]);
+
                          //cargando datos desde el servico REST
                         $usr = User::where('rut','=',$rut_sdv)
                                     ->select('id','email')

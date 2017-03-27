@@ -194,6 +194,12 @@ class asignarController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->get('curso_id') == null)
+        {
+            Session::flash('create','¡No tiene curso asociado!');
+            return redirect()->route('funcionario.asignar.docente');
+        }
+
         if($request->get('sala_id') == 0)
         {
             if($request->get('rol')=='docente')

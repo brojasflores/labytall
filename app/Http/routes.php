@@ -59,6 +59,10 @@ Route::group(['prefix' => 'administrador','namespace' => 'Administrador'], funct
 
 	Route::get('/download_bdd',['uses' => 'descargaController@excel_download','as' => 'administrador.descarga.download']);
 
+	Route::get('/formatos_download',['uses' => 'descargaController@formato_download','as' => 'administrador.formatos.download']);
+
+	Route::resource('/autentica','autenticaController');
+
 	Route::any('{catchall}',  function () {                
       return view('errors.503');  
 });
@@ -107,6 +111,11 @@ Route::group(['prefix' => 'director','namespace' => 'Director'], function()
 	Route::get('/download_bdd',['uses' => 'descargaController@excel_download','as' => 'director.descarga.download']);
 
 	Route::resource('/estacion','estacionController');
+
+	Route::get('/formatos_download',['uses' => 'descargaController@formato_download','as' => 'director.formatos.download']);
+
+	Route::resource('/autentica','autenticaController');
+
 	Route::any('{catchall}',  function () {                
       return view('errors.503');  
 	});
@@ -146,6 +155,10 @@ Route::group(['prefix' => 'funcionario', 'namespace' => 'Funcionario'], function
 	Route::get('/download_bdd',['uses' => 'descargaController@excel_download','as' => 'funcionario.descarga.download']);
 
 	Route::resource('/estacion','estacionController');
+
+	Route::get('/formatos_download',['uses' => 'descargaController@formato_download','as' => 'funcionario.formatos.download']);
+
+	Route::resource('/autentica','autenticaController');
 
 	Route::any('{catchall}',  function () {                
       return view('errors.503');  

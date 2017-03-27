@@ -659,7 +659,7 @@ class horarioController extends Controller
                                     'curso_id' => $request->get('curso_id'),
                                     'rut' => $res,
                                     'permanencia' => 'dia',
-                                    'asistencia' => $request->get('asistenciaH'),
+                                    //'asistencia' => $request->get('asistenciaH'),
                                     'tipo_reserva' => $request->get('rol'),
                                     'dia' => $diasemana,
                                     ]);
@@ -701,7 +701,7 @@ class horarioController extends Controller
                                                            'curso_id' => $request->get('curso_id'),
                                                            'rut' => $res,
                                                            'permanencia' => 'semestral',
-                                                           'asistencia' => $request->get('asistenciaH'),
+                                                           //'asistencia' => $request->get('asistenciaH'),
                                                            'tipo_reserva' => $request->get('rol'),
                                                            'dia' => $request->get('dia'),
                                                            ]);
@@ -720,7 +720,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $res,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => $request->get('asistenciaH'),
+                                                       //'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
                                                        'dia' => $request->get('dia'),
                                                        ]);
@@ -740,7 +740,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $res,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => $request->get('asistenciaH'),
+                                                       //'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
                                                        'dia' => $request->get('dia'),
                                                        ]);
@@ -758,7 +758,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $res,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => $request->get('asistenciaH'),
+                                                       //'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
                                                        'dia' => $request->get('dia'),
                                                        ]);
@@ -777,7 +777,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $res,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => $request->get('asistenciaH'),
+                                                       //'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
                                                        'dia' => $request->get('dia'),
                                                        ]);
@@ -796,7 +796,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $res,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => $request->get('asistenciaH'),
+                                                       //'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
                                                        'dia' => $request->get('dia'),
                                                        ]);
@@ -860,7 +860,7 @@ class horarioController extends Controller
                                     'curso_id' => $request->get('curso_id'),
                                     'rut' => $res,
                                     'permanencia' => 'dia',
-                                    'asistencia' => $request->get('asistenciaH'),
+                                    //'asistencia' => $request->get('asistenciaH'),
                                     'tipo_reserva' => $request->get('rol'),
                                     'dia' => $diasemana,
                                     ]);
@@ -899,7 +899,7 @@ class horarioController extends Controller
                                                            'curso_id' => $request->get('curso_id'),
                                                            'rut' => $res,
                                                            'permanencia' => 'semestral',
-                                                           'asistencia' => $request->get('asistenciaH'),
+                                                           //'asistencia' => $request->get('asistenciaH'),
                                                            'tipo_reserva' => $request->get('rol'),
                                                            'dia' => $request->get('dia'),
                                                            ]);
@@ -917,7 +917,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $res,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => $request->get('asistenciaH'),
+                                                       //'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
                                                        'dia' => $request->get('dia'),
                                                        ]);
@@ -935,7 +935,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $res,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => $request->get('asistenciaH'),
+                                                       //'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
                                                        'dia' => $request->get('dia'),
                                                        ]);
@@ -953,7 +953,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $res,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => $request->get('asistenciaH'),
+                                                       //'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
                                                        'dia' => $request->get('dia'),
                                                        ]);
@@ -971,7 +971,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $res,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => $request->get('asistenciaH'),
+                                                       //'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
                                                        'dia' => $request->get('dia'),
                                                        ]);
@@ -989,7 +989,7 @@ class horarioController extends Controller
                                                        'curso_id' => $request->get('curso_id'),
                                                        'rut' => $res,
                                                        'permanencia' => 'semestral',
-                                                       'asistencia' => $request->get('asistenciaH'),
+                                                       //'asistencia' => $request->get('asistenciaH'),
                                                        'tipo_reserva' => $request->get('rol'),
                                                        'dia' => $request->get('dia'),
                                                        ]);
@@ -1048,7 +1048,7 @@ class horarioController extends Controller
                                             'curso_id' => $request->get('curso_id'),
                                             'rut' => $res,
                                             'permanencia' => 'dia',
-                                            'asistencia' => $request->get('asistenciaH'),
+                                            //'asistencia' => $request->get('asistenciaH'),
                                             'tipo_reserva' => $request->get('rol'),
                                             'dia' => $diasemana,
                                             ]);
@@ -1088,7 +1088,7 @@ class horarioController extends Controller
                                                                'curso_id' => $request->get('curso_id'),
                                                                'rut' => $res,
                                                                'permanencia' => 'semestral',
-                                                               'asistencia' => $request->get('asistenciaH'),
+                                                               //'asistencia' => $request->get('asistenciaH'),
                                                                'tipo_reserva' => $request->get('rol'),
                                                                'dia' => $request->get('dia'),
                                                                ]);
@@ -1106,7 +1106,7 @@ class horarioController extends Controller
                                                                'curso_id' => $request->get('curso_id'),
                                                                'rut' => $res,
                                                                'permanencia' => 'semestral',
-                                                               'asistencia' => $request->get('asistenciaH'),
+                                                               //'asistencia' => $request->get('asistenciaH'),
                                                                'tipo_reserva' => $request->get('rol'),
                                                                'dia' => $request->get('dia'),
                                                                ]);
@@ -1124,7 +1124,7 @@ class horarioController extends Controller
                                                                'curso_id' => $request->get('curso_id'),
                                                                'rut' => $res,
                                                                'permanencia' => 'semestral',
-                                                               'asistencia' => $request->get('asistenciaH'),
+                                                               //'asistencia' => $request->get('asistenciaH'),
                                                                'tipo_reserva' => $request->get('rol'),
                                                                'dia' => $request->get('dia'),
                                                                ]);
@@ -1142,7 +1142,7 @@ class horarioController extends Controller
                                                                'curso_id' => $request->get('curso_id'),
                                                                'rut' => $res,
                                                                'permanencia' => 'semestral',
-                                                               'asistencia' => $request->get('asistenciaH'),
+                                                               //'asistencia' => $request->get('asistenciaH'),
                                                                'tipo_reserva' => $request->get('rol'),
                                                                'dia' => $request->get('dia'),
                                                                ]);
@@ -1160,7 +1160,7 @@ class horarioController extends Controller
                                                                'curso_id' => $request->get('curso_id'),
                                                                'rut' => $res,
                                                                'permanencia' => 'semestral',
-                                                               'asistencia' => $request->get('asistenciaH'),
+                                                               //'asistencia' => $request->get('asistenciaH'),
                                                                'tipo_reserva' => $request->get('rol'),
                                                                'dia' => $request->get('dia'),
                                                                ]);         
@@ -1178,7 +1178,7 @@ class horarioController extends Controller
                                                                    'curso_id' => $request->get('curso_id'),
                                                                    'rut' => $res,
                                                                    'permanencia' => 'semestral',
-                                                                   'asistencia' => $request->get('asistenciaH'),
+                                                                   //'asistencia' => $request->get('asistenciaH'),
                                                                    'tipo_reserva' => $request->get('rol'),
                                                                    'dia' => $request->get('dia'),
                                                                    ]);

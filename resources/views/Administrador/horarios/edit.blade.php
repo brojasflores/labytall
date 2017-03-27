@@ -46,6 +46,20 @@ hr {
     </form>
     </a>  
   </li>
+  <li class="dropdown user user-menu">
+    <a>
+    <form role="form" method="get" action="{{ route('administrador.formatos.download') }}">     
+        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+        <img src="{{asset('admin-lte/dist/img/download.png')}}" class="user-image" alt="User Image">        
+        <input class="btn-default hidden-xs" type="submit" value="Formatos" style="
+            background: transparent;
+            border: none;
+            color: #fff;
+            outline: none;
+        ">            
+    </form>
+    </a>  
+  </li>
   @if($cont>1)
   <li class="dropdown user user-menu">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -141,6 +155,7 @@ hr {
                 <li><a href="{{ route('administrador.asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
                 <li><a href="{{ route('administrador.curso.index')}}"><i class="glyphicon glyphicon-education"></i> Cursos</a></li>
                 <li><a href="{{ route('administrador.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
+                <li><a href="{{ route('administrador.autentica.index')}}"><i class="fa fa-check-square"></i> Asistencia</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -276,20 +291,7 @@ hr {
 		    	</div>
 		    </div>
 	    </div>
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div class="form-group">
-					  <label for="sel1">Asistencia: </label>
-					  <select class="form-control" id="asistenciaH" name="asistenciaH">
-					  	   	<option id="Pendiente" value="Pendiente" name="asistenciaH">Pendiente</option>
-					  	   	<option id="si" value="si" name="asistenciaH">Sí</option>
-					  	   	<option id="no" value="no" name="asistenciaH">No</option>
-					  </select>
-					</div>
-		    	</div>
-		    </div>
-	    </div>
+
 	    <div class="form-group">
 	    	<div class="row">
 	    		<div class="col-md-3">

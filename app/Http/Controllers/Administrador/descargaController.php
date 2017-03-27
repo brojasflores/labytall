@@ -28,6 +28,7 @@ use App\Facultad;
 use Auth;
 use Session;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Filesystem\Filesystem;
 
 
 class descargaController extends Controller
@@ -254,10 +255,10 @@ class descargaController extends Controller
                 $data=[];
                 array_push($data, array('ID','NOMBRE','DEPARTAMENTO','DESCRIPCION'));
                 foreach($escuela as $key => $v)
-                {
-                    
+                { 
                     array_push($data, array($v->id,$v->nombre,$v->nom,$v->descripcion));
-                }       
+                } 
+
                 $sheet->fromArray($data,null, 'A1', false,false);
 
                 $sheet->cells('A1:D1', function($cells)
@@ -470,6 +471,13 @@ class descargaController extends Controller
         })->download('xlsx');
 
         return redirect()->route('administrador.descarga.index');
+    }
+
+    public function formato_download(FileSystem $fileSystem)
+    {
+        $file_path = storage_path('app/archivo/Formatos.zip');
+        return response()->download($file_path);
+
     }
 
 }

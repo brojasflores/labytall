@@ -28,7 +28,7 @@ use App\Facultad;
 use Auth;
 use Session;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Filesystem\Filesystem;
 
 class descargaController extends Controller
 {
@@ -390,6 +390,13 @@ class descargaController extends Controller
         })->download('xlsx');
 
         return redirect()->route('director.descarga.index');
+    }
+
+    public function formato_download(FileSystem $fileSystem)
+    {
+        $file_path = storage_path('app/archivo/Formatos.zip');
+        return response()->download($file_path);
+
     }
 
 }

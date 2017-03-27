@@ -32,6 +32,20 @@ hr {
     </form>
     </a>  
   </li>
+  <li class="dropdown user user-menu">
+    <a>
+    <form role="form" method="get" action="{{ route('funcionario.formatos.download') }}">     
+        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+        <img src="{{asset('admin-lte/dist/img/download.png')}}" class="user-image" alt="User Image">        
+        <input class="btn-default hidden-xs" type="submit" value="Formatos" style="
+            background: transparent;
+            border: none;
+            color: #fff;
+            outline: none;
+        ">            
+    </form>
+    </a>  
+  </li>
   @if($cont>1)
   <li class="dropdown user user-menu">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -101,6 +115,7 @@ hr {
                 <li><a href="{{ route('funcionario.estacion.index')}}"><i class="fa fa-laptop"></i>Estaciones de Trabajo</a></li>
                 
                 <li><a href="{{ route('funcionario.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
+                <li><a href="{{ route('funcionario.autentica.index')}}"><i class="fa fa-check-square"></i> Asistencia</a></li>
               </ul>
             </li>
             <li class="treeview">

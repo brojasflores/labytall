@@ -323,7 +323,6 @@ class actualizaController extends Controller
             'carrera_id' => 53,
             ]);
         }*/
-
         Session::flash('create','¡Base de datos actualizada!');
         return redirect()->route('administrador.actualiza.index');
     }

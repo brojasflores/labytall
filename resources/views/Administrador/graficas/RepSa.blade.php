@@ -47,6 +47,20 @@ hr {
     </form>
     </a>  
   </li>
+  <li class="dropdown user user-menu">
+    <a>
+    <form role="form" method="get" action="{{ route('administrador.formatos.download') }}">     
+        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+        <img src="{{asset('admin-lte/dist/img/download.png')}}" class="user-image" alt="User Image">        
+        <input class="btn-default hidden-xs" type="submit" value="Formatos" style="
+            background: transparent;
+            border: none;
+            color: #fff;
+            outline: none;
+        ">            
+    </form>
+    </a>  
+  </li>
   @if($cont>1)
   <li class="dropdown user user-menu">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -145,6 +159,7 @@ hr {
                 <li><a href="{{ route('administrador.asignatura.index')}}"><i class="fa fa-pencil-square-o"></i> Asignaturas</a></li>
                 <li><a href="{{ route('administrador.curso.index')}}"><i class="glyphicon glyphicon-education"></i> Cursos</a></li>
                 <li><a href="{{ route('administrador.asignar.index')}}"><i class="fa fa-check-square-o"></i> Reservar</a></li>
+                <li><a href="{{ route('administrador.autentica.index')}}"><i class="fa fa-check-square"></i> Asistencia</a></li>
               </ul>
             </li>
 
