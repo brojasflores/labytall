@@ -394,9 +394,7 @@ class usuarioController extends Controller
             {
                 $ru->delete();
             }
-            $ru->delete();
         }
-
         if($request->get('roles')==null)
         {
             $cont = RolUsuario::where('rut',$numero)->get();

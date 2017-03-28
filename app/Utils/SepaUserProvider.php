@@ -272,10 +272,17 @@ class SepaUserProvider implements UserProviderInterface
                                     ->get();
                 $dpto = $dpto->first()->id;
                 
-                UsersDpto::create([
-                    'rut' => $rut_sdv,
-                    'departamento_id' => $dpto,
-                    ]);
+                $depAlum = UsersDpto::where('rut','=',$rut_sdv)
+                                    ->select('id')
+                                    ->get();
+                                           
+                if($depAlum->isEmpty())
+                {
+                    UsersDpto::create([
+                        'rut' => $rut_sdv,
+                        'departamento_id' => $dpto,
+                        ]);
+                }
                 return (bool) $loginOk;
             }
             
@@ -372,17 +379,23 @@ class SepaUserProvider implements UserProviderInterface
                             ]);
                         }
 
-                        $idDpto = Departamento::where('nombre','=',$dptoD)
-                                              ->select('id')
-                                              ->get();
+                        $depDoc = UsersDpto::where('rut','=',$rut_sdv)
+                                           ->select('id')
+                                           ->get();
 
-                        $idDpto = $idDpto->first()->id;
+                        if($depDoc->isEmpty())
+                        {
+                            $idDpto = Departamento::where('nombre','=',$dptoD)
+                                                  ->select('id')
+                                                  ->get();
 
-                        UsersDpto::create([
-                                'rut' => $rut_sdv,
-                                'departamento_id' => $idDpto,
-                            ]);
+                            $idDpto = $idDpto->first()->id;
 
+                            UsersDpto::create([
+                                    'rut' => $rut_sdv,
+                                    'departamento_id' => $idDpto,
+                                ]);
+                        }
                          //cargando datos desde el servico REST
                         $usr = User::where('rut','=',$rut_sdv)
                                     ->select('id','email')

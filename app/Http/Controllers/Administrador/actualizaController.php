@@ -21,6 +21,7 @@ use Auth;
 use Session;
 use App\Carrera;
 use Illuminate\Support\Facades\Hash;
+use App\Horario;
 
 
 class actualizaController extends Controller
@@ -323,6 +324,181 @@ class actualizaController extends Controller
             'carrera_id' => 53,
             ]);
         }*/
+
+        //*****************************DOCENTES*******************************************//
+        try {
+            $req5 = $client->get(sprintf('%s/academia/docentes', $this->rest_base_uri)); // Hacemos la peticion al WS
+        } catch (GuzzleHttp\Exception\ClientException $e5) { // Si los errores son del nivel 400, se lanza esta excepcion
+            $msg5 = 'Error al consultar el servicio: %d(%s)';
+            \Log::error(sprintf($msg5, $e5->getResponse()->getStatusCode(), $e5->getResponse()->getReasonPhrase()));
+        }
+
+        $docentes = json_decode($req5->getBody(), true);
+        //dd($docentes);
+        $cont = count($docentes);
+        //dd($cont);
+
+        for($i=0; $i<$cont; $i++)
+        {
+            //dd($docentes[$i]["departamento"]["nombre"]);
+            $rut = $docentes[$i]["rut"];
+            $rut= str_replace('.', '', $rut); 
+            $rut= str_replace('-', '', $rut);
+            $rut = substr($rut, 0, -1);
+            //dd($rut);
+            $esta = User::where('rut','=',$rut)
+                        ->select('id')
+                        ->get();
+            //dd($esta);
+            if($esta->isEmpty())
+            {
+                User::create([
+                'rut' => $rut,
+                'email' => $docentes[$i]["email"],
+                'nombres' => $docentes[$i]["nombres"],
+                'apellidos' => $docentes[$i]["apellidos"],
+                'perfiles' => "perfiles/h1m7G86a6OR1tLguLSNjj20czNunkW-XjSiKjE0nySu06OWdp3dutyuujpnJc-user2-160x160.png"
+                ]);
+
+                $dptoD = $docentes[$i]["departamento"]["nombre"];
+                //dd($dptoD);
+
+                if($dptoD == 'Sin Departamento')
+                {
+                    $depDoc = UsersDpto::where('rut','=',$rut)
+                                   ->select('id')
+                                   ->get();
+
+                    if(!$depDoc->isEmpty())
+                    {
+                        $usr2 = RolUsuario::where('rut','=',$rut)
+                            ->select('rol_id')
+                            ->paginate();
+                        // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+                        if(($usr2->first())==null)
+                        {
+                            RolUsuario::create([
+                            'rut' => $rut,
+                            'rol_id' => '3'
+                            ]);
+                        }
+                    }
+                }
+                else
+                {
+                    $usr2 = RolUsuario::where('rut','=',$rut)
+                                    ->select('rol_id')
+                                    ->paginate();
+                    // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+                    if(($usr2->first())==null)
+                    {
+                        RolUsuario::create([
+                        'rut' => $rut,
+                        'rol_id' => '3'
+                        ]);
+                    }
+
+                    $idDpto = Departamento::where('nombre','=',$dptoD)
+                                          ->select('id')
+                                          ->get();
+
+                    $idDpto = $idDpto->first()->id;
+
+                    UsersDpto::create([
+                            'rut' => $rut,
+                            'departamento_id' => $idDpto,
+                        ]);
+                }
+            }
+            else
+            {
+                $v2 = $esta->first()->id;
+                $usuarios = User::findOrFail($v2);
+                //fill (rellenar)
+                $usuarios->fill([
+                    'email' => $docentes[$i]["email"],
+                    'nombres' => $docentes[$i]["nombres"],
+                    'apellidos' => $docentes[$i]["apellidos"]
+                ]);
+                if(empty($usuarios->perfiles))
+                {
+                    $usuarios->perfiles = "perfiles/h1m7G86a6OR1tLguLSNjj20czNunkW-XjSiKjE0nySu06OWdp3dutyuujpnJc-user2-160x160.png";
+                }
+                $usuarios->save();
+
+                $dptoD = $docentes[$i]["departamento"]["nombre"];
+                //dd($dptoD);
+
+                if($dptoD == 'Sin Departamento')
+                {
+                    $depDoc = UsersDpto::where('rut','=',$rut)
+                                   ->select('id')
+                                   ->get();
+
+                    if(!$depDoc->isEmpty())
+                    {
+                        $usr2 = RolUsuario::where('rut','=',$rut)
+                            ->select('rol_id')
+                            ->paginate();
+                        // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+                        if(($usr2->first())==null)
+                        {
+                            RolUsuario::create([
+                            'rut' => $rut,
+                            'rol_id' => '3'
+                            ]);
+                        }
+                    }
+                }
+                else
+                {
+                    $usr2 = RolUsuario::where('rut','=',$rut)
+                                    ->select('rol_id')
+                                    ->paginate();
+                    // lo de arriba guarda una coleccion donde está el o los nombre(s) de los roles pertenecientes al usuario
+                    if(($usr2->first())==null)
+                    {
+                        RolUsuario::create([
+                        'rut' => $rut,
+                        'rol_id' => '3'
+                        ]);
+                    }
+
+                    $esta2 = UsersDpto::where('rut','=',$rut)
+                                      ->select('departamento_id')
+                                      ->get();
+
+                    if($esta2->isEmpty())
+                    {
+                        $idDpto = Departamento::where('nombre','=',$dptoD)
+                                          ->select('id')
+                                          ->get();
+
+                        $idDpto = $idDpto->first()->id;
+
+                        UsersDpto::create([
+                                'rut' => $rut,
+                                'departamento_id' => $idDpto,
+                            ]);
+                    }
+                }
+            }
+        }
+
+
+        //*****************************HORARIOS*******************************************//
+        /*Horario::create([
+            'fecha'=>'2017-04-03',
+            'sala_id'=>3,
+            'periodo_id'=>6,
+            'curso_id'=>643,
+            'rut'=>'13196151',
+            'permanencia'=>'semestral',
+            'asistencia'=>'si',
+            'tipo_reserva'=>'docente',
+            'dia'=>'lunes',
+        ]);*/
+                    
         Session::flash('create','¡Base de datos actualizada!');
         return redirect()->route('administrador.actualiza.index');
     }
