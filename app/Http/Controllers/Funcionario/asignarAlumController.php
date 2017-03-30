@@ -256,13 +256,7 @@ class asignarAlumController extends Controller
                         'asistencia' => 'Pendiente',
                         'dia' => $diasemana,
                         ]);
-
-                    $id = $request->get('estacion');
-                    $est = Estacion_trabajo::findOrFail($id);
-                    $est->fill([
-                        'disponibilidad' => "si",
-                        ]); 
-                    $est->save();
+                    
                     Session::flash('create','¡Estación reservada correctamente!');
                     return redirect()->route('funcionario.horarioAlumno.index');
                 }

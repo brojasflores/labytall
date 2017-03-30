@@ -613,25 +613,6 @@ class asignarController extends Controller
                                     'tipo_reserva' => $request->get('rol'),
                                     'dia' => $diasemana,
                                     ]);
-                                //pone disponibilidad en no para un lab completo
-                                $id = $request->get('sala_id');
-                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                   ->select('id')
-                                   ->get();
-                                foreach($esT as $v)
-                                {
-                                    $v2[]= $v->id;
-                                }
-                                $cont= count($v2); 
-                                for($i=0;$i<$cont;$i++)
-                                {
-                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                    $est->fill([
-                                    'disponibilidad' => "si",
-                                    ]); 
-                                    $est->save();
-                                }
-                                $est->save();
 
                                 //horario diario creado con exito docente
                                 Session::flash('create','¡Horario diario Docente reservado correctamente!');
@@ -674,25 +655,6 @@ class asignarController extends Controller
                                                            'tipo_reserva' => $request->get('rol'),
                                                            'dia' => $request->get('dia'),
                                                            ]);
-                                                
-                                                $id = $request->get('sala_id');
-                                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                   ->select('id')
-                                                   ->get();
-                                                foreach($esT as $v)
-                                                {
-                                                    $v2[]= $v->id;
-                                                }
-                                                $cont= count($v2); 
-                                                for($i=0;$i<$cont;$i++)
-                                                {
-                                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                    $est->fill([
-                                                    'disponibilidad' => "si",
-                                                    ]); 
-                                                    $est->save();
-                                                }
-                                                $est->save();
                                             }
                                         }
                                         if($request->get('dia') === 'martes')
@@ -712,25 +674,6 @@ class asignarController extends Controller
                                                        'tipo_reserva' => $request->get('rol'),
                                                        'dia' => $request->get('dia'),
                                                        ]);
-
-                                                $id = $request->get('sala_id');
-                                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                   ->select('id')
-                                                   ->get();
-                                                foreach($esT as $v)
-                                                {
-                                                    $v2[]= $v->id;
-                                                }
-                                                $cont= count($v2); 
-                                                for($i=0;$i<$cont;$i++)
-                                                {
-                                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                    $est->fill([
-                                                    'disponibilidad' => "si",
-                                                    ]); 
-                                                    $est->save();
-                                                }
-                                                $est->save();
                                             }
                                         }
                                         if($request->get('dia') === 'miercoles')
@@ -751,25 +694,6 @@ class asignarController extends Controller
                                                        'tipo_reserva' => $request->get('rol'),
                                                        'dia' => $request->get('dia'),
                                                        ]);
-                                                
-                                                $id = $request->get('sala_id');
-                                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                   ->select('id')
-                                                   ->get();
-                                                foreach($esT as $v)
-                                                {
-                                                    $v2[]= $v->id;
-                                                }
-                                                $cont= count($v2); 
-                                                for($i=0;$i<$cont;$i++)
-                                                {
-                                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                    $est->fill([
-                                                    'disponibilidad' => "si",
-                                                    ]); 
-                                                    $est->save();
-                                                }
-                                                $est->save();
                                             }
                                         }
                                         if($request->get('dia') === 'jueves')
@@ -788,25 +712,6 @@ class asignarController extends Controller
                                                        'tipo_reserva' => $request->get('rol'),
                                                        'dia' => $request->get('dia'),
                                                        ]);
-                                                
-                                                $id = $request->get('sala_id');
-                                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                   ->select('id')
-                                                   ->get();
-                                                foreach($esT as $v)
-                                                {
-                                                    $v2[]= $v->id;
-                                                }
-                                                $cont= count($v2); 
-                                                for($i=0;$i<$cont;$i++)
-                                                {
-                                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                    $est->fill([
-                                                    'disponibilidad' => "si",
-                                                    ]); 
-                                                    $est->save();
-                                                }
-                                                $est->save();
                                             }
                                         }
                                         if($request->get('dia') === 'viernes')
@@ -826,26 +731,6 @@ class asignarController extends Controller
                                                        'tipo_reserva' => $request->get('rol'),
                                                        'dia' => $request->get('dia'),
                                                        ]);
-                                                
-
-                                                $id = $request->get('sala_id');
-                                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                   ->select('id')
-                                                   ->get();
-                                                foreach($esT as $v)
-                                                {
-                                                    $v2[]= $v->id;
-                                                }
-                                                $cont= count($v2); 
-                                                for($i=0;$i<$cont;$i++)
-                                                {
-                                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                    $est->fill([
-                                                    'disponibilidad' => "si",
-                                                    ]); 
-                                                    $est->save();
-                                                }
-                                                $est->save();
                                             }
                                         }
                                         if($request->get('dia') === 'sabado')
@@ -865,26 +750,6 @@ class asignarController extends Controller
                                                        'tipo_reserva' => $request->get('rol'),
                                                        'dia' => $request->get('dia'),
                                                        ]);
-                                                
-
-                                                $id = $request->get('sala_id');
-                                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                   ->select('id')
-                                                   ->get();
-                                                foreach($esT as $v)
-                                                {
-                                                    $v2[]= $v->id;
-                                                }
-                                                $cont= count($v2); 
-                                                for($i=0;$i<$cont;$i++)
-                                                {
-                                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                    $est->fill([
-                                                    'disponibilidad' => "si",
-                                                    ]); 
-                                                    $est->save();
-                                                }
-                                                $est->save();
                                             }
                                         }
                                         $inicio->addWeek(1);
@@ -948,25 +813,6 @@ class asignarController extends Controller
                                     'tipo_reserva' => $request->get('rol'),
                                     'dia' => $diasemana,
                                     ]);
-                                //pone disponibilidad en no para un lab completo
-                                $id = $request->get('sala_id');
-                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                   ->select('id')
-                                   ->get();
-                                foreach($esT as $v)
-                                {
-                                    $v2[]= $v->id;
-                                }
-                                $cont= count($v2); 
-                                for($i=0;$i<$cont;$i++)
-                                {
-                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                    $est->fill([
-                                    'disponibilidad' => "si",
-                                    ]); 
-                                    $est->save();
-                                }
-                                $est->save();
 
                                 Session::flash('create','¡Horario diario Ayudante reservado correctamente!');
                                 return redirect()->route('director.horario.index');
@@ -1017,25 +863,6 @@ class asignarController extends Controller
                                                            'tipo_reserva' => $request->get('rol'),
                                                            'dia' => $request->get('dia'),
                                                            ]);
-                                                
-                                                $id = $request->get('sala_id');
-                                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                   ->select('id')
-                                                   ->get();
-                                                foreach($esT as $v)
-                                                {
-                                                    $v2[]= $v->id;
-                                                }
-                                                $cont= count($v2); 
-                                                for($i=0;$i<$cont;$i++)
-                                                {
-                                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                    $est->fill([
-                                                    'disponibilidad' => "si",
-                                                    ]); 
-                                                    $est->save();
-                                                }
-                                                $est->save();
                                             }
                                         }
                                         if($request->get('dia') === 'martes')
@@ -1055,25 +882,6 @@ class asignarController extends Controller
                                                        'dia' => $request->get('dia'),
 
                                                        ]);
-
-                                                $id = $request->get('sala_id');
-                                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                   ->select('id')
-                                                   ->get();
-                                                foreach($esT as $v)
-                                                {
-                                                    $v2[]= $v->id;
-                                                }
-                                                $cont= count($v2); 
-                                                for($i=0;$i<$cont;$i++)
-                                                {
-                                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                    $est->fill([
-                                                    'disponibilidad' => "si",
-                                                    ]); 
-                                                    $est->save();
-                                                }
-                                                $est->save();
                                             }
                                         }
                                         if($request->get('dia') === 'miercoles')
@@ -1092,25 +900,6 @@ class asignarController extends Controller
                                                        'tipo_reserva' => $request->get('rol'),
                                                        'dia' => $request->get('dia'),
                                                        ]);
-                                                
-                                                $id = $request->get('sala_id');
-                                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                   ->select('id')
-                                                   ->get();
-                                                foreach($esT as $v)
-                                                {
-                                                    $v2[]= $v->id;
-                                                }
-                                                $cont= count($v2); 
-                                                for($i=0;$i<$cont;$i++)
-                                                {
-                                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                    $est->fill([
-                                                    'disponibilidad' => "si",
-                                                    ]); 
-                                                    $est->save();
-                                                }
-                                                $est->save();
                                             }
                                         }
                                         if($request->get('dia') === 'jueves')
@@ -1129,25 +918,6 @@ class asignarController extends Controller
                                                        'tipo_reserva' => $request->get('rol'),
                                                        'dia' => $request->get('dia'),
                                                        ]);
-                                                
-                                                $id = $request->get('sala_id');
-                                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                   ->select('id')
-                                                   ->get();
-                                                foreach($esT as $v)
-                                                {
-                                                    $v2[]= $v->id;
-                                                }
-                                                $cont= count($v2); 
-                                                for($i=0;$i<$cont;$i++)
-                                                {
-                                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                    $est->fill([
-                                                    'disponibilidad' => "si",
-                                                    ]); 
-                                                    $est->save();
-                                                }
-                                                $est->save();
                                             }
                                         }
                                         if($request->get('dia') === 'viernes')
@@ -1166,26 +936,6 @@ class asignarController extends Controller
                                                        'tipo_reserva' => $request->get('rol'),
                                                        'dia' => $request->get('dia'),
                                                        ]);
-                                                
-
-                                                $id = $request->get('sala_id');
-                                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                   ->select('id')
-                                                   ->get();
-                                                foreach($esT as $v)
-                                                {
-                                                    $v2[]= $v->id;
-                                                }
-                                                $cont= count($v2); 
-                                                for($i=0;$i<$cont;$i++)
-                                                {
-                                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                    $est->fill([
-                                                    'disponibilidad' => "si",
-                                                    ]); 
-                                                    $est->save();
-                                                }
-                                                $est->save();
                                             }
                                         }
                                         if($request->get('dia') === 'sabado')
@@ -1204,26 +954,6 @@ class asignarController extends Controller
                                                        'tipo_reserva' => $request->get('rol'),
                                                        'dia' => $request->get('dia'),
                                                        ]);
-                                                
-
-                                                $id = $request->get('sala_id');
-                                                $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                   ->select('id')
-                                                   ->get();
-                                                foreach($esT as $v)
-                                                {
-                                                    $v2[]= $v->id;
-                                                }
-                                                $cont= count($v2); 
-                                                for($i=0;$i<$cont;$i++)
-                                                {
-                                                    $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                    $est->fill([
-                                                    'disponibilidad' => "si",
-                                                    ]); 
-                                                    $est->save();
-                                                }
-                                                $est->save();
                                             }
                                         }
                                         $inicio->addWeek(1);
@@ -1282,25 +1012,6 @@ class asignarController extends Controller
                                             'tipo_reserva' => $request->get('rol'),
                                             'dia' => $diasemana,
                                             ]);
-                                        //pone disponibilidad en no para un lab completo
-                                        $id = $request->get('sala_id');
-                                        $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                           ->select('id')
-                                           ->get();
-                                        foreach($esT as $v)
-                                        {
-                                            $v2[]= $v->id;
-                                        }
-                                        $cont= count($v2); 
-                                        for($i=0;$i<$cont;$i++)
-                                        {
-                                            $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                            $est->fill([
-                                            'disponibilidad' => "si",
-                                            ]); 
-                                            $est->save();
-                                        }
-                                        $est->save();
 
                                         //docente diario creado con exito
                                         Session::flash('create','¡Horario diario Docente reservado correctamente!');
@@ -1346,25 +1057,6 @@ class asignarController extends Controller
                                                                'tipo_reserva' => $request->get('rol'),
                                                                'dia' => $request->get('dia'),
                                                                ]);
-                                                        
-                                                        $id = $request->get('sala_id');
-                                                        $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                           ->select('id')
-                                                           ->get();
-                                                        foreach($esT as $v)
-                                                        {
-                                                            $v2[]= $v->id;
-                                                        }
-                                                        $cont= count($v2); 
-                                                        for($i=0;$i<$cont;$i++)
-                                                        {
-                                                            $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                            $est->fill([
-                                                            'disponibilidad' => "si",
-                                                            ]); 
-                                                            $est->save();
-                                                        }
-                                                        $est->save();
                                                     }
                                                 }
                                                 if($request->get('dia') === 'martes')
@@ -1383,26 +1075,6 @@ class asignarController extends Controller
                                                                'tipo_reserva' => $request->get('rol'),
                                                                'dia' => $request->get('dia'),
                                                                ]);
-                                                        
-
-                                                        $id = $request->get('sala_id');
-                                                        $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                           ->select('id')
-                                                           ->get();
-                                                        foreach($esT as $v)
-                                                        {
-                                                            $v2[]= $v->id;
-                                                        }
-                                                        $cont= count($v2); 
-                                                        for($i=0;$i<$cont;$i++)
-                                                        {
-                                                            $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                            $est->fill([
-                                                            'disponibilidad' => "si",
-                                                            ]); 
-                                                            $est->save();
-                                                        }
-                                                        $est->save();
                                                     }
                                                 }
                                                 if($request->get('dia') === 'miercoles')
@@ -1421,25 +1093,6 @@ class asignarController extends Controller
                                                                'tipo_reserva' => $request->get('rol'),
                                                                'dia' => $request->get('dia'),
                                                                ]);
-                                                        
-                                                        $id = $request->get('sala_id');
-                                                        $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                           ->select('id')
-                                                           ->get();
-                                                        foreach($esT as $v)
-                                                        {
-                                                            $v2[]= $v->id;
-                                                        }
-                                                        $cont= count($v2); 
-                                                        for($i=0;$i<$cont;$i++)
-                                                        {
-                                                            $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                            $est->fill([
-                                                            'disponibilidad' => "si",
-                                                            ]); 
-                                                            $est->save();
-                                                        }
-                                                        $est->save();
                                                     }
                                                 }
                                                 if($request->get('dia') === 'jueves')
@@ -1458,26 +1111,6 @@ class asignarController extends Controller
                                                                'tipo_reserva' => $request->get('rol'),
                                                                'dia' => $request->get('dia'),
                                                                ]);
-                                                        
-
-                                                        $id = $request->get('sala_id');
-                                                        $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                           ->select('id')
-                                                           ->get();
-                                                        foreach($esT as $v)
-                                                        {
-                                                            $v2[]= $v->id;
-                                                        }
-                                                        $cont= count($v2); 
-                                                        for($i=0;$i<$cont;$i++)
-                                                        {
-                                                            $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                            $est->fill([
-                                                            'disponibilidad' => "si",
-                                                            ]); 
-                                                            $est->save();
-                                                        }
-                                                        $est->save();
                                                     }
                                                 }
                                                 if($request->get('dia') === 'viernes')
@@ -1496,25 +1129,6 @@ class asignarController extends Controller
                                                                'tipo_reserva' => $request->get('rol'),
                                                                'dia' => $request->get('dia'),
                                                                ]);         
-
-                                                        $id = $request->get('sala_id');
-                                                        $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                           ->select('id')
-                                                           ->get();
-                                                        foreach($esT as $v)
-                                                        {
-                                                            $v2[]= $v->id;
-                                                        }
-                                                        $cont= count($v2); 
-                                                        for($i=0;$i<$cont;$i++)
-                                                        {
-                                                            $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                            $est->fill([
-                                                            'disponibilidad' => "si",
-                                                            ]); 
-                                                            $est->save();
-                                                        }
-                                                        $est->save();
                                                     }
                                                 }
                                                 if($request->get('dia') === 'sabado')
@@ -1533,26 +1147,6 @@ class asignarController extends Controller
                                                                    'tipo_reserva' => $request->get('rol'),
                                                                    'dia' => $request->get('dia'),
                                                                    ]);
-                                                    
-
-                                                        $id = $request->get('sala_id');
-                                                        $esT = Estacion_trabajo::where('sala_id','=',$id)
-                                                           ->select('id')
-                                                           ->get();
-                                                        foreach($esT as $v)
-                                                        {
-                                                            $v2[]= $v->id;
-                                                        }
-                                                        $cont= count($v2); 
-                                                        for($i=0;$i<$cont;$i++)
-                                                        {
-                                                            $est = Estacion_trabajo::findOrFail($v2[$i]);
-                                                            $est->fill([
-                                                            'disponibilidad' => "si",
-                                                            ]); 
-                                                            $est->save();
-                                                        }
-                                                        $est->save();
                                                     }
                                                 }
                                                 $inicio->addWeek(1);

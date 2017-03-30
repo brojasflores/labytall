@@ -193,7 +193,7 @@ hr {
 	    		<div class="col-md-3" id="col-fecha" style="display: none;">
 					<div class="form-group">
 					  <label for="sel1">Fecha: </label>
-						  <input type="text" class="form-control" placeholder="Fecha" name="fecha" id="fecha" aria-describedby="basic-addon2">
+						  <input disabled="disabled" type="text" class="form-control" placeholder="Fecha" name="fecha" id="fecha" aria-describedby="basic-addon2">
 					</div>
 		    	</div>
 	    		<div class="col-md-3" id="col-dia" style="display: none";>

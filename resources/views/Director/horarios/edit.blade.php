@@ -274,20 +274,7 @@ hr {
 		    	</div>
 		    </div>
 	    </div>
-	    <div class="form-group">
-	    	<div class="row">
-	    		<div class="col-md-3">
-					<div class="form-group">
-					  <label for="sel1">Asistencia: </label>
-					  <select class="form-control" id="asistenciaH" name="asistenciaH">
-					  	   	<option id="Pendiente" value="Pendiente" name="asistenciaH">Pendiente</option>
-					  	   	<option id="si" value="si" name="asistenciaH">Sí</option>
-					  	   	<option id="no" value="no" name="asistenciaH">No</option>
-					  </select>
-					</div>
-		    	</div>
-		    </div>
-	    </div>
+
 	    <div class="form-group">
 	    	<div class="row">
 	    		<div class="col-md-3">

@@ -259,17 +259,6 @@ class horarioAlumnoController extends Controller
              ->select('estacion_trabajo_id')
              ->get();
 
-        foreach($var as $v)
-        {
-            $v2= $v->estacion_trabajo_id;
-        }
-
-        $est = Estacion_trabajo::findOrFail($v2);
-            $est->fill([
-            'disponibilidad' => "si",
-            ]); 
-            $est->save();
-
         if($request->get('permanencia') === 'dia')
         {
             $fecha_separada = explode('/',$request->get('fecha'));
@@ -316,6 +305,7 @@ class horarioAlumnoController extends Controller
                                              ->where('fecha','=',$fecha_formateada)
                                              ->where('periodo_id','=',$request->get('periodoHorario'))
                                              ->where('sala_id','=',$request->get('salaHorario'))
+                                             ->where('id','!=',$id)
                                              ->get();
 
                     $fechita2 = Horario::select('id')
@@ -338,13 +328,6 @@ class horarioAlumnoController extends Controller
                         'dia' => $diasemana,
                         ]); 
                         $h->save();
-
-                        $id2 = $request->get('estacion');
-                        $est2 = Estacion_trabajo::findOrFail($id2);
-                        $est2->fill([
-                            'disponibilidad' => "si",
-                            ]); 
-                        $est2->save();
                     }
                     else
                     {
@@ -378,12 +361,6 @@ class horarioAlumnoController extends Controller
         {
             $v1= $v->estacion_trabajo_id;
         }
-
-        $est = Estacion_trabajo::findOrFail($v1);
-        $est->fill([
-            'disponibilidad' => "si",
-            ]); 
-        $est->save();
 
         $horarios = Horario_Alumno::findOrFail($id);
         $horarios->delete();

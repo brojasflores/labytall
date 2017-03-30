@@ -322,37 +322,12 @@ class reservaController extends Controller
         $var = Horario::where('id','=',$id)
                ->select('sala_id','permanencia')
                ->get();
-        
-        foreach($var as $v)
-        {
-            $v2= $v->sala_id;
-            $per=$v->permanencia;
-        }
-
-        $esT = Estacion_trabajo::where('sala_id','=',$v2)
-               ->select('id')
-               ->get();
-
-        foreach($esT as $v)
-        {
-            $v3[]= $v->id;
-        }
-
-        $cont= count($v3); 
-        for($i=0;$i<$cont;$i++)
-        {
-            $est = Estacion_trabajo::findOrFail($v3[$i]);
-            $est->fill([
-            'disponibilidad' => "si",
-            ]); 
-            $est->save();
-        }
-        $est->save();
 
         $horarios = Horario::findOrFail($id);
         $curso = $horarios->curso_id;
         $periodo = $horarios->periodo_id;
         $diaS = $horarios->dia;
+        $per = $horarios->permanencia;
         
         Horario::where('curso_id',$curso)
                 ->where('periodo_id',$periodo)
@@ -1183,32 +1158,6 @@ class reservaController extends Controller
         $var = Horario::where('id','=',$id)
                ->select('sala_id','permanencia')
                ->get();
-        
-        foreach($var as $v)
-        {
-            $v2= $v->sala_id;
-            $per=$v->permanencia;
-        }
-
-        $esT = Estacion_trabajo::where('sala_id','=',$v2)
-               ->select('id')
-               ->get();
-
-        foreach($esT as $v)
-        {
-            $v3[]= $v->id;
-        }
-
-        $cont= count($v3); 
-        for($i=0;$i<$cont;$i++)
-        {
-            $est = Estacion_trabajo::findOrFail($v3[$i]);
-            $est->fill([
-            'disponibilidad' => "si",
-            ]); 
-            $est->save();
-        }
-        $est->save();
 
         $horarios = Horario::findOrFail($id);
         $curso = $horarios->curso_id;
@@ -1217,6 +1166,7 @@ class reservaController extends Controller
         $tr = $horarios->tipo_reserva;
         $r = $horarios->rut;
         $d = $horarios->dia;
+        $per = $horarios->permanencia;
         
         Horario::where('curso_id',$curso)
                 ->where('periodo_id',$periodo)
