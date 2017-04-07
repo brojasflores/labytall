@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Gestión Salas | Ingresar</title>
+    <title>Gestión Laboratorios y Talleres | Ingresar</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -23,7 +23,7 @@
       <div class="login-logo">
         <span class="logo-mini"><img src="{{ asset('admin-lte/dist/img/utem.png') }}" class="user-image" alt="User Image" border="0" width="80" height="80"></span>
         <br>
-        <a href="{{ asset('admin-lte/index2.html')}}"><b>Gestión Salas</b></a>
+        <a href="{{ asset('admin-lte/index2.html')}}"><b>Gestión Laboratorios y Talleres</b></a>
       </div><!-- /.login-logo -->
 
       @if(Session::has('create'))

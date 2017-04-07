@@ -45,7 +45,7 @@
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><img src="{{ asset('admin-lte/dist/img/utem.png') }}" class="user-image" alt="User Image" border="0" width="50" height="50"></span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><img src="{{ asset('admin-lte/dist/img/utem.png') }}" class="user-image" alt="User Image" border="0" width="50" height="50"> <font size="3">Gestión de Salas</font></span>
+          <span class="logo-lg"><img src="{{ asset('admin-lte/dist/img/utem.png') }}" class="user-image" alt="User Image" border="0" width="50" height="50"> <font size="3">Gestión de Laboratorios y Talleres</font></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
